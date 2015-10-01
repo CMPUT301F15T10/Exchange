@@ -30,3 +30,4 @@ class Firend {
     private ArrayList <Person> myFriends;
 }
 
+//
