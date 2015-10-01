@@ -1,32 +1,32 @@
 class Person {
-    String Name;
-    String Location;
-    int ID;
-    Picture myPicture;
-    Long int phoneNumber;
-    String userName;
-    Inventory myInventory;
+    private String Name;
+    private String Location;
+    private int ID;
+    private Picture myPicture;
+    private Long int phoneNumber;
+    private String userName;
+    private Inventory myInventory;
 }
 
 class Inventory {
-    int size;
-    ArrayList <Book> myBooks;
+    private int size;
+    private ArrayList <Book> myBooks;
 }
 
 class Book {
-    String bookName; // Required
-    String genre;
-    int genreID; // Required
-    String author;
-    String publisher;
-    ArrayList <Picture> covers;
-    String ISBN;
-    int condition; // Required
-    String description;
-    Boolean IsListed; // Required;
+    private String bookName; // Required
+    private String genre;
+    private int genreID; // Required
+    private String author;
+    private String publisher;
+    private ArrayList <Picture> covers;
+    private String ISBN;
+    private int condition; // Required
+    private String description;
+    private IsListed; // Required;
 }
 
 class Firend {
-    ArrayList <Person> myFriends;
+    private ArrayList <Person> myFriends;
 }
 
