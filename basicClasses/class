@@ -1,0 +1,32 @@
+class Person {
+    String Name;
+    String Location;
+    int ID;
+    Picture myPicture;
+    Long int phoneNumber;
+    String userName;
+    Inventory myInventory;
+}
+
+class Inventory {
+    int size;
+    ArrayList <Book> myBooks;
+}
+
+class Book {
+    String bookName; // Required
+    String genre;
+    int genreID; // Required
+    String author;
+    String publisher;
+    ArrayList <Picture> covers;
+    String ISBN;
+    int condition; // Required
+    String description;
+    Boolean IsListed; // Required;
+}
+
+class Firend {
+    ArrayList <Person> myFriends;
+}
+
