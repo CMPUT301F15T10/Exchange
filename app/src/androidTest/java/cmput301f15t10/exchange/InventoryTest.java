@@ -36,5 +36,5 @@ public class InventoryTest {
             throw new RuntimeException();
         }
     }
-    
+
 }
