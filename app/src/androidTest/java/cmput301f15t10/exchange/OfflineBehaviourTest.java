@@ -3,11 +3,6 @@ import junit.framework.*;
 	// UserAccess class contains information regarding what services should be available to user once user is logged in based on whether there is internet connectivity or not
 	// UserAccess should have a field called Mode. If Mode=1 then it suggests that there is internet connectivity. If it is 2 then no internet connectivity.
 
-	// InventoryManager class contains methods for uploading local data to web server and for downloading back server data. Data can be trades, inventory information like item listings, etc.
-	// CacheData class is responsible for any kind of cache management required for the App including caching visited friends' inventories.
-
-	// I havent written any of these above classes yet so I dont have any concrete details about their methods yet.
-
 public class OffineBehaviourTest{
 
 
