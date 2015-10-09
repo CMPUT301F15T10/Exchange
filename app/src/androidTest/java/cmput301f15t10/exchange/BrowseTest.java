@@ -40,7 +40,7 @@ public class BrowseTest {
 
 
     //test if is browsed by a text
-    public void testCategory{
+    public void testTest{
         Inventory inventory= new Inventory();
         inventory.setInventory();
         inventory.searchtext(string //a text);
