@@ -1,9 +1,12 @@
 package cmput301f15t10.exchange;
 
+import android.app.Application;
+import android.test.ApplicationTestCase;
+
 /**
  * Created by Charles on 10/8/2015.
  */
-public class InventoryTest {
+public class InventoryTest extends ApplicationTestCase<Application> {
     public void testInstantiate(){
         try {
             Inventory inventory = new Inventory();
