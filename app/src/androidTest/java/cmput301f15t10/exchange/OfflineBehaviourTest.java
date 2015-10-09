@@ -151,10 +151,11 @@ public class OffineBehaviourTest{
 		PeopleInventory mat_Inventory=inventoryManager.getInventory(friendName) // method inputs friend/people name and checks local cache for this entry and if not found and if it has internet access defined by UserAcess, then it fetches inventory from server and returns it. If name doesnt match any friend/people entry in server, then it returns null. For now lets assume that there is an inventory of "mat" in server.
 
 		myCacheManager.saveInventory(mat_Inventory);
-		myInternet.disableInternet()
-		assertEquals(myUserAccess.getMode(),2)
-		inventoryManager.getInventory()
-
+		myInternet.disableInternet();
+		assertEquals(myUserAccess.getMode(),2);
+		PeopleInventory testInventory=inventoryManager.getInventory();
+		assertNotNull(testInventory);
+		assertEquals(mat_Inventory, testInventory);
 	}
 
 
