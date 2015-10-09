@@ -5,7 +5,7 @@ import android.graphics.Picture;
 import java.util.ArrayList;
 
 /**
- * Created by Qinghan Yu on 2015/10/5.
+ * Created by Yishuo Wang on 2015/10/5.
  */
 public class Book {
     public String bookName; // Required
@@ -18,4 +18,11 @@ public class Book {
     public int condition; // Required
     public String description;
     public Boolean isListed; // Required, may set default to True
+
+    public Book(String bookName, int genreID, int condition, Boolean isListed) {
+        this.bookName = bookName;
+        this.genreID = genreID;
+        this.condition = condition;
+        this.isListed = isListed;
+    }
 }
