@@ -39,17 +39,28 @@ public class BrowseTest {
 
 
 
-    //test if is browsed by a text
-    public void testTest{
+   
+     //test if is browsed by a text
+    public void testText{
         Inventory inventory= new Inventory();
         inventory.setInventory();
         inventory.searchtext(string //a text);
         for (int i;i<inventory.size(); i++){
-            if (//should discuss how to match the text){
+            if (/*do not match the text*/){
                 throw new RuntimeException();
             }
         }
     }
+    //test if is set browseable
+   public void testBrowseable{
+        Inventory inventory=new Inventory();
+        Book book=new Book();
+        book.setBrowseable(Boolean False);
+        if(book.getBrowseable=Boolean.True){
+        throw new RuntimeException();
+        }
+        }
+
 
    
 

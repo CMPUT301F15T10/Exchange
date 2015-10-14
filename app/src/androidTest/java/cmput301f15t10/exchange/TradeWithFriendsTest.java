@@ -203,10 +203,13 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
      from the owner's inventory and 0 or more items from the borrower's inventory.
     */
     public void tradeWithFriendTest() {
+        int checker;
         construction();
         TradeActivity myTrade = new TradeActivity();
-        myTrade.trade();
-        myTrade.saveTrade();
+        checker = myTrade.trade();
+        assertEquals(checker, 0);
+        checker = myTrade.saveTrade();
+        assertEquals(checker, 0);
     }
 
 
@@ -216,9 +219,12 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
     */
     public void notificationTest() {
         construction();
+        int checker();
         TradeActivity myTrade = new TradeActivity();
-        myTrade.trade();
-        myTrade.notification();
+        checker = myTrade.trade();
+        assertEquals(checker, 0);
+        checker = myTrade.notification();
+        assertEquals(checker, 0);
     }
 
 
@@ -228,9 +234,12 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
     */
     public void declineTradeTest() {
         construction();
+        int checker;
         TradeActivity myTrade = new TradeActivity();
-        myTrade.trade();
-        myTrade.declineTrade();
+        checker = myTrade.trade();
+        assertEquals(checker, 0);
+        checker = myTrade.declineTrade();
+        assertEquals(checker, 0);
         // do we need to save the trade history
     }
 
@@ -242,11 +251,15 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
     */
     public void counterTradeTest() {
         construction();
+        int checker;
         TradeActivity myTrade = new TradeActivity();
-        myTrade.trade();
-        myTrade.declineTrade();
-        myTrade.counterTrade(); // if counterTrade() is called inside the declineTrade(), then it
-                                // is not necessary to call counterTrade() here
+        checker = myTrade.trade();
+        assertEquals(checker, 0);
+        checker = myTrade.declineTrade();
+        assertEquals(checker, 0);
+        checker = myTrade.counterTrade(); // if counterTrade() is called inside the declineTrade(), then it
+                                          // is not necessary to call counterTrade() here
+        assertEquals(checker, 0);
     }
 
 
@@ -256,11 +269,16 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
     */
     public void editTradeTest() {
         construction();
+        int checker;
         TradeActivity myTrade = new TradeActivity();
-        myTrade.trade();
-        myTrade.editTrade();
-        myTrade.updateTrade();
-        myTrade.saveTrade();
+        checker = myTrade.trade();
+        assertEquals(checker, 0);
+        checker = myTrade.editTrade();
+        assertEquals(checker, 0);
+        checker = myTrade.updateTrade();
+        assertEquals(checker, 0);
+        checker = myTrade.saveTrade();
+        assertEquals(checker, 0);
     }
 
 
@@ -270,9 +288,12 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
     */
     public void deleteTradeTest() {
         construction();
+        int checker;
         TradeActivity myTrade = new TradeActivity();
-        myTrade.trade();
-        myTrade.deleteTrade();
+        checker = myTrade.trade();
+        assertEquals(checker, 0);
+        checker = myTrade.deleteTrade();
+        assertEquals(checker, 0);
     }
 
 
@@ -284,9 +305,12 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
     */
     public void emailTradeTest() {
         construction();
+        int checker;
         TradeActivity myTrade = new TradeActivity();
-        myTrade.trade();
-        myTrade.emailTrade();
+        checker = myTrade.trade();
+        assertEquals(checker, 0);
+        checker = myTrade.emailTrade();
+        assertEquals(checker, 0);
     }
 
 
@@ -302,9 +326,12 @@ public class TradeWithFriendsTest extends ActivityInstrumentationTestCase2  {
     */
     public void viewHistoryTest() {
         construction();
+        int checker;
         TradeManager tradeManager = new TradeManager();
-        tradeManager.viewCurrnetTrade();
-        tradeManager.viewPastTrade();
+        checker = tradeManager.viewCurrnetTrade();
+        assertEquals(checker, 0);
+        checker = tradeManager.viewPastTrade();
+        assertEquals(checker, 0);
     }
 
 
