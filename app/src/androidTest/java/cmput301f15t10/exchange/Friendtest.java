@@ -21,9 +21,8 @@ public class Friendtest {
         friends.add("Test testly");
         assert(friends.size()==1);
 
-        if (friends.getlist().get(0).getName()!="Test testly"){
-            throw new RuntimeException();
-        }
+        assert(friends.getlist().get(0).getName()=="Test testly")
+ 
     }
     public void testRm(){
         Friends friends = new Friends();
