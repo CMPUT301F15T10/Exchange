@@ -5,20 +5,26 @@ import android.graphics.Picture;
 /**
  * Created by Yishuo Wang on 2015/10/5.
  */
-public class Person {
-    public String name;
-    public String location;
-    public int ID;
-    public Picture myPicture;
-    public Long phoneNumber;
-    public String userName;
-    public Inventory myInventory;
-    public String email;
+public abstract class Person {
+    private String name;
+    private String location;
+    private int ID;
+    private Picture myPicture;
+    private Long phoneNumber;
+    private String userName;
+    private Inventory myInventory;
+    private String email;
 
-    public Person(String name, int ID, String userName, String email) {
-        this.name = name;
-        this.ID = ID;
-        this.userName = userName;
-        this.email = email;
+    private Inventory inventory;
+
+    public Person() {
+        myInventory = new Inventory(); //Each user has only one Inventory.
     }
+
+    private Inventory getInventory(){return this.inventory;}
+
+
+
+
+
 }

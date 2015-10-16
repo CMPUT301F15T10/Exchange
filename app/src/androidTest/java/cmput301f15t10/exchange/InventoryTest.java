@@ -7,13 +7,10 @@ import android.test.ApplicationTestCase;
  * Created by Charles on 10/8/2015.
  */
 
-public class InventoryTest extends ApplicationTestCase<Application> {
+public class InventoryTest{
     public void testInstantiate(){
-        try {
-            Inventory inventory = new Inventory();
-        }catch (Exception e){
-            throw new RuntimeException;
-        }
+        Inventory inventory = new Inventory();
+        assert (!(inventory == null)); //Find a better way of doing this
     }
     public void testAdd(){
         Inventory inventory = new Inventory();
@@ -24,9 +21,7 @@ public class InventoryTest extends ApplicationTestCase<Application> {
         inventory.add(book);
         Book book2 = inventory.getBook("TestyTester");
 
-        if (!book.compare(book2)){
-            throw new RuntimeException();
-        }
+        assert (book.compareTo(book2) == 1);
     }
     public void testRm(){
         Inventory inventory = new Inventory();
@@ -34,10 +29,8 @@ public class InventoryTest extends ApplicationTestCase<Application> {
         book.updateTitle("Testy Tester");
         inventory.add(book);
         inventory.getBook(book);
-        inventory.rmBook(book);
+        inventory.rmItem(book);
 
-        if(!inventory.hasBook(book)){
-            throw new RuntimeException();
-        }
+        assert (inventory.contains(book));
     }
 }
