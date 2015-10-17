@@ -19,7 +19,7 @@ public class BrowseTest {
         inventory.setInventory();
         try{
             inventory.showInventory()
-        }catchcatch (Exception e){
+        }catch (Exception e){
             throw new RuntimeException;
         }
     }
