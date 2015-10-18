@@ -21,7 +21,7 @@ public class Friendtest {
         friends.add("Test testly");
         assert(friends.size()==1);
 
-        assert(friends.getlist().get(0).getName()=="Test testly")
+        assert(friends.getlist().get(0).getName()=="Test testly");
  
     }
     public void testRm(){
