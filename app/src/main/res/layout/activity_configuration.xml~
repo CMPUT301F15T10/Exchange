@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="touqir.myapplication.ConfigurationActivity"
+    android:id="@+id/"
+    android:background="#-1">
+
+
+    <TextView android:text="Configuration" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp"
+        android:textColor="#111"
+        android:id="@+id/textView22" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:id="@+id/view"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="32dp" />
+
+    <Button
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:text="Confirm"
+        android:id="@+id/button18"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Allow automatic downloads?"
+        android:id="@+id/textView25"
+        android:layout_below="@+id/view"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp"
+        android:textColor="#111"
+        android:textSize="20dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox"
+        android:layout_marginRight="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="75dp" />
+
+
+</RelativeLayout>

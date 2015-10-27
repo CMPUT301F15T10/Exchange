@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cmput301f15t10.exchange" >
+    package="touqir.myapplication" >
 
     <application
         android:allowBackup="true"
@@ -17,23 +17,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.HomeActivity"
+            android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
         <activity
-            android:name=".Activities.EditProfileActivity"
+            android:name=".EditProfileActivity"
             android:label="@string/title_activity_edit_profile" >
         </activity>
         <activity
-            android:name=".Activities.EditItemActivity"
+            android:name=".EditItemActivity"
             android:label="@string/title_activity_edit_item" >
         </activity>
         <activity
-            android:name=".Activities.EditCommentActivity"
+            android:name=".EditCommentActivity"
             android:label="@string/title_activity_edit_comment" >
         </activity>
         <activity
-            android:name=".Activities.InventoryActivity"
+            android:name=".InventoryActivity"
             android:label="@string/title_activity_inventory" >
 
             <!-- <intent-filter> -->
@@ -44,31 +44,31 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".Activities.ViewPersonActivity"
+            android:name=".ViewPersonActivity"
             android:label="@string/title_activity_view_person" >
         </activity>
         <activity
-            android:name=".Activities.TradeManagerActivity"
+            android:name=".TradeManagerActivity"
             android:label="@string/title_activity_trade_manager" >
         </activity>
         <activity
-            android:name=".Activities.TradeListingActivity"
+            android:name=".TradeListingActivity"
             android:label="@string/title_activity_trade_listing" >
         </activity>
         <activity
-            android:name=".Activities.Trade_ItemsInventory"
+            android:name=".Trade_ItemsInventory"
             android:label="@string/title_activity_trade__items_inventory" >
         </activity>
         <activity
-            android:name=".Activities.TradeActivity"
+            android:name=".TradeActivity"
             android:label="@string/title_activity_trade" >
         </activity>
         <activity
-            android:name=".Activities.EditPasswordActivity"
+            android:name=".EditPasswordActivity"
             android:label="@string/title_activity_edit_password" >
         </activity>
         <activity
-            android:name=".Activities.ConfigurationActivity"
+            android:name=".ConfigurationActivity"
             android:label="@string/title_activity_configuration" >
         </activity>
     </application>
