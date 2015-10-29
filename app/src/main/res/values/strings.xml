@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Exchange</string>
+    <string name="app_name">exchange</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
