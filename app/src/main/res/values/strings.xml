@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_edit_item">EditItemActivity</string>
+    <string name="title_activity_edit_comment">EditCommentActivity</string>
+    <string name="title_activity_inventory">InventoryActivity</string>
+    <string name="title_activity_view_person">ViewPersonActivity</string>
+    <string name="title_activity_trade_manager">TradeManagerActivity</string>
+    <string name="title_activity_trade_listing">TradeListingActivity</string>
+    <string name="title_activity_trade__items_inventory">Trade_ItemsInventory</string>
+    <string name="title_activity_trade">TradeActivity</string>
+    <string name="title_activity_edit_password">EditPasswordActivity</string>
+    <string name="title_activity_configuration">ConfigurationActivity</string>
+</resources>
