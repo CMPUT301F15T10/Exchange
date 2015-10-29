@@ -1,4 +1,4 @@
-package com.example.touqir.myapplication;
+package com.example.touqir.Exchange;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;

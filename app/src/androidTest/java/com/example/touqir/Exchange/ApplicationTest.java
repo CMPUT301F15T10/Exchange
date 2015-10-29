@@ -1,4 +1,4 @@
-package com.example.touqir.myapplication;
+package com.example.touqir.Exchange;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
