@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package cmput301exchange.exchange;
 
 import android.app.SearchManager;
