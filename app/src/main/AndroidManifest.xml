@@ -16,6 +16,54 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Inventory"
+            android:label="@string/title_activity_inventory"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cmput301exchange.exchange.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/inventory_searchable" />
+        </activity>
+        <activity
+            android:name=".ViewPerson"
+            android:label="@string/title_activity_view_person"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cmput301exchange.exchange.MainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/person_searchable" />
+        </activity>
+        <activity
+            android:name=".EditItem"
+            android:label="@string/title_activity_edit_item" >
+        </activity>
+        <activity
+            android:name=".EditProfile"
+            android:label="@string/title_activity_edit_profile" >
+        </activity>
+        <activity
+            android:name=".ItemDetails"
+            android:label="@string/title_activity_item_details" >
+        </activity>
+        <activity
+            android:name=".ProfileDetails"
+            android:label="@string/title_activity_profile_details" >
+        </activity>
     </application>
 
 </manifest>
