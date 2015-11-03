@@ -42,6 +42,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="85dp"
-        android:textSize="25dp" />
+        android:textSize="25dp"
+        android:onClick="login"/>
+    />
 
 </RelativeLayout>
