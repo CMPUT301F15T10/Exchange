@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import cmput301f15t10.exchange.R;
+import cmput301exchange.exchange.R;
 public class EditPasswordActivity extends AppCompatActivity {
 
     @Override

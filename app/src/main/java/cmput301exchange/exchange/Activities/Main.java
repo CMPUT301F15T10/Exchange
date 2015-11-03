@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import cmput301exchange.exchange.Fragments.EditItemCommentFragment;
 import cmput301exchange.exchange.Fragments.EditItemFragment;
 import cmput301exchange.exchange.Item;
-import cmput301f15t10.exchange.R;
+import cmput301exchange.exchange.R;
 
 public class Main extends AppCompatActivity {
     private Fragment ItemEdit, CommentEdit, Photo;

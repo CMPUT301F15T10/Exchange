@@ -12,7 +12,7 @@ import cmput301exchange.exchange.Controllers.EditItemController;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Item;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
-import cmput301f15t10.exchange.R;
+import cmput301exchange.exchange.R;
 
 public class EditCommentActivity extends AppCompatActivity implements Observer {
 

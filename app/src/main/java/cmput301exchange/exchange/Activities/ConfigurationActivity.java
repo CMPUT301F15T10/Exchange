@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import cmput301exchange.exchange.Controllers.ConfigurationController;
-import cmput301f15t10.exchange.R;
+import cmput301exchange.exchange.R;
 
 public class ConfigurationActivity extends AppCompatActivity {
 

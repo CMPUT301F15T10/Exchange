@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import cmput301f15t10.exchange.R;
+import cmput301exchange.exchange.R;
 public class TradeManagerActivity extends AppCompatActivity {
 
     @Override
