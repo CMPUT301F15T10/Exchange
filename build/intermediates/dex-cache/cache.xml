@@ -2,11 +2,39 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Charles\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3.1\ecb6e1f8e4b0e84c4b886c2f14a1500caf309757\gson-2.3.1.jar"
+        jar="/cshome/kalvin1/301/Exchange/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/cshome/kalvin1/301/Exchange/app/build/intermediates/pre-dexed/debug/classes-25e04329b90764467b50b5b54620a0af2c508b56.jar" />
+    </item>
+    <item
+        jar="/cshome/kalvin1/301/Exchange/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/cshome/kalvin1/301/Exchange/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-5b984b45b7185c395965ef5cc9b1f2701290eed8.jar" />
+    </item>
+    <item
+        jar="/usr/local/share/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/cshome/kalvin1/301/Exchange/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-6b8f43d628bde674586e533393329d929d7ff825.jar" />
+    </item>
+    <item
+        jar="/cshome/kalvin1/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
-        <dex dex="C:\cygwin\home\Charles\CMPUT301\Exchange\app\build\intermediates\pre-dexed\debug\gson-2.3.1-e550c94a1bf873773472f310411583b04a4daa57.jar" />
+        <dex dex="/cshome/kalvin1/301/Exchange/app/build/intermediates/pre-dexed/debug/gson-2.3.1-82000282d083e13fb65c3e340a1ba1db83da2422.jar" />
+    </item>
+    <item
+        jar="/cshome/kalvin1/301/Exchange/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/cshome/kalvin1/301/Exchange/app/build/intermediates/pre-dexed/debug/classes-af11cfef8dc4681fcb72c046fa01bcd8c1b23e9e.jar" />
     </item>
 
 </items>
