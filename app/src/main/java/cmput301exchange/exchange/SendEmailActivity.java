@@ -1,4 +1,4 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,17 +26,17 @@ public class SendEmailActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sendemail);
+        setContentView(cmput301f15t10.exchange.R.layout.sendemail);
 
         // test
         message = "YOLO";
-        text = (TextView) findViewById(R.id.messageText);
+        text = (TextView) findViewById(cmput301f15t10.exchange.R.id.messageText);
         text.setMovementMethod(new ScrollingMovementMethod());
         text.setText(message);
 
 
-        sendButton = (Button) findViewById(R.id.sendButton);
-        comment = (EditText) findViewById(R.id.commentEditText);
+        sendButton = (Button) findViewById(cmput301f15t10.exchange.R.id.sendButton);
+        comment = (EditText) findViewById(cmput301f15t10.exchange.R.id.commentEditText);
 
         sendButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
