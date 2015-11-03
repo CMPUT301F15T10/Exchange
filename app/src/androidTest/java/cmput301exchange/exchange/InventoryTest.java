@@ -3,6 +3,10 @@ package cmput301exchange.exchange;
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
+import junit.framework.Assert;
+
+import java.util.ArrayList;
+
 /**
  * Created by Charles on 10/8/2015.
  */
@@ -34,6 +38,13 @@ public class InventoryTest extends ApplicationTestCase<Application>{
         assert (inventory.contains(book));
     }
 
+    public void testView(){
+        Book book = new Book();
+        inventory.add(book);
+        ArrayList<Book> testlist = new ArrayList<Book>();
+        testlist.add(book);
+        assertEquals(inventory.getInventoryList(),testlist);
+    }
 
 
 }
