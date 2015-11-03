@@ -1,16 +1,36 @@
 package cmput301exchange.exchange.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.ViewPerson;
+
 public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+    }
+
+    public void inventory(View view) {
+        Intent intent = new Intent(this, InventoryActivity.class);
+        startActivity(intent);
+    }
+
+    public void tradeManager(View view) {
+        Intent intent = new Intent(this, TradeManagerActivity.class);
+        startActivity(intent);
+    }
+
+    public void searchPeople(View view) {
+        Intent intent = new Intent(this, ViewPersonActivity.class);
+        startActivity(intent);
     }
 
     @Override
