@@ -4,15 +4,37 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import cmput301f15t10.exchange.Controllers.EditItemController;
+import cmput301f15t10.exchange.Interfaces.Observer;
+import cmput301f15t10.exchange.Item;
+import cmput301f15t10.exchange.Others.CharSequenceWrapper;
 import cmput301f15t10.exchange.R;
 
-public class EditCommentActivity extends AppCompatActivity {
+public class EditCommentActivity extends AppCompatActivity implements Observer {
+
+    private CharSequenceWrapper comment=null;
+    private Item myItem; // Need to decide whether myItem should be an object of Item or Book class.
+    private EditText commentBox;
+    private EditItemController myEditItemController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_comment);
+        // instantiate the model of item comment.
+        commentBox=(EditText) findViewById(R.id.Comment);
+        myEditItemController = new EditItemController(myItem); // The item controller can be passed down if this becomes a fragment!
+        update();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        update();
     }
 
     @Override
@@ -35,5 +57,26 @@ public class EditCommentActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void update(){
+        if (comment==null) {
+            comment = new CharSequenceWrapper(myItem.getComment());
+        }
+        else {
+            comment.setText(myItem.getComment());
+        }
+        commentBox.setText(comment, TextView.BufferType.EDITABLE);
+    }
+
+    public void onDone(View view) {
+        onDone_Handler();
+    }
+
+    public void onDone_Handler(){
+        
+        myEditItemController.changeComment(commentBox.getText().toString());
+
+        // Code for closing the window
     }
 }

@@ -22,7 +22,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:id="@+id/editText11"
+        android:id="@+id/Comment"
         android:layout_marginTop="72dp"
         android:layout_below="@+id/textView16"
         android:layout_alignParentStart="true" />
@@ -31,11 +31,12 @@
         android:layout_width="165dp"
         android:layout_height="60dp"
         android:text="Done"
-        android:id="@+id/button10"
+        android:id="@+id/Comment_Done"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="52dp"
-        android:textSize="22dp" />
+        android:textSize="22dp"
+        android:onClick="onDone" />
 
     <View
         android:layout_width="match_parent"

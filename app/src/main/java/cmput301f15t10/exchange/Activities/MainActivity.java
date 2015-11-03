@@ -1,9 +1,11 @@
-package cmput301f15t10.exchange;
+package cmput301f15t10.exchange.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import cmput301f15t10.exchange.R;
 
 public class MainActivity extends Activity {
 

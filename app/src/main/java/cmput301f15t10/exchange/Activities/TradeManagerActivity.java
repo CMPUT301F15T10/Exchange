@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
 import cmput301f15t10.exchange.R;
 public class TradeManagerActivity extends AppCompatActivity {
 
@@ -33,5 +35,37 @@ public class TradeManagerActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void CheckRequest_Handler(){
+
+    }
+
+    public void MakeTrade_Handler(){
+
+    }
+
+    public void CurrentTrade_Handler(){
+
+    }
+
+    public void PastTrade_Handler(){
+
+    }
+
+    public void onCheckRequest(View view) {
+        CheckRequest_Handler();
+    }
+
+    public void onMakeTrade(View view) {
+        MakeTrade_Handler();
+    }
+
+    public void onCurrentTrade(View view) {
+        CurrentTrade_Handler();
+    }
+
+    public void onPastTrade(View view) {
+        PastTrade_Handler();
     }
 }

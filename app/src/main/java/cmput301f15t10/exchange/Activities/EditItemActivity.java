@@ -4,14 +4,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import cmput301f15t10.exchange.Controllers.EditItemController;
 import cmput301f15t10.exchange.R;
 
 public class EditItemActivity extends AppCompatActivity {
 
+//    private EditItemController myEditItemController= new EditItemController();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_item);
+//        setContentView(R.layout.activity_edit_item);
     }
 
     @Override
@@ -35,4 +39,6 @@ public class EditItemActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import cmput301f15t10.exchange.R;
-public class Trade_ItemsInventory extends AppCompatActivity {
+public class TradeItemsInventoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade__items_inventory);
+        setContentView(R.layout.activity_trade_items_inventory);
     }
 
     @Override
