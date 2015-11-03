@@ -1,16 +1,31 @@
+
+
 package cmput301exchange.exchange;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
-public class MainActivity extends ActionBarActivity {
+import cmput301f15t10.exchange.SendEmailActivity;
+
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);/*
+        Button testEmailButton = (Button) findViewById(R.id.testEmailButton);
+        testEmailButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SendEmailActivity.class);
+                startActivity(intent);
+            }
+        });
+        */
     }
 
     @Override

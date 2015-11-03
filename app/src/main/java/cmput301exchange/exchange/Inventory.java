@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package cmput301exchange.exchange;
 
 import android.app.SearchManager;
@@ -9,6 +8,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
+
+import cmput301f15t10.exchange.R;
 
 public class Inventory extends ActionBarActivity {
 

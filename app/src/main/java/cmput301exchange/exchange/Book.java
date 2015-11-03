@@ -1,9 +1,12 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 import android.content.SharedPreferences;
 import android.graphics.Picture;
 
 import java.util.ArrayList;
+
+import cmput301f15t10.exchange.Searchable;
+import cmput301f15t10.exchange.Shareable;
 
 /**
  * Created by Yishuo Wang on 2015/10/5.
