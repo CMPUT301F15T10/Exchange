@@ -4,15 +4,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-<<<<<<< HEAD
-    tools:context="cmput301exchange.exchange.ViewPerson">
-
-    <ListView
-        android:id="@+id/personList"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-    </ListView>
-=======
     tools:context="cmput301f15t10.exchange.ViewPersonActivity">
 
     <SearchView
@@ -66,6 +57,6 @@
         android:id="@+id/listView2"
         android:layout_below="@+id/view2"
         android:layout_centerHorizontal="true" />
->>>>>>> origin/APP
+
 
 </RelativeLayout>

@@ -104,7 +104,7 @@
 //    Book friendBook;
 //
 //    public TradeWithFriendsTest() {
-//        super(MainActivity.class);
+//        super(Login.class);
 //    }
 //
 //
