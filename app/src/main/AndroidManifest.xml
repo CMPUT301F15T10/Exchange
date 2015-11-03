@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
     package="cmput301exchange.exchange" >
 
     <application
@@ -8,16 +9,90 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".Activities.HomeActivity"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name=".Activities.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile" >
+        </activity>
+        <activity
+            android:name=".Activities.EditItemActivity"
+            android:label="@string/title_activity_edit_item" >
+        </activity>
+        <activity
+            android:name=".Activities.EditCommentActivity"
+            android:label="@string/title_activity_edit_comment" >
+        </activity>
+        <activity
+            android:name=".Activities.InventoryActivity"
+            android:label="@string/title_activity_inventory" >
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".Activities.ViewPersonActivity"
+            android:label="@string/title_activity_view_person" >
+        </activity>
+        <activity
+            android:name=".Activities.TradeManagerActivity"
+            android:label="@string/title_activity_trade_manager" >
+        </activity>
+        <activity
+            android:name=".Activities.TradeListingActivity"
+            android:label="@string/title_activity_trade_listing" >
+        </activity>
+        <activity
+            android:name=".Activities.TradeItemsInventoryActivity"
+            android:label="@string/title_activity_trade__items_inventory" >
+        </activity>
+        <activity
+            android:name=".Activities.TradeActivity"
+            android:label="@string/title_activity_trade" >
+        </activity>
+        <activity
+            android:name=".Activities.EditPasswordActivity"
+            android:label="@string/title_activity_edit_password" >
+        </activity>
+        <activity
+            android:name=".Activities.ConfigurationActivity"
+            android:label="@string/title_activity_configuration" >
+        </activity>
+
+        <!-- Internet Permissions -->
+        <uses-permission android:name="android.permission.INTERNET" />
+
+        <!-- Network State Permissions -->
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+        <activity
+            android:name=".Activities.Main"
+            android:label="@string/title_activity_main" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".SendEmailActivity" android:label="SendEmail" />
     </application>
 
 </manifest>
+
 
