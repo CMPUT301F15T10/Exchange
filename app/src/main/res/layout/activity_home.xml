@@ -11,33 +11,10 @@
         android:id="@+id/textView3"
         android:textSize="20dp"
         android:textColor="#111"
-        android:layout_below="@+id/view"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="false"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="65dp" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp" />
 
-    <TextView
-        android:text="Home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:textSize="35dp"
-        android:textColor="#111"
-        android:layout_marginLeft="115dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/textView3"
-        android:layout_marginEnd="0dp"
-        android:layout_alignParentLeft="true" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:id="@+id/view"
-        android:layout_marginTop="8dp" />
 
     <Button
         android:layout_width="200dp"
@@ -49,7 +26,8 @@
         android:layout_alignParentLeft="false"
         android:layout_marginLeft="100dp"
         android:layout_centerInParent="true"
-        android:textSize="17dp" />
+        android:textSize="17dp"
+        android:onClick="inventory"/>
 
     <Button
         android:layout_width="200dp"
@@ -60,7 +38,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="220dp"
-        android:textSize="17dp" />
+        android:textSize="17dp"
+        android:onClick="tradeManager"/>
 
     <Button
         android:layout_width="200dp"
@@ -70,6 +49,7 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="300dp"
         android:layout_centerHorizontal="true"
-        android:textSize="17dp" />
+        android:textSize="17dp"
+        android:onClick="searchPeople"/>
 
 </RelativeLayout>
