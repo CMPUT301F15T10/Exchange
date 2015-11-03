@@ -4,7 +4,7 @@ package cmput301exchange.exchange;
  * Created by bq on 10/8/2015.
  */
 
-/*public class BrowseTest{
+public class BrowseTest{
     public void testInstantiate(){
         try {
             Inventory inventory = new Inventory();
@@ -16,11 +16,11 @@ package cmput301exchange.exchange;
     //test case for a view
     public void testBrowse(){
         Inventory inventory= new Inventory();
-        inventory.setInventory();
+        inventory.;
         try{
-            inventory.showInventory();
-        }catchcatch (Exception e){
-            throw new RuntimeException
+            inventory.getInventoryList();
+        }catch(Exception e){
+            throw new RuntimeException();
         }
     }
 
