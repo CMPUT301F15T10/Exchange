@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">exchange</string>
+    <string name="app_name">Exchange</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -9,6 +9,7 @@
     <string name="title_activity_edit_profile">EditProfile</string>
     <string name="title_activity_item_details">ItemDetails</string>
     <string name="title_activity_profile_details">ProfileDetails</string>
+
 
 
     <string name="title_activity_home">HomeActivity</string>

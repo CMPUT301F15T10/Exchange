@@ -14,7 +14,7 @@ import cmput301exchange.exchange.Activities.Main;
 import cmput301exchange.exchange.Controllers.EditItemController;
 import cmput301exchange.exchange.Item;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
-import cmput301f15t10.exchange.R;
+import cmput301exchange.exchange.R;
 
 /**
  * Created by touqir on 01/11/15.
