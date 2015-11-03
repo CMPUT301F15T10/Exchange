@@ -3,13 +3,13 @@ package cmput301exchange.exchange;
 /**
  * Created by bq on 10/8/2015.
  */
-/*
-public class BrowseTest {
+
+/*public class BrowseTest{
     public void testInstantiate(){
         try {
             Inventory inventory = new Inventory();
         }catch (Exception e){
-            throw new RuntimeException;
+            throw new RuntimeException();
         }
     }
 
@@ -18,9 +18,9 @@ public class BrowseTest {
         Inventory inventory= new Inventory();
         inventory.setInventory();
         try{
-            inventory.showInventory()
+            inventory.showInventory();
         }catchcatch (Exception e){
-            throw new RuntimeException;
+            throw new RuntimeException
         }
     }
 
@@ -64,5 +64,4 @@ public class BrowseTest {
 
    
 
-}
-*/
+}*/

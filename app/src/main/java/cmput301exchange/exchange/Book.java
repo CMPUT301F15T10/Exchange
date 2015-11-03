@@ -82,4 +82,20 @@ public class Book implements Shareable, Comparable<Book> {
     public void updateComment(String comment) {
         this.comment = comment;
     }
+
+    public int getGenreID() {
+        return genreID;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
 }
