@@ -1,4 +1,4 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 import android.graphics.Picture;
 
@@ -17,8 +17,8 @@ public abstract class Person {
     private Inventory myInventory;
     private String email;
     private FriendList myfriendlist;
-    private ArrayList<History> historylist;
-    private ArrayList<Trade> tradelist;
+   // private ArrayList<History> historylist;
+   // private ArrayList<Trade> tradelist;
 
 
     public Person(String username) {
@@ -58,7 +58,7 @@ public abstract class Person {
         return email;
     }
 
-
+/* TODO IMPLEMENT THE HISTORY AND TRADE OBJECTS
     public void setHistorylist(ArrayList<History> historylist) {
         this.historylist = historylist;
     }
@@ -87,6 +87,7 @@ public abstract class Person {
         return tradelist;
     }
 
+*/
     public void setName(String name) {
         this.name = name;
     }

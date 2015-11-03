@@ -5,13 +5,10 @@ import android.graphics.Picture;
 
 import java.util.ArrayList;
 
-import cmput301f15t10.exchange.Searchable;
-import cmput301f15t10.exchange.Shareable;
-
 /**
  * Created by Yishuo Wang on 2015/10/5.
  */
-public class Book implements Shareable, Searchable, Comparable<Book> {
+public class Book implements Shareable, Comparable<Book> {
     public String bookName; // Required
     public String genre;
     public int genreID; // Required
@@ -28,13 +25,6 @@ public class Book implements Shareable, Searchable, Comparable<Book> {
     public boolean isShareable(){return sharable;}
 
     public void setShareable(boolean setValue){sharable = setValue;}
-
-    public Book(String bookName, int genreID, int condition, Boolean isListed) {
-        this.bookName = bookName;
-        this.genreID = genreID;
-        this.condition = condition;
-        this.isListed = isListed;
-    }
 
     public void updateTitle(String title){
         bookName = title;

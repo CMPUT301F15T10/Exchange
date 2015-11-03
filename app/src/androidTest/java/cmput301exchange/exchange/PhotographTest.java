@@ -1,9 +1,10 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 /**
  * Created by Kaleb on 10/8/2015.
  */
- 
+
+/*
 public class PhotographTest {
 
   // testing case US06.01.01
@@ -18,7 +19,7 @@ public class PhotographTest {
   }
 
 
-/***********************************************************************/
+/**********************************************************************
 
 
   // testing case US06.02.01
@@ -34,7 +35,7 @@ public class PhotographTest {
 
 
 
-/***********************************************************************/
+
 
   // testing case US06.03.01
   // goal: Delete photo
@@ -47,7 +48,6 @@ public class PhotographTest {
   }
 
 
-/***********************************************************************/
 
 // testing case US06.04.01
 // goal: Image file less than 65536 bytes
@@ -60,7 +60,7 @@ public class PhotographTest {
 	  assert(item.imageSize <= MAXSIZE - 1);
 	}
 
-/***********************************************************************/
+
 
 // testing case US06.05.01
 // goal: enable/disable downloads 
@@ -79,3 +79,4 @@ public class PhotographTest {
 	  }
 	}
 }
+*/

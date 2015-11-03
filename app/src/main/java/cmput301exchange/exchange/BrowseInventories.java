@@ -1,4 +1,4 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 /**
  * Created by bq on 11/1/15.

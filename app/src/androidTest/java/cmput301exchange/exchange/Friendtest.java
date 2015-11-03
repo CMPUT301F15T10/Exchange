@@ -1,8 +1,10 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 /**
  * Created by hzhu6 on 10/9/15.
  */
+
+/*
 public class Friendtest {
 
     public void testInstantiate(){
@@ -49,3 +51,4 @@ public class Friendtest {
     }
 }
 
+*/

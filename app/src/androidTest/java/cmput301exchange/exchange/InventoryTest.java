@@ -1,4 +1,4 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -7,30 +7,31 @@ import android.test.ApplicationTestCase;
  * Created by Charles on 10/8/2015.
  */
 
-public class InventoryTest{
-    public void testInstantiate(){
-        Inventory inventory = new Inventory();
-        assert (!(inventory == null)); //Find a better way of doing this
+public class InventoryTest extends ApplicationTestCase<Application>{
+    public InventoryTest() {
+        super(Application.class);
     }
+
+    public Inventory inventory = new Inventory();
+
     public void testAdd(){
-        Inventory inventory = new Inventory();
         Book book = new Book();
         //Replace with book setters and getters
         book.updateTitle("TestyTester");
         book.updateAuthor("Tesla Tester");
         inventory.add(book);
-        Book book2 = inventory.getBook("TestyTester");
+        Book book2 = inventory.Search("TestyTester");
 
         assert (book.compareTo(book2) == 1);
     }
     public void testRm(){
-        Inventory inventory = new Inventory();
         Book book = new Book();
         book.updateTitle("Testy Tester");
         inventory.add(book);
-        inventory.getBook(book);
+        inventory.Search("Testy Tester");
         inventory.rmItem(book);
 
         assert (inventory.contains(book));
     }
+
 }

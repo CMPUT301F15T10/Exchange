@@ -1,9 +1,8 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import cmput301f15t10.exchange.Person;
 
 /**
  * Created by bq on 10/31/15.

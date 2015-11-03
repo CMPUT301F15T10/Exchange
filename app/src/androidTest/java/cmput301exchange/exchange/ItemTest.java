@@ -1,4 +1,4 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
@@ -6,6 +6,8 @@ import android.test.ApplicationTestCase;
 /**
  * Created by Charles on 10/9/2015.
  */
+
+/*
 public class ItemTest extends ApplicationTestCase<Application> {
     public ItemTest() {
         super(Application.class);
@@ -37,3 +39,4 @@ public class ItemTest extends ApplicationTestCase<Application> {
     }
     public 
 }
+*/

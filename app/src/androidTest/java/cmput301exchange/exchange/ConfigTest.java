@@ -1,5 +1,6 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
+/*
 import java.lang.Boolean;
 
 public class ConfigTest {
@@ -26,3 +27,4 @@ public class ConfigTest {
 
 
 }
+*/

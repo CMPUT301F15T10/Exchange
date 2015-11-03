@@ -1,4 +1,4 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 import android.graphics.Picture;
 
@@ -7,7 +7,7 @@ import android.graphics.Picture;
  */
 public class User extends Person{
 
-    public User(){super();}
+    public User(String Username){super(Username);}
 
     public void Authenticate(){}
 

@@ -1,60 +1,84 @@
 package cmput301exchange.exchange;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.SearchView;
 
-import cmput301f15t10.exchange.R;
+import java.util.ArrayList;
 
-public class Inventory extends ActionBarActivity {
+/**
+ * Created by Charles on 11/2/2015.
+ */
+public class Inventory implements Searchable, Shareable {
+    private User inventoryOwner;
+    private ArrayList<Book> inventoryList = new ArrayList<>();
+    private Integer quantity;
+    private Integer Quality; //Must be set to a value between 1-5
+    private String Category;
+    private String Comment;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventory);
+    private boolean shareable;
+    public void setShareable(boolean bool){shareable = bool;}
+    public boolean isShareable(){return shareable;}
 
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-
-            // code to do search and return in listview results
+    public Book Search(String searchString){
+        //If search returns a Null, then the object is not in the list.
+        Book foundBook = null;
+        for (Book iterator : inventoryList){
+            if (searchString.equalsIgnoreCase(iterator.getName())){
+                foundBook =iterator;
+            }
         }
+        return foundBook;
+
+    }
+    public User getInventoryOwner() {
+        return inventoryOwner;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_inventory, menu);
-
-        // http://developer.android.com/training/appbar/action-views.html
-        // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.item_search).getActionView();
-        // Assumes current activity is the searchable activity
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
-
-        return true;
+    public void setInventoryOwner(User inventoryOwner) {
+        this.inventoryOwner = inventoryOwner;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public ArrayList<Book> getInventoryList() {
+        return inventoryList;
     }
+
+    public void add(Book Book) {this.inventoryList.add(Book);}
+
+    public void rmItem(Book book){this.inventoryList.remove(book);}
+
+    public boolean contains(Book book){return this.inventoryList.contains(book);}
+
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getQuality() {
+        return Quality;
+    }
+
+    public void setQuality(Integer quality) {
+        Quality = quality;
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public void setCategory(String category) {
+        Category = category;
+    }
+
+    public String getComment() {
+        return Comment;
+    }
+
+    public void setComment(String comment) {
+        Comment = comment;
+    }
+
+
 }

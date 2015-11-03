@@ -1,5 +1,6 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
+/*
 public class ProfileTest {
     public void testInstantiate(){
         try {
@@ -36,3 +37,5 @@ public class ProfileTest {
 
 
 }
+
+*/

@@ -1,9 +1,9 @@
-package cmput301f15t10.exchange;
+package cmput301exchange.exchange;
 
 /**
  * Created by bq on 10/8/2015.
  */
-
+/*
 public class BrowseTest {
     public void testInstantiate(){
         try {
@@ -46,7 +46,7 @@ public class BrowseTest {
         inventory.setInventory();
         inventory.searchtext(string //a text);
         for (int i;i<inventory.size(); i++){
-            if (/*do not match the text*/){
+            if (/*do not match the text){
                 throw new RuntimeException();
             }
         }
@@ -65,3 +65,4 @@ public class BrowseTest {
    
 
 }
+*/
