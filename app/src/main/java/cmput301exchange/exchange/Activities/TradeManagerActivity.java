@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,18 +39,24 @@ public class TradeManagerActivity extends AppCompatActivity {
     }
 
     public void CheckRequest_Handler(){
-
+        Intent intent = new Intent(this, TradeItemsInventoryActivity.class);
+        startActivity(intent);
     }
 
     public void MakeTrade_Handler(){
+        Intent intent = new Intent(this, TradeActivity.class);
+        startActivity(intent);
 
     }
 
     public void CurrentTrade_Handler(){
-
+        Intent intent = new Intent(this, TradeListingActivity.class);
+        startActivity(intent);
     }
 
     public void PastTrade_Handler(){
+//        Intent intent = new Intent(this, TradeListingActivity.class);
+//        startActivity(intent);
 
     }
 
