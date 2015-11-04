@@ -7,16 +7,38 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SearchView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import cmput301exchange.exchange.R;
 
 
 public class InventoryActivity extends AppCompatActivity {
 
+    private ListView lv;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
+
+        lv = (ListView) findViewById(R.id.listView3);
+
+        List<String> person_list = new ArrayList<String>();
+        person_list.add("Item1");
+        person_list.add("Item2");
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                person_list );
+
+        lv.setAdapter(arrayAdapter);
 
     }
 
