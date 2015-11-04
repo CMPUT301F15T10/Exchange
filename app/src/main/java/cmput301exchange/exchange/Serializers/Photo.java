@@ -16,13 +16,23 @@ import cmput301exchange.exchange.Interfaces.Observer;
 public class Photo extends Observable {
     private volatile ArrayList<Observer> observers = new ArrayList<Observer>();
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/testing/";
+   
+
     //private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/testing/movie/_search";
+  //  public String image = Ti.Filesystem.getFile('Exchange/app/src/main/res/drawable/testPhoto.png');
 
     public int photoSize(Photo photo){
-        int size = 0;
-
-        return size;
+        //int size = getByteCount();
+        /*if (image.size() <= MAX_SIZE) {
+            alert( image.size );
+        }
+        return size; */
+        return 128;
     }
+
+    public Photo() {}
+
+
     //@Override
     public void addObserver(Observer o) {
         observers.add(o);
