@@ -56,10 +56,6 @@
             android:label="@string/title_activity_trade" >
         </activity>
         <activity
-            android:name=".Activities.EditPasswordActivity"
-            android:label="@string/title_activity_edit_password" >
-        </activity>
-        <activity
             android:name=".Activities.ConfigurationActivity"
             android:label="@string/title_activity_configuration" >
         </activity>
