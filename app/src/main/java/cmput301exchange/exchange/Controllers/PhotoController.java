@@ -28,54 +28,36 @@ public class PhotoController {
     private Person person; // temp, not sure how to deal
 
     public boolean downloadYesNo = true;
-    public void enableDownload() {downloadYesNo = true;}
-    public void disableDownload() {downloadYesNo = false;}
+
+    public void enableDownload() {
+        downloadYesNo = true;
+    }
+
+    public void disableDownload() {
+        downloadYesNo = false;
+    }
 
     public PhotoController(Photo photo) {
         super();
         this.photo = photo;
     }
 
-    public Photo getPhoto() {return this.photo;}
+    public Photo getPhoto() {
+        return this.photo;
+    }
 
-    public void addPhoto(Photo photo) {
+    public void addPhoto(/*Photo photo*/) {
+        // todo: allow user to select which photo to upload here
         // todo: if (photo.photoSize(photo) <= MAX_SIZE) { ...do stuff}
+        // todo: another function will be called to upload photo
         // todo: else {throw an error}
 
-            HttpClient httpClient = new DefaultHttpClient();
-
-            try {
-                HttpPost addRequest = new HttpPost(photo.getResourceUrl() + person.getID());
-
-                StringEntity stringEntity = new StringEntity(gson.toJson(photo));
-                addRequest.setEntity(stringEntity);
-                addRequest.setHeader("Accept", "application/json");
-
-                HttpResponse response = httpClient.execute(addRequest);
-                String status = response.getStatusLine().toString();
-                Log.i(TAG, status);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        //}     //TODO: else throw an error of some sort
 
     }
 
-    public void deletePhoto(int photoID) {
-        HttpClient httpClient = new DefaultHttpClient();
+    public void deletePhoto(/*int photoID*/) {
+        // todo: allow user to select which photo to delete here
+        // todo: another function will be implemented to call to delete photo
 
-        try {
-            HttpDelete deleteRequest = new HttpDelete(photo.getResourceUrl() + photoID);
-            deleteRequest.setHeader("Accept", "application/json");
-
-            HttpResponse response = httpClient.execute(deleteRequest);
-            String status = response.getStatusLine().toString();
-            Log.i(TAG, status);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
-
 }
