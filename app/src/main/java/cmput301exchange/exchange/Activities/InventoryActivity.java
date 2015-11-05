@@ -18,6 +18,7 @@ import java.util.List;
 
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
 
 
 public class InventoryActivity extends AppCompatActivity {
@@ -29,14 +30,18 @@ public class InventoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+        io.setFileName("GlobalENV");
+//        ArrayList<ModelEnvironment> LoadArray = io.loadFromFile();
+//        globalENV = LoadArray.get(0);
+        globalENV = (ModelEnvironment) io.loadFromFile().get(0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
         lv = (ListView) findViewById(R.id.listView3);
 
         List<String> person_list = new ArrayList<String>();
-        person_list.add("Item1");
+        person_list.add(globalENV.getOwner().getName());
         person_list.add("Item2");
 
 

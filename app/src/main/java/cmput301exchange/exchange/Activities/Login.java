@@ -17,8 +17,12 @@ import com.google.gson.GsonBuilder;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
 
 public class Login extends Activity {
     public EditText username;
@@ -42,8 +46,14 @@ public class Login extends Activity {
     }
 
     public void login(View  view) {
-
         globalENV.setOwner(username.getText().toString());
+        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
+        WriteModel.setFileName("GlobalENV");
+        ArrayList sendenv = new ArrayList();
+        sendenv.add(globalENV);
+        WriteModel.saveInFile(false,sendenv);
+
+
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
 }
