@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 
 public class Login extends Activity {
@@ -17,6 +18,7 @@ public class Login extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         /*
         Button testEmailButton = (Button) findViewById(R.id.testEmailButton);
@@ -32,7 +34,7 @@ public class Login extends Activity {
     public void login(View view) {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-    }
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
