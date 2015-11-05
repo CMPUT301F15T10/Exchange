@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="view_person">
+        <item>Friends</item>
+        <item>All People</item>
+    </string-array>
+</resources>
