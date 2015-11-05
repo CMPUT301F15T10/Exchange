@@ -39,8 +39,20 @@ public class Login extends AppCompatActivity {
 
     public void login(View  view) {
         Gson gson = new Gson();
-        globalENV.setOwner(username.getText().toString());
+
+        String userString = username.getText().toString();
         DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+
+        try{
+            globalENV = io.loadEnvironment("GlobalENV");
+            globalENV.getOwner();
+            
+        }catch(Exception e){
+            globalENV.setOwner(username.getText().toString());
+        }
+
+
+
         io.saveEnvironment("GlobalENV", globalENV);
 //        String json = gson.toJson(globalENV);
         //I can't get this to work
