@@ -13,9 +13,7 @@ import cmput301exchange.exchange.Interfaces.Observer;
 
 
 /**
- * code written by joshua2ua on github:
- * https://github.com/kstem/AndroidElasticSearch/blob/master/app/src/main/java/ca/ualberta/ssrg/movies/Movies.java
- * Modified by kstember on 11/4/15.
+ * by kstember on 11/4/15.
  */
 public class Photo extends Observable {
     private volatile ArrayList<Observer> observers = new ArrayList<Observer>();
@@ -58,7 +56,8 @@ public class Photo extends Observable {
 */
     public Photo() {}
 
-
+// code below written by joshua2ua on github 
+// https://github.com/joshua2ua/lonelyTwitter
     //@Override
     public void addObserver(Observer o) {
         observers.add(o);
