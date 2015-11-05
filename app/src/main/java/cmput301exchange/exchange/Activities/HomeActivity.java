@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         // TODO pass through intent the current user's profile
         if (id == R.id.action_view_profile) {
-            Intent intent = new Intent(this, ViewPersonActivity.class);
+            Intent intent = new Intent(this, ProfileDetailsActivity.class);
             startActivity(intent);
         }
         if (id == R.id.action_edit_profile) {
