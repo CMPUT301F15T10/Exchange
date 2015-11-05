@@ -9,7 +9,7 @@
     <SearchView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/searchView"
+        android:id="@+id/TL_searchView"
         android:layout_alignParentTop="true" />
 
     <View
@@ -17,7 +17,7 @@
         android:layout_height="1dp"
         android:background="@android:color/black"
         android:id="@+id/view"
-        android:layout_alignBottom="@+id/searchView"
+        android:layout_alignBottom="@+id/TL_searchView"
         android:layout_alignParentStart="true" />
 
     <View
@@ -45,7 +45,7 @@
     <Spinner
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner2"
+        android:id="@+id/TL_view"
         android:layout_alignBottom="@+id/view2"
         android:layout_alignTop="@+id/view"
         android:layout_alignParentLeft="true"
@@ -54,7 +54,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:id="@+id/TL_itemList"
         android:layout_below="@+id/view2"
         android:layout_centerHorizontal="true" />
 

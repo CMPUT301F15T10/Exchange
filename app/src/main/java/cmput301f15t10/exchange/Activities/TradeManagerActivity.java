@@ -1,71 +1,119 @@
 package cmput301f15t10.exchange.Activities;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import cmput301f15t10.exchange.Fragments.EditItemCommentFragment;
+import cmput301f15t10.exchange.Fragments.EditItemFragment;
+import cmput301f15t10.exchange.Fragments.ItemsTradeFragment;
+import cmput301f15t10.exchange.Fragments.TradeFragment;
+import cmput301f15t10.exchange.Fragments.TradeListFragment;
+import cmput301f15t10.exchange.Fragments.TradeManagerFragment;
 import cmput301f15t10.exchange.R;
+import cmput301f15t10.exchange.Trade;
+import cmput301f15t10.exchange.TradeManager;
+
 public class TradeManagerActivity extends AppCompatActivity {
+    private FragmentManager fm;
+    private FragmentTransaction fm_T;
+    private TradeFragment myTradeFragment;
+    private TradeListFragment myTradeListFragment;
+    private ItemsTradeFragment myItemsTradeFragment;
+    private TradeManagerFragment myTradeManagerFragment;
+    private TradeManager myTradeManager;
+    private Trade myTrade;
+    private int fragmentLayoutID=R.id.tradeManager_fragmentLayout, tradeListFlag=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trade_manager);
+        myTradeManager= new TradeManager();
+        initFragments();
+        switchFragment(1);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_trade_manager, menu);
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    //TODO
+    public void initFragments(){
+        fm=getFragmentManager();
+        fm_T=fm.beginTransaction();
+        myTradeFragment = new TradeFragment();
+        myTradeListFragment = new TradeListFragment();
+        myItemsTradeFragment= new ItemsTradeFragment();
+        myTradeManagerFragment= new TradeManagerFragment();
+        // Put here code for initializing photo view/edit fragment
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void switchFragment(int flag){
+        fm_T=fm.beginTransaction();
+
+        if (flag==1){
+            fm_T.replace(fragmentLayoutID,myTradeManagerFragment);
+        }
+        if (flag==2){
+            fm_T.replace(fragmentLayoutID,myTradeFragment);
+        }
+        if (flag==3){
+            fm_T.replace(fragmentLayoutID,myTradeListFragment);
+        }
+        if (flag==4){
+            fm_T.replace(fragmentLayoutID,myItemsTradeFragment);
         }
 
-        return super.onOptionsItemSelected(item);
+        fm_T.addToBackStack(null);
+        fm_T.commit();
     }
 
-    public void CheckRequest_Handler(){
-
+    //TODO
+    public void displayCurrentTrades(){
+        // Set TradeListFragment for displaying current trades
+        switchFragment(3);
     }
 
-    public void MakeTrade_Handler(){
-
+    //TODO
+    public void displayPastTrades(){
+        // // Set TradeListFragment for displaying past trades
+        switchFragment(3);
     }
 
-    public void CurrentTrade_Handler(){
-
+    public void makeTrade(){
+        myTrade=null;
+        switchFragment(2);
     }
 
-    public void PastTrade_Handler(){
-
+    //TODO
+    public void displayTradeRequests(){
+        // Set ItemsTradeFragment for displaying current trades
+        switchFragment(2);
     }
 
-    public void onCheckRequest(View view) {
-        CheckRequest_Handler();
+    public void displayItemsToTrade(Trade trade){
+        myTrade=trade;
+        switchFragment(4);
     }
 
-    public void onMakeTrade(View view) {
-        MakeTrade_Handler();
+    public TradeManager getTradeManager(){
+        return myTradeManager;
     }
 
-    public void onCurrentTrade(View view) {
-        CurrentTrade_Handler();
+    //TODO
+    public void closeFragment(int fragmentID){
+        //Code for switching back to other activity that also depends on the calling fragment
     }
 
-    public void onPastTrade(View view) {
-        PastTrade_Handler();
+    public Trade getTrade(){
+        return myTrade;
     }
+
 }

@@ -16,7 +16,7 @@ public class TradeItemsInventoryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_trade__items_inventory, menu);
+        getMenuInflater().inflate(R.menu.menu_trade_items_inventory, menu);
         return true;
     }
 

@@ -27,7 +27,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Add More"
-        android:id="@+id/button15"
+        android:id="@+id/IT_myAddItem"
         android:layout_marginLeft="200dp"
         android:layout_marginTop="40dp"
         android:textSize="20dp" />
@@ -35,15 +35,15 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="170dp"
-        android:id="@+id/listView4"
-        android:layout_below="@+id/button15" />
+        android:id="@+id/IT_myItems"
+        android:layout_below="@+id/IT_myAddItem" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/black"
         android:id="@+id/view"
-        android:layout_alignEnd="@+id/button16"
+        android:layout_alignEnd="@+id/IT_friendAddItem"
         android:layout_marginTop="265dp" />
 
     <View
@@ -57,7 +57,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="160dp"
-        android:id="@+id/listView5"
+        android:id="@+id/IT_friendItems"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
@@ -74,7 +74,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Add More"
-        android:id="@+id/button16"
+        android:id="@+id/IT_friendAddItem"
         android:textSize="20dp"
         android:layout_marginTop="267dp"
         android:layout_marginLeft="200dp" />

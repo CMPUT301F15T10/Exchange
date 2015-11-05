@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import cmput301f15t10.exchange.Activities.Main;
 import cmput301f15t10.exchange.Controllers.EditItemController;
+import cmput301f15t10.exchange.Interfaces.Observer;
 import cmput301f15t10.exchange.Item;
 import cmput301f15t10.exchange.Others.CharSequenceWrapper;
 import cmput301f15t10.exchange.R;

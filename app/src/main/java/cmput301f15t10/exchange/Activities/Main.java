@@ -20,7 +20,7 @@ public class Main extends AppCompatActivity {
     private Fragment ItemEdit, CommentEdit, Photo;
     private FragmentManager fm;
     private FragmentTransaction fm_T;
-    private int fragmentLayoutID=R.id.fragmentR;
+    private int fragmentLayoutID=R.id.EditItem_fragmentLayout;
     private Item myItem;
 
     @Override

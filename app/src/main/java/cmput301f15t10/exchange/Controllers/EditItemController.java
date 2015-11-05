@@ -32,6 +32,9 @@ public class EditItemController {
     }
     public void updateQuality(String Quality){
         Double Quality_D=Double.parseDouble(Quality);
+        if (Quality_D>5){
+
+        }
         Quality_D=Quality_D*10;
         Long Quality_L=Math.round(Quality_D);
         Quality_D=Quality_L.doubleValue()/10;
