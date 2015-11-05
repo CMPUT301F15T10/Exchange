@@ -1,15 +1,14 @@
 package cmput301exchange.exchange.Activities;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import cmput301exchange.exchange.R;
 
-public class PhotoActivity extends ActionBarActivity {
+public class PhotoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class PhotoActivity extends ActionBarActivity {
         deletePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // call to deletePhoto in Photocontroller
+                // call to deletePhoto in PhotoController
             }
         });
 
