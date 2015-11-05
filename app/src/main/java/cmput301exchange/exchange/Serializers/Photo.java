@@ -1,6 +1,10 @@
 package cmput301exchange.exchange.Serializers;
 
 
+import android.graphics.Bitmap;
+import android.view.View;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -16,20 +20,42 @@ import cmput301exchange.exchange.Interfaces.Observer;
 public class Photo extends Observable {
     private volatile ArrayList<Observer> observers = new ArrayList<Observer>();
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/testing/";
-   
 
-    //private static final String SEARCH_URL = "http://cmput301.softwareprocess.es:8080/testing/movie/_search";
-  //  public String image = Ti.Filesystem.getFile('Exchange/app/src/main/res/drawable/testPhoto.png');
 
-    public int photoSize(Photo photo){
-        //int size = getByteCount();
-        /*if (image.size() <= MAX_SIZE) {
-            alert( image.size );
-        }
-        return size; */
-        return 128;
+   // influenced by: http://www.mkyong.com/java/how-to-get-file-size-in-java/
+    // TODO: adapt to get size pf user's photo
+    public double photoSize(Photo photo){
+        File pic = new File("/cshome/kstember/Desktop/testButton.jpg");
+        // note this only works on my computer in CSC.
+        File pic2 = new File("/Exchange/app/src/main/res/drawable/testPhoto.jpg");
+        // hopefully works on all computers with 'testPhoto.jpg' in drawable folder
+        double bytes = 0;
+        if(pic.exists()) {
+            // bytes = photo.length() once we get there
+            bytes = pic.length();
+        } // else { throw an error}
+        return bytes;
     }
 
+
+    // code written by github user Santiago
+    //http://stackoverflow.com/questions/31978299/how-to-covert-image-view-into-bitmap-in-android-studio
+       /* public static Bitmap getScreenViewBitmap(View v) {
+            v.setDrawingCacheEnabled(true);
+
+            // this is the important code :)
+            // Without it the view will have a dimension of 0,0 and the bitmap will be null
+            v.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+
+            v.buildDrawingCache(true);
+            Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+            v.setDrawingCacheEnabled(false); // clear drawing cache
+
+            return b;
+        }
+*/
     public Photo() {}
 
 
