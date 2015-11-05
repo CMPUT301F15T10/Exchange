@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import cmput301exchange.exchange.EditProfile;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.ViewPerson;
 
@@ -48,6 +49,15 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        // TODO pass through intent the current user's profile
+        if (id == R.id.action_view_profile) {
+            Intent intent = new Intent(this, ViewPersonActivity.class);
+            startActivity(intent);
+        }
+        if (id == R.id.action_edit_profile) {
+            Intent intent = new Intent(this, EditProfileActivity.class);
+            startActivity(intent);
+        }
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, ConfigurationActivity.class);
             startActivity(intent);

@@ -2,6 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cmput301f15t10.exchange.HomeActivity">
+
+    <item android:id="@+id/action_view_profile" android:title="View Profile"
+        android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_edit_profile" android:title="Edit Profile"
+        android:orderInCategory="200" app:showAsAction="never" />
+
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
