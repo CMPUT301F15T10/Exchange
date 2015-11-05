@@ -32,7 +32,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:layout_alignTop="@+id/UserName"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:inputType="textPersonName" />
 
     <Button
         android:layout_width="150dp"

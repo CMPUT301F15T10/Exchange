@@ -7,14 +7,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
+
+import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.ViewPerson;
 
 public class HomeActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_home);
     }
 

@@ -11,19 +11,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 
 
 public class InventoryActivity extends AppCompatActivity {
 
     private ListView lv;
+    public ModelEnvironment globalENV = new ModelEnvironment();
+    public Gson gson = new Gson();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
@@ -32,6 +38,8 @@ public class InventoryActivity extends AppCompatActivity {
         List<String> person_list = new ArrayList<String>();
         person_list.add("Item1");
         person_list.add("Item2");
+
+
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,

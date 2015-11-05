@@ -108,5 +108,8 @@ public abstract class Person {
         this.email = email;
     }
 
+    public String toString(){
+        return this.name;
+    }
 
 }

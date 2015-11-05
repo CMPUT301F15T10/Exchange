@@ -3,21 +3,31 @@
 package cmput301exchange.exchange.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.w3c.dom.Text;
 
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 
 public class Login extends Activity {
-
+    public EditText username;
+    private ModelEnvironment globalENV = new ModelEnvironment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        username = (EditText) findViewById(R.id.editText);
 
 
         /*
@@ -31,7 +41,9 @@ public class Login extends Activity {
         */
     }
 
-    public void login(View view) {
+    public void login(View  view) {
+
+        globalENV.setOwner(username.getText().toString());
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
 }
