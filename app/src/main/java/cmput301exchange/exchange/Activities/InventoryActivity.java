@@ -17,9 +17,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.User;
 
 
 public class InventoryActivity extends AppCompatActivity {
@@ -37,21 +39,22 @@ public class InventoryActivity extends AppCompatActivity {
 ////        ArrayList<ModelEnvironment> LoadArray = io.loadFromFile();
 ////        globalENV = LoadArray.get(0);
 //        globalENV = (ModelEnvironment) io.loadFromFile().get(0);
+        String json = getIntent().getStringExtra("User");
+        Gson gson = new Gson();
+        User InventoryOwner = gson.fromJson(json, User.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
         lv = (ListView) findViewById(R.id.listView3);
 
-        List<String> person_list = new ArrayList<String>();
-        person_list.add("Item1");
-        person_list.add("Item2");
+//        List<String> person_list = new ArrayList<String>();
+//        person_list.add("Item1");
+//        person_list.add("Item2");
 
 
+        List<Book> bookList = InventoryOwner.getMyInventory().getInventoryList();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                person_list );
+        ArrayAdapter<Book> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bookList );
 
         lv.setAdapter(arrayAdapter);
 

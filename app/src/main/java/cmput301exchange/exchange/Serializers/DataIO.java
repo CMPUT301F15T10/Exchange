@@ -115,6 +115,7 @@ public class DataIO<DataClass> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public ModelEnvironment loadEnvironment(String filename){
+        //removed the needless mental acrobatics needed to use the above.
         ModelEnvironment DataEnviro;
         try {
             FileInputStream fis = context.openFileInput(filename);
@@ -122,7 +123,6 @@ public class DataIO<DataClass> {
             Gson gson = new Gson();
             //Type listType = new TypeToken<DataWrapper<DataClass>>(){}.getType();
             DataEnviro = gson.fromJson(in,ModelEnvironment.class);
-
             //Log.e("From DataIO, type of loadedData", size.toString());
 
         } catch (FileNotFoundException e) {
@@ -134,7 +134,7 @@ public class DataIO<DataClass> {
         return DataEnviro;
     }
     public void saveEnvironment(String filename, ModelEnvironment globalenv){
-
+    //Removed the needless mental acrobatics needed to understand the above.
         try {
             FileOutputStream fos = context.openFileOutput(filename,
                     0);

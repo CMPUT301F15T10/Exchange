@@ -96,4 +96,8 @@ public class Book implements Shareable, Comparable<Book> {
     public String getPublisher() {
         return publisher;
     }
+
+    public String toString(){
+        return "Title: "+this.getName()+"\n"+"Author: "+this.getAuthor();
+    }
 }

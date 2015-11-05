@@ -2,6 +2,7 @@ package cmput301exchange.exchange.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,11 +16,13 @@ import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
+import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
 
 import cmput301exchange.exchange.EditProfile;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.User;
 import cmput301exchange.exchange.ViewPerson;
 
 public class HomeActivity extends AppCompatActivity {
@@ -44,7 +47,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void inventory(View view) {
-        Intent intent = new Intent(this, InventoryActivity.class);
+        User user = GlobalENV.getOwner();
+
+        //Make some new books to fake the data
+        Book book = new Book();
+        Book book1 = new Book();
+        book.updateTitle("Anarchists Cookbook");
+        book.updateAuthor("ljnasjdkjasdf");
+        user.getMyInventory().add(book);
+        book1.updateTitle("How to SMoke DaNk MeMeS BrO");
+        book1.updateAuthor("Xx_JuStIn TrUdEaU_xX");
+        user.getMyInventory().add(book1);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(user);
+
+        Intent intent = new Intent(this, InventoryActivity.class).putExtra("User",json);
         startActivity(intent);
     }
 
