@@ -15,9 +15,7 @@ import cmput301exchange.exchange.Serializers.Photo;
 import cmput301exchange.exchange.Person;
 
 /**
- * code Written by joshua2ua on github:
- * https://github.com/kstem/AndroidElasticSearch/blob/master/app/src/main/java/ca/ualberta/ssrg/movies/MoviesController.java
- * Modified by kstember on 11/4/15.
+ *  by kstember on 11/4/15.
  **/
 public class PhotoController {
     private Gson gson = new Gson();
