@@ -22,12 +22,12 @@ public abstract class Person {
 
 
     public Person(String username) {
-        this.userName =username;
+        this.userName = username;
         myInventory = new Inventory(); //Each user has only one Inventory.
     }
 
     public String getName() {
-        return name;
+        return userName;
     }
 
     public String getLocation() {

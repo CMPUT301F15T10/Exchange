@@ -1,14 +1,19 @@
 package cmput301exchange.exchange.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.gson.Gson;
+
+import org.w3c.dom.Text;
 
 import cmput301exchange.exchange.ModelEnvironment;
 
@@ -20,9 +25,17 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        String json = getIntent().getStringExtra("environment");
+        Gson gson = new Gson();
+        ModelEnvironment globalENV = gson.fromJson(json,ModelEnvironment.class);
+        assert(globalENV != null);
 
         setContentView(R.layout.activity_home);
+
+        Context toastContext = getApplicationContext();
+        Toast toast = new Toast(toastContext);
+
+        toast.makeText(toastContext, globalENV.getOwner().getName(), Toast.LENGTH_LONG).show();
     }
 
     public void inventory(View view) {

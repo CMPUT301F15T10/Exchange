@@ -8,6 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
@@ -20,7 +23,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        username = (EditText) findViewById(R.id.editText);
+        username = (EditText) findViewById(R.id.LoginName);
 
 
         /*
@@ -35,15 +38,18 @@ public class Login extends AppCompatActivity {
     }
 
     public void login(View  view) {
+        Gson gson = new Gson();
         globalENV.setOwner(username.getText().toString());
-        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
-        WriteModel.setFileName("GlobalENV");
-        ArrayList sendenv = new ArrayList();
-        sendenv.add(globalENV);
-        WriteModel.saveInFile(false,sendenv);
+        String json = gson.toJson(globalENV);
+        //I can't get this to work
+//        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
+//        WriteModel.setFileName("GlobalENV");
+//        ArrayList sendenv = new ArrayList();
+//        sendenv.add(globalENV);
+//        WriteModel.saveInFile(false,sendenv);
 
 
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, HomeActivity.class).putExtra("environment",json);
         startActivity(intent);
 }
 

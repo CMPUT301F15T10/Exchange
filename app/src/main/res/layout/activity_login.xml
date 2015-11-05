@@ -19,7 +19,7 @@
     <EditText
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/LoginName"
         android:layout_centerVertical="true"
         android:hint="@string/username"
         android:layout_alignEnd="@+id/AppName"

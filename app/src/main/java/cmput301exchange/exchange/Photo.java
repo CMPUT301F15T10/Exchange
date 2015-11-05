@@ -25,8 +25,8 @@ public class Photo extends Observable {
     public double photoSize(Photo photo){
         File pic = new File("/cshome/kstember/Desktop/testButton.jpg");
         // note this only works on my (kaleb's) computer in CSC.
-        File pic2 = new File("/Exchange/app/src/main/res/drawable/testPhoto.jpg");
-        // hopefully works on all computers with 'testPhoto.jpg' in drawable folder
+        File pic2 = new File("/Exchange/app/src/main/res/drawable/testphoto.jpg");
+        // hopefully works on all computers with 'testphoto.jpg' in drawable folder
         double bytes = 0;
         if(pic.exists()) {
             // bytes = photo.length() once we get there
