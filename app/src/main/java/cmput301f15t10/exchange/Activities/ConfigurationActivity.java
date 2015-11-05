@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 
 import cmput301f15t10.exchange.Controllers.ConfigurationController;
@@ -20,6 +21,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
         chkAutomaticPicDownloads= (CheckBox) findViewById(R.id.AutoDownloadcheckBox);
+        myConfigurationController= new ConfigurationController();
     }
 
     @Override
@@ -48,12 +50,30 @@ public class ConfigurationActivity extends AppCompatActivity {
         confirm_Handler();
     }
 
-    private void confirm_Handler(){
+    public CheckBox getCheckBox_Pic(){
+        return chkAutomaticPicDownloads;
+    }
+
+    public ConfigurationController getController(){
+        return myConfigurationController;
+    }
+
+    public void confirm_Handler(){
         if (chkAutomaticPicDownloads.isChecked()==true){
             myConfigurationController.enableAutoPicDownloads();
         }
         else {
             myConfigurationController.disableAutoPicDownloads();
         }
+        finish();
+    }
+
+    public Button getConfirmButton(){
+        return (Button) findViewById(R.id.C_confirm);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
     }
 }

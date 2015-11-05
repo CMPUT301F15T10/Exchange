@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import cmput301f15t10.exchange.Activities.Main;
 import cmput301f15t10.exchange.Activities.TradeManagerActivity;
 import cmput301f15t10.exchange.Controllers.TradeManagerController;
 import cmput301f15t10.exchange.Others.CharSequenceWrapper;
@@ -42,7 +41,7 @@ public class TradeManagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        myView=inflater.inflate(R.layout.activity_edit_item, container, false);
+        myView=inflater.inflate(R.layout.activity_edit_book, container, false);
         initButtons();
         initTextView();
         return myView;

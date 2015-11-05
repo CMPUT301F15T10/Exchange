@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cmput301f15t10.exchange.Activities.TradeManagerActivity;
-import cmput301f15t10.exchange.Controllers.ItemsTradeController;
+import cmput301f15t10.exchange.Controllers.BooksTradeController;
 import cmput301f15t10.exchange.Controllers.TradeListController;
 import cmput301f15t10.exchange.R;
 import cmput301f15t10.exchange.Trade;
@@ -48,7 +48,7 @@ public class TradeListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myTradeManager=myActivity.getTradeManager();
-        myTradeListController= new TradeListController(myTradeManager);
+        myTradeListController= new TradeListController(myTradeManager,0);
     }
 
 

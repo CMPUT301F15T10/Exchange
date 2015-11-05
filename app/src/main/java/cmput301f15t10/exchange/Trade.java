@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Trade {
     private Long ID, personID;
-    private ArrayList<Item> items = new ArrayList<Item>() ;
+    private ArrayList<Book> myItems = new ArrayList<Book>(), friendItems=new ArrayList<Book>() ;
     private int status;
 
     public Trade(){
@@ -28,16 +28,24 @@ public class Trade {
         return personID;
     }
 
-    public void addItem(Item item){
-        items.add(item);
+    public void addItem(Book item){
+        myItems.add(item);
     }
 
-    public Item getItem(int index){
-        return items.get(index);
+    public Book getItem(int index){
+        return myItems.get(index);
     }
 
     public int getStatus(){
         return status;
+    }
+
+    public ArrayList<Book> getListBookUser(){
+        return myItems;
+    }
+
+    public ArrayList<Book> getListBookPartner(){
+        return friendItems;
     }
 
 }

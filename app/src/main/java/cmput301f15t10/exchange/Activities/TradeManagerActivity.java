@@ -5,11 +5,7 @@ import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
-import cmput301f15t10.exchange.Fragments.EditItemCommentFragment;
-import cmput301f15t10.exchange.Fragments.EditItemFragment;
 import cmput301f15t10.exchange.Fragments.ItemsTradeFragment;
 import cmput301f15t10.exchange.Fragments.TradeFragment;
 import cmput301f15t10.exchange.Fragments.TradeListFragment;

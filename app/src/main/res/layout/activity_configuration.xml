@@ -27,7 +27,7 @@
         android:layout_width="140dp"
         android:layout_height="60dp"
         android:text="Confirm"
-        android:id="@+id/button18"
+        android:id="@+id/C_confirm"
         android:textSize="20dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="false"

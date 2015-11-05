@@ -14,6 +14,7 @@ public class ConfigurationController {
         }
         else {
             // code for saving into the model the boolean variable of autoPicDownloads
+            AutoPictureDownload=true;
             return;
         }
     }
@@ -24,8 +25,13 @@ public class ConfigurationController {
         }
         else {
             // code for saving into the model the boolean variable of autoPicDownloads
+            AutoPictureDownload=false;
             return;
         }
+    }
+
+    public Boolean getPicDownloadState(){
+        return AutoPictureDownload;
     }
 
 }

@@ -24,4 +24,16 @@ public class TradeManager {
     public Integer getTradeRequests_no(){
         return tradeRequests_no;
     }
+
+    public ArrayList<Trade> getTradeRequests(){
+        return tradeRequests;
+    }
+
+    public void acceptTrade(Trade trade){
+
+    }
+
+    public void declineTrade(Trade trade){
+
+    }
 }

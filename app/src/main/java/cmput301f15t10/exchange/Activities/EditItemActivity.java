@@ -4,9 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import cmput301f15t10.exchange.Controllers.EditItemController;
+import cmput301f15t10.exchange.Controllers.EditBookController;
 import cmput301f15t10.exchange.R;
 
 public class EditItemActivity extends AppCompatActivity {
@@ -15,13 +14,13 @@ public class EditItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_edit_item);
+//        setContentView(R.layout.activity_edit_book);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_edit_item, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_book, menu);
         return true;
     }
 

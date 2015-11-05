@@ -10,7 +10,7 @@ public class TradeItemsInventoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade_items_inventory);
+        setContentView(R.layout.activity_trade_books_inventory);
     }
 
     @Override

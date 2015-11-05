@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import cmput301f15t10.exchange.Activities.TradeManagerActivity;
-import cmput301f15t10.exchange.Controllers.ItemsTradeController;
+import cmput301f15t10.exchange.Controllers.BooksTradeController;
 import cmput301f15t10.exchange.Controllers.TradeController;
 import cmput301f15t10.exchange.Item;
 import cmput301f15t10.exchange.Others.CharSequenceWrapper;
@@ -37,7 +37,7 @@ public class ItemsTradeFragment extends Fragment {
     private Trade myTrade;
     private TradeManager myTradeManager;
     private ListView myItemsView,friendItemsView;
-    private ItemsTradeController myItemsTradeController;
+    private BooksTradeController myBooksTradeController;
 
     public ItemsTradeFragment() {
         // Required empty public constructor
@@ -47,7 +47,7 @@ public class ItemsTradeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         initTrade();
         myTradeManager=myActivity.getTradeManager();
-        myItemsTradeController= new ItemsTradeController(myTrade);
+        myBooksTradeController= new BooksTradeController(myTrade);
     }
 
     public void initTrade(){
@@ -98,8 +98,8 @@ public class ItemsTradeFragment extends Fragment {
     }
 
     public void updateAdapters(){
-        myItems=myItemsTradeController.getMyItemList();
-        friendItems=myItemsTradeController.getFriendItemList();
+        myItems=myBooksTradeController.getMyBookList();
+        friendItems=myBooksTradeController.getFriendBookList();
         myItemAdapter.notifyDataSetChanged();
         friendItemAdapter.notifyDataSetChanged();
     }

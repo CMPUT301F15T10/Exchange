@@ -8,45 +8,44 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import cmput301f15t10.exchange.Fragments.EditItemCommentFragment;
-import cmput301f15t10.exchange.Fragments.EditItemFragment;
-import cmput301f15t10.exchange.Item;
+
+import cmput301f15t10.exchange.Fragments.EditBookCommentFragment;
+import cmput301f15t10.exchange.Fragments.EditBookFragment;
+import cmput301f15t10.exchange.Book;
 import cmput301f15t10.exchange.R;
 
 public class Main extends AppCompatActivity {
-    private Fragment ItemEdit, CommentEdit, Photo;
+    private Fragment BookEdit, CommentEdit, Photo;
     private FragmentManager fm;
     private FragmentTransaction fm_T;
     private int fragmentLayoutID=R.id.EditItem_fragmentLayout;
-    private Item myItem;
+    private Book myBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        initItem();
+        initBook();
         if (savedInstanceState == null) {
             initFragments();
-            switchFragment(1); // By default editItemfragment
+            switchFragment(1); // By default editBookfragment
         }
     }
 
     public void initFragments(){
         fm=getFragmentManager();
         fm_T=fm.beginTransaction();
-        ItemEdit = new EditItemFragment();
-        CommentEdit = new EditItemCommentFragment();
+        BookEdit = new EditBookFragment();
+        CommentEdit = new EditBookCommentFragment();
         // Put here code for initializing photo view/edit fragment
     }
 
     public void switchFragment(int flag){
         fm_T=fm.beginTransaction();
         if (flag==1){
-            fm_T.replace(fragmentLayoutID,ItemEdit);
+            fm_T.replace(fragmentLayoutID,BookEdit);
         }
         if (flag==2){
             fm_T.replace(fragmentLayoutID,CommentEdit);
@@ -58,21 +57,21 @@ public class Main extends AppCompatActivity {
         fm_T.commit();
     }
 
-    public Item getItem(){
-        return myItem;
+    public Book getBook(){
+        return myBook;
     }
 
     public void quitFragmentState(){
         getSupportFragmentManager().popBackStack();
     }
 
-    public void initItem(){
-        myItem= new Item();
-        myItem.setName("Harry");
-        myItem.setType("Book");
-        myItem.setQuality(4.832);
-        myItem.setQuantity(19);
-        myItem.setComment("Its good!");
+    public void initBook(){
+        myBook= new Book();
+        myBook.setName("Harry");
+        myBook.setType("Book");
+        myBook.setQuality(4.832);
+        myBook.setQuantity(19);
+        myBook.setComment("Its good!");
     }
 
 }

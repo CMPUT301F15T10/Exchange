@@ -1,10 +1,8 @@
 package cmput301f15t10.exchange.Fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +10,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
 
 import cmput301f15t10.exchange.Activities.Main;
-import cmput301f15t10.exchange.Controllers.EditItemController;
+import cmput301f15t10.exchange.Book;
+import cmput301f15t10.exchange.Controllers.EditBookController;
 import cmput301f15t10.exchange.Item;
 import cmput301f15t10.exchange.Others.CharSequenceWrapper;
 import cmput301f15t10.exchange.R;
 
-public class EditItemFragment extends Fragment {
+public class EditBookFragment extends Fragment {
 
     private Main myActivity;
     private View myView;
-    private EditItemController myEditItemController;
-    private Item myItem;
+    private EditBookController myEditBookController;
+    private Book myBook;
     private EditText Name,Type,Quantity,Quality;
     private CharSequenceWrapper name_text=null, type_text=null, quantity_text=null, quality_text=null;
     private Spinner Category;
     private Button ViewComment,Done,ViewPhoto;
 
-    public EditItemFragment() {
+    public EditBookFragment() {
         // Required empty public constructor
     }
 
@@ -50,37 +48,37 @@ public class EditItemFragment extends Fragment {
         quantity_text.setText(Quantity.getText().toString());
         // add category
 
-        myEditItemController.updateName(name_text.toString());
-        myEditItemController.updateType(type_text.toString());
-        myEditItemController.updateQuantity(quantity_text.toString());
-        myEditItemController.updateQuality(quality_text.toString());
+        myEditBookController.updateName(name_text.toString());
+        myEditBookController.updateType(type_text.toString());
+        myEditBookController.updateQuantity(quantity_text.toString());
+        myEditBookController.updateQuality(quality_text.toString());
         // add category
     }
 
     public void fetchItemInfo(){
 
         if (name_text==null){
-            name_text= new CharSequenceWrapper(myItem.getName());
+            name_text= new CharSequenceWrapper(myBook.getName());
         } else {
-            name_text.setText(myItem.getName());
+            name_text.setText(myBook.getName());
         }
 
         if (type_text==null){
-            type_text= new CharSequenceWrapper(myItem.getType());
+            type_text= new CharSequenceWrapper(myBook.getType());
         } else {
-            type_text.setText(myItem.getType());
+            type_text.setText(myBook.getType());
         }
 
         if (quantity_text==null){
-            quantity_text= new CharSequenceWrapper(myItem.getQuantity_String());
+            quantity_text= new CharSequenceWrapper(myBook.getQuantity_String());
         } else {
-            quantity_text.setText(myItem.getQuantity_String());
+            quantity_text.setText(myBook.getQuantity_String());
         }
 
         if (quality_text==null){
-            quality_text= new CharSequenceWrapper(myItem.getQuality_String());
+            quality_text= new CharSequenceWrapper(myBook.getQuality_String());
         } else {
-            quality_text.setText(myItem.getQuality_String());
+            quality_text.setText(myBook.getQuality_String());
         }
         // Need to add Category
 
@@ -108,7 +106,7 @@ public class EditItemFragment extends Fragment {
 
     public void Save_Handler(){
         pushItemInfo();
-        myItem.saveItem();
+        myBook.saveItem();
         myActivity.quitFragmentState();
     }
 
@@ -127,15 +125,15 @@ public class EditItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myItem=myActivity.getItem();
-        myEditItemController=new EditItemController(myItem);
+        myBook=myActivity.getBook();
+        myEditBookController=new EditBookController(myBook);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        myView=inflater.inflate(R.layout.activity_edit_item, container, false); //might be khj.xml
+        myView=inflater.inflate(R.layout.activity_edit_book, container, false); //might be khj.xml
         setupView();
         initButtons();
         return myView;

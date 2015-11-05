@@ -13,7 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import cmput301f15t10.exchange.Activities.Main;
-import cmput301f15t10.exchange.Controllers.EditItemController;
+import cmput301f15t10.exchange.Book;
+import cmput301f15t10.exchange.Controllers.EditBookController;
 import cmput301f15t10.exchange.Interfaces.Observer;
 import cmput301f15t10.exchange.Item;
 import cmput301f15t10.exchange.Others.CharSequenceWrapper;
@@ -22,32 +23,32 @@ import cmput301f15t10.exchange.R;
 /**
  * Created by touqir on 01/11/15.
  */
-public class EditItemCommentFragment extends Fragment{
+public class EditBookCommentFragment extends Fragment{
 
     private CharSequenceWrapper comment=null;
     private Main myActivity;
     private View myView;
-    private Item myItem;
+    private Book myBook;
     private EditText commentBox;
-    private EditItemController myEditItemController;
+    private EditBookController myEditBookController;
     private Button Done;
 
-    public EditItemCommentFragment() {
+    public EditBookCommentFragment() {
     }
 
     public void update(){
         if (comment==null) {
-            comment = new CharSequenceWrapper(myItem.getComment());
+            comment = new CharSequenceWrapper(myBook.getComment());
         }
         else {
-            comment.setText(myItem.getComment());
+            comment.setText(myBook.getComment());
         }
         commentBox.setText(comment, TextView.BufferType.EDITABLE);
     }
 
     public void Done_Handler(){
 
-        myEditItemController.changeComment(commentBox.getText().toString());
+        myEditBookController.changeComment(commentBox.getText().toString());
         exit();
         // Code for closing the window
     }
@@ -62,14 +63,14 @@ public class EditItemCommentFragment extends Fragment{
     }
 
     public void receiveItem(){
-        myItem=myActivity.getItem();
+        myBook=myActivity.getBook();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         receiveItem();
-        myEditItemController = new EditItemController(myItem); // The item controller can be passed down if this becomes a fragment!
+        myEditBookController = new EditBookController(myBook); // The item controller can be passed down if this becomes a fragment!
     }
 
     @Override
