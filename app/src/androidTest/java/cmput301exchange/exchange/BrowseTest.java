@@ -3,7 +3,7 @@ package cmput301exchange.exchange;
 /**
  * Created by bq on 10/8/2015.
  */
-
+/*
 public class BrowseTest{
     public void testInstantiate(){
         try {

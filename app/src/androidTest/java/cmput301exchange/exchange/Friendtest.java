@@ -1,54 +1,63 @@
 package cmput301exchange.exchange;
 
+import android.app.Application;
+import android.test.ApplicationTestCase;
+
 /**
  * Created by hzhu6 on 10/9/15.
  */
 
-/*
-public class Friendtest {
 
-    public void testInstantiate(){
-        try {
-            Friends friends = new Friends();
-        }catch (Exception e){
-            throw new RuntimeException;
-        }
+public class Friendtest extends ApplicationTestCase<Application> {
+
+
+    public Friendtest(Class<Application> applicationClass) {
+        super(applicationClass);
     }
 
     public void testAdd(){
-        Friends friends = new Friends();
-        assert(friends.size()==0);
-        Person aguy = new Person();
-        aguy.setName=("Test testly");
-        friends.add("Test testly");
-        assert(friends.size()==1);
+        FriendList friends = new FriendList();
+        //assert(friends.getFriendlist().size()==0);
+        assertEquals(friends.getFriendlist().size(), 0);
+        Friend aguy = new Friend("Test testly");
+        friends.addfriend(aguy);
+        //assert(friends.getFriendlist().size()==1);
+        assertEquals(friends.getFriendlist().size(),1);
+        //assert(friends.getFriendlist().get(0).getName()=="Test testly");
+        assertEquals(friends.getFriendlist().get(0).getName(),"Test testly");
 
-        assert(friends.getlist().get(0).getName()=="Test testly");
- 
     }
     public void testRm(){
-        Friends friends = new Friends();
-        assert(friends.size()==0);
-        Person aguy = new Person();
-        aguy.setName=("Test testly");
-        friends.add("Test testly");
-        assert(friends.size()==1);
-        friends.remove("something else");
-        assert(friends.size()==1);
-        friends.remove("Test testly");
-        assert(friends.size()==0);
+        FriendList friends = new FriendList();
+        //assert(friends.getFriendlist().size()==0);
+        assertEquals(friends.getFriendlist().size(),0);
+        Friend aguy = new Friend("Test testly");
+        Friend anotherguy = new Friend("something else");
+        friends.addfriend(aguy);
+        //assert(friends.getFriendlist().size()==1);
+        assertEquals(friends.getFriendlist().size(),1);
+        friends.removefirend(anotherguy);
+        //assert(friends.getFriendlist().size()==1);
+        assertEquals(friends.getFriendlist().size(),1);
+        friends.removefirend(aguy);
+        //assert(friends.getFriendlist().size()==0);
+        assertEquals(friends.getFriendlist().size(),0);
     }
 
     public void testViewP(){
-        Friends friends = new Friends();
-        assert(friends.size()==0);
-        Person aguy = new Person();
-        aguy.setName=("Test testly");
-        aguy.setContactI = "7807807800";
-        aguy.setLocation = "university"
-        friends.add("Test testly");
-        assert(friends.ViewP(aguy.getname())==aguy.getInfo());
+        FriendList friends = new FriendList();
+        assert(friends.getFriendlist().size()==0);
+        Friend aguy = new Friend("Test testly");
+        aguy.setPhoneNumber((long)780780780);
+        aguy.setLocation("University");
+        aguy.setEmail("test@ualebrta.ca");
+        friends.addfriend(aguy);
+        //assert(aguy.getEmail()==friends.getFriendlist().get(0).getEmail());
+        assertEquals(aguy.getEmail(), friends.getFriendlist().get(0).getEmail());
+        //assert(aguy.getLocation()==friends.getFriendlist().get(0).getLocation());
+        assertEquals(aguy.getLocation(), friends.getFriendlist().get(0).getLocation());
+
     }
 }
 
-*/
+
