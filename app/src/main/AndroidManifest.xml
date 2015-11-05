@@ -80,13 +80,15 @@
 
         <activity
             android:name=".Activities.Login"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
              <intent-filter android:label="@string/app_name">
              <action android:name="android.intent.action.MAIN" />
 
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 
@@ -94,5 +96,3 @@
     </application>
 
 </manifest>
-
-

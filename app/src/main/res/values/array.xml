@@ -4,4 +4,12 @@
         <item>Friends</item>
         <item>All People</item>
     </string-array>
+    <string-array name="categories">
+        <item>None</item>
+        <item>Category1</item>
+        <item>Category2</item>
+        <item>Category3</item>
+        <item>Category4</item>
+        <item>Category5</item>
+    </string-array>
 </resources>
