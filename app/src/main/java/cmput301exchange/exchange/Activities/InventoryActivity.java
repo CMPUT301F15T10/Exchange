@@ -23,7 +23,7 @@ import cmput301exchange.exchange.Serializers.DataIO;
 
 
 public class InventoryActivity extends AppCompatActivity {
-
+    //THIS ACTIVITY MUST BE CALLED WITH A GSON STRING CONTAINING THE USER'S INVENTORY YOU WANT TO SEE.
     private ListView lv;
     public ModelEnvironment globalENV = new ModelEnvironment();
     public Gson gson = new Gson();

@@ -19,23 +19,28 @@ import cmput301exchange.exchange.ModelEnvironment;
 
 import cmput301exchange.exchange.EditProfile;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.ViewPerson;
 
 public class HomeActivity extends AppCompatActivity {
+    ModelEnvironment GlobalENV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String json = getIntent().getStringExtra("environment");
-        Gson gson = new Gson();
-        ModelEnvironment globalENV = gson.fromJson(json,ModelEnvironment.class);
-        assert(globalENV != null);
+//        String json = getIntent().getStringExtra("environment");
+//        Gson gson = new Gson();
+//        ModelEnvironment globalENV = gson.fromJson(json,ModelEnvironment.class);
+//        assert(globalENV != null);
+        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+        GlobalENV = io.loadEnvironment("GlobalENV");
+
 
         setContentView(R.layout.activity_home);
 
         Context toastContext = getApplicationContext();
         Toast toast = new Toast(toastContext);
 
-        toast.makeText(toastContext, globalENV.getOwner().getName(), Toast.LENGTH_LONG).show();
+        toast.makeText(toastContext, GlobalENV.getOwner().getName(), Toast.LENGTH_LONG).show();
     }
 
     public void inventory(View view) {

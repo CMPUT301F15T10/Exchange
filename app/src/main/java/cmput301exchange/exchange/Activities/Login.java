@@ -40,7 +40,9 @@ public class Login extends AppCompatActivity {
     public void login(View  view) {
         Gson gson = new Gson();
         globalENV.setOwner(username.getText().toString());
-        String json = gson.toJson(globalENV);
+        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+        io.saveEnvironment("GlobalENV", globalENV);
+//        String json = gson.toJson(globalENV);
         //I can't get this to work
 //        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
 //        WriteModel.setFileName("GlobalENV");
@@ -49,7 +51,7 @@ public class Login extends AppCompatActivity {
 //        WriteModel.saveInFile(false,sendenv);
 
 
-        Intent intent = new Intent(this, HomeActivity.class).putExtra("environment",json);
+        Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
 }
 
