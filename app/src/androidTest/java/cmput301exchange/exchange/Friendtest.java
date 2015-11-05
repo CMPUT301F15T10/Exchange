@@ -4,16 +4,11 @@ package cmput301exchange.exchange;
  * Created by hzhu6 on 10/9/15.
  */
 
-/*
+
 public class Friendtest {
 
     public void testInstantiate(){
-        try {
-            Friends friends = new Friends();
-        }catch (Exception e){
-            throw new RuntimeException;
-        }
-    }
+
 
     public void testAdd(){
         Friends friends = new Friends();
