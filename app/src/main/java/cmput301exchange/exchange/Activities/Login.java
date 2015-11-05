@@ -2,16 +2,17 @@
 
 package cmput301exchange.exchange.Activities;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+
 import cmput301exchange.exchange.R;
 
-public class Login extends Activity {
+public class Login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

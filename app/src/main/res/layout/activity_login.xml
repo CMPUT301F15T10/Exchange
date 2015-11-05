@@ -34,6 +34,5 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="85dp"
         android:onClick="login"/>
-    />
 
 </RelativeLayout>

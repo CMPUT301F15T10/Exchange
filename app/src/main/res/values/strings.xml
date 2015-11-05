@@ -25,7 +25,18 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main">Main</string>
 
+    <!-- Login Strings-->
     <string name="login">Login</string>
     <string name="username">Username</string>
+
+    <!-- Home Strings-->
+    <string name="home_message">What do you feel like doing?</string>
+    <string name="home_inventory">View My Inventory</string>
+    <string name="home_trade">Trade manager</string>
+    <string name="home_people">Browse/Search People</string>
+
+    <!-- Home Menu Strrings-->
+    <string name="home_view_profile">View Profile</string>
+    <string name="home_edit_profile">Edit Profile</string>
 
 </resources>
