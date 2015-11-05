@@ -6,7 +6,17 @@ import java.util.ArrayList;
  * Created by Yishuo Wang on 2015/10/9.
  */
 
-// TO DO send email
+/*
+NOTES:
+- add a list (listTradeRequest) that stores all trades that were offered to the user
+  - for now it goes through all the trades that involve the user as tradePartner
+  - updates listTradeRequest everytime when getListTradeRequest and getListTradeRequest_no are called
+
+- add two functions: getListTradeRequest and getListTradeRequest_no where
+  - getListTradeRequest_no returns the size of listTradeRequest
+ */
+
+// TODO send email
 public class TradeManager {
     /*
     private ArrayList<String> listPastTradeOwner;
@@ -17,6 +27,8 @@ public class TradeManager {
 
     private ArrayList<Trade> listPastTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
+
+    private ArrayList<Trade> listTradeRequest = new ArrayList<>();
 
     private String filePastTrade;
     private String fileCurrentTrade;
@@ -36,10 +48,14 @@ public class TradeManager {
         listCurrentTrade.add(trade);
     }
 
-    public void createTrade(Trade trade) {
-        /*
-         Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, Integer tradeType)
-         */
+    // creates an empty trade and user can user setters to add more details about the trade
+    public Trade createTrade() {
+        Trade trade = new Trade();
+        return trade;
+    }
+
+    public void addTrade(Trade trade) {
+        // Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, Integer tradeType)
         // create a new trade and add it to the listCurrentTrade
         listCurrentTrade.add(trade);
     }
@@ -87,7 +103,7 @@ public class TradeManager {
                 break;
             }
         }
-        // TO DO send notification to the other user
+        // TODO send notification to the other user
     }
 
     public void declineTrade(Trade trade) {
@@ -96,8 +112,10 @@ public class TradeManager {
         int n = listCurrentTrade.size();
         for (i = 0; i < n;i++) {
             if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) && (listCurrentTrade.get(i).getTradeUser().getID() == trade.getTradeUser().getID())) {
-                // remove the trade in listCurrentTrade
+                // remove the trade in listCurrentTrade and add it to the listPastTrade
                 listCurrentTrade.get(i).setTradeStatus(2);
+                listPastTrade.add(listCurrentTrade.get(i));
+                listCurrentTrade.remove(i);
                 break;
             }
         }
@@ -105,7 +123,7 @@ public class TradeManager {
         //   -> swap the User and Borrower and their inventories
     }
 
-    public void counterTrade(Trade trade) {
+    public Trade counterTrade(Trade trade) {
         // swap the role of owner and borrower, edit the trade
         // construct a new trade, and ask user to edit the trade
         Trade tradetemp = new Trade(trade.getTradePartner(), trade.getTradeUser(), 3, 0, trade.getListBookPartner(), trade.getListBookUser(), trade.getTradeId());
@@ -113,15 +131,19 @@ public class TradeManager {
         // update the trade details from listCurrentTrade
         //   to do so, remove the trade and add the new trade in it
         deleteOngoingTrade(trade);
-        createTrade(tradetemp);
+        addOngoingTrade(tradetemp);
+        return tradetemp;
     }
 
-    public void editTrade(Trade trade) {}
+    public void editTrade(Trade trade) {
+        // ask the user to edit the trade details, more like creating a new trade, but gives details
+        //   about the trade and user can click the area on where they want to edit. Call setter
+        //   from Trade class
+    }
 
     public ArrayList<Trade> completeTradeList() {
         int i;
-        // TO DO (???)
-        // return both listCurrentTrade and listPastTrade (???)
+        // TODO return both listCurrentTrade and listPastTrade (???)
         ArrayList<Trade> tempList = new ArrayList<>();
         int n0 = listCurrentTrade.size();
         int n1 = listPastTrade.size();
@@ -219,4 +241,57 @@ public class TradeManager {
     }
 
     public void searchPastTrade() {}
+
+    private void updateListTradeRequest(Person person) {
+        ArrayList<Trade> tempList = new ArrayList<>();
+        int i;
+        int n0 = listCurrentTrade.size();
+        int n1 = listPastTrade.size();
+        // add trades that are offered to the user
+        for (i = 0; i < n0; i++) {
+            if (listCurrentTrade.get(i).getTradePartner().getID() == person.getID()) {
+                tempList.add(listCurrentTrade.get(i));
+            }
+        }
+        // add thades that were offered to the user
+        for (i = 0; i < n1; i++) {
+            if (listPastTrade.get(i).getTradePartner().getID() == person.getID()) {
+                tempList.add(listPastTrade.get(i));
+            }
+        }
+        this.listTradeRequest = tempList;
+    }
+
+    public ArrayList<Trade> getListTradeRequest(Person person) {
+        updateListTradeRequest(person);
+        return listTradeRequest;
+    }
+
+    public Integer getTradeRequest_no(Person person) {
+        updateListTradeRequest(person);
+        return listTradeRequest.size();
+    }
+
+    public Trade searchTrade(Integer id) {
+        // search the trade which involves user via tradeId
+        // as tradeId is a primary key and one tradeId is assigned to one and the only one trade,
+        //   return the trade as soon as we find it
+        // else, return NULL
+        int i;
+        int n0 = listCurrentTrade.size();
+        int n1 = listPastTrade.size();
+        // search through listCurrentTrade
+        for (i = 0; i < n0; i++) {
+            if (listCurrentTrade.get(i).getTradeId() == id) {
+                return listCurrentTrade.get(i);
+            }
+        }
+        // search through listPastTrade
+        for (i = 0; i < n1; i++) {
+            if (listPastTrade.get(i).getTradeId() == id) {
+                return listPastTrade.get(i);
+            }
+        }
+        return null;
+    }
 }
