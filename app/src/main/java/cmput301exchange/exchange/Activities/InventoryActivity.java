@@ -26,6 +26,14 @@ import cmput301exchange.exchange.User;
 
 public class InventoryActivity extends AppCompatActivity {
     //THIS ACTIVITY MUST BE CALLED WITH A GSON STRING CONTAINING THE USER'S INVENTORY YOU WANT TO SEE.
+    /**
+     * ******TO USE THIS ACTIVITY PROPERLY, YOU NEED TO SEND IT A JSON USER OBJECT.*******
+     *
+     * The inventory activity takes the json value of a user object and displays the values in
+     * and Array Adapter.
+     *
+     *
+     */
     private ListView lv;
     public ModelEnvironment globalENV = new ModelEnvironment();
     public Gson gson = new Gson();
