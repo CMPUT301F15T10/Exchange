@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
     package="cmput301exchange.exchange" >
 
     <application
@@ -68,23 +69,28 @@
         <activity
             android:name=".Activities.Main"
             android:label="@string/title_activity_main" >
+
         </activity>
+
+        <activity
+            android:name=".Activities.ProfileDetailsActivity"
+            android:label="Detailed Profile" >
+
+        </activity>
+
         <activity
             android:name=".Activities.Login"
             android:label="@string/title_activity_main" >
-            <intent-filter>
+            <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.MAIN" />
+
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity
-            android:name=".SendEmailActivity"
-            android:label="SendEmail" />
-        <activity
-            android:name=".Activities.PhotoActivity"
-            android:label="@string/title_activity_photo" >
-        </activity>
+
+        <activity android:name=".SendEmailActivity" android:label="SendEmail" />
     </application>
 
 </manifest>
