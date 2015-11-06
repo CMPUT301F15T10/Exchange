@@ -9,18 +9,6 @@ import cmput301exchange.exchange.Interfaces.Shareable;
  * @Author: Charles Laing
  * @version: 1.0.0
  * Book is the object that makes up the inventory class
- * It contains:
- *  Title
- *  Genre
- *  Author
- *  Publisher
- *  Photo
- *  Quality
- *  Quantity
- *  Category
- *  Comment
- *  Shareable?
- *
  * Book book = new Book(){
  *     book.updateTitle("Harry Potter");
  *     book.updateAuthor("J.K Rowling");
