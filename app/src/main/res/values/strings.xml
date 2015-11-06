@@ -45,5 +45,13 @@
 
     <!-- Add Item Activity-->
     <string name="title_activity_add_item">Add Item</string>
+    <string name="item_image">Item Image</string>
+    <string name="category_label">Category:</string>
+    <string name="quantity_hint">Quantity</string>
+    <string name="quality_hint">Quality</string>
+    <string name="type_hint">Type</string>
+    <string name="name_hint">Name</string>
+    <string name="add">Add</string>
+    <string name="comment">Comment</string>
 
 </resources>
