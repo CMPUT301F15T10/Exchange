@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="cmput301f15t10.exchange.HomeActivity">
+    tools:context="cmput301exchange.exchange.HomeActivity">
 
     <item android:id="@+id/action_view_profile" android:title="@string/home_view_profile"
         android:orderInCategory="100" app:showAsAction="never" />

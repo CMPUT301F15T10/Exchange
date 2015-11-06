@@ -10,13 +10,13 @@ public class TradeItemsInventoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade_items_inventory);
+        setContentView(R.layout.activity_trade_books_inventory);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_trade__items_inventory, menu);
+        getMenuInflater().inflate(R.menu.menu_trade_items_inventory, menu);
         return true;
     }
 

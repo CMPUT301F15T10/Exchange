@@ -10,41 +10,42 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import cmput301exchange.exchange.Activities.Main;
-import cmput301exchange.exchange.Controllers.EditItemController;
-import cmput301exchange.exchange.Item;
+import cmput301exchange.exchange.Activities.EditBookActivity;
+import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.EditBookController;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
+import cmput301exchange.exchange.Others.ObjectSaver;
 import cmput301exchange.exchange.R;
 
 /**
  * Created by touqir on 01/11/15.
  */
-public class EditItemCommentFragment extends Fragment{
+public class EditBookCommentFragment extends Fragment{
 
     private CharSequenceWrapper comment=null;
-    private Main myActivity;
+    private EditBookActivity myActivity;
     private View myView;
-    private Item myItem;
+    private Book myBook;
     private EditText commentBox;
-    private EditItemController myEditItemController;
+    private EditBookController myEditBookController;
     private Button Done;
 
-    public EditItemCommentFragment() {
+    public EditBookCommentFragment() {
     }
 
     public void update(){
         if (comment==null) {
-            comment = new CharSequenceWrapper(myItem.getComment());
+            comment = new CharSequenceWrapper(myEditBookController.getComment());
         }
         else {
-            comment.setText(myItem.getComment());
+            comment.setText(myEditBookController.getComment());
         }
         commentBox.setText(comment, TextView.BufferType.EDITABLE);
     }
 
     public void Done_Handler(){
 
-        myEditItemController.changeComment(commentBox.getText().toString());
+        myEditBookController.updateComment(commentBox.getText().toString());
         exit();
         // Code for closing the window
     }
@@ -58,15 +59,10 @@ public class EditItemCommentFragment extends Fragment{
         update();
     }
 
-    public void receiveItem(){
-        myItem=myActivity.getItem();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        receiveItem();
-        myEditItemController = new EditItemController(myItem); // The item controller can be passed down if this becomes a fragment!
+        myEditBookController = myActivity.getController(); // The item controller can be passed down if this becomes a fragment!
     }
 
     @Override
@@ -96,7 +92,7 @@ public class EditItemCommentFragment extends Fragment{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        myActivity = (Main) activity;
+        myActivity = (EditBookActivity) activity;
     }
 
     public void exit(){

@@ -11,24 +11,25 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import cmput301exchange.exchange.Activities.Main;
-import cmput301exchange.exchange.Controllers.EditItemController;
-import cmput301exchange.exchange.Item;
+import cmput301exchange.exchange.Activities.EditBookActivity;
+import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.EditBookController;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
+import cmput301exchange.exchange.Others.ObjectSaver;
 import cmput301exchange.exchange.R;
 
-public class EditItemFragment extends Fragment {
+public class EditBookFragment extends Fragment {
 
-    private Main myActivity;
+    private EditBookActivity myActivity;
     private View myView;
-    private EditItemController myEditItemController;
-    private Item myItem;
+    private EditBookController myEditBookController;
+    private Book myBook;
     private EditText Name,Type,Quantity,Quality;
     private CharSequenceWrapper name_text=null, type_text=null, quantity_text=null, quality_text=null;
     private Spinner Category;
     private Button ViewComment,Done,ViewPhoto;
 
-    public EditItemFragment() {
+    public EditBookFragment() {
         // Required empty public constructor
     }
 
@@ -47,37 +48,37 @@ public class EditItemFragment extends Fragment {
         quantity_text.setText(Quantity.getText().toString());
         // add category
 
-        myEditItemController.updateName(name_text.toString());
-        myEditItemController.updateType(type_text.toString());
-        myEditItemController.updateQuantity(quantity_text.toString());
-        myEditItemController.updateQuality(quality_text.toString());
+        myEditBookController.updateName(name_text.toString());
+        myEditBookController.updateType(type_text.toString());
+        myEditBookController.updateQuantity(quantity_text.toString());
+        myEditBookController.updateQuality(quality_text.toString());
         // add category
     }
 
     public void fetchItemInfo(){
 
         if (name_text==null){
-            name_text= new CharSequenceWrapper(myItem.getName());
+            name_text= new CharSequenceWrapper(myEditBookController.getName());
         } else {
-            name_text.setText(myItem.getName());
+            name_text.setText(myEditBookController.getName());
         }
 
         if (type_text==null){
-            type_text= new CharSequenceWrapper(myItem.getType());
+            type_text= new CharSequenceWrapper(myEditBookController.getType());
         } else {
-            type_text.setText(myItem.getType());
+            type_text.setText(myEditBookController.getType());
         }
 
         if (quantity_text==null){
-            quantity_text= new CharSequenceWrapper(myItem.getQuantity_String());
+            quantity_text= new CharSequenceWrapper(myEditBookController.getQuantity());
         } else {
-            quantity_text.setText(myItem.getQuantity_String());
+            quantity_text.setText(myEditBookController.getQuantity());
         }
 
         if (quality_text==null){
-            quality_text= new CharSequenceWrapper(myItem.getQuality_String());
+            quality_text= new CharSequenceWrapper(myEditBookController.getQuality());
         } else {
-            quality_text.setText(myItem.getQuality_String());
+            quality_text.setText(myEditBookController.getQuality());
         }
         // Need to add Category
 
@@ -105,36 +106,26 @@ public class EditItemFragment extends Fragment {
 
     public void Save_Handler(){
         pushItemInfo();
-        myItem.saveItem();
-        myActivity.quitFragmentState();
-    }
-
-    public void onViewComments(View view) {
-        ViewComments_Handler();
-    }
-
-    public void onClickPhoto(View view) {
-        ClickPhoto_Handler();
-    }
-
-    public void onSave(View view) {
-        Save_Handler();
+        myEditBookController.save();
+        exit();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myItem=myActivity.getItem();
-        myEditItemController=new EditItemController(myItem);
+        myBook=myActivity.getBook();
+        myEditBookController=new EditBookController(myBook);
+        myActivity.setController(myEditBookController);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        myView=inflater.inflate(R.layout.activity_edit_item, container, false); //might be khj.xml
+        myView=inflater.inflate(R.layout.activity_edit_book, container, false); //might be khj.xml
         setupView();
         initButtons();
+//        ObjectSaver.gotThere=true;
         return myView;
     }
 
@@ -143,8 +134,8 @@ public class EditItemFragment extends Fragment {
         Done= (Button) myView.findViewById(R.id.EditItem_Done);
         ViewPhoto= (Button) myView.findViewById(R.id.EditItem_Photo);
 
-        ViewComment.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        ViewComment.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 ViewComments_Handler();
             }
         });
@@ -170,6 +161,20 @@ public class EditItemFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        myActivity = (Main) activity;
+        myActivity = (EditBookActivity) activity;
+    }
+
+    public void resetBook(){
+        myEditBookController.setBook(myActivity.getBook());
+        updateView();
+    }
+
+    public void exit(){
+        myActivity.setBook(myEditBookController.getBook());
+        myActivity.quitFragmentState();
+    }
+
+    public EditBookController getController(){
+        return myEditBookController;
     }
 }

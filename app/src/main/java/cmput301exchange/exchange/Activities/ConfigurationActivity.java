@@ -1,14 +1,79 @@
 package cmput301exchange.exchange.Activities;
 
-import android.preference.PreferenceActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 
+import cmput301exchange.exchange.Controllers.ConfigurationController;
 import cmput301exchange.exchange.R;
 
-public class ConfigurationActivity extends PreferenceActivity {
+public class ConfigurationActivity extends AppCompatActivity {
+
+    private CheckBox chkAutomaticPicDownloads;
+    private ConfigurationController myConfigurationController;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.configuration);
+        setContentView(R.layout.activity_configuration);
+        chkAutomaticPicDownloads= (CheckBox) findViewById(R.id.AutoDownloadcheckBox);
+        myConfigurationController= new ConfigurationController();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_configuration, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void onConfirm(View view) {
+        confirm_Handler();
+    }
+
+    public CheckBox getCheckBox_Pic(){
+        return chkAutomaticPicDownloads;
+    }
+
+    public ConfigurationController getController(){
+        return myConfigurationController;
+    }
+
+    public void confirm_Handler(){
+        if (chkAutomaticPicDownloads.isChecked()==true){
+            myConfigurationController.enableAutoPicDownloads();
+        }
+        else {
+            myConfigurationController.disableAutoPicDownloads();
+        }
+        finish();
+    }
+
+    public Button getConfirmButton(){
+        return (Button) findViewById(R.id.C_confirm);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
     }
 }
