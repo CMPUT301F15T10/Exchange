@@ -80,7 +80,7 @@ public class InventoryActivity extends AppCompatActivity {
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
 
-                List<Book> bookListUpdate = InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList();
+                List<Book> bookListUpdate =  InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList();
                 arrayAdapter.clear();
                 arrayAdapter.addAll(bookListUpdate);
                 arrayAdapter.notifyDataSetChanged();
