@@ -43,7 +43,7 @@ public class EditProfileActivity extends AppCompatActivity {
         location = (EditText)findViewById(R.id.editLocation);
 
         name.setText(user.getName());
-        // phone.setText(Long.toString(user.getPhoneNumber())); will need to check if long!=NULL
+        phone.setText(user.getPhoneNumber());
         email.setText(user.getEmail());
         location.setText(user.getLocation());
     }
@@ -51,12 +51,12 @@ public class EditProfileActivity extends AppCompatActivity {
     public void done(View view){
 
         String profileName = name.getText().toString();
-        // String profilePhone = phone.getText().toString();
+        String profilePhone = phone.getText().toString();
         String profileEmail = email.getText().toString();
         String profileLocation = location.getText().toString();
 
         user.setName(profileName);
-        // user.setPhoneNumber(profilePhone);
+        user.setPhoneNumber(profilePhone);
         user.setEmail(profileEmail);
         user.setLocation(profileLocation);
 

@@ -11,7 +11,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import cmput301exchange.exchange.Serializers.Photo;
+import cmput301exchange.exchange.Photo;
 import cmput301exchange.exchange.Person;
 
 /**

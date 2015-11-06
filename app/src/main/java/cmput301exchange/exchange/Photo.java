@@ -1,5 +1,4 @@
-package cmput301exchange.exchange.Serializers;
-
+package cmput301exchange.exchange;
 
 import android.graphics.Bitmap;
 import android.view.View;

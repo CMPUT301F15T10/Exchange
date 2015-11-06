@@ -31,6 +31,16 @@ public class Book implements Shareable, Comparable<Book> {
     private String category; //Some ~10 values
     private String comment; //Arbitrary string
     private boolean sharable = false; //Default items to false.
+    private String itemType;
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
+
     /**
      * Returns a Boolean representing if the book is shareable or not.
      *
@@ -38,6 +48,7 @@ public class Book implements Shareable, Comparable<Book> {
     public boolean isShareable(){
 
         return this.sharable;
+
     }
     /**
      * Used to set the value of whether the book is shareable or not.

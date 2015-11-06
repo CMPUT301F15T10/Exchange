@@ -15,7 +15,7 @@ public class Person {
     private String location;
     private int ID;
     private Picture myPicture;
-    private Long phoneNumber;
+    private String phoneNumber;
     private String userName;
     private Inventory myInventory;
     private String email;
@@ -45,7 +45,7 @@ public class Person {
         return myPicture;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -103,7 +103,7 @@ public class Person {
         this.myPicture = myPicture;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
