@@ -28,6 +28,12 @@ import cmput301exchange.exchange.R;
 // I have also used http://stackoverflow.com/questions/3403909/get-generic-type-of-class-at-runtime for getting class of generic types.
 
 public class DataIO<DataClass> {
+    /**
+     * @author Touqir, Chuck
+     *
+     * Used for writing and saving data to the disk. Should contain type-safe methods in the future.
+     *
+     */
 
     private Context context;
     private String FILENAME=null;
@@ -48,6 +54,13 @@ public class DataIO<DataClass> {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public ArrayList<DataClass> loadFromFile(){
+        /**
+         * @deprecated
+         * Type Correct implementation of load from file, Might work for other classes, but for
+         * our use so far, there are issues
+         *
+         * Loads the required arraylist from a file after having filename set by setFileName
+         */
 
         if (FILENAME==null){
             throw new RuntimeException("For loading file from DataIO class, filename has not been provided.");
@@ -76,6 +89,14 @@ public class DataIO<DataClass> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void saveInFile(boolean isLoadFromFile,ArrayList<DataClass> dataToSave) {
+        /**
+         * saves the required arraylist to a file of the name that has been set by setFileName
+         *
+         * @param isLoadFromFile boolean describing whether the file has previously been saved
+         * @param datatosave an ArrayList of the data that you wish to save
+         *
+         *
+         */
 
         ArrayList<DataClass> toWrite;
         if (isLoadFromFile==true) {
@@ -109,12 +130,19 @@ public class DataIO<DataClass> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void deleteData(){
+        /**
+         * Overwrites the save data at saveFileName()
+         */
         saveInFile(false,new ArrayList<DataClass>());
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public ModelEnvironment loadEnvironment(String filename){
+        /**
+         * Updated, loads the ModelEnvironment. Only for this class, no others.
+         * @param filename the name of where the file is stored.
+         */
         //removed the needless mental acrobatics needed to use the above.
         ModelEnvironment DataEnviro;
         try {
@@ -134,6 +162,12 @@ public class DataIO<DataClass> {
         return DataEnviro;
     }
     public void saveEnvironment(String filename, ModelEnvironment globalenv){
+        /**
+         * saves the given ModelEnvironment to a file
+         *
+         * @param filename the save location
+         * @param globalenv the ModelEnvironment you wish to save
+         */
     //Removed the needless mental acrobatics needed to understand the above.
         try {
             FileOutputStream fos = context.openFileOutput(filename,

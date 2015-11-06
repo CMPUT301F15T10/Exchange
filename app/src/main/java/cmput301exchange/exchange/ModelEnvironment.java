@@ -13,10 +13,16 @@ public class ModelEnvironment {
     private User owner;
 
     public User getOwner() {
+        /**
+         * Returns the user that is stored as the "main" user of the app
+         */
         return owner;
     }
 
     public void setOwner(String username) {
+        /**
+         * Sets the main owner of the application
+         */
         owner = new User(username);
     }
 

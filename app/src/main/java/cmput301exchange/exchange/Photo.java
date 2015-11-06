@@ -16,6 +16,10 @@ import cmput301exchange.exchange.Interfaces.Observer;
  * by kstember on 11/4/15.
  */
 public class Photo extends Observable {
+    /**
+     * @author Kaleb
+     * Represents a photo that is attached to each item
+     */
     private volatile ArrayList<Observer> observers = new ArrayList<Observer>();
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/testing/";
 
@@ -23,6 +27,10 @@ public class Photo extends Observable {
    // influenced by: http://www.mkyong.com/java/how-to-get-file-size-in-java/
     // TODO: adapt to get size pf user's photo
     public double photoSize(Photo photo){
+        /**
+         * Returns the size of a user's photo
+         * @param photo a photo object
+         */
         File pic = new File("/cshome/kstember/Desktop/testButton.jpg");
         // note this only works on my (kaleb's) computer in CSC.
         File pic2 = new File("/Exchange/app/src/main/res/drawable/testphoto.jpg");

@@ -55,6 +55,7 @@ public class Book implements Shareable, Comparable<Book> {
     public void setShareable(boolean setValue){
         /**
          * Used to set the value of whether the book is shareable or not.
+         * @param setValue the value of shareable you want to set.
          */
         this.sharable = setValue;
     }
@@ -62,6 +63,7 @@ public class Book implements Shareable, Comparable<Book> {
     public void updateTitle(String title){
         /**
          * Updates the title of the Book. Accepts a String Object.
+         * @param title The title you want to update
          */
         this.bookName = title;
 
@@ -70,13 +72,15 @@ public class Book implements Shareable, Comparable<Book> {
     public void updateAuthor(String author){
         /**
          * Updates the stored Author. Accepts a String Object.
+         * @param author The author you want to append to the book.
          */
         this.author = author;
     }
 
     public String getName(){
         /**
-         * Updates the Name of the Book. Accepts a String Object.
+         * Updates the Name of the Book. returns a String Object.
+         *
          */
         return this.bookName;
     }
@@ -84,6 +88,7 @@ public class Book implements Shareable, Comparable<Book> {
     public int compareTo(Book book){
         /**
          * Implementation of CompareTo, used for Shareable. This method compares two books together by Title.
+         * @param book the book you need to compare this to.
          */
         return bookName.compareTo(book.getName());
     } //Method is used for searching, and searchable, and comparable.
@@ -91,6 +96,7 @@ public class Book implements Shareable, Comparable<Book> {
     public void setQuality(int setCondition){
         /**
          * Sets the Quality of the Book on a scale of 1-5. Accepts an int.
+         * @param setCondition an integer value representing the quality of the item
          */
         //We have to ensure that the value of the condition never exceeds a certain value
         if (setCondition > 5){
@@ -107,6 +113,7 @@ public class Book implements Shareable, Comparable<Book> {
     public int getQuality(){
         /**
          * Returns the Stored Quality value as an int
+         *
          */
         return this.quality;
     } //Returns the Quality Integer
@@ -115,6 +122,7 @@ public class Book implements Shareable, Comparable<Book> {
         /**
          * Updates the Category of the book to an Arbitrary String.
          * The 10 Categories rule is imposed by the design of the Sorting, adding, and Browsing pages.
+         * @param updatedcat the new category to assign to the item
          */
         this.category = updatedcat;
     }
@@ -129,6 +137,7 @@ public class Book implements Shareable, Comparable<Book> {
     public void updateQuantity(int updateint){
         /**
          * Updates the Quantity. Accepts and int.
+         * @param updateint Quantity that you want to append to the book
          */
         this.quantity = updateint;
     }
@@ -150,6 +159,7 @@ public class Book implements Shareable, Comparable<Book> {
     public void updateComment(String comment) {
         /**
          * Accepts a string and updates the comment.
+         * @param comment the comment that you want to append to the book.
          */
         this.comment = comment;
     }

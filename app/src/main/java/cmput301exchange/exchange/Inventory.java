@@ -9,6 +9,10 @@ import java.util.ArrayList;
  * Created by Charles on 11/2/2015.
  */
 public class Inventory{
+    /**
+     * Stores an inventory for a person
+     * Allows storing books and attributing them to users.
+     */
     private User inventoryOwner;
     private ArrayList<Book> inventoryList = new ArrayList<>();
 
@@ -17,6 +21,12 @@ public class Inventory{
     public boolean isShareable(){return shareable;}
 
     public Book Search(String searchString){
+        /**
+         * @deprecated
+         * allows searching of the inventory for a query string
+         * returns a book object if the item is found. Return null if the item is not.
+         * @param searchString the string that you wish to search for.
+         */
         //If search returns a Null, then the object is not in the list.
         Book foundBook = null;
         for (Book iterator : inventoryList){
@@ -36,6 +46,9 @@ public class Inventory{
     }
 
     public ArrayList<Book> getInventoryList() {
+        /**
+         * Getter for the inventory
+         */
         return inventoryList;
     }
 
@@ -45,7 +58,12 @@ public class Inventory{
 
     public boolean contains(Book book){return this.inventoryList.contains(book);}
 
-    public Inventory searchByCategory(String cat){//creat a new inventory and put all the result in it and return it
+    public Inventory searchByCategory(String cat){
+        /**
+         * Searches inventory by category
+         * returns subinventory of items in that category.
+         * @param cat category you are searching for
+         */
         Inventory result = new Inventory();
         int n = inventoryList.size();
         for (int i = 0; i < n; i++) {
@@ -55,7 +73,13 @@ public class Inventory{
         }
         return result;
     }
-    public Inventory searchByText(String query){//creat a new inventory and put all the result in it and return it
+    public Inventory searchByText(String query){
+        /**
+         * Second method for searching for a string. this is a better version than above. It searches
+         * for partial strings as well as in ALL fields.
+         *
+         * @param query The string you wish to search all fields for.
+         */
         Inventory result = new Inventory();
         int n = inventoryList.size();
         for (int i = 0; i < n; i++) {

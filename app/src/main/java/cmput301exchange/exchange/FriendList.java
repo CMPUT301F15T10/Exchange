@@ -8,9 +8,17 @@ import java.util.Collections;
  * Created by bq on 10/31/15.
  */
 public class FriendList{
+    /**
+     * @author Baihong
+     * Stores a list of friends
+     *
+     */
     private ArrayList<Person> friendlist;
 
     public ArrayList<Person> getFriendlist() {
+        /**
+         * Returns a List of Friends.
+         */
         return friendlist;
     }
 
@@ -18,6 +26,10 @@ public class FriendList{
 
     }
     public ArrayList<Person> searchfriend(String query){
+        /**
+         * Searches a friendslist for a string
+         * @param query the string that you wish to search for.
+         */
         ArrayList<Person> results= new ArrayList<Person>();
         int n = friendlist.size();
         if(n==0){
@@ -33,9 +45,17 @@ public class FriendList{
         return results;
     }
     public void addfriend(Person aperson){
+        /**
+         * Adds a friend
+         * @param aperson the person you wish to add.
+         */
         friendlist.add(aperson);
     }
     public void removefirend(Person aperson){
+        /**
+         * Removes a friend
+         * @param aperson the person you wish to remove from the friendslist
+         */
         int n = friendlist.size();
         if(n==0){
             return;

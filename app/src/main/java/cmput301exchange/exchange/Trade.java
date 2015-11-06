@@ -16,6 +16,9 @@ NOTES:
 */
 
 public class Trade {
+    /**
+     * Represents a trade object. Makes up the basis for the trademanager
+     */
     private Person tradeUser; // the one that offer trades to their friends
     private Person tradePartner; // the one that receive trades from their friends
     private Integer tradeStatus; // 0 -> ongoing trades, not accepted by the other user yet;
@@ -35,6 +38,13 @@ public class Trade {
         this.tradeId = rand.nextInt(8999);
     }
     public Trade(Person tradeUser, Person tradePartner, ArrayList<Book> listBookUser, ArrayList<Book> listBookPartner) {
+        /**
+         * Constructor of the trade
+         * @param tradeUser the user that initates the trade
+         * @param tradePartner the Partner that you are sending the trade to
+         * @param listBookUser List of the books the User is offering
+         * @param listbookPartner List of books the partner is offering
+         */
         this.tradeUser = tradeUser;
         this.tradePartner = tradePartner;
         this.listBookUser = listBookUser;
