@@ -67,15 +67,6 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
 
     public void testPicStateChange(){
 
-//        final EditText Name=(EditText) editBook.getView().findViewById(R.id.EditItem_NameInput);
-//        final EditText Type=(EditText) editBook.getView().findViewById(R.id.EditItem_TypeInput);
-//        final EditText Quality=(EditText) editBook.getView().findViewById(R.id.EditItem_QualityInput);
-//        final EditText Quantity=(EditText) editBook.getView().findViewById(R.id.EditItem_QuantityInput);
-//        final Button viewComment=(Button) editBook.getView().findViewById(R.id.EditItem_ViewComments);
-//        final Button save=(Button) editBook.getView().findViewById(R.id.EditItem_Done);
-//        final Button photo=(Button) editBook.getView().findViewById(R.id.EditItem_Photo);
-//        final EditBookController controller=editBook.getController();
-
         activity.setBook(myBook);
 
         getInstrumentation().runOnMainSync(new Runnable() {
@@ -127,7 +118,7 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 Quantity.setText(new CharSequenceWrapper(newQuantity.toString()));
 
                 //Test whether the data fed into the editText is displayed properly
-//                assertEquals(Name.getText().toString(), newName);
+
                 assertEquals(editBook.Name.getText().toString(), newName);
                 assertEquals(Type.getText().toString(), newType);
                 assertEquals(Quality.getText().toString(), newQuality.toString());
@@ -146,14 +137,6 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
             }
         });
 
-//        editComment=activity.getEditCommentFragment();
-//        final EditText Comment=(EditText) editComment.getView().findViewById(R.id.Comment);
-//        getInstrumentation().runOnMainSync(new Runnable() {
-//            @Override
-//            public void run() {
-//                assertEquals(Comment.getText().toString(), myBook.getComment());
-//            }
-//        });
     }
 
 

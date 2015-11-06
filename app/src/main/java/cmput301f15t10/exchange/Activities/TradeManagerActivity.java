@@ -67,8 +67,9 @@ public class TradeManagerActivity extends AppCompatActivity {
             fm_T.replace(fragmentLayoutID,myItemsTradeFragment);
         }
 
-        fm_T.addToBackStack(null);
+//        fm_T.addToBackStack(null);
         fm_T.commit();
+        fm.executePendingTransactions();
     }
 
     //TODO
@@ -110,6 +111,22 @@ public class TradeManagerActivity extends AppCompatActivity {
 
     public Trade getTrade(){
         return myTrade;
+    }
+
+    public TradeManagerFragment getTradeManagerFragment(){
+        return myTradeManagerFragment;
+    }
+
+    public TradeFragment getTradeFragment(){
+        return myTradeFragment;
+    }
+
+    public TradeListFragment getTradeListingFragment(){
+        return myTradeListFragment;
+    }
+
+    public ItemsTradeFragment getItemsTradeFragment(){
+        return myItemsTradeFragment;
     }
 
 }

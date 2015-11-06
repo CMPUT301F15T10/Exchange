@@ -24,7 +24,7 @@ public class EditBookFragment extends Fragment {
     private View myView;
     private EditBookController myEditBookController;
     private Book myBook;
-    public EditText Name,Type,Quantity,Quality;
+    private EditText Name,Type,Quantity,Quality;
     private CharSequenceWrapper name_text=null, type_text=null, quantity_text=null, quality_text=null;
     private Spinner Category;
     private Button ViewComment,Done,ViewPhoto;
@@ -107,7 +107,6 @@ public class EditBookFragment extends Fragment {
     public void Save_Handler(){
         pushItemInfo();
         myEditBookController.save();
-        ObjectSaver.gotThere=true;
         exit();
     }
 
