@@ -1,10 +1,8 @@
 package cmput301f15t10.exchange.Fragments;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import cmput301f15t10.exchange.Activities.Main;
+import cmput301f15t10.exchange.Activities.EditBookActivity;
 import cmput301f15t10.exchange.Book;
 import cmput301f15t10.exchange.Controllers.EditBookController;
-import cmput301f15t10.exchange.Interfaces.Observer;
-import cmput301f15t10.exchange.Item;
 import cmput301f15t10.exchange.Others.CharSequenceWrapper;
+import cmput301f15t10.exchange.Others.ObjectSaver;
 import cmput301f15t10.exchange.R;
 
 /**
@@ -26,7 +23,7 @@ import cmput301f15t10.exchange.R;
 public class EditBookCommentFragment extends Fragment{
 
     private CharSequenceWrapper comment=null;
-    private Main myActivity;
+    private EditBookActivity myActivity;
     private View myView;
     private Book myBook;
     private EditText commentBox;
@@ -38,10 +35,10 @@ public class EditBookCommentFragment extends Fragment{
 
     public void update(){
         if (comment==null) {
-            comment = new CharSequenceWrapper(myBook.getComment());
+            comment = new CharSequenceWrapper(myEditBookController.getComment());
         }
         else {
-            comment.setText(myBook.getComment());
+            comment.setText(myEditBookController.getComment());
         }
         commentBox.setText(comment, TextView.BufferType.EDITABLE);
     }
@@ -62,15 +59,10 @@ public class EditBookCommentFragment extends Fragment{
         update();
     }
 
-    public void receiveItem(){
-        myBook=myActivity.getBook();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        receiveItem();
-        myEditBookController = new EditBookController(myBook); // The item controller can be passed down if this becomes a fragment!
+        myEditBookController = myActivity.getController(); // The item controller can be passed down if this becomes a fragment!
     }
 
     @Override
@@ -100,7 +92,7 @@ public class EditBookCommentFragment extends Fragment{
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        myActivity = (Main) activity;
+        myActivity = (EditBookActivity) activity;
     }
 
     public void exit(){

@@ -25,10 +25,6 @@
             android:label="@string/title_activity_edit_profile" >
         </activity>
         <activity
-            android:name=".Activities.EditItemActivity"
-            android:label="@string/title_activity_edit_item" >
-        </activity>
-        <activity
             android:name=".Activities.EditCommentActivity"
             android:label="@string/title_activity_edit_comment" >
         </activity>
@@ -79,7 +75,7 @@
         <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
         <activity
-            android:name=".Activities.Main"
+            android:name=".Activities.EditBookActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -71,7 +71,7 @@ public class Book {
     }
 
     public String getQuantity_String(){
-        return Quality.toString();
+        return Quantity.toString();
     }
 
     public void setQuantity(Integer quantity) {
