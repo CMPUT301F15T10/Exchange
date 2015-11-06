@@ -80,9 +80,9 @@ public class InventoryActivity extends AppCompatActivity {
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
 
-//                arrayAdapter.clear();
-//                arrayAdapter.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
-//                arrayAdapter.notifyDataSetChanged();
+                arrayAdapter.clear();
+                arrayAdapter.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
+                arrayAdapter.notifyDataSetChanged();
 
                 }
             public void onNothingSelected(AdapterView<?> parent) {
