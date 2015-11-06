@@ -3,14 +3,12 @@ package cmput301exchange.exchange;
 /**
  * Created by bq on 11/1/15.
  */
-public interface BrowseInventories {
-    Inventory searchinventory(Friend afriend);
-    /*{
+public class BrowseInventories {
+    Inventory searchInventory(Friend afriend){
         return afriend.getMyInventory();
-    }*/
+    }
 
-    Inventory seaechinventorybycate(Friend afriend, int genreID);/* {//creat a new inventory and put all the result in it and return it
-    public ArrayList<In> f1(Inventory inventory)
+    Inventory searchByCategory(Friend afriend, int genreID){//creat a new inventory and put all the result in it and return it
         Inventory result = new Inventory();
         int n = afriend.getMyInventory().getInventoryList().size();
         for (int i = 0; i < n; i++) {
@@ -19,9 +17,9 @@ public interface BrowseInventories {
             }
         }
         return result;
-    }*/
+    }
 
-    Inventory seaechinventorybytext(Friend afriend, String query);/* {//creat a new inventory and put all the result in it and return it
+    Inventory searchByText(Friend afriend, String query){//creat a new inventory and put all the result in it and return it
         Inventory result = new Inventory();
         int n = afriend.getMyInventory().getInventoryList().size();
         for (int i = 0; i < n; i++) {
@@ -47,5 +45,5 @@ public interface BrowseInventories {
 
         }
         return result;
-    }*/
+    }
 }
