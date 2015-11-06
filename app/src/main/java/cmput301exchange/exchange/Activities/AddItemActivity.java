@@ -54,6 +54,7 @@ public class AddItemActivity extends ActionBarActivity {
     }
 
     public void add(View view){
+
         DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
         GlobalENV = io.loadEnvironment("GlobalENV");
 

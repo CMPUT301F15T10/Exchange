@@ -53,5 +53,6 @@
     <string name="name_hint">Name</string>
     <string name="add">Add</string>
     <string name="comment">Comment</string>
+    <string name="sort_by">Sort By:</string>
 
 </resources>
