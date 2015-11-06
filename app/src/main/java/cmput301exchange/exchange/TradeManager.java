@@ -39,12 +39,12 @@ public class TradeManager {
     private String message;
 
     private ArrayList<Trade> listTrade;
-
+    /**
+     * Adds a completed trade to the PastTrade List.
+     * @param Trade trade
+     */
     public void addCompleteTrade(Trade trade) {
-        /**
-         * Adds a completed trade to the PastTrade List.
-         * @param Trade trade
-         */
+
         // trade is complete, add the trade to the listPastTrade
         listPastTrade.add(trade);
         // search the trade in the listCurrentTrade and remove it
