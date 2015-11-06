@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -39,6 +41,7 @@ public class InventoryActivity extends AppCompatActivity {
     protected User InventoryOwner;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
@@ -67,16 +70,31 @@ public class InventoryActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-    }
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //on selecting a spinner item
+                String cat = parent.getItemAtPosition(position).toString();
+                // Showing selected spinner item
+                Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
+                //show the result for the sort
+                //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+                arrayAdapter.clear();
 
-            finish();
-            startActivity(getIntent());
+                arrayAdapter.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
 
-        }
+                arrayAdapter.notifyDataSetChanged();
+
+                }
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+
     }
 
     @Override
