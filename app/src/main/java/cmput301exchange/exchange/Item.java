@@ -1,9 +1,12 @@
 package cmput301exchange.exchange;
 
 /**
- * Created by touqir on 29/10/15.
+ * @deprecated
+ * old class that was originally intended to be a superclass of book.
+ * There was no point in having a superclass with only one object inhereting.
  */
 public class Item {
+
 
     private String comment=null,Name=null,Type=null; // should be null
     private Double Quality=null;

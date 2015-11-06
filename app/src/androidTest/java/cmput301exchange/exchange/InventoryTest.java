@@ -43,8 +43,17 @@ public class InventoryTest extends ApplicationTestCase<Application>{
         inventory.add(book);
         ArrayList<Book> testlist = new ArrayList<Book>();
         testlist.add(book);
-        assertEquals(inventory.getInventoryList(),testlist);
+        assertEquals(inventory.getInventoryList(), testlist);
     }
-
+    public void testCt(){
+        Book book=new Book();
+        Book book1=new Book();
+        book.updateCategory("1");
+        book1.updateCategory("2");
+        inventory.add(book);
+        inventory.add(book1);
+        inventory.searchByCategory("1");
+        assertEquals(inventory.getInventoryList().size(),1);
+    }
 
 }

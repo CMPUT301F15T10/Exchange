@@ -11,7 +11,7 @@
     <string name="title_activity_profile_details">ProfileDetails</string>
 
 
-
+    <string name = "globalENV"> globalenvfilename</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_edit_comment">EditCommentActivity</string>
     <string name="title_activity_trade_manager">Trade Manager</string>
@@ -21,8 +21,46 @@
     <string name="title_activity_edit_password">EditPasswordActivity</string>
     <string name="title_activity_configuration">ConfigurationActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_main">Main</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+
+    <!-- Login Strings-->
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+
+    <!-- Home Strings-->
+    <string name="home_message">What do you feel like doing?</string>
+    <string name="home_inventory">View My Inventory</string>
+    <string name="home_trade">Trade manager</string>
+    <string name="home_people">Browse/Search People</string>
+
+    <!-- Home Menu Strings-->
+    <string name="home_view_profile">View Profile</string>
+    <string name="home_edit_profile">Edit Profile</string>
+
+    <!-- Inventory Strings-->
+    <string name="add_item">Add Item</string>
+
+    <!-- Add Item Activity-->
+    <string name="title_activity_add_item">Add Item</string>
+    <string name="item_image">Item Image</string>
+    <string name="category_label">Category:</string>
+    <string name="quantity_hint">Quantity</string>
+    <string name="quality_hint">Quality</string>
+    <string name="type_hint">Type</string>
+    <string name="name_hint">Name</string>
+    <string name="add">Add</string>
+    <string name="comment">Comment</string>
+    <string name="sort_by">Sort By:</string>
+    <string name="author">Author</string>
+    <string name="is_shareable">Is Shareable</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email">Email</string>
+    <string name="location">Location</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="done">Done</string>
 
 </resources>

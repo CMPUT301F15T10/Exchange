@@ -2,7 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cmput301exchange.exchange.InventoryActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
+
+    <item android:id="@+id/action_add_item" android:title="@string/add_item"
         android:orderInCategory="100" app:showAsAction="never" />
 
     <item android:id="@+id/item_search"

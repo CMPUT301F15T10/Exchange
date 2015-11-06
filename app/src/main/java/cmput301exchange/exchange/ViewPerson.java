@@ -11,6 +11,8 @@ import android.widget.SearchView;
 
 public class ViewPerson extends ActionBarActivity {
 
+    // TODO might delete this might be deprecated
+
     // http://developer.android.com/guide/topics/search/search-dialog.html
     // http://developer.android.com/training/search/setup.html
 

@@ -4,9 +4,13 @@ package cmput301exchange.exchange;
 import java.util.ArrayList;
 
 /**
- * Created by Charles on 11/2/2015.
+ * Stores an inventory for a person
+ * Allows storing books and attributing them to users.
  */
-public class Inventory implements Searchable, Shareable {
+
+
+public class Inventory{
+
     private User inventoryOwner;
     private ArrayList<Book> inventoryList = new ArrayList<>();
 
@@ -15,6 +19,12 @@ public class Inventory implements Searchable, Shareable {
     public boolean isShareable(){return shareable;}
 
     public Book Search(String searchString){
+        /**
+         * @deprecated
+         * allows searching of the inventory for a query string
+         * returns a book object if the item is found. Return null if the item is not.
+         * @param searchString the string that you wish to search for.
+         */
         //If search returns a Null, then the object is not in the list.
         Book foundBook = null;
         for (Book iterator : inventoryList){
@@ -34,6 +44,9 @@ public class Inventory implements Searchable, Shareable {
     }
 
     public ArrayList<Book> getInventoryList() {
+        /**
+         * Getter for the inventory
+         */
         return inventoryList;
     }
 
@@ -43,6 +56,57 @@ public class Inventory implements Searchable, Shareable {
 
     public boolean contains(Book book){return this.inventoryList.contains(book);}
 
+    public Inventory searchByCategory(String cat){
+        /**
+         * Searches inventory by category
+         * returns subinventory of items in that category.
+         * @param cat category you are searching for
+         */
+        if (cat.equals("None")){
+            Inventory result = new Inventory();
+            result.getInventoryList().addAll(this.inventoryList);
+            return result;
+        }
+        Inventory result = new Inventory();
+        int n = this.inventoryList.size();
+        for (int i = 0; i < n; i++) {
+            if (this.inventoryList.get(i).getCategory().equals(cat)) {
+                result.getInventoryList().add(this.inventoryList.get(i));
+            }
+        }
+        return result;
+    }
+    public Inventory searchByText(String query){
+        /**
+         * Second method for searching for a string. this is a better version than above. It searches
+         * for partial strings as well as in ALL fields.
+         *
+         * @param query The string you wish to search all fields for.
+         */
+        Inventory result = new Inventory();
+        int n = inventoryList.size();
+        for (int i = 0; i < n; i++) {
+            if (inventoryList.get(i).getBookName().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
 
+            if (inventoryList.get(i).getAuthor().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
 
+            if (inventoryList.get(i).getPublisher().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
+
+            if (inventoryList.get(i).getComment().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
+
+        }
+        return result;
+    }
 }

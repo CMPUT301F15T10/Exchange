@@ -1,22 +1,30 @@
 
 
 package cmput301exchange.exchange.Activities;
-
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
 
-public class Login extends Activity {
-
+public class Login extends AppCompatActivity {
+    public EditText username;
+    private ModelEnvironment globalENV = new ModelEnvironment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
+        username = (EditText) findViewById(R.id.LoginName);
+
 
         /*
         Button testEmailButton = (Button) findViewById(R.id.testEmailButton);
@@ -29,10 +37,38 @@ public class Login extends Activity {
         */
     }
 
-    public void login(View view) {
+    public void login(View  view) {
+        Gson gson = new Gson();
+
+        String userString = username.getText().toString();
+        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+
+        globalENV = io.loadEnvironment("GlobalENV");
+        globalENV.setOwner(userString);
+
+//        try{
+//            globalENV = io.loadEnvironment("GlobalENV");
+//            globalENV.getOwner();
+//
+//        }catch(Exception e){
+//            globalENV.setOwner(username.getText().toString());
+//        }
+
+
+
+        io.saveEnvironment("GlobalENV", globalENV);
+//        String json = gson.toJson(globalENV);
+        //I can't get this to work
+//        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
+//        WriteModel.setFileName("GlobalENV");
+//        ArrayList sendenv = new ArrayList();
+//        sendenv.add(globalENV);
+//        WriteModel.saveInFile(false,sendenv);
+
+
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-    }
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
