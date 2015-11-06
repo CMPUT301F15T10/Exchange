@@ -43,13 +43,16 @@ public class Login extends AppCompatActivity {
         String userString = username.getText().toString();
         DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
 
-        try{
-            globalENV = io.loadEnvironment("GlobalENV");
-            globalENV.getOwner();
-            
-        }catch(Exception e){
-            globalENV.setOwner(username.getText().toString());
-        }
+        globalENV = io.loadEnvironment("GlobalENV");
+        globalENV.setOwner(userString);
+
+//        try{
+//            globalENV = io.loadEnvironment("GlobalENV");
+//            globalENV.getOwner();
+//
+//        }catch(Exception e){
+//            globalENV.setOwner(username.getText().toString());
+//        }
 
 
 
