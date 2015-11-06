@@ -15,10 +15,10 @@ NOTES:
 
 // TODO send email
 /**
+
+ * Instantiate this to deal with trades.
  * @Author Yishuo
  * @version 0.0.1
- * Instantiate this to deal with trades.
- *
  */
 public class TradeManager {
 

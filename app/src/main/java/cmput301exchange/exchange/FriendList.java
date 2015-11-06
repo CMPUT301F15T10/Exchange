@@ -3,9 +3,9 @@ package cmput301exchange.exchange;
 import java.util.ArrayList;
 import java.util.Collections;
 /**
- * @author Baihong
- * Stores a list of friends
  *
+ * Stores a list of friends
+ * @author Baihong
  */
 
 

@@ -4,9 +4,9 @@ import android.graphics.Picture;
 
 import java.util.ArrayList;
 /**
- * @Author Yishuo, Chuck, Baihong
- * Representation of a user. Is inhereted by friend and User
  *
+ * Representation of a user. Is inhereted by friend and User
+ * @Author Yishuo, Chuck, Baihong
  */
 
 public abstract class Person {
