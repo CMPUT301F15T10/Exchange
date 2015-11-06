@@ -50,45 +50,46 @@ public class TradeManager {
         // search the trade in the listCurrentTrade and remove it
         deleteOngoingTrade(trade);
     }
-
+    /**
+     * Creates a new trade that will be sent to the other user.
+     * @param Trade trade
+     */
     public void addOngoingTrade(Trade trade) {
-        /**
-         * Creates a new trade that will be sent to the other user.
-         * @param Trade trade
-         */
+
         // add the trade to the listCurrentTrade
         listCurrentTrade.add(trade);
     }
 
     // creates an empty trade and user can user setters to add more details about the trade
+    /**
+     * Creates and empty trade and user can use setters to add more details about the trade
+     * @param None
+     */
     public Trade createTrade() {
-        /**
-         * Creates and empty trade and user can use setters to add more details about the trade
-         * @param None
-         */
+
         Trade trade = new Trade();
         return trade;
     }
-
+    /**
+     * Creates a new trade and adds it to the listCurrentTrade
+     * @param tradeUser The user of the application
+     * @param tradePartner The friend that the user wishes to trade with
+     * @param tradeStatus The status of the trade
+     * @param tradeType The type of trade
+     */
     public void addTrade(Trade trade) {
-        /**
-         * Creates a new trade and adds it to the listCurrentTrade
-         * @param tradeUser The user of the application
-         * @param tradePartner The friend that the user wishes to trade with
-         * @param tradeStatus The status of the trade
-         * @param tradeType The type of trade
-         */
+
         // Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, Integer tradeType)
         // create a new trade and add it to the listCurrentTrade
         listCurrentTrade.add(trade);
     }
+    /**
+     *search for that trade and change the tradeStatus to 1 and add the trade to listPastTrade
+     *update both user and partner's inventory
+     * @param  trade The trade that you wish to accept
+     */
 
     public void acceptTrade(Trade trade) {
-        /**
-         *search for that trade and change the tradeStatus to 1 and add the trade to listPastTrade
-         *update both user and partner's inventory
-         * @param  trade The trade that you wish to accept
-         */
 
         int i;
         int n = listCurrentTrade.size();
@@ -132,12 +133,12 @@ public class TradeManager {
         }
         // TODO send notification to the other user
     }
-
+    /**
+     * Search for trades and changes the tradeStatus to 2, which represents cancelled
+     * @param trade the trade that you wish to decline
+     */
     public void declineTrade(Trade trade) {
-        /**
-         * Search for trades and changes the tradeStatus to 2, which represents cancelled
-         * @param trade the trade that you wish to decline
-         */
+
         // search for that trade and change the tradeStatus to 2
         int i;
         int n = listCurrentTrade.size();
@@ -153,13 +154,13 @@ public class TradeManager {
         // ask user if they want to make a counter trade
         //   -> swap the User and Borrower and their inventories
     }
-
+    /**
+     * Swaps the role of the owner and borrower, edits the trade
+     * constructs a new trade, and asks the user to edit the trade
+     * @param trade The trade that you want to counter
+     */
     public Trade counterTrade(Trade trade) {
-        /**
-         * Swaps the role of the owner and borrower, edits the trade
-         * constructs a new trade, and asks the user to edit the trade
-         * @param trade The trade that you want to counter
-         */
+
         // swap the role of owner and borrower, edit the trade
         // construct a new trade, and ask user to edit the trade
         Trade tradetemp = new Trade(trade.getTradePartner(), trade.getTradeUser(), 3, 0, trade.getListBookPartner(), trade.getListBookUser(), trade.getTradeId());
@@ -170,14 +171,14 @@ public class TradeManager {
         addOngoingTrade(tradetemp);
         return tradetemp;
     }
-
+    /**
+     * Ask the user to edit the trade details, more like creating a new trade, but gives details
+     * about the trade. User can click the area on where they want to edit. Call setter from trade
+     * class.
+     * @param trade trade that you wish to edit
+     */
     public void editTrade(Trade trade) {
-        /**
-         * Ask the user to edit the trade details, more like creating a new trade, but gives details
-         * about the trade. User can click the area on where they want to edit. Call setter from trade
-         * class.
-         * @param trade trade that you wish to edit
-         */
+
 
     }
 
@@ -197,29 +198,29 @@ public class TradeManager {
         }
         return tempList;
     }
-
+    /**
+     * Getter for Past Trade List
+     */
     public ArrayList<Trade> getListPastTrade() {
-        /**
-         * Getter for Past Trade List
-         */
+
         return listPastTrade;
     }
-
+    /**
+     * Getter for current trade list
+     */
     public ArrayList<Trade> getListCurrentTrade() {
-        /**
-         * Getter for current trade list
-         */
+
         return listCurrentTrade;
     }
-
+    /**
+     * Change the trade partner
+     * Updates the Current Trade List
+     * @param trade Trade you want to change
+     * @param newPartner The person you want to turn into a trade partner.
+     *
+     */
     public void changePartner(Trade trade, Person newPartner) {
-        /**
-         * Change the trade partner
-         * Updates the Current Trade List
-         * @param trade Trade you want to change
-         * @param newPartner The person you want to turn into a trade partner.
-         *
-         */
+
         // change the trade Partner
         // update the listCurrentTrade
         deleteOngoingTrade(trade);
@@ -228,12 +229,12 @@ public class TradeManager {
     }
 
     public void sendNotification() {}
-
+    /**
+     * Deletes an ongoing trade
+     * @param trade the trade you wish to cancel
+     */
     public void deleteOngoingTrade(Trade trade) {
-        /**
-         * Deletes an ongoing trade
-         * @param trade the trade you wish to cancel
-         */
+
         int i;
         int n = listCurrentTrade.size();
         for (i = 0; i < n;i++) {
@@ -246,16 +247,16 @@ public class TradeManager {
     }
 
     public void setMessage(String message) { this.message = message; }
-
+    /**
+     * Returns a list of all of your past trades
+     * @param role the role that the user had in the trade
+     *        0 -> User as an owner
+     *        1 -> User as a borrower
+     *        2 -> all
+     * @param person the Person who's trade history you are viewing
+     */
     public ArrayList<Trade> browsePastTrade(Integer role, Person person) {
-        /**
-         * Returns a list of all of your past trades
-         * @param role the role that the user had in the trade
-         *        0 -> User as an owner
-         *        1 -> User as a borrower
-         *        2 -> all
-         * @param person the Person who's trade history you are viewing
-         */
+
         // role: 0 -> User as an owner
         //       1 -> User as a borrower
         //       2 -> All
@@ -281,13 +282,13 @@ public class TradeManager {
         }
         return tempPastTrade;
     }
-
+    /**
+     * Returns a list of current trades
+     * @param role 0 -> Owner, 1 -> borrower, 2 -> All
+     * @param person the person who's current trade list you want to view.
+     */
     public ArrayList<Trade> browseCurrentTrade(Integer role, Person person) {
-        /**
-         * Returns a list of current trades
-         * @param role 0 -> Owner, 1 -> borrower, 2 -> All
-         * @param person the person who's current trade list you want to view.
-         */
+
         // role: 0 -> User as an owner
         //       1 -> User as a borrower
         //       2 -> All
@@ -315,12 +316,12 @@ public class TradeManager {
     }
 
     public void searchPastTrade() {}
-
+    /**
+     * Updates the Trade Request List
+     * @param person the person who's trade request list that is needed to be updated.
+     */
     private void updateListTradeRequest(Person person) {
-        /**
-         * Updates the Trade Request List
-         * @param person the person who's trade request list that is needed to be updated.
-         */
+
         ArrayList<Trade> tempList = new ArrayList<>();
         int i;
         int n0 = listCurrentTrade.size();
@@ -349,15 +350,15 @@ public class TradeManager {
         updateListTradeRequest(person);
         return listTradeRequest.size();
     }
-
+    /**
+     * Searches the trade which involves user via tradeID
+     * As a tradeID as a primary key, and one tradeID is assigned to one and only one trade
+     * Return the trade as soon as we find it
+     * Else returns NULL
+     * @param id the ID of the trade you are looking for.
+     */
     public Trade searchTrade(Integer id) {
-        /**
-         * Searches the trade which involves user via tradeID
-         * As a tradeID as a primary key, and one tradeID is assigned to one and only one trade
-         * Return the trade as soon as we find it
-         * Else returns NULL
-         * @param id the ID of the trade you are looking for.
-         */
+
         // search the trade which involves user via tradeId
         // as tradeId is a primary key and one tradeId is assigned to one and the only one trade,
         //   return the trade as soon as we find it
