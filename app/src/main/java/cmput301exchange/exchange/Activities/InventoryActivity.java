@@ -34,7 +34,6 @@ public class InventoryActivity extends AppCompatActivity {
      */
     private ListView lv;
     public ModelEnvironment globalENV = new ModelEnvironment();
-    public Gson gson = new Gson();
     protected ArrayAdapter<Book> arrayAdapter;
     protected List<Book> bookList;
     protected User InventoryOwner;
@@ -42,24 +41,15 @@ public class InventoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //I can't get this to work
         DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-
-//        ArrayList<ModelEnvironment> LoadArray = io.loadFromFile();
-//        globalENV = LoadArray.get(0);
         globalENV = io.loadEnvironment("GlobalENV");
+
         InventoryOwner = globalENV.getOwner();
-//        String json = getIntent().getStringExtra("User");
-//        Gson gson = new Gson();
-//        User InventoryOwner = gson.fromJson(json, User.class);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
         lv = (ListView) findViewById(R.id.listView3);
-
-//        List<String> person_list = new ArrayList<String>();
-//        person_list.add("Item1");
-//        person_list.add("Item2");
 
 
         bookList = InventoryOwner.getMyInventory().getInventoryList();

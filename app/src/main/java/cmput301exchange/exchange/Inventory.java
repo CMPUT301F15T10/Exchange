@@ -3,10 +3,12 @@ package cmput301exchange.exchange;
 
 import java.util.ArrayList;
 
+
+
 /**
  * Created by Charles on 11/2/2015.
  */
-public class Inventory implements Searchable, Shareable {
+public class Inventory{
     private User inventoryOwner;
     private ArrayList<Book> inventoryList = new ArrayList<>();
 

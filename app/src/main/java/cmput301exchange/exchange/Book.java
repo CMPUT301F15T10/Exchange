@@ -4,6 +4,8 @@ import android.graphics.Picture;
 
 import java.util.ArrayList;
 
+import cmput301exchange.exchange.Interfaces.Shareable;
+
 public class Book implements Shareable, Comparable<Book> {
     /**
      * @Author: Charles Laing
