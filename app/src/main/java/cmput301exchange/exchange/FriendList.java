@@ -10,8 +10,12 @@ import java.util.Collections;
 public class FriendList{
     private ArrayList<Person> friendlist;
 
-    public FriendList(ArrayList<Person> friendlist) {
-        this.friendlist = friendlist;
+    public ArrayList<Person> getFriendlist() {
+        return friendlist;
+    }
+
+    public FriendList() {
+
     }
     public ArrayList<Person> searchfriend(String query){
         ArrayList<Person> results= new ArrayList<Person>();

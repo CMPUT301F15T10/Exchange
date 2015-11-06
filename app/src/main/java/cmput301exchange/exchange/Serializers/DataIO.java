@@ -14,6 +14,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.provider.ContactsContract;
+
+import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.R;
 
 /**
  * Created by touqir on 28/09/15.
@@ -109,6 +113,45 @@ public class DataIO<DataClass> {
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public ModelEnvironment loadEnvironment(String filename){
+        //removed the needless mental acrobatics needed to use the above.
+        ModelEnvironment DataEnviro;
+        try {
+            FileInputStream fis = context.openFileInput(filename);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            Gson gson = new Gson();
+            //Type listType = new TypeToken<DataWrapper<DataClass>>(){}.getType();
+            DataEnviro = gson.fromJson(in,ModelEnvironment.class);
+            //Log.e("From DataIO, type of loadedData", size.toString());
+
+        } catch (FileNotFoundException e) {
+            return new ModelEnvironment();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return DataEnviro;
+    }
+    public void saveEnvironment(String filename, ModelEnvironment globalenv){
+    //Removed the needless mental acrobatics needed to understand the above.
+        try {
+            FileOutputStream fos = context.openFileOutput(filename,
+                    0);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            Gson gson = new Gson();
+            gson.toJson(globalenv, writer);
+            writer.flush();
+            fos.close();
+
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
 }
