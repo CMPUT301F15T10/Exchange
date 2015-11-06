@@ -3,6 +3,9 @@ package cmput301exchange.exchange;
 
 import java.util.ArrayList;
 
+import cmput301exchange.exchange.Interfaces.Searchable;
+import cmput301exchange.exchange.Interfaces.Shareable;
+
 /**
  * Created by Charles on 11/2/2015.
  */
