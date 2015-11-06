@@ -10,6 +10,7 @@ public interface BrowseInventories {
     }*/
 
     Inventory seaechinventorybycate(Friend afriend, int genreID);/* {//creat a new inventory and put all the result in it and return it
+    public ArrayList<In> f1(Inventory inventory)
         Inventory result = new Inventory();
         int n = afriend.getMyInventory().getInventoryList().size();
         for (int i = 0; i < n; i++) {

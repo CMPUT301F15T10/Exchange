@@ -6,7 +6,6 @@ import android.test.ApplicationTestCase;
 /**
  * Created by bq on 10/8/2015.
  */
-<<<<<<< HEAD
 
 /*public class BrowseTest extends ApplicationTestCase<Application>{
     public BrowseTest(){

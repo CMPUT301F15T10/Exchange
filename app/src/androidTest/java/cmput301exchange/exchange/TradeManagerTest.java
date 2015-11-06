@@ -40,7 +40,7 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
 
         trade0 = new Trade(person0, person1, alist, blist);
         tradeManager0 = new TradeManager();
-        tradeManager0.createTrade(trade0);
+        tradeManager0.addTrade(trade0);
         int i;
         int n;
         n = tradeManager0.getListCurrentTrade().size();
