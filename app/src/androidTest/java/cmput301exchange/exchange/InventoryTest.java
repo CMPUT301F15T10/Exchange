@@ -56,5 +56,32 @@ public class InventoryTest extends ApplicationTestCase<Application>{
         result=inventory.searchByCategory("cat");
         assertEquals(result.getInventoryList().size(),1);
     }
+    /*public void testTx(){
+        Inventory result=new Inventory();
+        Book book1=new Book();
+        book1.updateTitle("abc");
+        Book book2=new Book();
+        book2.updateTitle("def");
+        Book book3=new Book();
+        book3.updateAuthor("abc");
+        Book book4=new Book();
+        book4.updateAuthor("def");
+        Book book5=new Book();
+        book5.updateComment("abc");
+        Book book6=new Book();
+        book6.updateComment("def");
+        inventory.add(book1);
+        inventory.add(book2);
+        inventory.add(book3);
+        inventory.add(book4);
+        inventory.add(book5);
+        inventory.add(book6);
+        result=inventory.searchByText("b");
+        assertEquals(result.getInventoryList().size(),3);
+
+
+
+
+    }*/
 
 }
