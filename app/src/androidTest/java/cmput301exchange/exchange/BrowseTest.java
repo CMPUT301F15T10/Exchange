@@ -1,22 +1,23 @@
 package cmput301exchange.exchange;
 
+import android.app.Application;
+import android.test.ApplicationTestCase;
+
 /**
  * Created by bq on 10/8/2015.
  */
 
-public class BrowseTest{
-    public void testInstantiate(){
-        try {
-            Inventory inventory = new Inventory();
-        }catch (Exception e){
-            throw new RuntimeException();
-        }
+/*public class BrowseTest extends ApplicationTestCase<Application>{
+    public BrowseTest(){
+        super(Application.class);
     }
+
 
     //test case for a view
     public void testBrowse(){
         Inventory inventory= new Inventory();
-        inventory.;
+        User user=new User("abc");
+        inventory.setInventoryOwner(user);
         try{
             inventory.getInventoryList();
         }catch(Exception e){
