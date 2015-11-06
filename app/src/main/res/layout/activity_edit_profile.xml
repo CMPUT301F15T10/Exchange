@@ -7,117 +7,114 @@
 
     tools:context="cmput301f15t10.exchange.EditProfileActivity">
 
-    <TextView
-        android:text="Edit Profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/EditProfile"
-        android:textSize="35dp"
-        android:textColor="#111"
-        android:layout_marginLeft="115dp"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name:"
-        android:id="@+id/textView4"
-        android:layout_marginTop="92dp"
-        android:textColor="#111"
-        android:textSize="25dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/EditProfile" />
-
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText3"
-        android:layout_alignTop="@+id/textView4"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/textView4"
-        android:layout_alignStart="@+id/EditProfile" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Phone Number:"
-        android:id="@+id/textView5"
-        android:textColor="#111"
-        android:textSize="25dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="205dp" />
+        android:layout_centerHorizontal="true"
+        android:weightSum="1">
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText4"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/textView5" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email:"
-        android:id="@+id/textView6"
-        android:textColor="#111"
-        android:textSize="25dp"
-        android:layout_below="@+id/editText4"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="260dp" />
+        <ImageButton
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageButton"
+            android:contentDescription="@string/item_image"
+            android:layout_gravity="center_horizontal" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/editText5"
-        android:layout_alignTop="@+id/textView6"
-        android:layout_alignEnd="@+id/editText3"
-        android:layout_alignStart="@+id/editText3" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
-    <EditText
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText6"
-        android:layout_alignBottom="@+id/textView7"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="120dp"
-        android:layout_toStartOf="@+id/editText4"
-        android:layout_alignEnd="@+id/editText5"
-        android:layout_alignTop="@+id/textView7"
-        android:layout_alignParentTop="false" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editName"
+                android:hint="@string/name"
+                android:layout_gravity="center_horizontal"
+                android:maxLength="20"
+                android:singleLine="true"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location:"
-        android:id="@+id/textView7"
-        android:textColor="#111"
-        android:textSize="25dp"
-        android:layout_below="@+id/editText5"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="39dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
-    <Button
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:text="Done"
-        android:id="@+id/button6"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:textSize="17dp" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/editPhone"
+                android:hint="@string/phone_number"
+                android:layout_gravity="center_horizontal"
+                android:singleLine="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Password"
-        android:id="@+id/button7"
-        android:layout_alignTop="@+id/button6"
-        android:layout_alignEnd="@+id/editText6"
-        android:textSize="17dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/editEmail"
+                android:hint="@string/email"
+                android:layout_gravity="center_horizontal"
+                android:singleLine="true"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editLocation"
+                android:hint="@string/location"
+                android:layout_gravity="center_horizontal"
+                android:maxLength="30"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:id="@+id/add_button"
+                android:layout_gravity="center_horizontal"
+                android:onClick="done"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 </RelativeLayout>
