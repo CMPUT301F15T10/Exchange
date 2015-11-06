@@ -50,8 +50,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editType"
-                android:hint="@string/type_hint"
+                android:id="@+id/editAuthor"
+                android:hint="@string/author"
                 android:layout_gravity="center_horizontal" />
 
             <EditText
@@ -123,6 +123,26 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@string/is_shareable"
+                android:textSize="18sp"
+                android:id="@+id/shareable_checkBox"
+                android:button="@null"
+                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"/>
+
+
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:orientation="vertical"
@@ -134,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add"
-                android:id="@+id/button3"
+                android:id="@+id/add_button"
                 android:layout_gravity="center_horizontal"
                 android:onClick="add"/>
 

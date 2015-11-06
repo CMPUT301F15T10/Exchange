@@ -1,17 +1,17 @@
 package cmput301exchange.exchange.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import com.google.gson.Gson;
+import android.widget.Toast;
 
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
@@ -23,13 +23,8 @@ public class AddItemActivity extends ActionBarActivity {
 
     ModelEnvironment GlobalENV;
 
-    public EditText name;
-    public EditText type;
-    public EditText quality;
-    public EditText quantity;
-    // TODO get category from spinner
-    public EditText comments;
-
+    private EditText name, author, quality, quantity, comments;
+    private String category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +32,7 @@ public class AddItemActivity extends ActionBarActivity {
         setContentView(R.layout.activity_add_item);
 
         name = (EditText) findViewById(R.id.editName);
-        type = (EditText) findViewById(R.id.editType);
+        author = (EditText) findViewById(R.id.editAuthor);
         quality = (EditText) findViewById(R.id.editQuality);
         quantity = (EditText) findViewById(R.id.editQuantity);
         comments = (EditText) findViewById(R.id.editComment);
@@ -52,6 +47,18 @@ public class AddItemActivity extends ActionBarActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //on selecting a spinner item
+                category = parent.getItemAtPosition(position).toString();
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
         //check to make sure nothing is empty, if empty fill with something
     }
 
@@ -65,12 +72,24 @@ public class AddItemActivity extends ActionBarActivity {
         Book book = new Book();
 
         String bookName = name.getText().toString();
-        String bookType = type.getText().toString();
-        String bookQuality = quality.getText().toString();
-        String bookQuantity = quantity.getText().toString();
+        String bookAuthor = author.getText().toString();
+        Integer bookQuality = Integer.parseInt(quality.getText().toString()); // add try, catch later
+        Integer bookQuantity = Integer.parseInt(quantity.getText().toString()); // add try, catch later
         String bookComments = comments.getText().toString();
 
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.shareable_checkBox);
+        if (checkBox.isChecked()) {
+            book.setShareable(Boolean.TRUE);
+        }
+        else {
+            book.setShareable(Boolean.FALSE);
+        }
+
         book.updateTitle(bookName);
+        book.updateAuthor(bookAuthor);
+        book.updateQuantity(bookQuantity);
+        book.setQuality(bookQuality);
+        book.updateCategory(category);
         book.updateComment(bookComments);
 
         user.getMyInventory().add(book);
