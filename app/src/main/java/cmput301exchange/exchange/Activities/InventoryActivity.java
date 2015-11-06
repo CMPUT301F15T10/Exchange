@@ -80,9 +80,10 @@ public class InventoryActivity extends AppCompatActivity {
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
 
-                arrayAdapter.clear();
 
-                arrayAdapter.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
+                
+                //arrayAdapter.clear();
+                //arrayAdapter.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
 
                 arrayAdapter.notifyDataSetChanged();
 
@@ -91,10 +92,17 @@ public class InventoryActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
+    }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
 
+            finish();
+            startActivity(getIntent());
 
+        }
     }
 
     @Override
