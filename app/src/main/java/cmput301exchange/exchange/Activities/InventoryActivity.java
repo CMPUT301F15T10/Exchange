@@ -95,7 +95,9 @@ public class InventoryActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add_item) {
+            Intent intent = new Intent(this, AddItemActivity.class);
+            startActivity(intent);
             return true;
         }
 
