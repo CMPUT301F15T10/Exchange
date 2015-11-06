@@ -12,22 +12,23 @@ import java.util.Collections;
 public class FriendList{
 
     private ArrayList<Person> friendlist;
-
+    /**
+     * Returns a List of Friends.
+     */
     public ArrayList<Person> getFriendlist() {
-        /**
-         * Returns a List of Friends.
-         */
+
         return friendlist;
     }
 
     public FriendList() {
 
     }
+    /**
+     * Searches a friendslist for a string
+     * @param query the string that you wish to search for.
+     */
     public ArrayList<Person> searchfriend(String query){
-        /**
-         * Searches a friendslist for a string
-         * @param query the string that you wish to search for.
-         */
+
         ArrayList<Person> results= new ArrayList<Person>();
         int n = friendlist.size();
         if(n==0){
@@ -42,18 +43,20 @@ public class FriendList{
 
         return results;
     }
+    /**
+     * Adds a friend
+     * @param aperson the person you wish to add.
+     */
     public void addfriend(Person aperson){
-        /**
-         * Adds a friend
-         * @param aperson the person you wish to add.
-         */
+
         friendlist.add(aperson);
     }
+    /**
+     * Removes a friend
+     * @param aperson the person you wish to remove from the friendslist
+     */
     public void removefirend(Person aperson){
-        /**
-         * Removes a friend
-         * @param aperson the person you wish to remove from the friendslist
-         */
+
         int n = friendlist.size();
         if(n==0){
             return;

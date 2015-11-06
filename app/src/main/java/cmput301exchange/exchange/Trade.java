@@ -34,14 +34,15 @@ public class Trade {
         Random rand = new Random();
         this.tradeId = rand.nextInt(8999);
     }
+    /**
+     * Constructor of the trade
+     * @param tradeUser the user that initates the trade
+     * @param tradePartner the Partner that you are sending the trade to
+     * @param listBookUser List of the books the User is offering
+     * @param listbookPartner List of books the partner is offering
+     */
     public Trade(Person tradeUser, Person tradePartner, ArrayList<Book> listBookUser, ArrayList<Book> listBookPartner) {
-        /**
-         * Constructor of the trade
-         * @param tradeUser the user that initates the trade
-         * @param tradePartner the Partner that you are sending the trade to
-         * @param listBookUser List of the books the User is offering
-         * @param listbookPartner List of books the partner is offering
-         */
+
         this.tradeUser = tradeUser;
         this.tradePartner = tradePartner;
         this.listBookUser = listBookUser;
