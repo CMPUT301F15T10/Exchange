@@ -38,7 +38,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editName"
                 android:hint="@string/name_hint"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:maxLength="20"
+                android:singleLine="true"/>
 
         </LinearLayout>
         <LinearLayout
@@ -52,13 +54,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editAuthor"
                 android:hint="@string/author"
-                android:layout_gravity="center_horizontal" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editQuality"
-                android:hint="@string/quality_hint" />
+                android:layout_gravity="center_horizontal"
+                android:maxLength="30"
+                android:singleLine="true"/>
 
         </LinearLayout>
         <LinearLayout
@@ -66,6 +64,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editQuality"
+                android:hint="@string/quality_hint"
+                android:maxLength="3"
+                android:singleLine="true"
+                android:inputType="number"/>
 
         </LinearLayout>
         <LinearLayout
@@ -79,7 +86,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editQuantity"
                 android:hint="@string/quantity_hint"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:maxLength="3"
+                android:singleLine="true"
+                android:inputType="number"/>
 
 
 
@@ -118,7 +128,8 @@
                 android:id="@+id/editComment"
                 android:gravity="top"
                 android:hint="@string/comment"
-                android:layout_weight="0.64" />
+                android:layout_weight="0.64"
+                android:maxLength="300"/>
 
 
         </LinearLayout>

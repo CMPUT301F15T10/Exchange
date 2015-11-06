@@ -55,11 +55,11 @@ public class AddItemActivity extends ActionBarActivity {
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
+
             }
         });
 
-        //check to make sure nothing is empty, if empty fill with something
+        // TODO input verificiation: check to make sure nothing is empty, if empty fill with something
     }
 
     public void add(View view){
