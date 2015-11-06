@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -33,6 +35,9 @@ public class InventoryActivity extends AppCompatActivity {
     private ListView lv;
     public ModelEnvironment globalENV = new ModelEnvironment();
     public Gson gson = new Gson();
+    protected ArrayAdapter<Book> arrayAdapter;
+    protected List<Book> bookList;
+    protected User InventoryOwner;
 
 
     @Override
@@ -43,7 +48,7 @@ public class InventoryActivity extends AppCompatActivity {
 //        ArrayList<ModelEnvironment> LoadArray = io.loadFromFile();
 //        globalENV = LoadArray.get(0);
         globalENV = io.loadEnvironment("GlobalENV");
-        User InventoryOwner = globalENV.getOwner();
+        InventoryOwner = globalENV.getOwner();
 //        String json = getIntent().getStringExtra("User");
 //        Gson gson = new Gson();
 //        User InventoryOwner = gson.fromJson(json, User.class);
@@ -57,9 +62,9 @@ public class InventoryActivity extends AppCompatActivity {
 //        person_list.add("Item2");
 
 
-        List<Book> bookList = InventoryOwner.getMyInventory().getInventoryList();
+        bookList = InventoryOwner.getMyInventory().getInventoryList();
 
-        ArrayAdapter<Book> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bookList );
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bookList );
 
         lv.setAdapter(arrayAdapter);
 
@@ -72,6 +77,16 @@ public class InventoryActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+
+            finish();
+            startActivity(getIntent());
+
+        }
     }
 
     @Override
@@ -94,7 +109,7 @@ public class InventoryActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_item) {
             Intent intent = new Intent(this, AddItemActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
             return true;
         }
 
