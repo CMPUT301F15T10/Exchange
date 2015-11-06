@@ -29,8 +29,6 @@ public class AddItemActivity extends ActionBarActivity {
     public EditText comments;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +39,6 @@ public class AddItemActivity extends ActionBarActivity {
         quality = (EditText) findViewById(R.id.editQuality);
         quantity = (EditText) findViewById(R.id.editQuantity);
         comments = (EditText) findViewById(R.id.editComment);
-
-        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-        GlobalENV = io.loadEnvironment("GlobalENV");
-
 
 
         Spinner spinner = (Spinner) findViewById(R.id.categories_spinner);
@@ -60,6 +54,9 @@ public class AddItemActivity extends ActionBarActivity {
     }
 
     public void add(View view){
+        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+        GlobalENV = io.loadEnvironment("GlobalENV");
+
         User user = GlobalENV.getOwner();
 
         Book book = new Book();
@@ -75,8 +72,7 @@ public class AddItemActivity extends ActionBarActivity {
 
         user.getMyInventory().add(book);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
+        io.saveEnvironment("GlobalENV", GlobalENV);
 
         this.finish();
     }
