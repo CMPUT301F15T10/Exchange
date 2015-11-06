@@ -3,16 +3,14 @@ package cmput301exchange.exchange;
 
 import java.util.ArrayList;
 
-
-
 /**
- * Created by Charles on 11/2/2015.
+ * Stores an inventory for a person
+ * Allows storing books and attributing them to users.
  */
+
+
 public class Inventory{
-    /**
-     * Stores an inventory for a person
-     * Allows storing books and attributing them to users.
-     */
+
     private User inventoryOwner;
     private ArrayList<Book> inventoryList = new ArrayList<>();
 

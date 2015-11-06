@@ -10,9 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-/**
- * Created by Yishuo Wang on 2015/10/31.
- */
+
 
 // http://www.mkyong.com/android/how-to-send-email-in-android
 // By: mkyong
