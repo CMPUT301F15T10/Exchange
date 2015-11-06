@@ -62,11 +62,16 @@ public class Inventory{
          * returns subinventory of items in that category.
          * @param cat category you are searching for
          */
+        if (cat.equals("None")){
+            Inventory result = new Inventory();
+            result.getInventoryList().addAll(this.inventoryList);
+            return result;
+        }
         Inventory result = new Inventory();
-        int n = inventoryList.size();
+        int n = this.inventoryList.size();
         for (int i = 0; i < n; i++) {
-            if (inventoryList.get(i).getCategory() == cat) {
-                result.getInventoryList().add(inventoryList.get(i));
+            if (this.inventoryList.get(i).getCategory().equals(cat)) {
+                result.getInventoryList().add(this.inventoryList.get(i));
             }
         }
         return result;
