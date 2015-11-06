@@ -24,11 +24,11 @@ public class ProfileDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_details);
-
         DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
         GlobalENV = io.loadEnvironment("GlobalENV");
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile_details);
 
         User user = GlobalENV.getOwner();
 
