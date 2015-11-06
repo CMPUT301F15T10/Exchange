@@ -43,6 +43,41 @@ public class Inventory implements Searchable, Shareable {
 
     public boolean contains(Book book){return this.inventoryList.contains(book);}
 
+    public Inventory searchByCategory(String cat){//creat a new inventory and put all the result in it and return it
+        Inventory result = new Inventory();
+        int n = inventoryList.size();
+        for (int i = 0; i < n; i++) {
+            if (inventoryList.get(i).getCategory() == cat) {
+                result.getInventoryList().add(inventoryList.get(i));
+            }
+        }
+        return result;
+    }
+    public Inventory searchByText(String query){//creat a new inventory and put all the result in it and return it
+        Inventory result = new Inventory();
+        int n = inventoryList.size();
+        for (int i = 0; i < n; i++) {
+            if (inventoryList.get(i).getBookName().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
 
+            if (inventoryList.get(i).getAuthor().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
 
+            if (inventoryList.get(i).getPublisher().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
+
+            if (inventoryList.get(i).getComment().toLowerCase().contains(query.toLowerCase())) {
+                result.getInventoryList().add(inventoryList.get(i));
+                continue;
+            }
+
+        }
+        return result;
+    }
 }

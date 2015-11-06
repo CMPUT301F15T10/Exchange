@@ -16,6 +16,7 @@ import java.util.List;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
 
 
@@ -37,14 +38,15 @@ public class InventoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //I can't get this to work
-//        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-//        io.setFileName("GlobalENV");
-////        ArrayList<ModelEnvironment> LoadArray = io.loadFromFile();
-////        globalENV = LoadArray.get(0);
-//        globalENV = (ModelEnvironment) io.loadFromFile().get(0);
-        String json = getIntent().getStringExtra("User");
-        Gson gson = new Gson();
-        User InventoryOwner = gson.fromJson(json, User.class);
+        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+
+//        ArrayList<ModelEnvironment> LoadArray = io.loadFromFile();
+//        globalENV = LoadArray.get(0);
+        globalENV = io.loadEnvironment("GlobalENV");
+        User InventoryOwner = globalENV.getOwner();
+//        String json = getIntent().getStringExtra("User");
+//        Gson gson = new Gson();
+//        User InventoryOwner = gson.fromJson(json, User.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
