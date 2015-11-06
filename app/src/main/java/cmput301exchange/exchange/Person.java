@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @Author Yishuo, Chuck, Baihong Hang
  */
 
-public abstract class Person {
+public class Person {
 
     private String name;
     private String location;
