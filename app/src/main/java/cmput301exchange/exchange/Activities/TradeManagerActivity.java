@@ -28,7 +28,7 @@ public class TradeManagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trade_manager);
+        setContentView(R.layout.trade_manager_layout);
         myTradeManager= new TradeManager();
         initFragments();
         switchFragment(1);

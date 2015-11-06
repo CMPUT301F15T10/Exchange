@@ -41,7 +41,7 @@ public class TradeManagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        myView=inflater.inflate(R.layout.activity_edit_book, container, false);
+        myView=inflater.inflate(R.layout.activity_trade_manager, container, false);
         initButtons();
         initTextView();
         return myView;

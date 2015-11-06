@@ -57,7 +57,7 @@ public class ItemsTradeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        myView=inflater.inflate(R.layout.activity_trade, container, false);
+        myView=inflater.inflate(R.layout.activity_trade_items_inventory, container, false);
         initButtons();
         initAdapter();
         initListView();
