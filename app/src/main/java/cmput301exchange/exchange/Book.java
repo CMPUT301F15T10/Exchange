@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 import cmput301exchange.exchange.Interfaces.Shareable;
 /**
- * @Author: Charles Laing
- * @version: 1.0.0
+
  * Book is the object that makes up the inventory class
  * Book book = new Book(){
  *     book.updateTitle("Harry Potter");
@@ -15,7 +14,8 @@ import cmput301exchange.exchange.Interfaces.Shareable;
  *     ...
  *
  * }
- *
+ * @Author: Charles Laing
+ * @version: 1.0.0
  */
 public class Book implements Shareable, Comparable<Book> {
 
