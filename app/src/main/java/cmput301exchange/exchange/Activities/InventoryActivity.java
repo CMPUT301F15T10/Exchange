@@ -79,7 +79,7 @@ public class InventoryActivity extends AppCompatActivity {
                 Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
-
+                lv.setAdapter(arrayAdapter);
                 List<Book> bookListUpdate =  InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList();
                 arrayAdapter.clear();
                 arrayAdapter.addAll(bookListUpdate);
