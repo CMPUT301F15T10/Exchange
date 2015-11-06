@@ -5,7 +5,7 @@ import java.util.ArrayList;
  *
  * Serves as an abstraction to allow ease of differentiation between User and Friend.
  * Extends person
- * @author: Yishuo
+ * @author: Yishuo Hang
  * @param Username the name of the friend you wish to create
  */
 

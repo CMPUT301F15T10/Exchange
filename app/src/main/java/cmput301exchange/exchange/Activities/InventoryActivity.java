@@ -78,11 +78,11 @@ public class InventoryActivity extends AppCompatActivity {
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
                 //show the result for the sort
-                //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
-
-//                bookList.clear();
-//                bookList.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
-//                arrayAdapter.notifyDataSetChanged();
+                arrayAdapter.notifyDataSetChanged();
+                bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
+                bookList.clear();
+                bookList.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
+                arrayAdapter.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub

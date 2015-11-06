@@ -5,7 +5,7 @@ import java.util.Collections;
 /**
  *
  * Stores a list of friends
- * @author Baihong
+ * @author Baihong Hang
  */
 
 
@@ -53,6 +53,7 @@ public class FriendList{
     }
     /**
      * Removes a friend
+     * remove by id, since id is unique
      * @param aperson the person you wish to remove from the friendslist
      */
     public void removefirend(Person aperson){
