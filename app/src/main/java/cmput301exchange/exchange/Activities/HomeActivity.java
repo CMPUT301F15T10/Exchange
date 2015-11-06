@@ -19,7 +19,6 @@ import org.w3c.dom.Text;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
 
-import cmput301exchange.exchange.ProfileDetails;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;

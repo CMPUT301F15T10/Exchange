@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
