@@ -4,17 +4,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.FriendList;
 import cmput301exchange.exchange.R;
 public class ViewPersonActivity extends AppCompatActivity {
 
     private ListView lv;
+    private FriendList userfriendlist;
+    private FriendList personlist;
+    ArrayAdapter<String> arrayAdapter;
+    List<String> displaylist= new ArrayList<String>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +34,25 @@ public class ViewPersonActivity extends AppCompatActivity {
 
         lv = (ListView) findViewById(R.id.listView2);
 
-        List<String> person_list = new ArrayList<String>();
+
+
+
+
+
+        final List<String> person_list = new ArrayList<String>();
         person_list.add("Person1");
         person_list.add("Person2");
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+
+        final List<String> friend_list = new ArrayList<String>();
+        friend_list.add("friend1");
+
+
+
+        arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
-                person_list );
+                displaylist);
 
         lv.setAdapter(arrayAdapter);
 
@@ -42,7 +64,60 @@ public class ViewPersonActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //on selecting a spinner item
+                String cat = parent.getItemAtPosition(position).toString();
+                // Showing selected spinner item
+                Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
+                //show the result for the sort
+
+                switch (cat){
+                    case "Friends":
+                        arrayAdapter.clear();
+                        arrayAdapter.addAll(friend_list);
+                        arrayAdapter.notifyDataSetChanged();
+                        break;
+                    case "All People":
+                        arrayAdapter.clear();
+                        arrayAdapter.addAll(person_list);
+                        arrayAdapter.notifyDataSetChanged();
+                        break;
+                }
+            }
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

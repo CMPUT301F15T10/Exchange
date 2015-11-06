@@ -6,10 +6,10 @@ import java.util.ArrayList;
 /**
  *
  * Representation of a user. Is inhereted by friend and User
- * @Author Yishuo, Chuck, Baihong
+ * @Author Yishuo, Chuck, Baihong Hang
  */
 
-public abstract class Person {
+public class Person {
 
     private String name;
     private String location;
