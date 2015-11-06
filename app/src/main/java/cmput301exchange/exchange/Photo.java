@@ -10,16 +10,13 @@ import java.util.Observable;
 
 
 import cmput301exchange.exchange.Interfaces.Observer;
-
-
 /**
- * by kstember on 11/4/15.
+ * @author Kaleb
+ * Represents a photo that is attached to each item
  */
+
 public class Photo extends Observable {
-    /**
-     * @author Kaleb
-     * Represents a photo that is attached to each item
-     */
+
     private volatile ArrayList<Observer> observers = new ArrayList<Observer>();
     private static final String RESOURCE_URL = "http://cmput301.softwareprocess.es:8080/testing/";
 

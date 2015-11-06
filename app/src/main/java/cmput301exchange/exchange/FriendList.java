@@ -2,17 +2,15 @@ package cmput301exchange.exchange;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-
 /**
- * Created by bq on 10/31/15.
+ * @author Baihong
+ * Stores a list of friends
+ *
  */
+
+
 public class FriendList{
-    /**
-     * @author Baihong
-     * Stores a list of friends
-     *
-     */
+
     private ArrayList<Person> friendlist;
 
     public ArrayList<Person> getFriendlist() {

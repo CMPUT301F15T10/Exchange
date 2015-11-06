@@ -2,9 +2,6 @@ package cmput301exchange.exchange;
 
 import java.util.ArrayList;
 
-/**
- * Created by Yishuo Wang on 2015/10/9.
- */
 
 /*
 NOTES:
@@ -17,13 +14,14 @@ NOTES:
  */
 
 // TODO send email
+/**
+ * @Author Yishuo
+ * @version 0.0.1
+ * Instantiate this to deal with trades.
+ *
+ */
 public class TradeManager {
-    /**
-     * @Author Yishuo
-     * @version 0.0.1
-     * Instantiate this to deal with trades.
-     *
-     */
+
     /*
     private ArrayList<String> listPastTradeOwner;
     private ArrayList<String> listCurrentTradeOwner;

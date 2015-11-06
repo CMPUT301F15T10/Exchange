@@ -5,32 +5,32 @@ import android.graphics.Picture;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Interfaces.Shareable;
-
+/**
+ * @Author: Charles Laing
+ * @version: 1.0.0
+ * Book is the object that makes up the inventory class
+ * It contains:
+ *  Title
+ *  Genre
+ *  Author
+ *  Publisher
+ *  Photo
+ *  Quality
+ *  Quantity
+ *  Category
+ *  Comment
+ *  Shareable?
+ *
+ * Book book = new Book(){
+ *     book.updateTitle("Harry Potter");
+ *     book.updateAuthor("J.K Rowling");
+ *     ...
+ *
+ * }
+ *
+ */
 public class Book implements Shareable, Comparable<Book> {
-    /**
-     * @Author: Charles Laing
-     * @version: 1.0.0
-     * Book is the object that makes up the inventory class.
-     * It contains:
-     *  Title
-     *  Genre
-     *  Author
-     *  Publisher
-     *  Photo
-     *  Quality
-     *  Quantity
-     *  Category
-     *  Comment
-     *  Shareable?
-     *
-     * Book book = new Book(){
-     *     book.updateTitle("Harry Potter");
-     *     book.updateAuthor("J.K Rowling");
-     *     ...
-     *
-     * }
-     *
-     */
+
     private String bookName; // Required
     private String genre; //String to Contain Genre. A spinner is used to set this, so don't worry about the 10 requirement.
     private int genreID; // Required

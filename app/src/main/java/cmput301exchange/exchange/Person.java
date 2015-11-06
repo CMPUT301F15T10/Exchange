@@ -3,16 +3,14 @@ package cmput301exchange.exchange;
 import android.graphics.Picture;
 
 import java.util.ArrayList;
-
 /**
- * Created by Yishuo Wang on 2015/10/5.
+ * @Author Yishuo, Chuck, Baihong
+ * Representation of a user. Is inhereted by friend and User
+ *
  */
+
 public abstract class Person {
-    /**
-     * @Author Yishuo, Chuck, Baihong
-     * Representation of a user. Is inhereted by friend and User
-     *
-     */
+
     private String name;
     private String location;
     private int ID;
