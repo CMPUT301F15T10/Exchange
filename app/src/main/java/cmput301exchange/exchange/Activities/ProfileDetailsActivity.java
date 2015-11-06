@@ -38,7 +38,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         location = (TextView)findViewById(R.id.profileLocationDetails);
 
         name.setText(user.getName());
-        // phone.setText(Long.toString(user.getPhoneNumber())); will need to check if long!=NULL
+        phone.setText(user.getPhoneNumber());
         email.setText(user.getEmail());
         location.setText(user.getLocation());
 

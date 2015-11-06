@@ -46,24 +46,24 @@ public class Login extends AppCompatActivity {
         globalENV = io.loadEnvironment("GlobalENV");
         globalENV.setOwner(userString);
 
-//        try{
-//            globalENV = io.loadEnvironment("GlobalENV");
-//            globalENV.getOwner();
-//
-//        }catch(Exception e){
-//            globalENV.setOwner(username.getText().toString());
-//        }
+        //        try{
+        //            globalENV = io.loadEnvironment("GlobalENV");
+        //            globalENV.getOwner();
+        //
+        //        }catch(Exception e){
+        //            globalENV.setOwner(username.getText().toString());
+        //        }
 
 
 
         io.saveEnvironment("GlobalENV", globalENV);
-//        String json = gson.toJson(globalENV);
+        //        String json = gson.toJson(globalENV);
         //I can't get this to work
-//        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
-//        WriteModel.setFileName("GlobalENV");
-//        ArrayList sendenv = new ArrayList();
-//        sendenv.add(globalENV);
-//        WriteModel.saveInFile(false,sendenv);
+        //        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
+        //        WriteModel.setFileName("GlobalENV");
+        //        ArrayList sendenv = new ArrayList();
+        //        sendenv.add(globalENV);
+        //        WriteModel.saveInFile(false,sendenv);
 
 
         Intent intent = new Intent(this, HomeActivity.class);
