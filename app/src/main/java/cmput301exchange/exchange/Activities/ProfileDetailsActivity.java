@@ -3,17 +3,46 @@ package cmput301exchange.exchange.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.User;
 
-public class ProfileDetailsActivity extends Activity {
+public class ProfileDetailsActivity extends AppCompatActivity {
+
+    public ModelEnvironment GlobalENV = new ModelEnvironment();
+
+    protected TextView name, phone, email, location;
+
+    // TODO: implement photo once available
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+        GlobalENV = io.loadEnvironment("GlobalENV");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
+
+        User user = GlobalENV.getOwner();
+
+        name = (TextView)findViewById(R.id.profileNameDetails);
+        phone = (TextView)findViewById(R.id.profilePhoneDetails);
+        email = (TextView)findViewById(R.id.profileEmailDetails);
+        location = (TextView)findViewById(R.id.profileLocationDetails);
+
+        name.setText(user.getName());
+        phone.setText(user.getPhoneNumber());
+        email.setText(user.getEmail());
+        location.setText(user.getLocation());
+
+        io.saveEnvironment("GlobalENV", GlobalENV);
 
     }
 

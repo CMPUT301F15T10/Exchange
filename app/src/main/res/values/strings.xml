@@ -61,5 +61,6 @@
     <string name="email">Email</string>
     <string name="location">Location</string>
     <string name="profile_image">Profile Image</string>
+    <string name="done">Done</string>
 
 </resources>

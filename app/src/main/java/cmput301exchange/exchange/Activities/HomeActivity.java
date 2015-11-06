@@ -19,7 +19,6 @@ import org.w3c.dom.Text;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
 
-import cmput301exchange.exchange.EditProfile;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
@@ -27,6 +26,9 @@ import cmput301exchange.exchange.ViewPerson;
 
 public class HomeActivity extends AppCompatActivity {
     ModelEnvironment GlobalENV;
+
+    protected User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class HomeActivity extends AppCompatActivity {
 //        assert(globalENV != null);
         DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
         GlobalENV = io.loadEnvironment("GlobalENV");
+
+        user = GlobalENV.getOwner();
 
 
         setContentView(R.layout.activity_home);
@@ -47,17 +51,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void inventory(View view) {
-        User user = GlobalENV.getOwner();
-
-        //Make some new books to fake the data
-        Book book = new Book();
-        Book book1 = new Book();
-        book.updateTitle("Anarchists Cookbook");
-        book.updateAuthor("ljnasjdkjasdf");
-        user.getMyInventory().add(book);
-        book1.updateTitle("How to SMoke DaNk MeMeS BrO");
-        book1.updateAuthor("Xx_JuStIn TrUdEaU_xX");
-        user.getMyInventory().add(book1);
 
         Gson gson = new Gson();
         String json = gson.toJson(user);
@@ -93,11 +86,17 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         // TODO pass through intent the current user's profile
         if (id == R.id.action_view_profile) {
-            Intent intent = new Intent(this, ProfileDetailsActivity.class);
+            Gson gson = new Gson();
+            String json = gson.toJson(user);
+
+            Intent intent = new Intent(this, ProfileDetailsActivity.class).putExtra("User",json);
             startActivity(intent);
         }
         if (id == R.id.action_edit_profile) {
-            Intent intent = new Intent(this, EditProfileActivity.class);
+            Gson gson = new Gson();
+            String json = gson.toJson(user);
+
+            Intent intent = new Intent(this, EditProfileActivity.class).putExtra("User",json);
             startActivity(intent);
         }
         if (id == R.id.action_settings) {
