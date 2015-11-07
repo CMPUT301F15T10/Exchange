@@ -8,9 +8,9 @@ package cmput301exchange.exchange;
  */
 public class ModelEnvironment {
 
-    private User owner;
+    private static User owner;
 
-    public User getOwner() {
+    public static User getOwner() {
         /**
          * Returns the user that is stored as the "main" user of the app
          */

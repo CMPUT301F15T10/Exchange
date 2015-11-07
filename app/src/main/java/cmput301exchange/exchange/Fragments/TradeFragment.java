@@ -2,8 +2,10 @@ package cmput301exchange.exchange.Fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.test.ActivityInstrumentationTestCase2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,9 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.Activities.TradeManagerActivity;
 import cmput301exchange.exchange.Controllers.TradeController;
 import cmput301exchange.exchange.Interfaces.ListItemRunnable;
+import cmput301exchange.exchange.Interfaces.TradeMaker;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
+import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Trade;
 import cmput301exchange.exchange.TradeManager;
@@ -28,7 +32,7 @@ import cmput301exchange.exchange.TradeManager;
  */
 public class TradeFragment extends Fragment {
     private int FragmentID=2;
-    private TradeManagerActivity myActivity;
+    private TradeMaker myActivity;
     private View myView;
     private Button confirm,abort,tradeItems,checkTradeRequest;
     private TextView tradeStatusView,tradeIDView;
@@ -40,6 +44,7 @@ public class TradeFragment extends Fragment {
     private String traderName=null;
     private Trade myTrade;
     private TradeManager myTradeManager;
+    private Person tradePartner=null;
 
     public TradeFragment() {
         // Required empty public constructor
@@ -49,14 +54,28 @@ public class TradeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initTrade();
-        myTradeManager=myActivity.getTradeManager();
-        myTradeController= new TradeController(myTrade,myTradeManager);
+        initTradePartner();
+
     }
 
     public void initTrade(){
+        myTradeManager=myActivity.getTradeManager();
         myTrade=myActivity.getTrade();
-        if (myTrade==null){
-            myTrade=new Trade();
+//        if (myTrade==null){
+//            throw new RuntimeException("NULLSSS");
+//        }
+        myTradeController= new TradeController(myTrade,myTradeManager);
+
+    }
+
+    void initTradePartner(){
+        if(myActivity.IsNewTrade()==false){
+            myTradeController.setTradePartner(myActivity.getTradePartner());
+            traderName=myActivity.getTradePartner().getName();
+        }
+        else{
+            myTradeController.setTradePartner(null);
+            traderName="No Trade Partner Selected!";
         }
     }
 
@@ -123,7 +142,7 @@ public class TradeFragment extends Fragment {
 
     public void initAdapter() {
         spinnerAdapter =
-                new ArrayAdapter<>(myActivity, android.R.layout.simple_spinner_item, spinnerItems);
+                new ArrayAdapter<>((Context) myActivity, android.R.layout.simple_spinner_item, spinnerItems);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
     }
@@ -131,10 +150,15 @@ public class TradeFragment extends Fragment {
     public void initSpinner(){
         traderSelection= (Spinner) myView.findViewById(R.id.Trade_spinner);
         traderSelection.setAdapter(spinnerAdapter);
-        traderSelection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        traderSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 ((ListItemRunnable) traderSelection.getItemAtPosition(i)).run(null);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
         initSpinnerItems();
@@ -172,7 +196,7 @@ public class TradeFragment extends Fragment {
     }
 
     public void initTextView(){
-        tradeStatusView= (TextView) myView.findViewById(R.id.TM_showRequest);
+        tradeStatusView= (TextView) myView.findViewById(R.id.Trade_status);
         tradeIDView= (TextView) myView.findViewById(R.id.Trade_ID);
 //        updateTextView();
     }
@@ -212,7 +236,7 @@ public class TradeFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        myActivity = (TradeManagerActivity) activity;
+        myActivity = (TradeMaker) activity;
     }
 
     public void exit(){

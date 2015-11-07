@@ -10,11 +10,13 @@ import cmput301exchange.exchange.Fragments.ItemsTradeFragment;
 import cmput301exchange.exchange.Fragments.TradeFragment;
 import cmput301exchange.exchange.Fragments.TradeListFragment;
 import cmput301exchange.exchange.Fragments.TradeManagerFragment;
+import cmput301exchange.exchange.Interfaces.TradeMaker;
+import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Trade;
 import cmput301exchange.exchange.TradeManager;
 
-public class TradeManagerActivity extends AppCompatActivity {
+public class TradeManagerActivity extends AppCompatActivity implements TradeMaker {
     private FragmentManager fm;
     private FragmentTransaction fm_T;
     private TradeFragment myTradeFragment;
@@ -22,8 +24,9 @@ public class TradeManagerActivity extends AppCompatActivity {
     private ItemsTradeFragment myItemsTradeFragment;
     private TradeManagerFragment myTradeManagerFragment;
     private TradeManager myTradeManager;
-    private Trade myTrade;
+    private Trade myTrade=null;
     private int fragmentLayoutID=R.id.tradeManager_fragmentLayout, tradeListFlag=0;
+    private Person tradePartner=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,7 @@ public class TradeManagerActivity extends AppCompatActivity {
 
 //        fm_T.addToBackStack(null);
         fm_T.commit();
-        fm.executePendingTransactions();
+//        fm.executePendingTransactions();
     }
 
     //TODO
@@ -127,6 +130,15 @@ public class TradeManagerActivity extends AppCompatActivity {
 
     public ItemsTradeFragment getItemsTradeFragment(){
         return myItemsTradeFragment;
+    }
+
+
+    public Person getTradePartner(){
+        return tradePartner;
+    }
+
+    public boolean IsNewTrade(){
+        return true;
     }
 
 }
