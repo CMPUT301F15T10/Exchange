@@ -5,6 +5,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/*
+activity for display item details
+usage see the story board
+
+
+
+
+
+ */
+
 public class ItemDetails extends ActionBarActivity {
 
     @Override

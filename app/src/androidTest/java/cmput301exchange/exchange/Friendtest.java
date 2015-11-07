@@ -48,7 +48,7 @@ public class Friendtest extends ApplicationTestCase<Application> {
         FriendList friends = new FriendList();
         assert(friends.getFriendlist().size()==0);
         Friend aguy = new Friend("Test testly");
-        aguy.setPhoneNumber((long)780780780);
+        aguy.setPhoneNumber("780780780");
         aguy.setLocation("University");
         aguy.setEmail("test@ualebrta.ca");
         friends.addfriend(aguy);

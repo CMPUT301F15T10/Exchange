@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cmput301exchange.exchange.Book;
@@ -37,7 +38,7 @@ public class InventoryActivity extends AppCompatActivity {
     private ListView lv;
     public ModelEnvironment globalENV = new ModelEnvironment();
     protected ArrayAdapter<Book> arrayAdapter;
-    protected List<Book> bookList;
+    protected ArrayList<Book> bookList = new ArrayList<Book>();
     protected User InventoryOwner;
 
 
@@ -55,7 +56,7 @@ public class InventoryActivity extends AppCompatActivity {
         lv = (ListView) findViewById(R.id.listView3);
 
 
-        bookList = InventoryOwner.getMyInventory().getInventoryList();
+        bookList.addAll(InventoryOwner.getMyInventory().getInventoryList());
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bookList );
 
@@ -76,13 +77,11 @@ public class InventoryActivity extends AppCompatActivity {
                 //on selecting a spinner item
                 String cat = parent.getItemAtPosition(position).toString();
                 // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
+                //Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
-                lv.setAdapter(arrayAdapter);
-                List<Book> bookListUpdate =  InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList();
-                arrayAdapter.clear();
-                arrayAdapter.addAll(bookListUpdate);
+                bookList.clear();
+                bookList.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
                 arrayAdapter.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {

@@ -41,7 +41,7 @@ public class Trade {
      * @param listBookUser List of the books the User is offering
      * @param listbookPartner List of books the partner is offering
      */
-    public Trade(Person tradeUser, Person tradePartner, ArrayList<Book> listBookUser, ArrayList<Book> listBookPartner) {
+    public Trade(Person tradeUser, Person tradePartner, ArrayList<Book> listBookUser, ArrayList<Book> listBookPartner) {//to creat a trade, include traders, items and booklist for both side
 
         this.tradeUser = tradeUser;
         this.tradePartner = tradePartner;

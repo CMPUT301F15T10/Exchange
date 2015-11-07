@@ -28,7 +28,7 @@
         android:id="@+id/textView21"
         android:layout_below="@+id/view"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="83dp"
         android:textColor="#111"
         android:textSize="20dp" />
 
