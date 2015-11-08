@@ -20,7 +20,6 @@ public class TradeController {
     public TradeController(Trade trade, TradeManager tradeManager){
         if (trade==null){
             createTrade();
-//            throw new RuntimeException("es");
         } else {
             myTrade = trade;
         }
@@ -29,7 +28,7 @@ public class TradeController {
 
     public void createTrade(){
         myTrade=new Trade();
-        myTrade.setTradeUser(ModelEnvironment.getOwner());
+        myTrade.setTradeUser(ModelEnvironment.getOwner_static());
         myTrade.setTradePartner(partner);
         myTrade.setTradeType(0); // By default
         myTrade.setTradeStatus(0);

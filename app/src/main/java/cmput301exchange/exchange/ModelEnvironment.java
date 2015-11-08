@@ -8,9 +8,10 @@ package cmput301exchange.exchange;
  */
 public class ModelEnvironment {
 
-    private static User owner;
+    private User owner;
+    private static User owner_static;
 
-    public static User getOwner() {
+    public User getOwner() {
         /**
          * Returns the user that is stored as the "main" user of the app
          */
@@ -22,6 +23,14 @@ public class ModelEnvironment {
          * Sets the main owner of the application
          */
         owner = new User(username);
+        owner_static=owner;
+    }
+
+    public static User getOwner_static(){
+        /**
+         * Returns a static copy of owner, so that the owner doesnt need to be initialized multiple times.
+         */
+        return owner_static;
     }
 
     private static final ModelEnvironment MODEL_ENVIRONMENT = new ModelEnvironment();
