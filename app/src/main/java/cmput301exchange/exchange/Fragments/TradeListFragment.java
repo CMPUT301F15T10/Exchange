@@ -32,7 +32,7 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
     private TradeManagerActivity myActivity;
     private View myView;
     private ArrayAdapter<Trade> tradeListAdapter;
-    private ArrayList<Trade> tradeList= new ArrayList<>();
+    private ArrayList<Trade> tradeList;
     private Trade myTrade;
     private TradeManager myTradeManager;
     private ListView tradeListView;
@@ -55,9 +55,11 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tradeList=new ArrayList<>();
         setQueryType(myActivity.getTradeListFlag());
         myTradeManager=myActivity.getTradeManager();
         myTradeListController= new TradeListController(myTradeManager,getQueryType(),myActivity);
+        getOriginalTradeList();
     }
 
 
@@ -106,7 +108,6 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
         tradeListView.setAdapter(tradeListAdapter);
         tradeListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             Trade trade;
-
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 trade = (Trade) tradeListView.getItemAtPosition(i);
@@ -120,7 +121,6 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
                              Bundle savedInstanceState) {
 
         myView=inflater.inflate(R.layout.activity_trade_listing, container, false);
-        getOriginalTradeList();
         initAdapter();
         initListView();
         initSearchView();

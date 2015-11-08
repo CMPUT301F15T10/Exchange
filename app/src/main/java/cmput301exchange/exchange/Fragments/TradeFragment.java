@@ -40,10 +40,9 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     private CharSequenceWrapper tradeStatus=null, tradeID=null;
     private TradeController myTradeController;
     private ArrayAdapter<ListItemRunnable> spinnerAdapter;
-    private ArrayList<ListItemRunnable> spinnerItems= new ArrayList<>();
+    private ArrayList<ListItemRunnable> spinnerItems;
     private Spinner traderSelection;
     private String traderName=null;
-//    private Trade myTrade;
     private TradeManager myTradeManager;
     private Person tradePartner=null;
 
@@ -56,15 +55,12 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         super.onCreate(savedInstanceState);
         initTrade();
         initTradePartner();
-
+        spinnerItems= new ArrayList<>();
     }
 
     public void initTrade(){
         myTradeManager=myActivity.getTradeManager();
         Trade myTrade=myActivity.getTrade();
-//        if (myTrade==null){
-//            throw new RuntimeException("NULLSSS");
-//        }
         myTradeController= new TradeController(myTrade,myTradeManager);
 
     }
@@ -103,24 +99,17 @@ public class TradeFragment extends Fragment implements BackButtonListener {
                 confirm_Handler();
             }
         });
-
         abort.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 abort_Handler();
             }
         });
-
         tradeItems.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 tradeItems_Handler();
             }
         });
 
-//        checkTradeRequest.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                CheckRequest_Handler();
-//            }
-//        });
     }
     
     public void confirm_Handler(){
@@ -166,6 +155,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void initSpinnerItems(){
+        spinnerItems.add(null);
         updateTraderSpinnerItem();
         spinnerItems.add(new ListItemRunnable() {
             String text = "Choose new trade partner";
@@ -182,14 +172,15 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void updateTraderSpinnerItem(){
-        spinnerItems.add(0, new ListItemRunnable() {
-            String text=traderName;
+        spinnerItems.set(0, new ListItemRunnable() {
+            String text = traderName;
+
             @Override
             public void run(Object obj) {
 
             }
 
-            public String toString(){
+            public String toString() {
                 return text;
             }
         });
@@ -224,7 +215,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         }
 
         tradeStatusView.setText(tradeStatus);
-        tradeID.setText("Trade "+tradeID.toString());
+        tradeID.setText("Trade ID "+tradeID.toString());
         tradeIDView.setText(tradeID);
     }
 
