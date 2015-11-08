@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import cmput301exchange.exchange.Activities.TradeManagerActivity;
 import cmput301exchange.exchange.Controllers.TradeController;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Interfaces.ListItemRunnable;
 import cmput301exchange.exchange.Interfaces.TradeMaker;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
@@ -30,7 +31,7 @@ import cmput301exchange.exchange.TradeManager;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TradeFragment extends Fragment {
+public class TradeFragment extends Fragment implements BackButtonListener {
     private int FragmentID=2;
     private TradeMaker myActivity;
     private View myView;
@@ -42,7 +43,7 @@ public class TradeFragment extends Fragment {
     private ArrayList<ListItemRunnable> spinnerItems= new ArrayList<>();
     private Spinner traderSelection;
     private String traderName=null;
-    private Trade myTrade;
+//    private Trade myTrade;
     private TradeManager myTradeManager;
     private Person tradePartner=null;
 
@@ -60,7 +61,7 @@ public class TradeFragment extends Fragment {
 
     public void initTrade(){
         myTradeManager=myActivity.getTradeManager();
-        myTrade=myActivity.getTrade();
+        Trade myTrade=myActivity.getTrade();
 //        if (myTrade==null){
 //            throw new RuntimeException("NULLSSS");
 //        }
@@ -96,7 +97,6 @@ public class TradeFragment extends Fragment {
         confirm= (Button) myView.findViewById(R.id.Trade_confirm);
         abort= (Button) myView.findViewById(R.id.Trade_abort);
         tradeItems= (Button) myView.findViewById(R.id.Trade_viewItems);
-//        checkTradeRequest= (Button) myView.findViewById(R.id.TM_checkRequest);
 
         confirm.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -137,7 +137,7 @@ public class TradeFragment extends Fragment {
     
     public void tradeItems_Handler(){
         //Call TradeListFragment for displaying the items of the trade.
-        myActivity.displayItemsToTrade(myTrade);
+        myActivity.displayItemsToTrade(myTradeController.getTrade());
     }
 
     public void initAdapter() {
@@ -243,4 +243,9 @@ public class TradeFragment extends Fragment {
         myActivity.closeFragment(FragmentID);
     }
 
+    @Override
+    public void onBackPress() {
+        myActivity.setTrade(null);
+        myActivity.switchFragment(1); //switches back to tradeManager.
+    }
 }

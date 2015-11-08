@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.Activities.TradeManagerActivity;
 import cmput301exchange.exchange.Controllers.BooksTradeController;
 import cmput301exchange.exchange.Controllers.TradeListController;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Trade;
 import cmput301exchange.exchange.TradeManager;
@@ -26,7 +27,7 @@ import cmput301exchange.exchange.TradeManager;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TradeListFragment extends Fragment {
+public class TradeListFragment extends Fragment implements BackButtonListener {
     private int FragmentID=3;
     private TradeManagerActivity myActivity;
     private View myView;
@@ -37,8 +38,15 @@ public class TradeListFragment extends Fragment {
     private ListView tradeListView;
     private TradeListController myTradeListController;
     private SearchView tradeSearchView;
-    private int queryType=1;
+    private Integer queryType=null;
 
+    public Integer getQueryType() {
+        return queryType;
+    }
+
+    public void setQueryType(int queryType) {
+        this.queryType = queryType;
+    }
 
     public TradeListFragment() {
         // Required empty public constructor
@@ -47,8 +55,9 @@ public class TradeListFragment extends Fragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setQueryType(myActivity.getTradeListFlag());
         myTradeManager=myActivity.getTradeManager();
-        myTradeListController= new TradeListController(myTradeManager,0,myActivity);
+        myTradeListController= new TradeListController(myTradeManager,getQueryType(),myActivity);
     }
 
 
@@ -75,11 +84,11 @@ public class TradeListFragment extends Fragment {
     }
 
     public void getOriginalTradeList(){
-        tradeList=myTradeListController.getTradeRequestList();
+        tradeList=myTradeListController.getTradeList();
     }
 
     public void searchQuery(String query){
-        ArrayList<Trade> result=myTradeListController.searchTrade(query, queryType);
+        ArrayList<Trade> result=myTradeListController.searchTrade(query);
         if (result==null){
             getOriginalTradeList();
             return;
@@ -97,9 +106,10 @@ public class TradeListFragment extends Fragment {
         tradeListView.setAdapter(tradeListAdapter);
         tradeListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             Trade trade;
+
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                trade=(Trade) tradeListView.getItemAtPosition(i);
+                trade = (Trade) tradeListView.getItemAtPosition(i);
                 return false;
             }
         });
@@ -128,8 +138,8 @@ public class TradeListFragment extends Fragment {
         myActivity = (TradeManagerActivity) activity;
     }
 
-    public void exit(){
-        myActivity.closeFragment(FragmentID);
+    @Override
+    public void onBackPress() {
+        myActivity.switchFragment(1);
     }
-
 }

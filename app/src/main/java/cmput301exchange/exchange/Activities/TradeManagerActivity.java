@@ -10,6 +10,7 @@ import cmput301exchange.exchange.Fragments.ItemsTradeFragment;
 import cmput301exchange.exchange.Fragments.TradeFragment;
 import cmput301exchange.exchange.Fragments.TradeListFragment;
 import cmput301exchange.exchange.Fragments.TradeManagerFragment;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Interfaces.TradeMaker;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
@@ -25,8 +26,18 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private TradeManagerFragment myTradeManagerFragment;
     private TradeManager myTradeManager;
     private Trade myTrade=null;
-    private int fragmentLayoutID=R.id.tradeManager_fragmentLayout, tradeListFlag=0;
+    private int fragmentLayoutID=R.id.tradeManager_fragmentLayout;
     private Person tradePartner=null;
+    private BackButtonListener currentFragment;
+    private Integer tradeListFlag=null;
+
+    public Integer getTradeListFlag() {
+        return tradeListFlag;
+    }
+
+    public void setTradeListFlag(int tradeListFlag) {
+        this.tradeListFlag = tradeListFlag;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +70,19 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
         if (flag==1){
             fm_T.replace(fragmentLayoutID,myTradeManagerFragment);
+            currentFragment= myTradeManagerFragment;
         }
         if (flag==2){
             fm_T.replace(fragmentLayoutID,myTradeFragment);
+            currentFragment= myTradeFragment;
         }
         if (flag==3){
             fm_T.replace(fragmentLayoutID,myTradeListFragment);
+            currentFragment= myTradeListFragment;
         }
         if (flag==4){
             fm_T.replace(fragmentLayoutID,myItemsTradeFragment);
+            currentFragment= myItemsTradeFragment;
         }
 
 //        fm_T.addToBackStack(null);
@@ -78,12 +93,14 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     //TODO
     public void displayCurrentTrades(){
         // Set TradeListFragment for displaying current trades
+        setTradeListFlag(1);
         switchFragment(3);
     }
 
     //TODO
     public void displayPastTrades(){
         // // Set TradeListFragment for displaying past trades
+        setTradeListFlag(2);
         switchFragment(3);
     }
 
@@ -95,7 +112,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     //TODO
     public void displayTradeRequests(){
         // Set ItemsTradeFragment for displaying current trades
-        switchFragment(2);
+        setTradeListFlag(3);
+        switchFragment(3);
     }
 
     public void displayItemsToTrade(Trade trade){
@@ -116,6 +134,10 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         return myTrade;
     }
 
+    public void setTrade(Trade trade){
+        myTrade=trade;
+    }
+
     public TradeManagerFragment getTradeManagerFragment(){
         return myTradeManagerFragment;
     }
@@ -132,13 +154,24 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         return myItemsTradeFragment;
     }
 
-
     public Person getTradePartner(){
         return tradePartner;
     }
 
     public boolean IsNewTrade(){
         return true;
+    }
+
+    public void setCurrentFragment(BackButtonListener fragment){
+        currentFragment=fragment;
+    }
+    @Override
+    public void onBackPressed(){
+        if (currentFragment!=null){
+            currentFragment.onBackPress();
+        } else{
+            super.onBackPressed();
+        }
     }
 
 }

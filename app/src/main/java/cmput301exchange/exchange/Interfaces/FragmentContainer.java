@@ -6,4 +6,5 @@ package cmput301exchange.exchange.Interfaces;
 public interface FragmentContainer {
     void switchFragment(int flag);
     void closeFragment(int fragmentID);
+    void onBackPressed();
 }

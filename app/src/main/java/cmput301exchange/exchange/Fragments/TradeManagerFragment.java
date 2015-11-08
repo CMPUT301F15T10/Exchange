@@ -12,13 +12,14 @@ import android.widget.TextView;
 
 import cmput301exchange.exchange.Activities.TradeManagerActivity;
 import cmput301exchange.exchange.Controllers.TradeManagerController;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
 import cmput301exchange.exchange.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TradeManagerFragment extends Fragment {
+public class TradeManagerFragment extends Fragment implements BackButtonListener {
 
     private TradeManagerActivity myActivity;
     private View myView;
@@ -119,5 +120,11 @@ public class TradeManagerFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         myActivity = (TradeManagerActivity) activity;
+    }
+
+    @Override
+    public void onBackPress() {
+        myActivity.setCurrentFragment(null);
+        myActivity.onBackPressed();
     }
 }

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.Activities.TradeManagerActivity;
 import cmput301exchange.exchange.Controllers.BooksTradeController;
 import cmput301exchange.exchange.Controllers.TradeController;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
+import cmput301exchange.exchange.Interfaces.TradeMaker;
 import cmput301exchange.exchange.Item;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
 import cmput301exchange.exchange.R;
@@ -26,10 +28,10 @@ import cmput301exchange.exchange.TradeManager;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemsTradeFragment extends Fragment {
+public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
     private int FragmentID=4;
-    private TradeManagerActivity myActivity;
+    private TradeMaker myActivity;
     private View myView;
     private Button myAddItem,friendAddItem;
     private ArrayAdapter<String> myItemAdapter, friendItemAdapter;
@@ -66,10 +68,10 @@ public class ItemsTradeFragment extends Fragment {
 
     public void initAdapter() {
         myItemAdapter =
-                new ArrayAdapter<>(myActivity, R.layout.list_item, myItems);
+                new ArrayAdapter<>((Activity)myActivity, R.layout.list_item, myItems);
 
         friendItemAdapter =
-                new ArrayAdapter<>(myActivity, R.layout.list_item, friendItems);
+                new ArrayAdapter<>((Activity)myActivity, R.layout.list_item, friendItems);
     }
     
     public void initListView(){
@@ -104,10 +106,12 @@ public class ItemsTradeFragment extends Fragment {
         friendItemAdapter.notifyDataSetChanged();
     }
 
+    //TODO
     public void myAddItem_Handler(){
         
     }
-    
+
+    //TODO
     public void friendAddItem_Handler(){
         
     }
@@ -123,9 +127,8 @@ public class ItemsTradeFragment extends Fragment {
         myActivity = (TradeManagerActivity) activity;
     }
 
-    public void exit(){
-        myActivity.closeFragment(FragmentID);
+    @Override
+    public void onBackPress() {
+        myActivity.switchFragment(2);
     }
-
-
 }

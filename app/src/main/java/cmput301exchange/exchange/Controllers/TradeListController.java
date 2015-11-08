@@ -1,9 +1,11 @@
 package cmput301exchange.exchange.Controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
+import cmput301exchange.exchange.Interfaces.Searchable;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.Serializers.DataIO;
@@ -17,37 +19,43 @@ public class TradeListController {
 
     private TradeManager myTradeManager;
     private Integer mode;
-    private Context myContext;
-    private ModelEnvironment GlobalENV;
+//    private Context myContext;
+//    private ModelEnvironment GlobalENV;
     private Person owner;
+    private ArrayList<Trade> myTradeList;
+    private Searchable searcher;
 
     public TradeListController(TradeManager tradeManager, int mode,Context context){
         myTradeManager=tradeManager;
         this.mode=mode;
-        this.myContext=context;
-        initEnv();
+        owner=ModelEnvironment.getOwner_static();
+        initTradeList();
     }
 
-    public void initEnv(){
-        DataIO io = new DataIO(myContext,ModelEnvironment.class);
-        GlobalENV = io.loadEnvironment("GlobalENV");
-        owner=GlobalENV.getOwner();
+    public void initTradeList(){
+        if (mode==1) {
+             myTradeList=myTradeManager.getListCurrentTrade(); //current trade
+        }
+        if (mode==2){
+            myTradeList=myTradeManager.getListPastTrade(); //past trade
+        }
+        if (mode==3){
+            myTradeList=myTradeManager.getListTradeRequest(owner); //trade requests
+        }
     }
 
-    public ArrayList<Trade> getTradeRequestList(){
-        return myTradeManager.getListTradeRequest(owner);
+    public ArrayList<Trade> getTradeList(){
+        return myTradeList;
     }
 
     //Todo
-    public ArrayList<Trade> searchTrade(String query, int flag){
+    //Figure out how to use searcher for searching through tradelist.
+    public ArrayList<Trade> searchTrade(String query){
+        Log.e("search query: ",query);
         if (query==""){
             return null;
         }
-        ArrayList<Trade> result= new ArrayList<>();
-        if (flag==1){
-            int ID=Integer.parseInt(query);
-            // Add searching logic for int ID
-        }
+        ArrayList<Trade> result= (ArrayList<Trade>) searcher.Search(query);
         //Add searching based on other kind of values for different flags
         return result;
     }

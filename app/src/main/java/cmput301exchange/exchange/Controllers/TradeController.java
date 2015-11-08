@@ -67,5 +67,11 @@ public class TradeController {
         }
     }
 
+    public void setTrade(Trade trade){
+        myTrade=trade;
+    }
 
+    public Trade getTrade(){
+        return myTrade;
+    }
 }
