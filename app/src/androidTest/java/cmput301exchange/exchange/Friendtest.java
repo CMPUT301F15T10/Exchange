@@ -16,7 +16,7 @@ public class Friendtest extends ApplicationTestCase<Application> {
     }
 
     public void testAdd(){
-        FriendList friends = new FriendList();
+        PersonList friends = new PersonList();
         //assert(friends.getFriendlist().size()==0);
         assertEquals(friends.getFriendlist().size(), 0);
         Friend aguy = new Friend("Test testly");
@@ -28,7 +28,7 @@ public class Friendtest extends ApplicationTestCase<Application> {
 
     }
     public void testRm(){
-        FriendList friends = new FriendList();
+        PersonList friends = new PersonList();
         //assert(friends.getFriendlist().size()==0);
         assertEquals(friends.getFriendlist().size(),0);
         Friend aguy = new Friend("Test testly");
@@ -45,7 +45,7 @@ public class Friendtest extends ApplicationTestCase<Application> {
     }
 
     public void testViewP(){
-        FriendList friends = new FriendList();
+        PersonList friends = new PersonList();
         assert(friends.getFriendlist().size()==0);
         Friend aguy = new Friend("Test testly");
         aguy.setPhoneNumber("780780780");

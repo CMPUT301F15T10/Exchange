@@ -23,6 +23,7 @@ import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
+import cmput301exchange.exchange.Person;
 
 
 public class InventoryActivity extends AppCompatActivity {
@@ -39,24 +40,23 @@ public class InventoryActivity extends AppCompatActivity {
     public ModelEnvironment globalENV = new ModelEnvironment();
     protected ArrayAdapter<Book> arrayAdapter;
     protected ArrayList<Book> bookList = new ArrayList<Book>();
-    protected User InventoryOwner;
+    protected Person person;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-        globalENV = io.loadEnvironment("GlobalENV");
-
-        InventoryOwner = globalENV.getOwner();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
+        Intent intent = getIntent();
+        String person_json = intent.getStringExtra("Person");
+        Gson gson = new Gson();
+        person=gson.fromJson(person_json,Person.class);
+
         lv = (ListView) findViewById(R.id.listView3);
 
-
-        bookList.addAll(InventoryOwner.getMyInventory().getInventoryList());
+        bookList.addAll(person.getMyInventory().getInventoryList());
 
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bookList );
 
@@ -81,7 +81,7 @@ public class InventoryActivity extends AppCompatActivity {
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
                 bookList.clear();
-                bookList.addAll(InventoryOwner.getMyInventory().searchByCategory(cat).getInventoryList());
+                bookList.addAll(person.getMyInventory().searchByCategory(cat).getInventoryList());
                 arrayAdapter.notifyDataSetChanged();
             }
             public void onNothingSelected(AdapterView<?> parent) {

@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String json = gson.toJson(user);
 
-        Intent intent = new Intent(this, InventoryActivity.class).putExtra("User",json);
+        Intent intent = new Intent(this, InventoryActivity.class).putExtra("Person",json);
         startActivity(intent);
     }
 
@@ -89,7 +89,7 @@ public class HomeActivity extends AppCompatActivity {
             Gson gson = new Gson();
             String json = gson.toJson(user);
 
-            Intent intent = new Intent(this, ProfileDetailsActivity.class).putExtra("User",json);
+            Intent intent = new Intent(this, ProfileDetailsActivity.class).putExtra("Person",json);
             startActivity(intent);
         }
         if (id == R.id.action_edit_profile) {

@@ -2,7 +2,8 @@ package cmput301exchange.exchange;
 
 import android.graphics.Picture;
 
-import java.util.ArrayList;
+import java.util.Random;
+
 /**
  *
  * Representation of a user. Is inhereted by friend and User
@@ -13,13 +14,13 @@ public class Person {
 
     private String name;
     private String location;
-    private int ID;
+    private Long ID;
     private Picture myPicture;
     private String phoneNumber;
     private String userName;
     private Inventory myInventory;
     private String email;
-    private FriendList myfriendlist;
+    private PersonList myFriendList= new PersonList();
    // private ArrayList<History> historylist;
    // private ArrayList<Trade> tradelist;
 
@@ -27,6 +28,12 @@ public class Person {
     public Person(String username) {
         this.userName = username;
         myInventory = new Inventory(); //Each user has only one Inventory.
+        initID();
+    }
+
+    public void initID(){
+        Random generator = new Random(System.nanoTime());
+        ID= generator.nextLong();
     }
 
     public String getName() {
@@ -37,7 +44,7 @@ public class Person {
         return location;
     }
 
-    public int getID() {
+    public long getID() {
         return ID;
     }
 
@@ -61,6 +68,10 @@ public class Person {
         return email;
     }
 
+    public PersonList getMyFriendList(){
+        return myFriendList;
+    }
+
 /* TODO IMPLEMENT THE HISTORY AND TRADE OBJECTS
     public void setHistorylist(ArrayList<History> historylist) {
         this.historylist = historylist;
@@ -78,7 +89,7 @@ public class Person {
         this.tradelist.add(trade);
     }
 
-    public FriendList getMyfriendlist() {
+    public PersonList getMyfriendlist() {
         return myfriendlist;
     }
 
@@ -112,7 +123,15 @@ public class Person {
     }
 
     public String toString(){
-        return this.name;
+        return userName;
+    }
+
+    public void addFriend(Person friend){
+        myFriendList.addPerson(friend);
+    }
+
+    public void removeFriend(Person person){
+        myFriendList.removePerson(person);
     }
 
 }

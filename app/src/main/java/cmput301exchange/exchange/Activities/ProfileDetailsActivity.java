@@ -9,40 +9,45 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
-import cmput301exchange.exchange.User;
 
 public class ProfileDetailsActivity extends AppCompatActivity {
 
-    public ModelEnvironment GlobalENV = new ModelEnvironment();
+//    public ModelEnvironment GlobalENV = new ModelEnvironment();
 
     protected TextView name, phone, email, location;
-
+    private Person person;
+    
     // TODO: implement photo once available
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-        GlobalENV = io.loadEnvironment("GlobalENV");
-
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
 
-        User user = GlobalENV.getOwner();
+        Intent intent = getIntent();
+        String person_json = intent.getStringExtra("Person");
+        Gson gson = new Gson();
+        person=gson.fromJson(person_json,Person.class);
+//        person person = GlobalENV.getOwner();
 
         name = (TextView)findViewById(R.id.profileNameDetails);
         phone = (TextView)findViewById(R.id.profilePhoneDetails);
         email = (TextView)findViewById(R.id.profileEmailDetails);
         location = (TextView)findViewById(R.id.profileLocationDetails);
 
-        name.setText(user.getName());
-        phone.setText(user.getPhoneNumber());
-        email.setText(user.getEmail());
-        location.setText(user.getLocation());
+        name.setText(person.getName());
+        phone.setText(person.getPhoneNumber());
+        email.setText(person.getEmail());
+        location.setText(person.getLocation());
 
-        io.saveEnvironment("GlobalENV", GlobalENV);
+//        io.saveEnvironment("GlobalENV", GlobalENV);
 
     }
 
