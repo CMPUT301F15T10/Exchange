@@ -31,11 +31,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
 
-        Intent intent = getIntent();
-        String person_json = intent.getStringExtra("Person");
-        Gson gson = new Gson();
-        person=gson.fromJson(person_json,Person.class);
-//        person person = GlobalENV.getOwner();
+        person= (new ModelEnvironment(this, null)).getOwner();
 
         name = (TextView)findViewById(R.id.profileNameDetails);
         phone = (TextView)findViewById(R.id.profilePhoneDetails);

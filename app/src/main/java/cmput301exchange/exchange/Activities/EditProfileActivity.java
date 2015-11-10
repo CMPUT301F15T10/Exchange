@@ -21,7 +21,7 @@ import cmput301exchange.exchange.User;
 public class EditProfileActivity extends AppCompatActivity {
 
     ModelEnvironment GlobalENV;
-    protected DataIO io;
+//    protected DataIO io;
 
     protected EditText name, phone, email, location;
 
@@ -32,10 +32,8 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-        GlobalENV = io.loadEnvironment("GlobalENV");
-
-        user = GlobalENV.getOwner();
+        GlobalENV= new ModelEnvironment(this, null);
+        user=GlobalENV.getOwner();
 
         name = (EditText)findViewById(R.id.editName);
         phone = (EditText)findViewById(R.id.editPhone);
@@ -60,7 +58,8 @@ public class EditProfileActivity extends AppCompatActivity {
         user.setEmail(profileEmail);
         user.setLocation(profileLocation);
 
-        io.saveEnvironment("GlobalENV", GlobalENV);
+        GlobalENV.setOwner(user);
+        GlobalENV.saveInstance(this);
 
         this.finish();
     }
