@@ -36,9 +36,10 @@ public class HomeActivity extends AppCompatActivity {
 //        Gson gson = new Gson();
 //        ModelEnvironment globalENV = gson.fromJson(json,ModelEnvironment.class);
 //        assert(globalENV != null);
-        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-        GlobalENV = io.loadEnvironment("GlobalENV");
+//        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+//        GlobalENV = io.loadEnvironment("GlobalENV");
 
+        GlobalENV= new ModelEnvironment(this, null);
         user = GlobalENV.getOwner();
 
 

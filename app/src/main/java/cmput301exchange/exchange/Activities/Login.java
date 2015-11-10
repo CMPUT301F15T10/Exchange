@@ -18,7 +18,7 @@ import cmput301exchange.exchange.Serializers.DataIO;
 
 public class Login extends AppCompatActivity {
     public EditText username;
-    private ModelEnvironment globalENV = new ModelEnvironment();
+    private ModelEnvironment globalENV;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,22 +41,24 @@ public class Login extends AppCompatActivity {
         Gson gson = new Gson();
 
         String userString = username.getText().toString();
-        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+//        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
 
-        globalENV = io.loadEnvironment("GlobalENV");
-        globalENV.setOwner(userString);
+        globalENV = new ModelEnvironment(this,userString);
+//        globalENV = io.loadEnvironment("GlobalENV");
+//        globalENV.initOwner(userString);
 
         //        try{
         //            globalENV = io.loadEnvironment("GlobalENV");
         //            globalENV.getOwner();
         //
         //        }catch(Exception e){
-        //            globalENV.setOwner(username.getText().toString());
+        //            globalENV.initOwner(username.getText().toString());
         //        }
 
 
 
-        io.saveEnvironment("GlobalENV", globalENV);
+//        io.saveEnvironment("GlobalENV", globalENV);
+        globalENV.saveInstance(this); //saving
         //        String json = gson.toJson(globalENV);
         //I can't get this to work
         //        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);

@@ -1,5 +1,7 @@
 package cmput301exchange.exchange.Controllers;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Book;
@@ -17,18 +19,20 @@ public class TradeController {
     private Person partner=null;
     private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();
 
-    public TradeController(Trade trade, TradeManager tradeManager){
+    public TradeController(Context context,Trade trade, TradeManager tradeManager){
         if (trade==null){
-            createTrade();
+            createTrade(context);
         } else {
             myTrade = trade;
         }
         myTradeManager=tradeManager;
     }
 
-    public void createTrade(){
+    public void createTrade(Context context){
+
+        ModelEnvironment globalEnv=new ModelEnvironment(context,null);
         myTrade=new Trade();
-        myTrade.setTradeUser(ModelEnvironment.getOwner_static());
+        myTrade.setTradeUser(globalEnv.getOwner());
         myTrade.setTradePartner(partner);
         myTrade.setTradeType(0); // By default
         myTrade.setTradeStatus(0);

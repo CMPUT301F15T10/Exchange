@@ -28,7 +28,8 @@ public class TradeListController {
     public TradeListController(TradeManager tradeManager, int mode,Context context){
         myTradeManager=tradeManager;
         this.mode=mode;
-        owner=ModelEnvironment.getOwner_static();
+        ModelEnvironment globalEnv= new ModelEnvironment(context,null);
+        owner=globalEnv.getOwner();
         initTradeList();
     }
 

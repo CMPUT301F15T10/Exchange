@@ -36,24 +36,33 @@ public class InventoryActivity extends AppCompatActivity {
      *
      *
      */
+
+    private int MENU_Settings = Menu.FIRST;
+    private int MENU_View_Profile = Menu.FIRST + 1;
+    private int MENU_View_Inventory = Menu.FIRST + 2;
+    private int MENU_Make_Friendship = Menu.FIRST + 3;
+    private int MENU_View_RemoveFriend = Menu.FIRST + 4;
+    private int MENU_Group=1; //menu group of 0 is taken by the SearchView item
+
     private ListView lv;
-    public ModelEnvironment globalENV = new ModelEnvironment();
+    public ModelEnvironment globalENV;
     protected ArrayAdapter<Book> arrayAdapter;
     protected ArrayList<Book> bookList = new ArrayList<Book>();
     protected Person person;
-
-
+    private Integer status=null; //status=1 means inventory of user and status=2 means inventory of a friend.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
 
-        Intent intent = getIntent();
-        String person_json = intent.getStringExtra("Person");
-        Gson gson = new Gson();
-        person=gson.fromJson(person_json,Person.class);
+//        Intent intent = getIntent();
+//        String person_json = intent.getStringExtra("Person");
+//        Gson gson = new Gson();
+//        person=gson.fromJson(person_json,Person.class);
 
+        globalENV=new ModelEnvironment(this,null); // null tells it to load modelEnvironment.
+        person=globalENV.getOwner();
         lv = (ListView) findViewById(R.id.listView3);
 
         bookList.addAll(person.getMyInventory().getInventoryList());
@@ -90,6 +99,9 @@ public class InventoryActivity extends AppCompatActivity {
         });
     }
 
+    public void loadInventory(){
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

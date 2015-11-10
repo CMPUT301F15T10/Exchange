@@ -64,11 +64,11 @@ public class AddItemActivity extends ActionBarActivity {
 
     public void add(View view){
 
-        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-        GlobalENV = io.loadEnvironment("GlobalENV");
+//        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
+//        GlobalENV = io.loadEnvironment("GlobalENV");
 
+        GlobalENV = new ModelEnvironment(this,null);
         User user = GlobalENV.getOwner();
-
         Book book = new Book();
 
         String bookName = name.getText().toString();
@@ -93,8 +93,8 @@ public class AddItemActivity extends ActionBarActivity {
         book.updateComment(bookComments);
 
         user.getMyInventory().add(book);
-
-        io.saveEnvironment("GlobalENV", GlobalENV);
+        GlobalENV.setOwner(user);
+        GlobalENV.saveInstance(this);
 
         Intent added = new Intent();
         setResult(RESULT_OK, added);

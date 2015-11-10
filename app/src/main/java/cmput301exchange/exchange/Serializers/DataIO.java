@@ -154,7 +154,7 @@ public class DataIO<DataClass> {
             //Log.e("From DataIO, type of loadedData", size.toString());
 
         } catch (FileNotFoundException e) {
-            return new ModelEnvironment();
+            return new ModelEnvironment(this.context,"something");
 
         } catch (IOException e) {
             throw new RuntimeException(e);

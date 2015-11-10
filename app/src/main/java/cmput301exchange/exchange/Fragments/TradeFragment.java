@@ -61,7 +61,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public void initTrade(){
         myTradeManager=myActivity.getTradeManager();
         Trade myTrade=myActivity.getTrade();
-        myTradeController= new TradeController(myTrade,myTradeManager);
+        myTradeController= new TradeController((Activity) myActivity,myTrade,myTradeManager);
 
     }
 

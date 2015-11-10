@@ -36,7 +36,7 @@ public class ViewPersonActivity extends AppCompatActivity {
     private int MENU_View_RemoveFriend = Menu.FIRST + 4;
     private int MENU_Group=1; //menu group of 0 is taken by the SearchView item
 
-    public ModelEnvironment globalENV = new ModelEnvironment();
+    public ModelEnvironment globalENV;
     private ListView lv;
     private ArrayList<Person> friendList;
     private ArrayList<Person> personList;
@@ -51,8 +51,8 @@ public class ViewPersonActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-        globalENV = io.loadEnvironment("GlobalENV");
+
+        globalENV = new ModelEnvironment(this,null);
 
         user = globalENV.getOwner();
         super.onCreate(savedInstanceState);
