@@ -33,7 +33,8 @@ public class HomeActivity extends AppCompatActivity {
     Intent intent;
 
     protected User user;
-    private final int INVENTORY=1;
+    private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
     public void inventory(View view) {
         Gson gson= new Gson();
         String json=gson.toJson(user.getMyInventory());
-        Log.e("size inventory HomeActivity calling:", String.valueOf(user.getMyInventory().getInventoryList().size()));
         Intent intent = new Intent(this, InventoryActivity.class);
         intent.putExtra("Inventory",json);
         intent.putExtra("Inventory_State",1);
@@ -87,7 +87,6 @@ public class HomeActivity extends AppCompatActivity {
         if (intent.hasExtra("Inventory")) {
             String json = intent.getExtras().getString("Inventory");
             Inventory inventory = gson.fromJson(json, Inventory.class);
-            Log.e("size inventory HomeActivity:", String.valueOf(inventory.getInventoryList().size()));
             user.setInventory(inventory);
         }
     }
@@ -113,16 +112,20 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         // TODO pass through intent the current user's profile
         if (id == R.id.action_view_profile) {
-            Intent intent = new Intent(this, ProfileDetailsActivity.class);
+            Intent intent=new Intent(this, ProfileDetailsActivity.class);;
+            String json= gson.toJson(user);
+            intent.putExtra("Person", json);
             startActivity(intent);
         }
         if (id == R.id.action_edit_profile) {
             Intent intent = new Intent(this, EditProfileActivity.class);
-            startActivity(intent);
+            String json= gson.toJson(user);
+            intent.putExtra("User",json);
+            startActivityForResult(intent, EDIT_PROFILE);
         }
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, ConfigurationActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(this, ConfigurationActivity.class).putExtra("Configuration_picDown",GlobalENV.isAutoPicDownloadsEnabled());
+            startActivityForResult(intent, CONFIGURATION);
         }
 
         return super.onOptionsItemSelected(item);
@@ -131,29 +134,21 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == INVENTORY) {
-//            finish();
-//            Log.e("receive: ", data.getExtras().getString("Inventory"));
             data.setClass(this,HomeActivity.class);
             intent=data;
             getInventory();
-//            startActivity(data);
         }
-//        if (requestCode == MENU_Edit_Item && resultCode == RESULT_OK) {
-//            // Stuffs
-//            finish();
-//            startActivity(getIntent());
-//        }
-//        if (requestCode == MENU_View_Item && resultCode == RESULT_OK) {
-//            // Stuffs
-//            finish();
-//            startActivity(getIntent());
-//        }
-//        if (requestCode == MENU_View_InventoryDetails && resultCode == RESULT_OK) {
-//            // Stuffs
-//            finish();
-//            startActivity(getIntent());
-//        }
-
+        if (requestCode == EDIT_PROFILE){
+            data.setClass(this,HomeActivity.class);
+            intent=data;
+            getUser();
+        }
+        if (requestCode == CONFIGURATION){
+            data.setClass(this,HomeActivity.class);
+            if (data.hasExtra("Configuration_picDown")){
+                GlobalENV.setAutoPicDownloads(data.getExtras().getBoolean("Configuration_picDown"));
+            }
+        }
     }
 
     public void initInventory(){
@@ -167,5 +162,11 @@ public class HomeActivity extends AppCompatActivity {
         HackMe.updateTitle("Hack Me!");
         HackMe.updateCategory("None");
         user.getMyInventory().add(HackMe);
+    }
+
+    public void finish(){
+        GlobalENV.setOwner(user);
+        GlobalENV.saveInstance(this);
+        super.finish();
     }
 }

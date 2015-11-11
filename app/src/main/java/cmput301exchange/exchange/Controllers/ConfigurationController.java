@@ -34,4 +34,8 @@ public class ConfigurationController {
         return AutoPictureDownload;
     }
 
+    public void setAutoPictureDownload(boolean state){
+        AutoPictureDownload=state;
+    }
+
 }

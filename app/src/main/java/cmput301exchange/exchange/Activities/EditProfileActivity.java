@@ -12,8 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
@@ -25,15 +28,14 @@ public class EditProfileActivity extends AppCompatActivity {
 
     protected EditText name, phone, email, location;
 
-    protected User user;
+    protected Person user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
-        GlobalENV= new ModelEnvironment(this, null);
-        user=GlobalENV.getOwner();
+        initPerson();
 
         name = (EditText)findViewById(R.id.editName);
         phone = (EditText)findViewById(R.id.editPhone);
@@ -58,12 +60,15 @@ public class EditProfileActivity extends AppCompatActivity {
         user.setEmail(profileEmail);
         user.setLocation(profileLocation);
 
-        GlobalENV.setOwner(user);
-        GlobalENV.saveInstance(this);
-
         this.finish();
     }
 
+    public void initPerson(){
+        Gson gson = new Gson();
+        Intent intent=getIntent();
+        String json=intent.getExtras().getString("User");
+        user = gson.fromJson(json, Person.class);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -84,5 +89,14 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void finish(){
+        Gson gson = new Gson();
+        Intent intent=new Intent();
+        String json= gson.toJson(user);
+        intent.putExtra("User",json);
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 }

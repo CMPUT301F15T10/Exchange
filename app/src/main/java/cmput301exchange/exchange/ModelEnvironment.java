@@ -14,7 +14,7 @@ import cmput301exchange.exchange.Serializers.DataIO;
 public class ModelEnvironment {
 
     private User owner;
-
+    private boolean autoPicDownloads=false;
     public ModelEnvironment(Context myActivity, String userName){
 
         if (userName==null){
@@ -22,6 +22,14 @@ public class ModelEnvironment {
         } else{
             initOwner(userName);
         }
+    }
+
+    public boolean isAutoPicDownloadsEnabled(){
+        return autoPicDownloads;
+    }
+
+    public void setAutoPicDownloads(boolean is){
+        autoPicDownloads=is;
     }
 
     public void loadInstance(Context myActivity){

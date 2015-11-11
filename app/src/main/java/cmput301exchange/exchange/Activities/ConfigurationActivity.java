@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
+import com.google.gson.Gson;
+
 import cmput301exchange.exchange.Controllers.ConfigurationController;
+import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 
 public class ConfigurationActivity extends AppCompatActivity {
@@ -22,6 +26,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configuration);
         chkAutomaticPicDownloads= (CheckBox) findViewById(R.id.AutoDownloadcheckBox);
         myConfigurationController= new ConfigurationController();
+        init();
     }
 
     @Override
@@ -72,8 +77,16 @@ public class ConfigurationActivity extends AppCompatActivity {
         return (Button) findViewById(R.id.C_confirm);
     }
 
+    public void init(){
+        Intent intent=getIntent();
+        myConfigurationController.setAutoPictureDownload(intent.getExtras().getBoolean("Configuration_picDown"));
+        chkAutomaticPicDownloads.setChecked(myConfigurationController.getPicDownloadState());
+    }
     @Override
     public void finish() {
+        Intent intent=new Intent();
+        intent.putExtra("Configuration_picDown",myConfigurationController.getPicDownloadState());
+        setResult(RESULT_OK, intent);
         super.finish();
     }
 }
