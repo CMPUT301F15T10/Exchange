@@ -69,4 +69,8 @@ public class EditBookController {
     public void reloadData(){
         //Will implement loading the same book from model.
     }
+
+    public void setBookCategory(String category){
+        myBook.updateCategory(category);
+    }
 }

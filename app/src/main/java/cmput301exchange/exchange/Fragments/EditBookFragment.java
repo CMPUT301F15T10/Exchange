@@ -6,6 +6,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -125,7 +127,7 @@ public class EditBookFragment extends Fragment {
         myView=inflater.inflate(R.layout.activity_edit_book, container, false); //might be khj.xml
         setupView();
         initButtons();
-//        ObjectSaver.gotThere=true;
+        initSpinner();
         return myView;
     }
 
@@ -146,8 +148,8 @@ public class EditBookFragment extends Fragment {
             }
         });
 
-        ViewPhoto.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        ViewPhoto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 ClickPhoto_Handler();
             }
         });
@@ -176,5 +178,23 @@ public class EditBookFragment extends Fragment {
 
     public EditBookController getController(){
         return myEditBookController;
+    }
+    
+    public void initSpinner(){
+        Category=(Spinner) myView.findViewById(R.id.EditItem_CategorySpinner);
+        ArrayAdapter<CharSequence> adapter;
+        adapter = ArrayAdapter.createFromResource(myActivity,
+                R.array.categories_selection, android.R.layout.simple_spinner_item);
+        Category.setAdapter(adapter);
+        Category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                myEditBookController.setBookCategory((String) Category.getItemAtPosition(position));
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
     }
 }

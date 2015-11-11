@@ -30,7 +30,7 @@
         android:layout_alignParentStart="true" />
 
     <Spinner
-        android:layout_width="80dp"
+        android:layout_width="130dp"
         android:layout_height="30dp"
         android:id="@+id/spinner1"
         android:layout_alignParentLeft="true"
@@ -50,7 +50,7 @@
         android:id="@+id/textView_View"
         android:textSize="16sp"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="160dp" />
+        android:layout_marginLeft="200dp" />
 
     <Spinner
         android:layout_width="wrap_content"
