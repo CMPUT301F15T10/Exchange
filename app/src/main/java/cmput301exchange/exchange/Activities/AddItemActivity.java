@@ -27,7 +27,8 @@ public class AddItemActivity extends ActionBarActivity {
     ModelEnvironment GlobalENV;
 
     private EditText name, author, quality, quantity, comments;
-    private String category;
+    private String category, bookName="",bookAuthor="",bookComments="";
+    private Integer bookQuality=5,bookQuantity=1;
     private Inventory inventory;
 
     @Override
@@ -72,18 +73,17 @@ public class AddItemActivity extends ActionBarActivity {
 
     public void add(View view){
 
-//        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-//        GlobalENV = io.loadEnvironment("GlobalENV");
-
-//        GlobalENV = new ModelEnvironment(this,null);
-//        User user = GlobalENV.getOwner();
         Book book = new Book();
 
-        String bookName = name.getText().toString();
-        String bookAuthor = author.getText().toString();
-        Integer bookQuality = Integer.parseInt(quality.getText().toString()); // add try, catch later
-        Integer bookQuantity = Integer.parseInt(quantity.getText().toString()); // add try, catch later
-        String bookComments = comments.getText().toString();
+        bookName = name.getText().toString();
+        bookAuthor = author.getText().toString();
+        if (!(quality.getText().toString().isEmpty())) {
+            bookQuality = Integer.parseInt(quality.getText().toString()); // add try, catch later
+        }
+        if (!(quantity.getText().toString().isEmpty())) {
+            bookQuantity = Integer.parseInt(quantity.getText().toString()); // add try, catch later
+        }
+        bookComments = comments.getText().toString();
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.shareable_checkBox);
         if (checkBox.isChecked()) {
@@ -99,11 +99,7 @@ public class AddItemActivity extends ActionBarActivity {
         book.setQuality(bookQuality);
         book.updateCategory(category);
         book.updateComment(bookComments);
-
-//        user.getMyInventory().add(book);
-//        GlobalENV.setOwner(user);
-//        GlobalENV.saveInstance(this);
-
+        
         inventory.add(book);
         Gson gson= new Gson();
         String json=gson.toJson(inventory);

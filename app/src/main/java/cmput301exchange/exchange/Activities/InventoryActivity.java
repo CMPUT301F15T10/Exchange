@@ -111,6 +111,7 @@ public class InventoryActivity extends AppCompatActivity {
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
 //                bookList.clear();
                 updateBookList(inventory);
+                lv.clearChoices();
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -124,7 +125,7 @@ public class InventoryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                if (lv.isItemChecked(position)) {
+                if (!(selectedBooks.contains((Book)lv.getItemAtPosition(position)))) {
                     selectedBooks.add((Book) lv.getItemAtPosition(position));
                     Toast.makeText(getBaseContext(), selectedBooks.toString(), Toast.LENGTH_LONG).show();
                 } else {
@@ -167,6 +168,7 @@ public class InventoryActivity extends AppCompatActivity {
                         break;
                 }
                 updateBookList(inventory);
+                lv.clearChoices();
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -188,21 +190,18 @@ public class InventoryActivity extends AppCompatActivity {
 //    }
 
     public void updateBookList(Inventory inventory){
+        arrayAdapterBook.clear();
+
         if (bookListState==0){
-            arrayAdapterBook.clear();
             arrayAdapterBook.addAll(inventory.searchByCategory(category).getInventoryList());
-            arrayAdapterBook.notifyDataSetChanged();
         }
         else if (bookListState==1){
-            arrayAdapterBook.clear();
             arrayAdapterBook.addAll(inventory.searchByCategory(category).getSharedItems());
-            arrayAdapterBook.notifyDataSetChanged();
         }
         else if (bookListState==2){
-            arrayAdapterBook.clear();
             arrayAdapterBook.addAll(inventory.searchByCategory(category).getNonSharedItems());
-            arrayAdapterBook.notifyDataSetChanged();
         }
+        arrayAdapterBook.notifyDataSetChanged();
     }
 
     @Override
@@ -214,6 +213,8 @@ public class InventoryActivity extends AppCompatActivity {
                 String json=data.getExtras().getString("Inventory");
                 inventory=gson.fromJson(json,Inventory.class);
                 updateBookList(inventory);
+                lv.clearChoices();
+                selectedBooks.clear();
             }
         }
 
@@ -223,22 +224,11 @@ public class InventoryActivity extends AppCompatActivity {
                 Book book=gson.fromJson(json, Book.class);
                 int index=inventory.getInventoryList().indexOf(selectedBooks.get(0));
                 selectedBooks.clear();
+                lv.clearChoices();
                 inventory.getInventoryList().set(index, book);
                 updateBookList(inventory);
-                lv.clearChoices();
             }
         }
-        if (requestCode == MENU_View_Item) {
-            // Stuffs
-            finish();
-            startActivity(getIntent());
-        }
-        if (requestCode == MENU_View_InventoryDetails) {
-            // Stuffs
-            finish();
-            startActivity(getIntent());
-        }
-
     }
 
     @Override
@@ -312,18 +302,19 @@ public class InventoryActivity extends AppCompatActivity {
 
             case MENU_View_Item:
                 json = gson.toJson(selectedBooks.get(0));
-                lv.clearChoices();
-                selectedBooks.clear();
+//                lv.clearChoices();
+//                selectedBooks.clear();
                 intent = new Intent(this, BookDetailsActivity.class).putExtra("Book", json);
-                startActivityForResult(intent, MENU_View_Item);
+                startActivity(intent);
 
                 return true;
 
             case MENU_View_InventoryDetails:
                 json = gson.toJson(inventory);
-
+//                lv.clearChoices();
+//                selectedBooks.clear();
                 intent = new Intent(this, InventoryDetailsActivity.class).putExtra("Inventory", json);
-                startActivityForResult(intent,MENU_View_InventoryDetails);
+                startActivity(intent);
 
                 return true;
         }
@@ -361,6 +352,7 @@ public class InventoryActivity extends AppCompatActivity {
             Inventory inventory= this.inventory.searchByText(query);
             updateBookList(inventory);
         }
+        lv.clearChoices();
     }
 
     @Override

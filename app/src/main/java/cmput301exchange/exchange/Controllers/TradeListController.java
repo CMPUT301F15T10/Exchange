@@ -56,7 +56,9 @@ public class TradeListController {
         if (query==""){
             return null;
         }
-        ArrayList<Trade> result= (ArrayList<Trade>) searcher.Search(query);
+        //For now!!!!
+//        ArrayList<Trade> result= (ArrayList<Trade>) searcher.Search(query);
+        ArrayList<Trade> result=new ArrayList<>();
         //Add searching based on other kind of values for different flags
         return result;
     }
