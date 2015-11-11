@@ -175,9 +175,9 @@ public class ViewPersonActivity extends AppCompatActivity {
 
         if (id == MENU_View_Inventory) {
             Gson gson = new Gson();
-            String json = gson.toJson(selectedPerson);
+            String json = gson.toJson(selectedPerson.getMyInventory());
 
-            Intent intent = new Intent(this, InventoryActivity.class).putExtra("Person",json);
+            Intent intent = new Intent(this, InventoryActivity.class).putExtra("Inventory",json);
             startActivity(intent);
             return true;
         }

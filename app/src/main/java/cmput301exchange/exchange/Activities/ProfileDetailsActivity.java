@@ -31,7 +31,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_details);
 
-        person= (new ModelEnvironment(this, null)).getOwner();
+        initPerson();
 
         name = (TextView)findViewById(R.id.profileNameDetails);
         phone = (TextView)findViewById(R.id.profilePhoneDetails);
@@ -45,6 +45,13 @@ public class ProfileDetailsActivity extends AppCompatActivity {
 
 //        io.saveEnvironment("GlobalENV", GlobalENV);
 
+    }
+
+    public void initPerson(){
+        Gson gson = new Gson();
+        Intent intent=getIntent();
+        String json=intent.getExtras().getString("Person");
+        person = gson.fromJson(json, Person.class);
     }
 
     @Override
