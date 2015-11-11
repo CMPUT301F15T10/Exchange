@@ -22,18 +22,19 @@ import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 
 import cmput301exchange.exchange.Person;
+import cmput301exchange.exchange.PersonList;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
 import cmput301exchange.exchange.ViewPerson;
 
 public class HomeActivity extends AppCompatActivity {
-    ModelEnvironment GlobalENV;
+    ModelEnvironment GlobalENV=null;
     Gson gson= new Gson();
     Intent intent;
 
     protected User user;
-    private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3;
+    private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
 
 
     @Override
@@ -42,8 +43,10 @@ public class HomeActivity extends AppCompatActivity {
 
         intent=getIntent();
         getUser();
+        initFriendList();
         getInventory();
         initInventory();
+
 
         GlobalENV.setOwner(user);
         GlobalENV.saveInstance(this);
@@ -72,8 +75,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void searchPeople(View view) {
-        Intent intent = new Intent(this, ViewPersonActivity.class);
-        startActivity(intent);
+        Gson gson= new Gson();
+        String json=gson.toJson(user);
+        Intent intent = new Intent(this, ViewPersonActivity.class).putExtra("User",json);
+        startActivityForResult(intent, SEARCH_PEOPLE);
     }
 
     @Override
@@ -95,11 +100,15 @@ public class HomeActivity extends AppCompatActivity {
         if (intent.hasExtra("User")){
             String json = intent.getExtras().getString("User");
             user = gson.fromJson(json,User.class);
-            GlobalENV= new ModelEnvironment(this,"i");
+            Log.e("User friendlist size: ",String.valueOf(user.getMyFriendList().getPersonList().size()));
+            if (GlobalENV==null) {
+                GlobalENV = new ModelEnvironment(this, "i");
+            }
         } else{
             GlobalENV= new ModelEnvironment(this, null);
             user=GlobalENV.getOwner();
         }
+
     }
 
     @Override
@@ -124,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivityForResult(intent, EDIT_PROFILE);
         }
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, ConfigurationActivity.class).putExtra("Configuration_picDown",GlobalENV.isAutoPicDownloadsEnabled());
+            Intent intent = new Intent(this, ConfigurationActivity.class).putExtra("Configuration_picDown", GlobalENV.isAutoPicDownloadsEnabled());
             startActivityForResult(intent, CONFIGURATION);
         }
 
@@ -149,6 +158,12 @@ public class HomeActivity extends AppCompatActivity {
                 GlobalENV.setAutoPicDownloads(data.getExtras().getBoolean("Configuration_picDown"));
             }
         }
+
+        if (requestCode == SEARCH_PEOPLE){
+            data.setClass(this,HomeActivity.class);
+            intent=data;
+            getUser();
+        }
     }
 
     public void initInventory(){
@@ -169,4 +184,14 @@ public class HomeActivity extends AppCompatActivity {
         GlobalENV.saveInstance(this);
         super.finish();
     }
+
+    public void initFriendList(){
+        Person A=new Person("Harry1");
+        A.setName("Harry");
+        Person B=new Person("James1");
+        B.setName("James");
+        user.addFriend(A);
+        user.addFriend(B);
+    }
+
 }

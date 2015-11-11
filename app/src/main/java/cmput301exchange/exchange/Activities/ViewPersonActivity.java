@@ -44,7 +44,7 @@ public class ViewPersonActivity extends AppCompatActivity {
     private PersonList allPerson;
     ArrayAdapter<Person> friendListAdapter, personListAdapter;
     private Person selectedPerson=null;
-    private User user;
+    private Person user;
     private Integer state=0;
     private SearchView mySearchView=null;
 
@@ -53,13 +53,11 @@ public class ViewPersonActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        globalENV = new ModelEnvironment(this,null);
-
-        user = globalENV.getOwner();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_person);
 
-        initFriendList();
+        initPerson();
+        friendList=user.getMyFriendList().getPersonList();
         initPersonList();
 
         lv = (ListView) findViewById(R.id.listView2);
@@ -135,7 +133,21 @@ public class ViewPersonActivity extends AppCompatActivity {
 
     }
 
+    public void initPerson(){
+        Gson gson = new Gson();
+        Intent intent=getIntent();
+        String json=intent.getExtras().getString("User");
+        user = gson.fromJson(json, Person.class);
+    }
 
+    public void finish(){
+        Gson gson = new Gson();
+        Intent intent=new Intent();
+        String json= gson.toJson(user);
+        intent.putExtra("User",json);
+        setResult(RESULT_OK, intent);
+        super.finish();
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -194,13 +206,25 @@ public class ViewPersonActivity extends AppCompatActivity {
 
         if (id == MENU_Make_Friendship){
             user.addFriend(selectedPerson);
+            friendList=user.getMyFriendList().getPersonList();
+            friendListAdapter.clear();
+            friendListAdapter.addAll(friendList);
             friendListAdapter.notifyDataSetChanged();
+            selectedPerson=null;
+            lv.clearChoices();
             return true;
         }
 
         if (id == MENU_View_RemoveFriend){
             user.removeFriend(selectedPerson);
+            selectedPerson=null;
+            lv.clearChoices();
+            friendList=user.getMyFriendList().getPersonList();
+            friendListAdapter.clear();
+            friendListAdapter.addAll(friendList);
             friendListAdapter.notifyDataSetChanged();
+            selectedPerson=null;
+            lv.clearChoices();
             return true;
         }
 
@@ -246,16 +270,6 @@ public class ViewPersonActivity extends AppCompatActivity {
             personListAdapter.addAll(personList);
             personListAdapter.notifyDataSetChanged();
         }
-    }
-
-    public void initFriendList(){
-        Person A=new Person("Harry1");
-        A.setName("Harry");
-        Person B=new Person("James1");
-        B.setName("James");
-        user.addFriend(A);
-        user.addFriend(B);
-        friendList=user.getMyFriendList().getPersonList();
     }
 
     public void initPersonList(){
