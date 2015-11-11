@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="cmput301exchange.exchange.Activities.BookDetailsActivity">
+
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="130dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book Name: "
+        android:id="@+id/BD_name"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Book ID: "
+        android:id="@+id/BD_id"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/BD_name"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Author: "
+        android:id="@+id/BD_author"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/BD_id"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quality: "
+        android:id="@+id/BD_Quality"
+        android:layout_below="@+id/BD_author"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quantity: "
+        android:id="@+id/BD_Quantity"
+        android:layout_below="@+id/BD_Quality"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="23dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Genre: "
+        android:id="@+id/BD_genre"
+        android:layout_below="@+id/BD_Quantity"
+        android:layout_marginTop="23dp"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Is Sharable?: "
+        android:id="@+id/BD_isSharable"
+        android:layout_below="@+id/BD_genre"
+        android:layout_marginTop="23dp"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Comment"
+        android:id="@+id/BD_viewComment"
+        android:layout_alignParentBottom="true"
+        android:onClick="ViewComment"
+        android:layout_alignStart="@+id/imageView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go Back"
+        android:id="@+id/BD_goBack"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/imageView"
+        android:onClick="GoBack"
+        />
+
+</RelativeLayout>

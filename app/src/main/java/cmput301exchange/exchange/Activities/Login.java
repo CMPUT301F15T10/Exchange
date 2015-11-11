@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.User;
 
 public class Login extends AppCompatActivity {
     public EditText username;
     private ModelEnvironment globalENV;
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,8 @@ public class Login extends AppCompatActivity {
         Gson gson = new Gson();
 
         String userString = username.getText().toString();
+//        user= new User(userString);
+//        String json=gson.toJson(user);
 //        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
 
         globalENV = new ModelEnvironment(this,userString);

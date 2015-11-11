@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+//import android.widget.SearchView;
+//import android.support.v7.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
@@ -37,39 +42,54 @@ public class InventoryActivity extends AppCompatActivity {
      *
      */
 
-    private int MENU_Settings = Menu.FIRST;
-    private int MENU_View_Profile = Menu.FIRST + 1;
-    private int MENU_View_Inventory = Menu.FIRST + 2;
-    private int MENU_Make_Friendship = Menu.FIRST + 3;
-    private int MENU_View_RemoveFriend = Menu.FIRST + 4;
-    private int MENU_Group=1; //menu group of 0 is taken by the SearchView item
+    private static final int MENU_Settings = Menu.FIRST;
+    private static final int MENU_View_InventoryDetails = Menu.FIRST + 1;
+    private static final int MENU_Edit_Item = Menu.FIRST + 2;
+    private static final int MENU_Add_Item = Menu.FIRST + 3;
+    private static final int MENU_Remove_Item = Menu.FIRST + 4;
+    private static final int MENU_View_Item= Menu.FIRST + 5;
+    private static final int MENU_Group=1; //menu group of 0 is taken by the SearchView item
 
     private ListView lv;
     public ModelEnvironment globalENV;
-    protected ArrayAdapter<Book> arrayAdapter;
+    protected ArrayAdapter<Book> arrayAdapterBook;
     protected ArrayList<Book> bookList = new ArrayList<Book>();
-    protected Person person;
-    private Integer status=null; //status=1 means inventory of user and status=2 means inventory of a friend.
+    protected Person person1;
+    private Integer state=0; //state=1 means inventory of user and state=2 means inventory of a friend.
+    private Spinner viewSpinner=null;
+    private String category="None";
+    private ArrayList<Book> selectedBooks=new ArrayList<>();
+    private Inventory inventory;
+    private Integer bookListState=0;
+    private SearchView mySearchView=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
+//        Log.e("inside inventoryActivity","Before intent received");
 
-//        Intent intent = getIntent();
-//        String person_json = intent.getStringExtra("Person");
-//        Gson gson = new Gson();
-//        person=gson.fromJson(person_json,Person.class);
+        Intent intent = getIntent();
+        String inventory_json = intent.getStringExtra("Inventory");
+        state=intent.getIntExtra("Inventory_State",0);
+//        Log.e("inside inventoryActivity","After intent received");
+        Gson gson = new Gson();
+        inventory=gson.fromJson(inventory_json,Inventory.class);
+//        Log.e("got far","lo");
 
-        globalENV=new ModelEnvironment(this,null); // null tells it to load modelEnvironment.
-        person=globalENV.getOwner();
+//        globalENV=new ModelEnvironment(this,null); // null tells it to load modelEnvironment.
+//        person=globalENV.getOwner();
+//        initInventory();
+        initViewSpinner();
+
         lv = (ListView) findViewById(R.id.listView3);
+        lv.setItemsCanFocus(false);
+        lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        bookList.addAll(person.getMyInventory().getInventoryList());
+        arrayAdapterBook = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice);
+        arrayAdapterBook.addAll(inventory.getInventoryList());
 
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, bookList );
-
-        lv.setAdapter(arrayAdapter);
+        lv.setAdapter(arrayAdapterBook);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner1);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -84,42 +104,176 @@ public class InventoryActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //on selecting a spinner item
-                String cat = parent.getItemAtPosition(position).toString();
+                category = parent.getItemAtPosition(position).toString();
                 // Showing selected spinner item
                 //Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
-                bookList.clear();
-                bookList.addAll(person.getMyInventory().searchByCategory(cat).getInventoryList());
-                arrayAdapter.notifyDataSetChanged();
+//                bookList.clear();
+                updateBookList(inventory);
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
             }
         });
+
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+
+                if (lv.isItemChecked(position)) {
+                    selectedBooks.add((Book) lv.getItemAtPosition(position));
+                    Toast.makeText(getBaseContext(), selectedBooks.toString(), Toast.LENGTH_LONG).show();
+                } else {
+                    selectedBooks.remove((Book) lv.getItemAtPosition(position));
+                    Toast.makeText(getBaseContext(), "None selected", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-    public void loadInventory(){
+    public void initViewSpinner(){
+        viewSpinner=(Spinner) findViewById(R.id.View_spinner);
+        ArrayAdapter<CharSequence> adapter;
+        if (state==1) {
 
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.inventory_view_user, android.R.layout.simple_spinner_item);
+            viewSpinner.setAdapter(adapter);
+
+        } else if (state==2){
+
+            adapter = ArrayAdapter.createFromResource(this,
+                    R.array.inventory_view_person, android.R.layout.simple_spinner_item);
+            viewSpinner.setAdapter(adapter);
+        }
+
+        viewSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //on selecting a spinner item
+                switch((String) viewSpinner.getItemAtPosition(position)){
+                    case "All Items":
+                        bookListState=0;
+                        break;
+                    case "Shared Items":
+                        bookListState=1;
+                        break;
+                    case "Non-Shared Items":
+                        bookListState=2;
+                        break;
+                }
+                updateBookList(inventory);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+//    public void initInventory(){
+//        Book EternalNight=new Book();
+//        EternalNight.setShareable(true);
+//        EternalNight.updateTitle("Eternal Night");
+//        EternalNight.updateCategory("None");
+//        inventory.add(EternalNight);
+//        Book HackMe= new Book();
+//        HackMe.setShareable(false);
+//        HackMe.updateTitle("Hack Me!");
+//        HackMe.updateCategory("None");
+//        inventory.add(HackMe);
+//    }
 
-            finish();
-            startActivity(getIntent());
-
+    public void updateBookList(Inventory inventory){
+        if (bookListState==0){
+            arrayAdapterBook.clear();
+            arrayAdapterBook.addAll(inventory.searchByCategory(category).getInventoryList());
+            arrayAdapterBook.notifyDataSetChanged();
+        }
+        else if (bookListState==1){
+            arrayAdapterBook.clear();
+            arrayAdapterBook.addAll(inventory.searchByCategory(category).getSharedItems());
+            arrayAdapterBook.notifyDataSetChanged();
+        }
+        else if (bookListState==2){
+            arrayAdapterBook.clear();
+            arrayAdapterBook.addAll(inventory.searchByCategory(category).getNonSharedItems());
+            arrayAdapterBook.notifyDataSetChanged();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_inventory, menu);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Gson gson= new Gson();
 
-        // http://developer.android.com/training/appbar/action-views.html
-        // Get the SearchView and set the searchable configuration
+        if (requestCode == MENU_Add_Item) {
+            if (data.hasExtra("Inventory")){
+                String json=data.getExtras().getString("Inventory");
+                inventory=gson.fromJson(json,Inventory.class);
+                updateBookList(inventory);
+            }
+        }
+
+        if (requestCode == MENU_Edit_Item) {
+            if (data.hasExtra("Book")){
+                String json=data.getExtras().getString("Book");
+                Book book=gson.fromJson(json, Book.class);
+                int index=inventory.getInventoryList().indexOf(selectedBooks.get(0));
+                selectedBooks.clear();
+                inventory.getInventoryList().set(index, book);
+                updateBookList(inventory);
+                lv.clearChoices();
+            }
+        }
+        if (requestCode == MENU_View_Item) {
+            // Stuffs
+            finish();
+            startActivity(getIntent());
+        }
+        if (requestCode == MENU_View_InventoryDetails) {
+            // Stuffs
+            finish();
+            startActivity(getIntent());
+        }
+
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.removeGroup(MENU_Group);
+        if(state==1) {
+            menu.add(MENU_Group, MENU_View_InventoryDetails, Menu.NONE, "View Inventory Details");
+            menu.add(MENU_Group, MENU_Add_Item, Menu.NONE, "Add new Book");
+
+            if (selectedBooks!=null) {
+                if (selectedBooks.size() == 1) {
+                    menu.add(MENU_Group, MENU_View_Item, Menu.NONE, "View selected Book Info");
+                    menu.add(MENU_Group, MENU_Edit_Item, Menu.NONE, "Edit selected Book Info");
+                    menu.add(MENU_Group, MENU_Remove_Item, Menu.NONE, "Remove selected Book");
+                } else if(selectedBooks.size()>1) {
+                    menu.add(MENU_Group, MENU_Remove_Item, Menu.NONE, "Remove selected Books");
+                }
+            }
+        }
+
+        if((state==2) && (selectedBooks!=null)) {
+            if (selectedBooks.size() == 1) {
+                menu.add(MENU_Group, MENU_View_Item, Menu.NONE, "View selected Book Info");
+            }
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+
+        @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_inventory, menu);
+        mySearchView=(SearchView) menu.findItem(R.id.item_search).getActionView();
+        initSearchView();
         return true;
     }
 
@@ -129,14 +283,95 @@ public class InventoryActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intent;
+        Gson gson=new Gson();
+        String json;
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add_item) {
-            Intent intent = new Intent(this, AddItemActivity.class);
-            startActivityForResult(intent, 1);
-            return true;
+        switch (id) {
+
+            case MENU_Add_Item:
+                json = gson.toJson(inventory);
+                intent = new Intent(this, AddItemActivity.class).putExtra("Add_Item", json);
+                startActivityForResult(intent, MENU_Add_Item);
+
+                return true;
+
+            case MENU_Edit_Item:
+                json = gson.toJson(selectedBooks.get(0));
+                intent = new Intent(this, EditBookActivity.class).putExtra("Edit_Item", json);
+                startActivityForResult(intent, MENU_Edit_Item);
+
+                return true;
+
+            case MENU_Remove_Item:
+                removeItems();
+                lv.clearChoices();
+                updateBookList(inventory);
+
+                return true;
+
+            case MENU_View_Item:
+                json = gson.toJson(selectedBooks.get(0));
+                lv.clearChoices();
+                selectedBooks.clear();
+                intent = new Intent(this, BookDetailsActivity.class).putExtra("Book", json);
+                startActivityForResult(intent, MENU_View_Item);
+
+                return true;
+
+            case MENU_View_InventoryDetails:
+                json = gson.toJson(inventory);
+
+                intent = new Intent(this, InventoryDetailsActivity.class).putExtra("Inventory", json);
+                startActivityForResult(intent,MENU_View_InventoryDetails);
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void removeItems(){
+        for (Book b:selectedBooks){
+            inventory.removeItem(b);
+        }
+        selectedBooks=new ArrayList<>();
+    }
+
+    public void initSearchView(){
+        mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                searchQuery(s);
+                return false;
+            }
+        });
+    }
+
+    public void searchQuery(String query){
+
+        if (query.isEmpty()){ //if query is empty
+            updateBookList(inventory);
+        }else{
+            Inventory inventory= this.inventory.searchByText(query);
+            updateBookList(inventory);
+        }
+    }
+
+    @Override
+    public void finish(){
+        Log.e("Destroyed","On Destroy");
+        Gson gson = new Gson();
+        String json = gson.toJson(inventory);
+        Intent inventory = new Intent();
+        inventory.putExtra("Inventory", json);
+        setResult(RESULT_OK, inventory);
+        super.finish();
+    }
+
 }

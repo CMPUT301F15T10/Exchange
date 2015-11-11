@@ -18,9 +18,10 @@ public class Person {
     private Picture myPicture;
     private String phoneNumber;
     private String userName;
-    private Inventory myInventory;
+    protected Inventory myInventory;
     private String email;
     private PersonList myFriendList= new PersonList();
+    protected boolean isUser=false;
    // private ArrayList<History> historylist;
    // private ArrayList<Trade> tradelist;
 
@@ -31,6 +32,9 @@ public class Person {
         initID();
     }
 
+    public boolean isUser(){
+        return isUser;
+    }
     public void initID(){
         Random generator = new Random(System.nanoTime());
         ID= generator.nextLong();

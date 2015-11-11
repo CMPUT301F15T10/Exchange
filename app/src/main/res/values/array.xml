@@ -29,4 +29,14 @@
         <item>Category9</item>
         <item>Category10</item>
     </string-array>
+    <string-array name="inventory_view_user">
+        <item>All Items</item>
+        <item>Shared Items</item>
+        <item>Non-Shared Items</item>
+    </string-array>
+    <string-array name="inventory_view_person">
+        <item>Shared Items</item>
+    </string-array>
+
+
 </resources>

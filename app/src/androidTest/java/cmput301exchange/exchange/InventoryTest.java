@@ -33,7 +33,7 @@ public class InventoryTest extends ApplicationTestCase<Application>{
         book.updateTitle("Testy Tester");
         inventory.add(book);
         inventory.Search("Testy Tester");
-        inventory.rmItem(book);
+        inventory.removeItem(book);
 
         assert (inventory.contains(book));
     }

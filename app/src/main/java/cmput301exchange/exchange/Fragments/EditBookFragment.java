@@ -171,7 +171,7 @@ public class EditBookFragment extends Fragment {
 
     public void exit(){
         myActivity.setBook(myEditBookController.getBook());
-        myActivity.quitFragmentState();
+        myActivity.finish();
     }
 
     public EditBookController getController(){

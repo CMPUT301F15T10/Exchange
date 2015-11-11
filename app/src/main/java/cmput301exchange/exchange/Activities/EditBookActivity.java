@@ -3,10 +3,13 @@ package cmput301exchange.exchange.Activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -72,12 +75,22 @@ public class EditBookActivity extends AppCompatActivity {
         myBook=book;
     }
 
-    public void quitFragmentState(){
-        getSupportFragmentManager().popBackStack();
+    @Override
+    public void finish(){
+        Gson gson = new Gson();
+        String json = gson.toJson(myBook);
+//        Log.e("size inventory InventoryActivity:",String.valueOf(inventory.getInventoryList().size()));
+        Intent inventory = new Intent();
+        inventory.putExtra("Book", json);
+        setResult(RESULT_OK, inventory);
+        super.finish();
     }
 
     public void initBook(){
-
+        Intent intent=getIntent();
+        String json=intent.getExtras().getString("Edit_Item");
+        Gson gson = new Gson();
+        myBook=gson.fromJson(json,Book.class);
     }
 
     public EditBookFragment getEditBookFragment(){
@@ -88,30 +101,30 @@ public class EditBookActivity extends AppCompatActivity {
         return CommentEdit;
     }
 
-    protected void onSaveInstanceState(Bundle outState) {
-        // TODO Auto-generated method stub
-        super.onSaveInstanceState(outState);
-        ObjectSaver.savedObjects=new ArrayList<Object>();
-        ObjectSaver.savedObjects.add(BookEdit);
-        ObjectSaver.savedObjects.add(CommentEdit);
-        ObjectSaver.savedObjects.add(Photo);
-        ObjectSaver.savedObjects.add(fm);
-        ObjectSaver.savedObjects.add(fm_T);
-        ObjectSaver.savedObjects.add(fragmentLayoutID);
-        ObjectSaver.savedObjects.add(myBook);
-    }
-
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
-        super.onRestoreInstanceState(savedInstanceState);
-        BookEdit=(EditBookFragment) ObjectSaver.savedObjects.get(0);
-        CommentEdit=(EditBookCommentFragment) ObjectSaver.savedObjects.get(1);
-        Photo=(Fragment) ObjectSaver.savedObjects.get(2); // Change this to Photo fragments class type
-        fm=(FragmentManager) ObjectSaver.savedObjects.get(3);
-        fm_T=(FragmentTransaction) ObjectSaver.savedObjects.get(4);
-        fragmentLayoutID=(Integer) ObjectSaver.savedObjects.get(5);
-        myBook=(Book) ObjectSaver.savedObjects.get(6);
-    }
+//    protected void onSaveInstanceState(Bundle outState) {
+//        // TODO Auto-generated method stub
+//        super.onSaveInstanceState(outState);
+//        ObjectSaver.savedObjects=new ArrayList<Object>();
+//        ObjectSaver.savedObjects.add(BookEdit);
+//        ObjectSaver.savedObjects.add(CommentEdit);
+//        ObjectSaver.savedObjects.add(Photo);
+//        ObjectSaver.savedObjects.add(fm);
+//        ObjectSaver.savedObjects.add(fm_T);
+//        ObjectSaver.savedObjects.add(fragmentLayoutID);
+//        ObjectSaver.savedObjects.add(myBook);
+//    }
+//
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        // TODO Auto-generated method stub
+//        super.onRestoreInstanceState(savedInstanceState);
+//        BookEdit=(EditBookFragment) ObjectSaver.savedObjects.get(0);
+//        CommentEdit=(EditBookCommentFragment) ObjectSaver.savedObjects.get(1);
+//        Photo=(Fragment) ObjectSaver.savedObjects.get(2); // Change this to Photo fragments class type
+//        fm=(FragmentManager) ObjectSaver.savedObjects.get(3);
+//        fm_T=(FragmentTransaction) ObjectSaver.savedObjects.get(4);
+//        fragmentLayoutID=(Integer) ObjectSaver.savedObjects.get(5);
+//        myBook=(Book) ObjectSaver.savedObjects.get(6);
+//    }
 
     public void setController(EditBookController controller){
         myController=controller;

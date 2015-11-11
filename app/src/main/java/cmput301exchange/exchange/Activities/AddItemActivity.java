@@ -13,7 +13,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
@@ -25,11 +28,16 @@ public class AddItemActivity extends ActionBarActivity {
 
     private EditText name, author, quality, quantity, comments;
     private String category;
+    private Inventory inventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item);
+
+        Gson gson= new Gson();
+        String json=getIntent().getStringExtra("Add_Item");
+        inventory=gson.fromJson(json,Inventory.class);
 
         name = (EditText) findViewById(R.id.editName);
         author = (EditText) findViewById(R.id.editAuthor);
@@ -67,8 +75,8 @@ public class AddItemActivity extends ActionBarActivity {
 //        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
 //        GlobalENV = io.loadEnvironment("GlobalENV");
 
-        GlobalENV = new ModelEnvironment(this,null);
-        User user = GlobalENV.getOwner();
+//        GlobalENV = new ModelEnvironment(this,null);
+//        User user = GlobalENV.getOwner();
         Book book = new Book();
 
         String bookName = name.getText().toString();
@@ -92,11 +100,15 @@ public class AddItemActivity extends ActionBarActivity {
         book.updateCategory(category);
         book.updateComment(bookComments);
 
-        user.getMyInventory().add(book);
-        GlobalENV.setOwner(user);
-        GlobalENV.saveInstance(this);
+//        user.getMyInventory().add(book);
+//        GlobalENV.setOwner(user);
+//        GlobalENV.saveInstance(this);
 
-        Intent added = new Intent();
+        inventory.add(book);
+        Gson gson= new Gson();
+        String json=gson.toJson(inventory);
+
+        Intent added = new Intent().putExtra("Inventory",json);
         setResult(RESULT_OK, added);
 
         this.finish();
@@ -108,6 +120,7 @@ public class AddItemActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_add_item, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

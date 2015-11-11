@@ -52,9 +52,29 @@ public class Inventory{
 
     public void add(Book Book) {this.inventoryList.add(Book);}
 
-    public void rmItem(Book book){this.inventoryList.remove(book);}
+    public void removeItem(Book book){this.inventoryList.remove(book);}
 
     public boolean contains(Book book){return this.inventoryList.contains(book);}
+
+    public ArrayList<Book> getSharedItems(){
+        ArrayList<Book> sharedBooks= new ArrayList<>();
+        for(Book b:inventoryList){
+            if (b.isShareable()){
+                sharedBooks.add(b);
+            }
+        }
+        return sharedBooks;
+    }
+
+    public ArrayList<Book> getNonSharedItems(){
+        ArrayList<Book> nonSharedBooks= new ArrayList<>();
+        for(Book b:inventoryList){
+            if (b.isShareable()!=true){
+                nonSharedBooks.add(b);
+            }
+        }
+        return nonSharedBooks;
+    }
 
     public Inventory searchByCategory(String cat){
         /**

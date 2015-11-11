@@ -10,7 +10,12 @@ import android.graphics.Picture;
  */
 public class User extends Person{
 
-    public User(String Username){super(Username);}
+    public User(String Username){
+        super(Username);
+        isUser=true;
+    }
 
-
+    public void setInventory(Inventory inventory){
+        this.myInventory=inventory;
+    }
 }

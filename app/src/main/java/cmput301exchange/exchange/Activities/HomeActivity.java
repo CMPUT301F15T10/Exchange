@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +18,10 @@ import com.google.gson.Gson;
 import org.w3c.dom.Text;
 
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 
+import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
@@ -26,21 +29,23 @@ import cmput301exchange.exchange.ViewPerson;
 
 public class HomeActivity extends AppCompatActivity {
     ModelEnvironment GlobalENV;
+    Gson gson= new Gson();
+    Intent intent;
 
     protected User user;
+    private final int INVENTORY=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        String json = getIntent().getStringExtra("environment");
-//        Gson gson = new Gson();
-//        ModelEnvironment globalENV = gson.fromJson(json,ModelEnvironment.class);
-//        assert(globalENV != null);
-//        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-//        GlobalENV = io.loadEnvironment("GlobalENV");
 
-        GlobalENV= new ModelEnvironment(this, null);
-        user = GlobalENV.getOwner();
+        intent=getIntent();
+        getUser();
+        getInventory();
+        initInventory();
+
+        GlobalENV.setOwner(user);
+        GlobalENV.saveInstance(this);
 
 
         setContentView(R.layout.activity_home);
@@ -52,12 +57,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void inventory(View view) {
-
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-
-        Intent intent = new Intent(this, InventoryActivity.class).putExtra("Person",json);
-        startActivity(intent);
+        Gson gson= new Gson();
+        String json=gson.toJson(user.getMyInventory());
+        Log.e("size inventory HomeActivity calling:", String.valueOf(user.getMyInventory().getInventoryList().size()));
+        Intent intent = new Intent(this, InventoryActivity.class);
+        intent.putExtra("Inventory",json);
+        intent.putExtra("Inventory_State",1);
+        startActivityForResult(intent, INVENTORY);
     }
 
     public void tradeManager(View view) {
@@ -77,6 +83,26 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    public void getInventory(){
+        if (intent.hasExtra("Inventory")) {
+            String json = intent.getExtras().getString("Inventory");
+            Inventory inventory = gson.fromJson(json, Inventory.class);
+            Log.e("size inventory HomeActivity:", String.valueOf(inventory.getInventoryList().size()));
+            user.setInventory(inventory);
+        }
+    }
+
+    public void getUser(){
+        if (intent.hasExtra("User")){
+            String json = intent.getExtras().getString("User");
+            user = gson.fromJson(json,User.class);
+            GlobalENV= new ModelEnvironment(this,"i");
+        } else{
+            GlobalENV= new ModelEnvironment(this, null);
+            user=GlobalENV.getOwner();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -87,17 +113,11 @@ public class HomeActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         // TODO pass through intent the current user's profile
         if (id == R.id.action_view_profile) {
-            Gson gson = new Gson();
-            String json = gson.toJson(user);
-
-            Intent intent = new Intent(this, ProfileDetailsActivity.class).putExtra("Person",json);
+            Intent intent = new Intent(this, ProfileDetailsActivity.class);
             startActivity(intent);
         }
         if (id == R.id.action_edit_profile) {
-            Gson gson = new Gson();
-            String json = gson.toJson(user);
-
-            Intent intent = new Intent(this, EditProfileActivity.class).putExtra("User",json);
+            Intent intent = new Intent(this, EditProfileActivity.class);
             startActivity(intent);
         }
         if (id == R.id.action_settings) {
@@ -106,5 +126,46 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == INVENTORY) {
+//            finish();
+//            Log.e("receive: ", data.getExtras().getString("Inventory"));
+            data.setClass(this,HomeActivity.class);
+            intent=data;
+            getInventory();
+//            startActivity(data);
+        }
+//        if (requestCode == MENU_Edit_Item && resultCode == RESULT_OK) {
+//            // Stuffs
+//            finish();
+//            startActivity(getIntent());
+//        }
+//        if (requestCode == MENU_View_Item && resultCode == RESULT_OK) {
+//            // Stuffs
+//            finish();
+//            startActivity(getIntent());
+//        }
+//        if (requestCode == MENU_View_InventoryDetails && resultCode == RESULT_OK) {
+//            // Stuffs
+//            finish();
+//            startActivity(getIntent());
+//        }
+
+    }
+
+    public void initInventory(){
+        Book EternalNight=new Book();
+        EternalNight.setShareable(true);
+        EternalNight.updateTitle("Eternal Night");
+        EternalNight.updateCategory("None");
+        user.getMyInventory().add(EternalNight);
+        Book HackMe= new Book();
+        HackMe.setShareable(false);
+        HackMe.updateTitle("Hack Me!");
+        HackMe.updateCategory("None");
+        user.getMyInventory().add(HackMe);
     }
 }

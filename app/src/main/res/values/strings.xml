@@ -62,5 +62,7 @@
     <string name="location">Location</string>
     <string name="profile_image">Profile Image</string>
     <string name="done">Done</string>
+    <string name="title_activity_book_details">BookDetails</string>
+    <string name="title_activity_inventory_details">InventoryDetailsActivity</string>
 
 </resources>

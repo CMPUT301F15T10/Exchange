@@ -29,12 +29,12 @@ import cmput301exchange.exchange.User;
 public class ViewPersonActivity extends AppCompatActivity {
 
 
-    private int MENU_Settings = Menu.FIRST;
-    private int MENU_View_Profile = Menu.FIRST + 1;
-    private int MENU_View_Inventory = Menu.FIRST + 2;
-    private int MENU_Make_Friendship = Menu.FIRST + 3;
-    private int MENU_View_RemoveFriend = Menu.FIRST + 4;
-    private int MENU_Group=1; //menu group of 0 is taken by the SearchView item
+    private static final int MENU_Settings = Menu.FIRST;
+    private static final int MENU_View_Profile = Menu.FIRST + 1;
+    private static final int MENU_View_Inventory = Menu.FIRST + 2;
+    private static final int MENU_Make_Friendship = Menu.FIRST + 3;
+    private static final int MENU_View_RemoveFriend = Menu.FIRST + 4;
+    private static final int MENU_Group=1; //menu group of 0 is taken by the SearchView item
 
     public ModelEnvironment globalENV;
     private ListView lv;
