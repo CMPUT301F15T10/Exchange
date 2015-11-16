@@ -30,32 +30,32 @@ public class Friendtest extends ApplicationTestCase<Application> {
     public void testRm(){
         PersonList friends = new PersonList();
         //assert(friends.getFriendlist().size()==0);
-        assertEquals(friends.getFriendlist().size(),0);
+        assertEquals(friends.getPersonList().size(),0);
         Friend aguy = new Friend("Test testly");
         Friend anotherguy = new Friend("something else");
-        friends.addfriend(aguy);
+        friends.addPerson(aguy);
         //assert(friends.getFriendlist().size()==1);
-        assertEquals(friends.getFriendlist().size(),1);
-        friends.removefirend(anotherguy);
+        assertEquals(friends.getPersonList().size(),1);
+        friends.removePerson(anotherguy);
         //assert(friends.getFriendlist().size()==1);
-        assertEquals(friends.getFriendlist().size(),1);
-        friends.removefirend(aguy);
+        assertEquals(friends.getPersonList().size(),1);
+        friends.removePerson(aguy);
         //assert(friends.getFriendlist().size()==0);
-        assertEquals(friends.getFriendlist().size(),0);
+        assertEquals(friends.getPersonList().size(),0);
     }
 
     public void testViewP(){
         PersonList friends = new PersonList();
-        assert(friends.getFriendlist().size()==0);
+        assert(friends.getPersonList().size()==0);
         Friend aguy = new Friend("Test testly");
         aguy.setPhoneNumber("780780780");
         aguy.setLocation("University");
         aguy.setEmail("test@ualebrta.ca");
-        friends.addfriend(aguy);
+        friends.addPerson(aguy);
         //assert(aguy.getEmail()==friends.getFriendlist().get(0).getEmail());
-        assertEquals(aguy.getEmail(), friends.getFriendlist().get(0).getEmail());
+        assertEquals(aguy.getEmail(), friends.getPersonList().get(0).getEmail());
         //assert(aguy.getLocation()==friends.getFriendlist().get(0).getLocation());
-        assertEquals(aguy.getLocation(), friends.getFriendlist().get(0).getLocation());
+        assertEquals(aguy.getLocation(), friends.getPersonList().get(0).getLocation());
 
     }
 }
