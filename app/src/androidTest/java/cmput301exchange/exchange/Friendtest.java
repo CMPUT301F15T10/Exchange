@@ -11,7 +11,11 @@ import android.test.ApplicationTestCase;
 public class Friendtest extends ApplicationTestCase<Application> {
 
 
+<<<<<<< HEAD
     public Friendtest(){
+=======
+    public Friendtest() {
+>>>>>>> 4946ef6a3d4e600392830202f5c0d1cf5e03bb89
         super(Application.class);
     }
 
