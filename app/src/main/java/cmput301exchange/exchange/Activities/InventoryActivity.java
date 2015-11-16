@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
