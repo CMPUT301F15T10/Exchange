@@ -3,6 +3,7 @@ package cmput301exchange.exchange;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.TouchUtils;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -47,6 +48,31 @@ public class LoginUITest extends ActivityInstrumentationTestCase2<Login> {
 
         mInstrumentation.waitForIdleSync();
 
-        assertEquals("Hello",username.getText().toString());
+        assertEquals("Hello", username.getText().toString());
+    }
+
+    public void testLoginButton(){
+
+        login.runOnUiThread(new Runnable() {
+            public void run() {
+                username.requestFocus();
+            }
+        });
+
+        mInstrumentation.waitForIdleSync();
+
+        mInstrumentation.sendStringSync("Hello");
+
+        mInstrumentation.waitForIdleSync();
+
+        Button loginButton = (Button) login.findViewById(R.id.button);
+
+        assertNotNull(loginButton);
+
+        TouchUtils.clickView(this, loginButton);
+
+        mInstrumentation.waitForIdleSync();
+
+
     }
 }
