@@ -11,8 +11,8 @@ import android.test.ApplicationTestCase;
 public class Friendtest extends ApplicationTestCase<Application> {
 
 
-    public Friendtest(Class<Application> applicationClass) {
-        super(applicationClass);
+    public Friendtest(){
+        super(Application.class);
     }
 
     public void testAdd(){
