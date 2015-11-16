@@ -18,13 +18,13 @@ public class Friendtest extends ApplicationTestCase<Application> {
     public void testAdd(){
         PersonList friends = new PersonList();
         //assert(friends.getFriendlist().size()==0);
-        assertEquals(friends.getFriendlist().size(), 0);
+        assertEquals(friends.getPersonList().size(), 0);
         Friend aguy = new Friend("Test testly");
-        friends.addfriend(aguy);
+        friends.addPerson(aguy);
         //assert(friends.getFriendlist().size()==1);
-        assertEquals(friends.getFriendlist().size(),1);
+        assertEquals(friends.getPersonList().size(),1);
         //assert(friends.getFriendlist().get(0).getName()=="Test testly");
-        assertEquals(friends.getFriendlist().get(0).getName(),"Test testly");
+        assertEquals(friends.getPersonList().get(0).getName(),"Test testly");
 
     }
     public void testRm(){
