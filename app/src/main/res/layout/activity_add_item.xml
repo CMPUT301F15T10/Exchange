@@ -148,7 +148,8 @@
                 android:textSize="18sp"
                 android:id="@+id/shareable_checkBox"
                 android:button="@null"
-                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"/>
+                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+                android:checked="false" />
 
 
         </LinearLayout>

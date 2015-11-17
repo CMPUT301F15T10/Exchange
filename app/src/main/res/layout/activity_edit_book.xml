@@ -5,7 +5,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="cmput301f15t10.exchange.Fragments.EditBookFragment"
-    >
+    android:id="@+id/b">
 
     <TextView
         android:text="Edit Item"
@@ -33,7 +33,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/EditItem_NameInput"
         android:layout_alignTop="@+id/textView9"
-        android:layout_alignEnd="@+id/EditItem_TypeInput" />
+        android:layout_alignEnd="@+id/EditItem_TypeInput"
+        android:layout_alignStart="@+id/EditItem_Done" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -55,7 +56,8 @@
         android:layout_below="@+id/textView10"
         android:layout_alignParentTop="true"
         android:layout_marginTop="180dp"
-        android:layout_toEndOf="@+id/textView10" />
+        android:layout_toEndOf="@+id/textView10"
+        android:layout_alignStart="@+id/EditItem_Done" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -86,17 +88,14 @@
         android:textSize="25dp"
         android:textColor="#111"
         android:layout_alignBottom="@+id/EditItem_QualityInput"
-        android:layout_toEndOf="@+id/EditItem_Done" />
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:id="@+id/EditItem_QuantityInput"
-        android:layout_below="@+id/editText9"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="300dp"
-        android:layout_alignEnd="@+id/editItem_EditItem"
-        android:layout_alignStart="@+id/editItem_EditItem" />
+        android:layout_alignTop="@+id/textView13"
+        android:layout_alignStart="@+id/EditItem_TypeInput" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -117,8 +116,8 @@
         android:id="@+id/textView14"
         android:textSize="25dp"
         android:textColor="#111"
-        android:layout_alignBottom="@+id/EditItem_QuantityInput"
-        android:layout_alignEnd="@+id/textView12" />
+        android:layout_above="@+id/EditItem_CategorySpinner"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -127,10 +126,8 @@
         android:id="@+id/textView15"
         android:textColor="#111"
         android:textSize="25dp"
-        android:layout_below="@+id/editText10"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="362dp" />
+        android:layout_below="@+id/EditItem_QuantityInput"
+        android:layout_alignParentStart="true" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -141,33 +138,34 @@
         android:layout_toEndOf="@+id/EditItem_ViewComments" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:text="View Comments"
         android:id="@+id/EditItem_ViewComments"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
         android:textSize="12dp"
-        android:onClick="onViewComments" />
+        android:onClick="onViewComments"
+        android:layout_alignTop="@+id/EditItem_Done"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/textView13" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:text="Add/Remove Photo"
         android:id="@+id/EditItem_Photo"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:textSize="12dp"
-        android:onClick="onClickPhoto" />
+        android:onClick="onClickPhoto"
+        android:layout_alignTop="@+id/EditItem_Done"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="65dp"
-        android:layout_height="wrap_content"
-        android:text="Done"
+        android:layout_height="60dp"
+        android:text="v"
         android:id="@+id/EditItem_Done"
         android:textSize="14dp"
         android:onClick="onSave"
-        android:layout_alignTop="@+id/EditItem_Photo"
-        android:layout_toStartOf="@+id/EditItem_Photo" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
