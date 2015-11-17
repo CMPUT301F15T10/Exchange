@@ -1,11 +1,19 @@
+/*
+
 import junit.framework.*;
 
 	// UserAccess class contains information regarding what services should be available to user once user is logged in based on whether there is internet connectivity or not
 	// UserAccess should have a field called Mode. If Mode=1 then it suggests that there is internet connectivity. If it is 2 then no internet connectivity.
-/*
-package cmput301exchange.exchange;
 
-public class OffineBehaviourTest{
+package cmput301exchange.exchange;
+import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Friend;
+import cmput301exchange.exchange.Inventory;
+import cmput301exchange.exchange.Trade;
+import cmput301exchange.exchange.TradeManager;
+import cmput301exchange.exchange.UserAccess;
+
+public class OffineBehaviourTest extends {
 
 
 	private InternetConnectivity myInternet= new InternetConnectivity();
@@ -157,5 +165,6 @@ public class OffineBehaviourTest{
 
 
 }
+
 
 */
