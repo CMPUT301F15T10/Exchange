@@ -46,17 +46,15 @@ public class HomeActivity extends AppCompatActivity {
         getInventory();
         initInventory();
 
-
         GlobalENV.setOwner(user);
         GlobalENV.saveInstance(this);
 
 
         setContentView(R.layout.activity_home);
 
-        Context toastContext = getApplicationContext();
-        Toast toast = new Toast(toastContext);
-
-        toast.makeText(toastContext, GlobalENV.getOwner().getName(), Toast.LENGTH_LONG).show();
+        TextView message = (TextView) findViewById(R.id.home_message);
+        String string = "Hello "+GlobalENV.getOwner().getName()+", "+message.getText().toString();
+        message.setText(string);
     }
 
     public void inventory(View view) {
