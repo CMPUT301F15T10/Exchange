@@ -29,24 +29,25 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
     private EditBookCommentFragment editComment;
     private EditBookActivity activity;
     private Book myBook, myBook2;
-    public Inventory inventory1 = new Inventory();
 
     public test_EditBookUI(){
         super(cmput301exchange.exchange.Activities.EditBookActivity.class);
     }
 
     public void testStart() throws Exception {
-        Gson gson = new Gson();
-        String json = gson.toJson(inventory1);
-
-        Intent intent = new Intent(); //Create a new Intent
-        intent.putExtra("Inventory",json); //Pack the Intent with a blank Inventory
-        setActivityIntent(intent); //Spoof the Intent
         Activity activity = getActivity();
     }
 
     @Override protected void setUp() throws Exception {
         super.setUp();
+        Gson gson = new Gson();
+        String json = gson.toJson(myBook);
+
+        initBook();
+        Intent intent = new Intent(); //Create a new Intent
+        intent.putExtra("Edit_Item",json); //Pack the Intent with a blank Inventory
+        setActivityIntent(intent); //Spoof the Intent
+
         activity= (EditBookActivity)getActivity();
         editBook=activity.getEditBookFragment();
         editComment=activity.getEditCommentFragment();
