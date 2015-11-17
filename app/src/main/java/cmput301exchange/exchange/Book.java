@@ -35,9 +35,11 @@ public class Book implements Shareable, Comparable<Book> {
     private String itemType="";
     private Long ID;
 
+
     public Long getID(){
         return ID;
     }
+
     public Book(){
         initID();
     }
