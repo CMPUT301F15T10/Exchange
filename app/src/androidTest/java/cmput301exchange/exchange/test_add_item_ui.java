@@ -6,7 +6,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 
-import cmput301exchange.exchange.Activities.AddItemActivity;
+import cmput301exchange.exchange.Activities.AddBookActivity;
 import cmput301exchange.exchange.Activities.InventoryActivity;
 
 /**
@@ -22,7 +22,7 @@ public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
     private Button   add_button;
 
     public test_add_item_ui() {
-        super(cmput301exchange.exchange.Activities.AddItemActivity.class);
+        super(cmput301exchange.exchange.Activities.AddBookActivity.class);
     }
 
     public void testStart() throws Exception {
@@ -31,7 +31,7 @@ public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
 
 
     public void testAddValid(){
-        activity = (AddItemActivity)getActivity();
+        activity = (AddBookActivity)getActivity();
         editname = (EditText)activity.findViewById(R.id.editName);
         editauthor = (EditText)activity.findViewById(R.id.editAuthor);
         editquality = (EditText)activity.findViewById(R.id.editQuality);
