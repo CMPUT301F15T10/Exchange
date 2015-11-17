@@ -26,7 +26,6 @@ import cmput301exchange.exchange.PersonList;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
-import cmput301exchange.exchange.ViewPerson;
 
 public class HomeActivity extends AppCompatActivity {
     ModelEnvironment GlobalENV=null;

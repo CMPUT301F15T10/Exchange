@@ -85,7 +85,7 @@
             android:name=".Activities.SendEmailActivity"
             android:label="SendEmail" />
         <activity
-            android:name=".Activities.AddItemActivity"
+            android:name=".Activities.AddBookActivity"
             android:label="@string/title_activity_add_item" >
         </activity>
         <activity
