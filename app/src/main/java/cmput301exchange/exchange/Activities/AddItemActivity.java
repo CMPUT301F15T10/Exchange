@@ -27,8 +27,8 @@ public class AddItemActivity extends ActionBarActivity {
     ModelEnvironment GlobalENV;
 
     private EditText name, author, quality, quantity, comments;
-    private String category, bookName="",bookAuthor="",bookComments="";
-    private Integer bookQuality=5,bookQuantity=1;
+    private String category;
+    private Integer bookQuality,bookQuantity;
     private Inventory inventory;
 
     @Override
@@ -45,7 +45,6 @@ public class AddItemActivity extends ActionBarActivity {
         quality = (EditText) findViewById(R.id.editQuality);
         quantity = (EditText) findViewById(R.id.editQuantity);
         comments = (EditText) findViewById(R.id.editComment);
-
 
         Spinner spinner = (Spinner) findViewById(R.id.categories_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -67,24 +66,26 @@ public class AddItemActivity extends ActionBarActivity {
 
             }
         });
-
-        // TODO input verificiation: check to make sure nothing is empty, if empty fill with something
     }
 
     public void add(View view){
 
         Book book = new Book();
 
-        bookName = name.getText().toString(); //Fetch the book title from the document.
-        bookAuthor = author.getText().toString(); //Fetch the Author from the document
+        // set quality and quantity to 0 if nothing entered
+        if (quality.getText().toString().isEmpty()) {
+            quality.setText("0");
+        }
+        if (quantity.getText().toString().isEmpty()) {
+            quantity.setText("0");
+        }
 
-        if (!(quality.getText().toString().isEmpty())) {
-            bookQuality = Integer.parseInt(quality.getText().toString()); // add try, catch later
-        }
-        if (!(quantity.getText().toString().isEmpty())) {
-            bookQuantity = Integer.parseInt(quantity.getText().toString()); // add try, catch later
-        }
-        bookComments = comments.getText().toString();
+        String bookName = name.getText().toString(); //Fetch the book title from the document.
+        String bookAuthor = author.getText().toString(); //Fetch the Author from the document
+        String bookComments = comments.getText().toString();
+        bookQuantity = Integer.parseInt(quantity.getText().toString());
+        bookQuality = Integer.parseInt(quality.getText().toString());
+
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.shareable_checkBox);
         if (checkBox.isChecked()) {
