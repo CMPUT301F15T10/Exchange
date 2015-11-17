@@ -1,10 +1,13 @@
 package cmput301exchange.exchange;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import com.google.gson.Gson;
 
 import cmput301exchange.exchange.Activities.ConfigurationActivity;
 import cmput301exchange.exchange.Activities.EditBookActivity;
@@ -26,12 +29,19 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
     private EditBookCommentFragment editComment;
     private EditBookActivity activity;
     private Book myBook, myBook2;
+    public Inventory inventory1 = new Inventory();
 
     public test_EditBookUI(){
         super(cmput301exchange.exchange.Activities.EditBookActivity.class);
     }
 
     public void testStart() throws Exception {
+        Gson gson = new Gson();
+        String json = gson.toJson(inventory1);
+
+        Intent intent = new Intent(); //Create a new Intent
+        intent.putExtra("Inventory",json); //Pack the Intent with a blank Inventory
+        setActivityIntent(intent); //Spoof the Intent
         Activity activity = getActivity();
     }
 
