@@ -15,12 +15,7 @@
         android:layout_centerHorizontal="true"
         android:weightSum="1">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-            <ImageButton
+        <ImageButton
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:id="@+id/imageButton"
