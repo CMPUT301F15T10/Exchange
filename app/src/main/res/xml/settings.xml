@@ -1,0 +1,14 @@
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Application Configuration">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="Auto Photo Download"
+            android:summary="Images will be automatically downloaded onto the device" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

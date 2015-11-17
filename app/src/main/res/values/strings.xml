@@ -41,7 +41,7 @@
     <string name="home_edit_profile">Edit Profile</string>
 
     <!-- Inventory Strings-->
-    <string name="add_item">Add Item</string>
+    <string name="add_item">Add Book</string>
 
     <!-- Add Item Activity-->
     <string name="title_activity_add_item">Add Item</string>
