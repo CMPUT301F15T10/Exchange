@@ -68,8 +68,7 @@
 
         <activity
             android:name=".Activities.ProfileDetailsActivity"
-            android:label="Detailed Profile"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:label="Detailed Profile">
         </activity>
         <activity
             android:name=".Activities.Login"

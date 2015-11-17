@@ -8,7 +8,7 @@
     <string name="title_activity_edit_item">EditItem</string>
     <string name="title_activity_edit_profile">EditProfile</string>
     <string name="title_activity_item_details">ItemDetails</string>
-    <string name="title_activity_profile_details">ProfileDetails</string>
+    <string name="title_activity_profile_details">Profile Details</string>
 
 
     <string name = "globalENV"> globalenvfilename</string>

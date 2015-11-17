@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         TextView message = (TextView) findViewById(R.id.home_message);
-        String string = "Hello "+GlobalENV.getOwner().getName()+", "+message.getText().toString();
+        String string = "Hello "+GlobalENV.getOwner().getName()+"!\n"+message.getText().toString();
         message.setText(string);
     }
 
