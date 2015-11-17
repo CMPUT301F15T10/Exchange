@@ -11,30 +11,23 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
-import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
-import cmput301exchange.exchange.Serializers.DataIO;
-import cmput301exchange.exchange.User;
 
-public class AddItemActivity extends ActionBarActivity {
-
-    ModelEnvironment GlobalENV;
+public class AddBookActivity extends ActionBarActivity {
 
     private EditText name, author, quality, quantity, comments;
     private String category;
-    private Integer bookQuality,bookQuantity;
     private Inventory inventory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_item);
+        setContentView(R.layout.activity_add_book);
 
         Gson gson= new Gson();
         String json=getIntent().getStringExtra("Add_Item");
@@ -83,8 +76,8 @@ public class AddItemActivity extends ActionBarActivity {
         String bookName = name.getText().toString(); //Fetch the book title from the document.
         String bookAuthor = author.getText().toString(); //Fetch the Author from the document
         String bookComments = comments.getText().toString();
-        bookQuantity = Integer.parseInt(quantity.getText().toString());
-        bookQuality = Integer.parseInt(quality.getText().toString());
+        Integer bookQuantity = Integer.parseInt(quantity.getText().toString());
+        Integer bookQuality = Integer.parseInt(quality.getText().toString());
 
 
         final CheckBox checkBox = (CheckBox) findViewById(R.id.shareable_checkBox);

@@ -1,6 +1,5 @@
 package cmput301exchange.exchange.Activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,8 +24,6 @@ import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
-import cmput301exchange.exchange.Serializers.DataIO;
-import cmput301exchange.exchange.User;
 import cmput301exchange.exchange.Person;
 
 
@@ -280,7 +277,7 @@ public class InventoryActivity extends AppCompatActivity {
 
             case MENU_Add_Item:
                 json = gson.toJson(inventory);
-                intent = new Intent(this, AddItemActivity.class).putExtra("Add_Item", json);
+                intent = new Intent(this, AddBookActivity.class).putExtra("Add_Item", json);
                 startActivityForResult(intent, MENU_Add_Item);
 
                 return true;

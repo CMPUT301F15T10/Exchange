@@ -41,7 +41,7 @@
     <string name="home_edit_profile">Edit Profile</string>
 
     <!-- Inventory Strings-->
-    <string name="add_item">Add Item</string>
+    <string name="add_item">Add Book</string>
 
     <!-- Add Item Activity-->
     <string name="title_activity_add_item">Add Item</string>
@@ -62,7 +62,13 @@
     <string name="location">Location</string>
     <string name="profile_image">Profile Image</string>
     <string name="done">Done</string>
-    <string name="title_activity_book_details">BookDetails</string>
+    <string name="title_activity_book_details">Book Details</string>
     <string name="title_activity_inventory_details">InventoryDetailsActivity</string>
+    <string name="name_label">Name:</string>
+    <string name="not_available">Not Available</string>
+    <string name="author_label">Author:</string>
+    <string name="quality_label">Quality:</string>
+    <string name="quantity_label">Quantity:</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>
