@@ -1,4 +1,4 @@
-package cmput301exchange.exchange;
+package cmput301exchange.exchange.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import cmput301exchange.exchange.R;
 
 
 // http://www.mkyong.com/android/how-to-send-email-in-android

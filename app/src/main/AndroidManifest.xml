@@ -82,7 +82,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SendEmailActivity"
+            android:name=".Activities.SendEmailActivity"
             android:label="SendEmail" />
         <activity
             android:name=".Activities.AddItemActivity"
