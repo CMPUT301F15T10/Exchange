@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Activities;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,6 +49,8 @@ public class ViewPersonActivity extends AppCompatActivity {
     private Integer state=0;
     private SearchView mySearchView=null;
 
+    private String cat;
+
 
 
     @Override
@@ -55,6 +58,8 @@ public class ViewPersonActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_person);
+
+        Intent intent = getIntent();
 
         initPerson();
         friendList=user.getMyFriendList().getPersonList();
@@ -103,12 +108,11 @@ public class ViewPersonActivity extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //on selecting a spinner item
-                String cat = parent.getItemAtPosition(position).toString();
+                cat = parent.getItemAtPosition(position).toString();
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
                 //show the result for the sort
@@ -117,7 +121,8 @@ public class ViewPersonActivity extends AppCompatActivity {
                     case "Friends":
                         state=1;
                         lv.clearChoices();
-                        lv.setAdapter(friendListAdapter);
+                        friendListAdapter.clear();
+                        friendListAdapter.addAll();
                         break;
                     case "All People":
                         state=2;
@@ -130,6 +135,12 @@ public class ViewPersonActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
+
+        // Search wooooooooooo
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchQuery(query);
+        }
 
     }
 
