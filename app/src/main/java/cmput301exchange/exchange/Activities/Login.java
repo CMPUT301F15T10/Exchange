@@ -43,8 +43,10 @@ public class Login extends AppCompatActivity {
         Gson gson = new Gson();
 
         String userString = username.getText().toString();
-        if(userString.equals("")){
 
+        // Username can't be empty
+        if(userString.equals("")){
+            return;
         }
 //        user= new User(userString);
 //        String json=gson.toJson(user);
