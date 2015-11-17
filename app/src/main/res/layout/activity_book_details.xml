@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -7,94 +7,258 @@
     tools:context="cmput301exchange.exchange.Activities.BookDetailsActivity">
 
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="130dp"
-        android:id="@+id/imageView"
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Book Name: "
-        android:id="@+id/BD_name"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp" />
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/image"
+            android:contentDescription="@string/item_image"
+            android:layout_gravity="center_horizontal" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Book ID: "
-        android:id="@+id/BD_id"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/BD_name"
-        android:layout_alignParentStart="true" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Author: "
-        android:id="@+id/BD_author"
-        android:layout_marginTop="23dp"
-        android:layout_below="@+id/BD_id"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Name"
+                android:layout_gravity="start"
+                android:text="@string/name_label"
+                android:textSize="18sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="3sp"
+                android:singleLine="true"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quality: "
-        android:id="@+id/BD_Quality"
-        android:layout_below="@+id/BD_author"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quantity: "
-        android:id="@+id/BD_Quantity"
-        android:layout_below="@+id/BD_Quality"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/bookName"
+                android:maxLength="20"
+                android:textSize="16sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="10sp"
+                android:text="@string/not_available"
+                android:singleLine="true"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Genre: "
-        android:id="@+id/BD_genre"
-        android:layout_below="@+id/BD_Quantity"
-        android:layout_marginTop="23dp"
-        android:layout_alignParentStart="true" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Is Sharable?: "
-        android:id="@+id/BD_isSharable"
-        android:layout_below="@+id/BD_genre"
-        android:layout_marginTop="23dp"
-        android:layout_alignParentStart="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Author"
+                android:layout_gravity="start"
+                android:text="@string/author_label"
+                android:textSize="18sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="3sp"
+                android:singleLine="true"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Comment"
-        android:id="@+id/BD_viewComment"
-        android:layout_alignParentBottom="true"
-        android:onClick="ViewComment"
-        android:layout_alignStart="@+id/imageView" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Back"
-        android:id="@+id/BD_goBack"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/imageView"
-        android:onClick="GoBack"
-        />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/bookAuthor"
+                android:textSize="16sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="10sp"
+                android:text="@string/not_available"
+                android:singleLine="true"/>
 
-</RelativeLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Quality"
+                android:layout_gravity="start"
+                android:text="@string/quality_label"
+                android:textSize="18sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="3sp"
+                android:singleLine="true"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/bookQuality"
+                android:textSize="16sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="10sp"
+                android:text="@string/not_available"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Quantity"
+                android:layout_gravity="start"
+                android:text="@string/quantity_label"
+                android:textSize="18sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="3sp"
+                android:singleLine="true"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/bookQuantity"
+                android:textSize="16sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="10sp"
+                android:text="@string/not_available"
+                android:singleLine="true"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Category"
+                android:layout_gravity="start"
+                android:text="@string/category_label"
+                android:textSize="18sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="3sp"
+                android:singleLine="true"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/bookCategory"
+                android:textSize="16sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="10sp"
+                android:text="@string/not_available"
+                android:singleLine="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Comments"
+                android:layout_gravity="start"
+                android:text="@string/comment"
+                android:textSize="18sp"
+                android:paddingTop="5sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="3sp"
+                android:singleLine="true"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/bookComments"
+                android:textSize="16sp"
+                android:paddingBottom="12sp"
+                android:paddingStart="5sp"
+                android:text="@string/not_available"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:text="@string/is_shareable"
+                android:textSize="18sp"
+                android:id="@+id/shareable_checkBox"
+                android:button="@null"
+                android:clickable="false"
+                android:drawableRight="?android:attr/listChoiceIndicatorMultiple"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="View Comment"-->
+        <!--android:id="@+id/BD_viewComment"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:onClick="ViewComment"-->
+        <!--android:layout_alignStart="@+id/imageView" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Go Back"-->
+        <!--android:id="@+id/BD_goBack"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_toEndOf="@+id/imageView"-->
+        <!--android:onClick="GoBack"-->
+        <!--/>-->
+
+</ScrollView>

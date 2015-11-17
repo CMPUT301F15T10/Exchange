@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -30,7 +31,6 @@ public class BookDetailsActivity extends ActionBarActivity {
         Gson gson= new Gson();
         book=gson.fromJson(json, Book.class);
         initTextView();
-        createCommentDialog();
     }
 
     @Override
@@ -56,29 +56,30 @@ public class BookDetailsActivity extends ActionBarActivity {
     }
 
     public void initTextView(){
-        TextView name= (TextView) findViewById(R.id.BD_name);
-        name.setText(name.getText()+book.getName());
+        TextView name= (TextView) findViewById(R.id.bookName);
+        name.setText(book.getName());
 
-        TextView id= (TextView) findViewById(R.id.BD_id);
-        id.setText(id.getText()+book.getID().toString());
+//        TextView id= (TextView) findViewById(R.id.BD_id);
+//        id.setText(id.getText()+book.getID().toString());
 
-        TextView author= (TextView) findViewById(R.id.BD_author);
-        author.setText(author.getText()+book.getAuthor());
+        TextView author= (TextView) findViewById(R.id.bookAuthor);
+        author.setText(book.getAuthor());
 
-        TextView quality= (TextView) findViewById(R.id.BD_Quality);
-        quality.setText(quality.getText()+String.valueOf(book.getQuality()));
+        TextView quality= (TextView) findViewById(R.id.bookQuality);
+        quality.setText(String.valueOf(book.getQuality()));
 
-        TextView quantity= (TextView) findViewById(R.id.BD_Quantity);
-        quantity.setText(quantity.getText()+String.valueOf(book.getQuantity()));
+        TextView quantity= (TextView) findViewById(R.id.bookQuantity);
+        quantity.setText(String.valueOf(book.getQuantity()));
 
-        TextView genre= (TextView) findViewById(R.id.BD_genre);
-        genre.setText(genre.getText()+book.getCategory());
+        TextView category= (TextView) findViewById(R.id.bookCategory);
+        category.setText(book.getCategory());
 
-        TextView is_Sharable= (TextView) findViewById(R.id.BD_isSharable);
-        if (book.isShareable()){
-            is_Sharable.setText(is_Sharable.getText()+"Yes");
-        }else{
-            is_Sharable.setText(is_Sharable.getText()+"No");
+        TextView comment= (TextView) findViewById(R.id.bookComments);
+        comment.setText(book.getComment());
+
+        CheckBox is_Sharable= (CheckBox) findViewById(R.id.shareable_checkBox);
+        if (book.isShareable()) {
+            is_Sharable.setChecked(Boolean.TRUE);
         }
     }
 
@@ -86,20 +87,5 @@ public class BookDetailsActivity extends ActionBarActivity {
         Intent goBack = new Intent();
         setResult(RESULT_OK, goBack);
         this.finish();
-    }
-
-    public void createCommentDialog(){
-        // Use the Builder class for convenient dialog construction
-        builder = new AlertDialog.Builder(this);
-        builder.setMessage(book.getComment())
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //
-                    }
-                });
-    }
-
-    public void ViewComment(View view) {
-        builder.show();
     }
 }
