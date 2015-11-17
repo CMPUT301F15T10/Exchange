@@ -49,8 +49,6 @@ public class ViewPersonActivity extends AppCompatActivity {
     private Integer state=0;
     private SearchView mySearchView=null;
 
-    private String cat;
-
 
 
     @Override
@@ -58,8 +56,6 @@ public class ViewPersonActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_person);
-
-        Intent intent = getIntent();
 
         initPerson();
         friendList=user.getMyFriendList().getPersonList();
@@ -112,7 +108,7 @@ public class ViewPersonActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //on selecting a spinner item
-                cat = parent.getItemAtPosition(position).toString();
+                String cat = parent.getItemAtPosition(position).toString();
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
                 //show the result for the sort
@@ -121,8 +117,7 @@ public class ViewPersonActivity extends AppCompatActivity {
                     case "Friends":
                         state=1;
                         lv.clearChoices();
-                        friendListAdapter.clear();
-                        friendListAdapter.addAll();
+                        lv.setAdapter(friendListAdapter);
                         break;
                     case "All People":
                         state=2;
@@ -135,12 +130,6 @@ public class ViewPersonActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
-
-        // Search wooooooooooo
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            searchQuery(query);
-        }
 
     }
 

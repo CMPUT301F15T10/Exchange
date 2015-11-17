@@ -1,6 +1,6 @@
 package cmput301exchange.exchange.Activities;
 
-import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +25,8 @@ import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.User;
 import cmput301exchange.exchange.Person;
 
 
@@ -107,7 +109,7 @@ public class InventoryActivity extends AppCompatActivity {
                 //show the result for the sort
                 //bookList=InventoryOwner.getMyInventory().searchByCategory("cat").getInventoryList();
 //                bookList.clear();
-                updateBookListCategory(inventory);
+                updateBookList(inventory);
                 lv.clearChoices();
             }
 
@@ -115,12 +117,6 @@ public class InventoryActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            updateBookListSearch(inventory, query);
-            lv.clearChoices();
-        }
 
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -170,7 +166,7 @@ public class InventoryActivity extends AppCompatActivity {
                         bookListState=2;
                         break;
                 }
-                updateBookListCategory(inventory);
+                updateBookList(inventory);
                 lv.clearChoices();
             }
 
@@ -192,7 +188,7 @@ public class InventoryActivity extends AppCompatActivity {
 //        inventory.add(HackMe);
 //    }
 
-    public void updateBookListCategory(Inventory inventory){
+    public void updateBookList(Inventory inventory){
         arrayAdapterBook.clear();
 
         if (bookListState==0){
@@ -207,21 +203,6 @@ public class InventoryActivity extends AppCompatActivity {
         arrayAdapterBook.notifyDataSetChanged();
     }
 
-    public void updateBookListSearch(Inventory inventory, String query){
-        arrayAdapterBook.clear();
-
-        if (bookListState==0){
-            arrayAdapterBook.addAll(inventory.searchByText(query).getInventoryList());
-        }
-        else if (bookListState==1){
-            arrayAdapterBook.addAll(inventory.searchByText(query).getSharedItems());
-        }
-        else if (bookListState==2){
-            arrayAdapterBook.addAll(inventory.searchByText(query).getNonSharedItems());
-        }
-        arrayAdapterBook.notifyDataSetChanged();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Gson gson= new Gson();
@@ -230,7 +211,7 @@ public class InventoryActivity extends AppCompatActivity {
             if (data.hasExtra("Inventory")){
                 String json=data.getExtras().getString("Inventory");
                 inventory=gson.fromJson(json,Inventory.class);
-                updateBookListCategory(inventory);
+                updateBookList(inventory);
                 lv.clearChoices();
                 selectedBooks.clear();
             }
@@ -244,7 +225,7 @@ public class InventoryActivity extends AppCompatActivity {
                 selectedBooks.clear();
                 lv.clearChoices();
                 inventory.getInventoryList().set(index, book);
-                updateBookListCategory(inventory);
+                updateBookList(inventory);
             }
         }
     }
@@ -314,7 +295,7 @@ public class InventoryActivity extends AppCompatActivity {
             case MENU_Remove_Item:
                 removeItems();
                 lv.clearChoices();
-                updateBookListCategory(inventory);
+                updateBookList(inventory);
 
                 return true;
 
@@ -365,10 +346,10 @@ public class InventoryActivity extends AppCompatActivity {
     public void searchQuery(String query){
 
         if (query.isEmpty()){ //if query is empty
-            updateBookListCategory(inventory);
+            updateBookList(inventory);
         }else{
             Inventory inventory= this.inventory.searchByText(query);
-            updateBookListCategory(inventory);
+            updateBookList(inventory);
         }
         lv.clearChoices();
     }
