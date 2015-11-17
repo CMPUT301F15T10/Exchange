@@ -75,8 +75,9 @@ public class AddItemActivity extends ActionBarActivity {
 
         Book book = new Book();
 
-        bookName = name.getText().toString();
-        bookAuthor = author.getText().toString();
+        bookName = name.getText().toString(); //Fetch the book title from the document.
+        bookAuthor = author.getText().toString(); //Fetch the Author from the document
+
         if (!(quality.getText().toString().isEmpty())) {
             bookQuality = Integer.parseInt(quality.getText().toString()); // add try, catch later
         }
@@ -101,13 +102,28 @@ public class AddItemActivity extends ActionBarActivity {
         book.updateComment(bookComments);
         
         inventory.add(book);
-        Gson gson= new Gson();
-        String json=gson.toJson(inventory);
+        this.onStop();
+    }
+    @Override
+    public void onStop(){
+        //We want this function to be called whenever the activity is killed to prevent losing data
+        //I pulled the gson writing from the add function, and generalized it.
 
-        Intent added = new Intent().putExtra("Inventory",json);
+        Gson gson= new Gson(); //Create a new Gson Instance
+        String json=gson.toJson(inventory); //Write the existing inventory data to Json
+
+        Intent added = new Intent().putExtra("Inventory",json); //Send it back to the inventory activity
         setResult(RESULT_OK, added);
 
         this.finish();
+        super.onStop(); //Required for the onStop Function to work
+    }
+
+    @Override
+    public void onBackPressed(){
+        //This method is called when the back button is pressed, regardless of what data is entered.
+        //It basically just stops the data from being entered into the inventory, and quits activity
+        this.onStop();
     }
 
     @Override
