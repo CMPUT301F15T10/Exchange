@@ -241,24 +241,4 @@
 
     </LinearLayout>
 
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="View Comment"-->
-        <!--android:id="@+id/BD_viewComment"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:onClick="ViewComment"-->
-        <!--android:layout_alignStart="@+id/imageView" />-->
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Go Back"-->
-        <!--android:id="@+id/BD_goBack"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_toEndOf="@+id/imageView"-->
-        <!--android:onClick="GoBack"-->
-        <!--/>-->
-
 </ScrollView>
