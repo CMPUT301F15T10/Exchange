@@ -26,17 +26,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         username = (EditText) findViewById(R.id.LoginName);
-
-
-        /*
-        Button testEmailButton = (Button) findViewById(R.id.testEmailButton);
-        testEmailButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(Login.this, SendEmailActivity.class);
-                startActivity(intent);
-            }
-        });
-        */
     }
 
     public void login(View  view) {
