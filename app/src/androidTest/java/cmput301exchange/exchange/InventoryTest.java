@@ -56,7 +56,7 @@ public class InventoryTest extends ApplicationTestCase<Application>{
         result=inventory.searchByCategory("cat");
         assertEquals(result.getInventoryList().size(),1);
     }
-    /*public void testTx(){
+    public void testTx(){
         Inventory result=new Inventory();
         Book book1=new Book();
         book1.updateTitle("abc");
@@ -82,6 +82,6 @@ public class InventoryTest extends ApplicationTestCase<Application>{
 
 
 
-    }*/
+    }
 
 }

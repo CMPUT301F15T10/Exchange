@@ -19,7 +19,7 @@ public class Trade {
     private Person tradeUser; // the one that offer trades to their friends
     private Person tradePartner; // the one that receive trades from their friends
     private Integer tradeStatus; // 0 -> ongoing trades, not accepted by the other user yet;
-                                    // 1 -> accepted; 2 -> declined; 3 -> counterTrade
+                                 // 1 -> accepted; 2 -> declined; 3 -> counterTrade
     private Integer tradeType;
     //private ArrayList<Item> listItemUser;
     //private ArrayList<Item> listItemPartner;

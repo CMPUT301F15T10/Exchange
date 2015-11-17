@@ -7,15 +7,12 @@
     tools:context="cmput301f15t10.exchange.Fragments.EditBookFragment"
     android:id="@+id/b">
 
-    <TextView
-        android:text="Edit Item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editItem_EditItem"
-        android:textSize="35dp"
-        android:textColor="#111"
-        android:layout_marginLeft="115dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+<<<<<<< HEAD
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -167,5 +164,164 @@
         android:onClick="onSave"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+=======
+        android:layout_centerHorizontal="true"
+        android:weightSum="1">
+
+
+        <ImageButton
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/imageButton"
+            android:contentDescription="@string/item_image"
+            android:layout_gravity="center_horizontal" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editName"
+                android:hint="@string/name_hint"
+                android:layout_gravity="center_horizontal"
+                android:maxLength="20"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editAuthor"
+                android:hint="@string/author"
+                android:layout_gravity="center_horizontal"
+                android:maxLength="30"
+                android:singleLine="true"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editQuality"
+                android:hint="@string/quality_hint"
+                android:maxLength="3"
+                android:singleLine="true"
+                android:inputType="number"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editQuantity"
+                android:hint="@string/quantity_hint"
+                android:layout_gravity="center_horizontal"
+                android:maxLength="3"
+                android:singleLine="true"
+                android:inputType="number"/>
+
+
+
+        </LinearLayout>
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_label"
+                android:textSize="18sp"
+                android:id="@+id/textView17"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/categories_spinner"
+                android:layout_toEndOf="@+id/textView17" />
+
+        </RelativeLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/editComment"
+                android:gravity="top"
+                android:hint="@string/comment"
+                android:layout_weight="0.64"
+                android:maxLength="300"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="@string/is_shareable"
+                android:textSize="18sp"
+                android:id="@+id/shareable_checkBox"
+                android:button="@null"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"/>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:id="@+id/done_button"
+                android:layout_gravity="center_horizontal"
+                android:onClick="done"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+>>>>>>> 1637e79fbf1c719232df6caebd9aa47bd0cdc1dc
 
 </RelativeLayout>

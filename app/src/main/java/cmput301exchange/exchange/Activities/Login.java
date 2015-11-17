@@ -26,23 +26,17 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         username = (EditText) findViewById(R.id.LoginName);
-
-
-        /*
-        Button testEmailButton = (Button) findViewById(R.id.testEmailButton);
-        testEmailButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(Login.this, SendEmailActivity.class);
-                startActivity(intent);
-            }
-        });
-        */
     }
 
     public void login(View  view) {
         Gson gson = new Gson();
 
         String userString = username.getText().toString();
+
+        // Username can't be empty
+        if(userString.equals("")){
+            return;
+        }
 //        user= new User(userString);
 //        String json=gson.toJson(user);
 //        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
