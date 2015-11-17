@@ -132,8 +132,8 @@ public class HomeActivity extends AppCompatActivity {
             startActivityForResult(intent, EDIT_PROFILE);
         }
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, ConfigurationActivity.class).putExtra("Configuration_picDown", GlobalENV.isAutoPicDownloadsEnabled());
-            startActivityForResult(intent, CONFIGURATION);
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

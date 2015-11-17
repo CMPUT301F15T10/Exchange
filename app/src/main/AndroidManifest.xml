@@ -96,6 +96,11 @@
             android:name=".Activities.InventoryDetailsActivity"
             android:label="@string/title_activity_inventory_details" >
         </activity>
+        <activity
+            android:name=".Activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
