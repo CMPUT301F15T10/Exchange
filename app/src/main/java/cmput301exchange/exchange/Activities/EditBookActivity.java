@@ -88,6 +88,9 @@ public class EditBookActivity extends AppCompatActivity {
 
     public void initBook(){
         Intent intent=getIntent();
+        if (intent==null){
+            throw new RuntimeException("Intent is null!");
+        }
         String json=intent.getExtras().getString("Edit_Item");
         Gson gson = new Gson();
         myBook=gson.fromJson(json,Book.class);
