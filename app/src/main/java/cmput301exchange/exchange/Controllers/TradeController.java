@@ -59,7 +59,7 @@ public class TradeController {
     }
 
     public void cancelTrade(){
-        myTradeManager.declineTrade(myTrade);
+        myTradeManager.declineTrade(myTrade, 1);
     }
 
     public void setTradePartner(Person partner){

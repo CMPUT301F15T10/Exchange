@@ -28,7 +28,6 @@ public class TradeManager {
     private ArrayList<String> listPastTradeBorrower;
     private ArrayList<String> listCurrentTadeBorrower;
     */
-
     private ArrayList<Trade> listPastTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
 
@@ -39,6 +38,7 @@ public class TradeManager {
     private String message;
 
     private ArrayList<Trade> listTrade;
+
     /**
      * Adds a completed trade to the PastTrade List.
      * @param Trade trade
@@ -50,10 +50,12 @@ public class TradeManager {
         // search the trade in the listCurrentTrade and remove it
         deleteOngoingTrade(trade);
     }
+
     /**
      * Creates a new trade that will be sent to the other user.
      * @param Trade trade
      */
+    // DO NOT CALL THIS FUNCTION IF addTrade() IS ALREADY CALLED
     public void addOngoingTrade(Trade trade) {
 
         // add the trade to the listCurrentTrade
@@ -70,6 +72,7 @@ public class TradeManager {
         Trade trade = new Trade();
         return trade;
     }
+
     /**
      * Creates a new trade and adds it to the listCurrentTrade
      * @param tradeUser The user of the application
@@ -83,6 +86,7 @@ public class TradeManager {
         // create a new trade and add it to the listCurrentTrade
         listCurrentTrade.add(trade);
     }
+
     /**
      *search for that trade and change the tradeStatus to 1 and add the trade to listPastTrade
      *update both user and partner's inventory
@@ -90,12 +94,38 @@ public class TradeManager {
      */
 
     public void acceptTrade(Trade trade) {
-
+        int i;
+        int n = listCurrentTrade.size();
+        // search for that trade
+        for (i = 0; i < n; i++) {
+            if (listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) {
+                // trade found
+                // set the tradeStatus to 1: trade is accepted
+                listCurrentTrade.get(i).setTradeStatus(1);
+                listPastTrade.add(listCurrentTrade.get(i));
+                listCurrentTrade.remove(i);
+                /* // no need to swap their book
+                // remove books from both user (if any) and give the books to the other user
+                ArrayList<Book> booklist0 = trade.getListBookUser();
+                ArrayList<Book> booklist1 = trade.getListBookPartner();
+                ArrayList<Book> booklisttemp = new ArrayList<>();
+                // give partner's books to user
+                listCurrentTrade.get(i).setListBookUser(booklist1);
+                // give user's books to partner
+                listCurrentTrade.get(i).setListBookPartner(booklist0);
+                listPastTrade.add(listCurrentTrade.get(i));
+                listCurrentTrade.remove(i);
+                */
+                break;
+            }
+        }
+        /*
         int i;
         int n = listCurrentTrade.size();
         for (i = 0; i < n;i++) {
-            if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) && (listCurrentTrade.get(i).getTradeUser().getID() == trade.getTradeUser().getID())) {
+            if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId())) {
                 // remove the trade in listCurrentTrade and add it to the listPastTrade
+                // set the tradeStatus to 1
                 listCurrentTrade.get(i).setTradeStatus(1);
                 // NOTE: make sure that change the inventory outside this class
                 // remove books from both user (if any) and give the book to the other user
@@ -131,13 +161,17 @@ public class TradeManager {
                 break;
             }
         }
+        */
         // TODO send notification to the other user
     }
+
     /**
      * Search for trades and changes the tradeStatus to 2, which represents cancelled
+     * If choice = 0 -> offer a counter trade
+     * if choice = 1 -> not offering a counter trade
      * @param trade the trade that you wish to decline
      */
-    public void declineTrade(Trade trade) {
+    public void declineTrade(Trade trade, int choice) {
 
         // search for that trade and change the tradeStatus to 2
         int i;
@@ -146,20 +180,26 @@ public class TradeManager {
             if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) && (listCurrentTrade.get(i).getTradeUser().getID() == trade.getTradeUser().getID())) {
                 // remove the trade in listCurrentTrade and add it to the listPastTrade
                 listCurrentTrade.get(i).setTradeStatus(2);
-                listPastTrade.add(listCurrentTrade.get(i));
-                listCurrentTrade.remove(i);
+                if (choice == 0) {
+                    counterTrade(trade);
+                }
+                if (choice == 1) {
+                    listPastTrade.add(listCurrentTrade.get(i));
+                    listCurrentTrade.remove(i);
+                }
                 break;
             }
         }
         // ask user if they want to make a counter trade
         //   -> swap the User and Borrower and their inventories
     }
+
     /**
      * Swaps the role of the owner and borrower, edits the trade
      * constructs a new trade, and asks the user to edit the trade
      * @param trade The trade that you want to counter
      */
-    public Trade counterTrade(Trade trade) {
+    public void counterTrade(Trade trade) {
 
         // swap the role of owner and borrower, edit the trade
         // construct a new trade, and ask user to edit the trade
@@ -169,8 +209,9 @@ public class TradeManager {
         //   to do so, remove the trade and add the new trade in it
         deleteOngoingTrade(trade);
         addOngoingTrade(tradetemp);
-        return tradetemp;
+        //return tradetemp;
     }
+
     /**
      * Ask the user to edit the trade details, more like creating a new trade, but gives details
      * about the trade. User can click the area on where they want to edit. Call setter from trade
@@ -198,6 +239,7 @@ public class TradeManager {
         }
         return tempList;
     }
+
     /**
      * Getter for Past Trade List
      */
@@ -205,6 +247,7 @@ public class TradeManager {
 
         return listPastTrade;
     }
+
     /**
      * Getter for current trade list
      */
@@ -212,6 +255,7 @@ public class TradeManager {
 
         return listCurrentTrade;
     }
+
     /**
      * Change the trade partner
      * Updates the Current Trade List
@@ -229,6 +273,7 @@ public class TradeManager {
     }
 
     public void sendNotification() {}
+
     /**
      * Deletes an ongoing trade
      * @param trade the trade you wish to cancel
@@ -247,6 +292,7 @@ public class TradeManager {
     }
 
     public void setMessage(String message) { this.message = message; }
+
     /**
      * Returns a list of all of your past trades
      * @param role the role that the user had in the trade
@@ -282,6 +328,7 @@ public class TradeManager {
         }
         return tempPastTrade;
     }
+
     /**
      * Returns a list of current trades
      * @param role 0 -> Owner, 1 -> borrower, 2 -> All
@@ -316,6 +363,7 @@ public class TradeManager {
     }
 
     public void searchPastTrade() {}
+
     /**
      * Updates the Trade Request List
      * @param person the person who's trade request list that is needed to be updated.
@@ -332,12 +380,14 @@ public class TradeManager {
                 tempList.add(listCurrentTrade.get(i));
             }
         }
+        /*
         // add thades that were offered to the user
         for (i = 0; i < n1; i++) {
             if (listPastTrade.get(i).getTradePartner().getID() == person.getID()) {
                 tempList.add(listPastTrade.get(i));
             }
         }
+        */
         this.listTradeRequest = tempList;
     }
 
@@ -350,6 +400,7 @@ public class TradeManager {
         updateListTradeRequest(person);
         return listTradeRequest.size();
     }
+
     /**
      * Searches the trade which involves user via tradeID
      * As a tradeID as a primary key, and one tradeID is assigned to one and only one trade
