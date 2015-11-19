@@ -116,38 +116,137 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
      * US04.05.01
      * As a borrower or owner, when composing a trade or counter-trade I can edit the trade.
      */
+    public void testEditTrade() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        Trade tmptrade = new Trade();
+        tmptrade = tradeManager0.searchTrade(trade0.getTradeId());
+        Book book02 = new Book();
+        book02.updateTitle("No Name");
+        ArrayList<Book> clist = new ArrayList<>();
+        clist.add(book02);
+        tmptrade.setListBookUser(clist);
+        tradeManager0.deleteOngoingTrade(trade0);
+        tradeManager0.addOngoingTrade(tmptrade);
+        String tmpname = tradeManager0.getListCurrentTrade().get(0).getListBookUser().get(0).getBookName();
+        assertEquals(tmpname, "No Name");
+    }
 
     /*
      * US04.06.01
      * As a borrower, when composing a trade or counter-trade I can delete the trade
      */
+    public void testDeleteTrade() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // delete a trade, now ongoing trade list size is 0
+        tradeManager0.deleteOngoingTrade(trade0);
+        int tmpsize = tradeManager0.getListCurrentTrade().size();
+        assertEquals(tmpsize, 0);
+    }
 
     /*
      * US04.07.01
      * As an owner, if I accept a trade both parties will be emailed all trade and item information
      * relevant to the trade, as well owner comments for how to continue on with the trade.
      */
+    public void testSentEmail() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // accept a trade
+        tradeManager0.acceptTrade(trade0);
+        String comments = "TEST";
+        int i = tradeManager0.sendEmail(trade0, comments);
+        // 0 indicates that successfully sending email
+        assertEquals(i, 0);
+    }
 
     /*
      * US04.08.01
      * As an owner or borrower, I can browse all past and current trades involving me.
      */
+    public void testBrowseTrade0() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // browse current trades
+        ArrayList<Trade> tmpList = new ArrayList<>();
+        tmpList = tradeManager0.browseCurrentTrade(0, person0);
+        String tmpName = tmpList.get(0).getTradeUser().getName();
+        assertEquals(tmpName, "A");
+        // browse past trades
+        tradeManager0.acceptTrade(trade0);
+        tmpList = tradeManager0.browsePastTrade(0, person0);
+        tmpName = tmpList.get(0).getTradeUser().getName();
+        assertEquals(tmpName, "A");
+    }
 
     /*
      * US04.09.01
      * As an owner or borrower, I can browse all past and current trades involving me as either
      * borrower or owner. I should look at my trades and trades offered to me.
      */
+    public void testBrowseTrade1() {
+        // Note that this is similar as the above user case while this one is more advanced
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // browse current trades
+        ArrayList<Trade> tmpList = new ArrayList<>();
+        tmpList = tradeManager0.browseCurrentTrade(0, person0);
+        String tmpName = tmpList.get(0).getTradeUser().getName();
+        assertEquals(tmpName, "A");
+        // browse past trades
+        tradeManager0.acceptTrade(trade0);
+        tmpList = tradeManager0.browsePastTrade(0, person0);
+        tmpName = tmpList.get(0).getTradeUser().getName();
+        assertEquals(tmpName, "A");
+    }
+
+    // -----------------------------------------------------
+    // Below is the new requirements
+    // -----------------------------------------------------
 
     /*
      * US04.10.01 [must]
      * As an owner, I can set a trade to complete when the borrower returns the item and the item is now available again.
      */
+    public void testSetTradeComplete() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // accecp trade
+        tradeManager0.acceptTrade(trade0);
+        tradeManager0.getListPastTrade().get(0).setTradeType(1);
+        int tmp = tradeManager0.getListPastTrade().get(0).getTradeType();
+        assertEquals(tmp, 1);
+    }
 
     /*
      * US04.11.01 [must]
      * As an owner or borrower, a trade is considered current and in-progress when the item is borrowed.
      */
+    public void testInProgress() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // accecp trade
+        tradeManager0.acceptTrade(trade0);
+        // trade is considered current and in-progress by default
+        //   where tradeType = 0
+        int tmp = tradeManager0.getListPastTrade().get(0).getTradeType();
+        assertEquals(tmp, 0);
+    }
 
     /*
      * US04.12.01 [must]

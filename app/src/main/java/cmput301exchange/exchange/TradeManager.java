@@ -423,12 +423,19 @@ public class TradeManager {
                 return listCurrentTrade.get(i);
             }
         }
+        /*
         // search through listPastTrade
         for (i = 0; i < n1; i++) {
             if (listPastTrade.get(i).getTradeId() == id) {
                 return listPastTrade.get(i);
             }
         }
+        */
         return null;
+    }
+
+    public Integer sendEmail(Trade trade, String comments) {
+        // TODO: send email
+        return 0;
     }
 }
