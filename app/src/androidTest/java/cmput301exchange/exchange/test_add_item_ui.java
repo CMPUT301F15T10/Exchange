@@ -33,7 +33,6 @@ public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
         Activity activity = getActivity();
     }
 
-
     public void testAddValid(){
         Gson gson = new Gson();
         String json = gson.toJson(inventory);

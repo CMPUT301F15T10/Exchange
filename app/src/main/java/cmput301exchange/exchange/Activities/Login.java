@@ -1,9 +1,12 @@
 
 
 package cmput301exchange.exchange.Activities;
+import android.app.Activity;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,53 +24,36 @@ public class Login extends AppCompatActivity {
     public EditText username;
     private ModelEnvironment globalENV;
     private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         username = (EditText) findViewById(R.id.LoginName);
+        try {
+            DataIO data = new DataIO(getApplicationContext(), ModelEnvironment.class);
+            globalENV = data.loadEnvironment("GlobalENV");
+            launchHome();
+        }catch(RuntimeException e){
+           return;
+        }
     }
 
-    public void login(View  view) {
-        Gson gson = new Gson();
-
+    public void CreateUser(){
         String userString = username.getText().toString();
 
-        // Username can't be empty
         if(userString.equals("")){
             return;
         }
-//        user= new User(userString);
-//        String json=gson.toJson(user);
-//        DataIO io = new DataIO(getApplicationContext(),ModelEnvironment.class);
-
         globalENV = new ModelEnvironment(this,userString);
-//        globalENV = io.loadEnvironment("GlobalENV");
-//        globalENV.initOwner(userString);
-
-        //        try{
-        //            globalENV = io.loadEnvironment("GlobalENV");
-        //            globalENV.getOwner();
-        //
-        //        }catch(Exception e){
-        //            globalENV.initOwner(username.getText().toString());
-        //        }
+    }
 
 
-
-//        io.saveEnvironment("GlobalENV", globalENV);
+    public void login(View  view) {
+        CreateUser();
         globalENV.saveInstance(this); //saving
-        //        String json = gson.toJson(globalENV);
-        //I can't get this to work
-        //        DataIO WriteModel = new DataIO(getApplicationContext(), ModelEnvironment.class);
-        //        WriteModel.setFileName("GlobalENV");
-        //        ArrayList sendenv = new ArrayList();
-        //        sendenv.add(globalENV);
-        //        WriteModel.saveInFile(false,sendenv);
+        launchHome();
 
-
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
 }
 
     @Override
@@ -90,5 +76,10 @@ public class Login extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    public void launchHome(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        this.finish();
     }
 }

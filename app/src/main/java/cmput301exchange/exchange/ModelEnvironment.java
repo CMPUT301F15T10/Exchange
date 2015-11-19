@@ -32,10 +32,11 @@ public class ModelEnvironment {
         autoPicDownloads=is;
     }
 
-    public void loadInstance(Context myActivity){
+    public ModelEnvironment loadInstance(Context myActivity){
         DataIO io = new DataIO(myActivity,ModelEnvironment.class);
         ModelEnvironment instance=io.loadEnvironment("GlobalENV");
         setOwner(instance.getOwner());
+        return instance;
     }
 
     public void saveInstance(Context myActivity){
