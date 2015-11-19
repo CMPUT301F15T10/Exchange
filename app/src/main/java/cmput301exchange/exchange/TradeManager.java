@@ -28,6 +28,7 @@ public class TradeManager {
     private ArrayList<String> listPastTradeBorrower;
     private ArrayList<String> listCurrentTadeBorrower;
     */
+
     private ArrayList<Trade> listPastTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
 
