@@ -30,7 +30,7 @@ public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
     }
 
     public void testStart() throws Exception {
-        Activity activity = getActivity();
+        activity = getActivity();
     }
 
     public void testAddValid(){
@@ -58,9 +58,9 @@ public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
 
         getInstrumentation().waitForIdleSync();
 
-        Instrumentation.ActivityMonitor receiverActivityMonitor =
-                getInstrumentation().addMonitor(InventoryActivity.class.getName(),
-                        null, false);
+       // Instrumentation.ActivityMonitor receiverActivityMonitor =
+       //         getInstrumentation().addMonitor(InventoryActivity.class.getName(),
+       //                 null, false);
 
         activity.runOnUiThread(new Runnable() {
             public void run() {
@@ -70,15 +70,20 @@ public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
 
         getInstrumentation().waitForIdleSync();
 
-        InventoryActivity receiverActivity = (InventoryActivity)
-                receiverActivityMonitor.waitForActivityWithTimeout(1000);
+       // InventoryActivity receiverActivity = (InventoryActivity)
+       //         receiverActivityMonitor.waitForActivityWithTimeout(1000);
 
-        assertNotNull("ReceiverActivity is null", receiverActivity);
-        assertEquals("Monitor for ReceiverActivity has not been called",
-                1, receiverActivityMonitor.getHits());
-        assertEquals("Activity is of wrong type",
-                InventoryActivity.class, receiverActivity.getClass());
-        getInstrumentation().removeMonitor(receiverActivityMonitor);
+        activity = getActivity();
+
+
+
+        //assertNotNull(activity.getClass().getName().toString(), activity);
+        assertTrue(activity.isFinishing());
+        //assertEquals("Monitor for ReceiverActivity has not been called",
+         //       1, receiverActivityMonitor.getHits());
+        //assertEquals("Activity is of wrong type",
+        //        InventoryActivity.class, receiverActivity.getClass());
+       // getInstrumentation().removeMonitor(receiverActivityMonitor);
 
 
 
