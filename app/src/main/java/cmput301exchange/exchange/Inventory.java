@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 public class Inventory{
 
-    private User inventoryOwner;
-    private ArrayList<Book> inventoryList = new ArrayList<>();
+    protected User inventoryOwner;
+    protected ArrayList<Book> inventoryList = new ArrayList<>();
 
     private boolean shareable;
     public void setShareable(boolean bool){shareable = bool;}

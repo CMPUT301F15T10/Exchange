@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 
 import cmput301exchange.exchange.Activities.InventoryActivity;
+import cmput301exchange.exchange.Mocks.MockInventory;
 
 public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryActivity> {
 
@@ -19,7 +20,7 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
     private Spinner inventorySpinner;
     private Spinner inventoryViewSpinner;
     private ListView itemList;
-    public Inventory inventory1 = new Inventory();
+    public Inventory mockInventory = new MockInventory();
 
     public InventoryUITest() {
         super(cmput301exchange.exchange.Activities.InventoryActivity.class);
@@ -28,7 +29,7 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
     protected void setUp() throws Exception {
         super.setUp();
         Gson gson = new Gson();
-        String json = gson.toJson(inventory1);
+        String json = gson.toJson(mockInventory);
 
         Intent intent = new Intent(); //Create a new Intent
         intent.putExtra("Inventory", json); //Pack the Intent with a blank Inventory
