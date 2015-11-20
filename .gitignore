@@ -4,5 +4,12 @@
 Exchange.iml
 app/app.iml
 local.properties
+.DS_Store
+app/.DS_Store
+app/src/.DS_Store
+app/src/androidTest/.DS_Store
+app/src/androidTest/java/.DS_Store
+app/src/androidTest/java/cmput301exchange/.DS_Store
+app/src/androidTest/java/cmput301exchange/exchange/.DS_Store
 
 *~
