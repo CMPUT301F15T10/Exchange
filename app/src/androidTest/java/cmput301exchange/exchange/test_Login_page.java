@@ -22,7 +22,7 @@ public class test_Login_page extends ActivityInstrumentationTestCase2 {
     }
 
     public void testStart() throws Exception {
-        Activity activity = getActivity();
+        activity = getActivity();
     }
 
     public void testlogin(){
