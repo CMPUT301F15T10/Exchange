@@ -70,5 +70,12 @@
     <string name="quality_label">Quality:</string>
     <string name="quantity_label">Quantity:</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="add_new_book">Add new Book</string>
+    <string name="view_inventory_details">View Inventory Details</string>
+    <string name="view_selected_book_info">View selected Book Info</string>
+    <string name="edit_selected_book_info">Edit selected Book Info</string>
+    <string name="remove_selected_book">Remove selected Book</string>
+    <string name="remove_selected_books">Remove selected Books</string>
+    <string name="search">Search</string>
 
 </resources>

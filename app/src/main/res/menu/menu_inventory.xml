@@ -4,8 +4,29 @@
     tools:context="cmput301exchange.exchange.InventoryActivity">
 
     <item android:id="@+id/item_search"
-        android:title="Search"
+        android:title="@string/search"
         android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         app:showAsAction="ifRoom|collapseActionView"
+        android:orderInCategory="200"
         app:actionViewClass="android.support.v7.widget.SearchView" />
+
+    <item android:id="@+id/action_remove_multi" android:title="@string/remove_selected_books"
+        android:orderInCategory="700" app:showAsAction="never" />
+
+    <item android:id="@+id/action_remove_single" android:title="@string/remove_selected_book"
+        android:orderInCategory="600" app:showAsAction="never" />
+
+    <item android:id="@+id/action_edit" android:title="@string/edit_selected_book_info"
+        android:orderInCategory="500" app:showAsAction="never" />
+
+    <item android:id="@+id/action_view" android:title="@string/view_selected_book_info"
+        android:orderInCategory="400" app:showAsAction="never" />
+
+    <item android:id="@+id/action_details" android:title="@string/view_inventory_details"
+        android:orderInCategory="300" app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_add" android:title="@string/add_new_book"
+        android:orderInCategory="100" app:showAsAction="ifRoom" />
+
+
 </menu>

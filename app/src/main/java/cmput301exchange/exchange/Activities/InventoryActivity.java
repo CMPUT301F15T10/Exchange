@@ -229,25 +229,30 @@ public class InventoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.removeGroup(MENU_Group);
-        if(state==1) {
-            menu.add(MENU_Group, MENU_View_InventoryDetails, Menu.NONE, "View Inventory Details");
-            menu.add(MENU_Group, MENU_Add_Item, Menu.NONE, "Add new Book");
 
+        menu.findItem(R.id.action_view).setVisible(false);
+        menu.findItem(R.id.action_edit).setVisible(false);
+        menu.findItem(R.id.action_remove_single).setVisible(false);
+        menu.findItem(R.id.action_remove_multi).setVisible(false);
+
+        if(state==1) {
             if (selectedBooks!=null) {
                 if (selectedBooks.size() == 1) {
-                    menu.add(MENU_Group, MENU_View_Item, Menu.NONE, "View selected Book Info");
-                    menu.add(MENU_Group, MENU_Edit_Item, Menu.NONE, "Edit selected Book Info");
-                    menu.add(MENU_Group, MENU_Remove_Item, Menu.NONE, "Remove selected Book");
+                    menu.findItem(R.id.action_view).setVisible(true);
+                    menu.findItem(R.id.action_edit).setVisible(true);
+                    menu.findItem(R.id.action_remove_single).setVisible(true);
                 } else if(selectedBooks.size()>1) {
-                    menu.add(MENU_Group, MENU_Remove_Item, Menu.NONE, "Remove selected Books");
+                    menu.findItem(R.id.action_remove_single).setVisible(false);
+                    menu.findItem(R.id.action_remove_multi).setVisible(true);
                 }
             }
         }
 
         if((state==2) && (selectedBooks!=null)) {
             if (selectedBooks.size() == 1) {
-                menu.add(MENU_Group, MENU_View_Item, Menu.NONE, "View selected Book Info");
+                menu.findItem(R.id.action_view).setVisible(true);
+                menu.findItem(R.id.action_edit).setVisible(true);
+                menu.findItem(R.id.action_remove_single).setVisible(true);
             }
         }
 
@@ -268,14 +273,12 @@ public class InventoryActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
         Intent intent;
         Gson gson=new Gson();
         String json;
         //noinspection SimplifiableIfStatement
-        switch (id) {
-
-            case MENU_Add_Item:
+        switch (item.getItemId()) {
+            case R.id.action_add:
                 Book book = new Book();
                 inventory.add(book);
                 json = gson.toJson(inventory);
@@ -284,33 +287,36 @@ public class InventoryActivity extends AppCompatActivity {
 
                 return true;
 
-            case MENU_Edit_Item:
+            case R.id.action_edit:
                 json = gson.toJson(selectedBooks.get(0));
                 intent = new Intent(this, EditBookActivity.class).putExtra("Edit_Item", json);
                 startActivityForResult(intent, MENU_Edit_Item);
 
                 return true;
 
-            case MENU_Remove_Item:
+            case R.id.action_remove_single:
                 removeItems();
                 lv.clearChoices();
                 updateBookList(inventory);
 
                 return true;
 
-            case MENU_View_Item:
+            case R.id.action_remove_multi:
+                removeItems();
+                lv.clearChoices();
+                updateBookList(inventory);
+
+                return true;
+
+            case R.id.action_view:
                 json = gson.toJson(selectedBooks.get(0));
-//                lv.clearChoices();
-//                selectedBooks.clear();
                 intent = new Intent(this, BookDetailsActivity.class).putExtra("Book", json);
                 startActivity(intent);
 
                 return true;
 
-            case MENU_View_InventoryDetails:
+            case R.id.action_details:
                 json = gson.toJson(inventory);
-//                lv.clearChoices();
-//                selectedBooks.clear();
                 intent = new Intent(this, InventoryDetailsActivity.class).putExtra("Inventory", json);
                 startActivity(intent);
 
