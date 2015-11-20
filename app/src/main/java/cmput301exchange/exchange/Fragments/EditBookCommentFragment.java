@@ -25,7 +25,6 @@ public class EditBookCommentFragment extends Fragment{
     private CharSequenceWrapper comment=null;
     private EditBookActivity myActivity;
     private View myView;
-    private Book myBook;
     private EditText commentBox;
     private EditBookController myEditBookController;
     private Button Done;
@@ -46,11 +45,7 @@ public class EditBookCommentFragment extends Fragment{
     public void Done_Handler(){
 
         myEditBookController.updateComment(commentBox.getText().toString());
-        exit();
-        // Code for closing the window
-    }
-
-    public void onBackPressed() {
+        myActivity.setController(myEditBookController);
         exit();
     }
 
@@ -76,7 +71,6 @@ public class EditBookCommentFragment extends Fragment{
 
     public void onStart(){
         super.onStart();
-//        update();
     }
 
     public void initButton(){
@@ -96,6 +90,7 @@ public class EditBookCommentFragment extends Fragment{
     }
 
     public void exit(){
+        myActivity.setController(myEditBookController);
         myActivity.switchFragment(1);
     }
 }
