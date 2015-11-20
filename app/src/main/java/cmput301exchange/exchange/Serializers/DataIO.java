@@ -38,6 +38,7 @@ public class DataIO<DataClass> {
     private Context context;
     private String FILENAME=null;
     private Class dataClassType;
+    private ElasticSearch elasticSearch = new ElasticSearch();
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public DataIO(Context context, Class<DataClass> dataClass){
@@ -186,6 +187,8 @@ public class DataIO<DataClass> {
             e.printStackTrace();
         }
     }
+
+
 
 
 }
