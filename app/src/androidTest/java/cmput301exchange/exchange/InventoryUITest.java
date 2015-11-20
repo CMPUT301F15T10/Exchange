@@ -76,6 +76,8 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
 
     }
 
+
+    // UC 1.01
     public void testItemList() {
 
         inventory.runOnUiThread(new Runnable() {
@@ -98,13 +100,28 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
 
         mInstrumentation.waitForIdleSync();
 
-        this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
+        assertEquals(2, itemList.getCount());
+
+        mInstrumentation.waitForIdleSync();
+
+    }
+
+    public void testRemoveItem(){
+
+        inventory.runOnUiThread(new Runnable() {
+            public void run() {
+                itemList.requestFocus();
+            }
+        });
 
         mInstrumentation.waitForIdleSync();
 
         this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
 
         mInstrumentation.waitForIdleSync();
+
+        // TODO select from options menu once menu_inventory.xml is updated and menu code in activity is fixed
+
 
     }
 }
