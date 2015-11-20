@@ -42,6 +42,9 @@ public class Book implements Shareable, Comparable<Book> {
 
     public Book(){
         initID();
+        this.bookName = "";
+        this.author ="";
+
     }
 
     public void initID(){

@@ -276,8 +276,10 @@ public class InventoryActivity extends AppCompatActivity {
         switch (id) {
 
             case MENU_Add_Item:
+                Book book = new Book();
+                inventory.add(book);
                 json = gson.toJson(inventory);
-                intent = new Intent(this, EditBookActivity.class).putExtra("Add_Item", json);
+                intent = new Intent(this, EditBookActivity.class).putExtra("Edit_Item", json);
                 startActivityForResult(intent, MENU_Add_Item);
 
                 return true;
