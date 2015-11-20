@@ -115,9 +115,8 @@ public class EditBookFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myBook=myActivity.getBook();
-        myEditBookController=new EditBookController(myBook);
-        myActivity.setController(myEditBookController);
+        myEditBookController=myActivity.getController();
+//        myActivity.setController(myEditBookController);
     }
 
     @Override
@@ -172,7 +171,7 @@ public class EditBookFragment extends Fragment {
     }
 
     public void exit(){
-        myActivity.setBook(myEditBookController.getBook());
+        myActivity.setController(myEditBookController);
         myActivity.finish();
     }
 

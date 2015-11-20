@@ -24,11 +24,13 @@ public class EditBookActivity extends AppCompatActivity {
     private EditBookFragment BookEdit;
     private EditBookCommentFragment CommentEdit;
     private Fragment Photo; // Its fragment type will be replaced by Photo's fragment class.;
-    private FragmentManager fm;
+    public FragmentManager fm;
     private FragmentTransaction fm_T;
     private Integer fragmentLayoutID=R.id.fragmentR;
     private Book myBook;
     private EditBookController myController;
+    public static String editBookTag="EDIT_BOOK_TAG",editCommentTag="EDIT_Comment_TAG",viewPhotoTag="VIEW_BOOK_TAG";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,11 @@ public class EditBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         initBook();
+        myController= new EditBookController(myBook); //Creating an empty EditBookController
+
         if (savedInstanceState == null) {
             initFragments();
-            switchFragment(1); // By default editBookfragment
+            switchFragment(1); // By default EditBookFragment
         }
     }
 
@@ -53,17 +57,17 @@ public class EditBookActivity extends AppCompatActivity {
     public void switchFragment(int flag){
         fm_T=fm.beginTransaction();
         if (flag==1){
-            fm_T.replace(fragmentLayoutID.intValue(),BookEdit);
+            fm_T.replace(fragmentLayoutID.intValue(),BookEdit,editBookTag);
         }
         if (flag==2){
-            fm_T.replace(fragmentLayoutID.intValue(),CommentEdit);
+            fm_T.replace(fragmentLayoutID.intValue(),CommentEdit,editCommentTag);
         }
         if (flag==3){
-            fm_T.replace(fragmentLayoutID.intValue(),Photo);
+            fm_T.replace(fragmentLayoutID.intValue(),Photo,viewPhotoTag);
         }
 //        fm_T.addToBackStack(null);
-//        fm_T.commitAllowingStateLoss();// Alternative is commit
-        fm_T.commit();
+        fm_T.commitAllowingStateLoss();// Alternative is commit
+//        fm_T.commit();
         fm.executePendingTransactions();
     }
 
@@ -78,11 +82,11 @@ public class EditBookActivity extends AppCompatActivity {
     @Override
     public void finish(){
         Gson gson = new Gson();
-        String json = gson.toJson(myBook);
+        String json = gson.toJson(myController.getBook());
 //        Log.e("size inventory InventoryActivity:",String.valueOf(inventory.getInventoryList().size()));
-        Intent inventory = new Intent();
-        inventory.putExtra("Book", json);
-        setResult(RESULT_OK, inventory);
+        Intent book = new Intent();
+        book.putExtra("Book", json);
+        setResult(RESULT_OK, book);
         super.finish();
     }
 

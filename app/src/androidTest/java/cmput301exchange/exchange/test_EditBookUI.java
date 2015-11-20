@@ -34,25 +34,29 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
         super(cmput301exchange.exchange.Activities.EditBookActivity.class);
     }
 
+    // Tests whether the activity starts or not.
     public void testStart() throws Exception {
         Activity activity = getActivity();
+        assertNotNull(activity);
     }
 
-    @Override protected void setUp() throws Exception {
+    @Override
+    protected void setUp() throws Exception {
+        initBook();
         super.setUp();
         Gson gson = new Gson();
         String json = gson.toJson(myBook);
 
-        initBook();
         Intent intent = new Intent(); //Create a new Intent
-        intent.putExtra("Edit_Item",json); //Pack the Intent with a blank Inventory
+        intent.putExtra("Edit_Item", json); //Pack the Intent with a blank Inventory
         setActivityIntent(intent); //Spoof the Intent
 
         activity= (EditBookActivity)getActivity();
+        assertNotNull(activity.fm.findFragmentByTag(EditBookActivity.editBookTag)); // By default EditBookFragment should be started
         editBook=activity.getEditBookFragment();
         editComment=activity.getEditCommentFragment();
         editBook.getView();
-        initBook();
+//        initBook();
         initBook2();
         getInstrumentation().waitForIdleSync();
     }
@@ -103,6 +107,9 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 assertEquals(Quantity.getText().toString(), (new Integer(myBook.getQuantity()).toString()));
                 viewComment.performClick();
 
+                // when View comment button is pressed, EditBookFragment will shutdown and EditBookCommentFragment will be activated
+                assertNull(activity.fm.findFragmentByTag(EditBookActivity.editBookTag));
+                assertNotNull(activity.fm.findFragmentByTag(EditBookActivity.editCommentTag));
 //                assertTrue(ObjectSaver.gotThere);
 
                 EditText Comment=(EditText) editComment.getView().findViewById(R.id.Comment);
@@ -119,6 +126,10 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 assertEquals(Comment.getText().toString(), newComment);
                 CommentDone.performClick();
 
+                // when Save button is pressed, EditCommentBookFragment will shutdown and EditBookFragment will be activated
+                assertNotNull(activity.fm.findFragmentByTag(EditBookActivity.editBookTag));
+                assertNull(activity.fm.findFragmentByTag(EditBookActivity.editCommentTag));
+
                 Name=(EditText) editBook.getView().findViewById(R.id.EditItem_NameInput);
                 Type=(EditText) editBook.getView().findViewById(R.id.EditItem_TypeInput);
                 Quality=(EditText) editBook.getView().findViewById(R.id.EditItem_QualityInput);
@@ -133,7 +144,7 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 Quantity.setText(new CharSequenceWrapper(newQuantity.toString()));
 
                 //Test whether the data fed into the editText is displayed properly
-
+                assertEquals(Name.getText().toString(), newName);
                 assertEquals(Type.getText().toString(), newType);
                 assertEquals(Quality.getText().toString(), newQuality.toString());
                 assertEquals(Quantity.getText().toString(), newQuantity.toString());
