@@ -21,6 +21,7 @@ public class Person {
     protected Inventory myInventory;
     private String email;
     private PersonList myFriendList= new PersonList();
+    private long TradeCount;
     protected boolean isUser=false;
    // private ArrayList<History> historylist;
    // private ArrayList<Trade> tradelist;
@@ -38,6 +39,14 @@ public class Person {
     public void initID(){
         Random generator = new Random(System.nanoTime());
         ID= generator.nextLong();
+    }
+
+    public long getTradeCount() {
+        return TradeCount;
+    }
+
+    public void setTradeCount(long tradeCount) {
+        TradeCount = tradeCount;
     }
 
     public String getName() {
