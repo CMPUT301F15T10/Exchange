@@ -1,8 +1,10 @@
 package cmput301exchange.exchange.Fragments;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cmput301exchange.exchange.Activities.EditBookActivity;
 import cmput301exchange.exchange.Book;
@@ -27,7 +30,7 @@ public class EditBookFragment extends Fragment {
     private EditBookController myEditBookController;
     private Book myBook;
     private EditText Name,Type,Quantity,Quality;
-    private CharSequenceWrapper name_text=null, type_text=null, quantity_text=null, quality_text=null;
+    private CharSequenceWrapper name_text=null, type_text=null, quantity_text=null, quality_text=null, category_text=null;
     private Spinner Category;
     private Button ViewComment,Done,ViewPhoto;
 
@@ -48,13 +51,12 @@ public class EditBookFragment extends Fragment {
         type_text.setText(Type.getText().toString());
         quality_text.setText(Quality.getText().toString());
         quantity_text.setText(Quantity.getText().toString());
-        // add category
 
         myEditBookController.updateName(name_text.toString());
         myEditBookController.updateType(type_text.toString());
         myEditBookController.updateQuantity(quantity_text.toString());
         myEditBookController.updateQuality(quality_text.toString());
-        // add category
+        myEditBookController.updateCategory((String)Category.getSelectedItem());
     }
 
     public void fetchItemInfo(){
@@ -82,7 +84,12 @@ public class EditBookFragment extends Fragment {
         } else {
             quality_text.setText(myEditBookController.getQuality());
         }
-        // Need to add Category
+
+        if (category_text==null){
+            category_text= new CharSequenceWrapper(myEditBookController.getCategory());
+        } else {
+            category_text.setText(myEditBookController.getCategory());
+        }
 
     }
 
@@ -93,7 +100,18 @@ public class EditBookFragment extends Fragment {
         Type.setText(type_text, TextView.BufferType.EDITABLE);
         Quality.setText(quality_text, TextView.BufferType.EDITABLE);
         Quantity.setText(quantity_text, TextView.BufferType.EDITABLE);
+        updateCategorySpinner();
         // Need to add Category
+    }
+
+    public void updateCategorySpinner(){
+        Resources res = getResources();
+        String[] categories = res.getStringArray(R.array.categories_selection);
+        for (int i=0;i<categories.length;++i){
+            if (categories[i].equals(category_text.toString())){
+                Category.setSelection(i);
+            }
+        }
     }
 
     public void ViewComments_Handler(){
@@ -186,9 +204,11 @@ public class EditBookFragment extends Fragment {
                 R.array.categories_selection, android.R.layout.simple_spinner_item);
         Category.setAdapter(adapter);
         Category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                myEditBookController.setBookCategory((String) Category.getItemAtPosition(position));
+                Log.e("Category selected: ",(String) Category.getItemAtPosition(position));
+                myEditBookController.updateCategory((String) Category.getItemAtPosition(position));
             }
 
             public void onNothingSelected(AdapterView<?> parent) {

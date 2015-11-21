@@ -35,6 +35,9 @@ public class EditBookController {
         Integer quantity=myBook.getQuantity();
         return quantity.toString();
     }
+    public String getCategory(){
+        return myBook.getCategory();
+    }
 
     public void updateName(String name){
         myBook.updateTitle(name);
@@ -70,7 +73,7 @@ public class EditBookController {
         //Will implement loading the same book from model.
     }
 
-    public void setBookCategory(String category){
+    public void updateCategory(String category){
         myBook.updateCategory(category);
     }
 }

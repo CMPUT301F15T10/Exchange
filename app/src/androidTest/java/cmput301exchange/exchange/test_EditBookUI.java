@@ -3,9 +3,11 @@ package cmput301exchange.exchange;
 import android.app.Activity;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 
@@ -66,9 +68,10 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
         EditBookController controller=new EditBookController(myBook);
         controller.updateName("Pearl");
         controller.updateType("Book");
-        controller.updateQuality("2.45");
+        controller.updateQuality("2");
         controller.updateQuantity("5");
         controller.updateComment("Its bad");
+        controller.updateCategory("None");
         myBook=controller.getBook();
     }
 
@@ -77,9 +80,10 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
         EditBookController controller=new EditBookController(myBook2);
         controller.updateName("Pearlsss");
         controller.updateType("Book");
-        controller.updateQuality("1.2");
+        controller.updateQuality("1");
         controller.updateQuantity("8");
         controller.updateComment("Its not bad!");
+        controller.updateCategory("None");
         myBook2=controller.getBook();
     }
 
@@ -98,13 +102,14 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 Button viewComment=(Button) editBook.getView().findViewById(R.id.EditItem_ViewComments);
                 Button save=(Button) editBook.getView().findViewById(R.id.EditItem_Done);
                 Button photo=(Button) editBook.getView().findViewById(R.id.EditItem_Photo);
-                EditBookController controller=editBook.getController();
+                Spinner Category= (Spinner) editBook.getView().findViewById(R.id.EditItem_CategorySpinner);
 
                 editBook.resetBook();
                 assertEquals(Name.getText().toString(), myBook.getName());
                 assertEquals(Type.getText().toString(), myBook.getItemType());
                 assertEquals(Quality.getText().toString(), (new Integer(myBook.getQuality()).toString()));
                 assertEquals(Quantity.getText().toString(), (new Integer(myBook.getQuantity()).toString()));
+                assertEquals(((String) Category.getSelectedItem()), myBook.getCategory());
                 viewComment.performClick();
 
                 // when View comment button is pressed, EditBookFragment will shutdown and EditBookCommentFragment will be activated
@@ -119,8 +124,9 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 String newComment="yess";
                 String newName="Harry_";
                 String newType="Something";
-                Double newQuality=new Double(4.2);
+                Integer newQuality=new Integer(4);
                 Integer newQuantity= 102;
+                String newCategory="Category1";
 
                 Comment.setText(new CharSequenceWrapper(newComment));
                 assertEquals(Comment.getText().toString(), newComment);
@@ -137,20 +143,25 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 viewComment=(Button) editBook.getView().findViewById(R.id.EditItem_ViewComments);
                 save=(Button) editBook.getView().findViewById(R.id.EditItem_Done);
                 photo=(Button) editBook.getView().findViewById(R.id.EditItem_Photo);
+                Category= (Spinner) editBook.getView().findViewById(R.id.EditItem_CategorySpinner);
 
                 Name.setText(new CharSequenceWrapper(newName));
                 Type.setText(new CharSequenceWrapper(newType));
                 Quality.setText(new CharSequenceWrapper(newQuality.toString()));
                 Quantity.setText(new CharSequenceWrapper(newQuantity.toString()));
+                Category.setSelection(1); // This will be 1 because "Category1" is the 2nd item inside the spinner.
 
                 //Test whether the data fed into the editText is displayed properly
                 assertEquals(Name.getText().toString(), newName);
                 assertEquals(Type.getText().toString(), newType);
                 assertEquals(Quality.getText().toString(), newQuality.toString());
                 assertEquals(Quantity.getText().toString(), newQuantity.toString());
+                assertEquals((String) Category.getSelectedItem(), newCategory);
+
+
+                EditBookController controller = editBook.getController();
 
                 save.performClick(); // Save button is pressed and so the new data should be updated with the model
-                assertTrue(ObjectSaver.gotThere);
 
                 //Test whether the data is properly updated with the model
                 controller.reloadData(); //Data is reloaded from the model
@@ -159,6 +170,7 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
                 assertEquals(controller.getQuality(), newQuality.toString());
                 assertEquals(controller.getQuantity(), newQuantity.toString());
                 assertEquals(controller.getComment(), newComment);
+                assertEquals(controller.getCategory(), newCategory);
             }
         });
 
