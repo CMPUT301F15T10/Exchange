@@ -277,8 +277,6 @@ public class InventoryActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
             case R.id.action_add:
-                Book book = new Book();
-                inventory.add(book);
                 json = gson.toJson(inventory);
                 intent = new Intent(this, AddBookActivity.class).putExtra("Add_Item", json);
                 startActivityForResult(intent, MENU_Add_Item);
