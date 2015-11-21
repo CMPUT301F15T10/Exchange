@@ -127,7 +127,6 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
     }
 
     // UC 1.03
-    // TODO fix this so that it passes
     public void testRemoveItem(){
 
         inventory.runOnUiThread(new Runnable() {
@@ -136,8 +135,6 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
                 itemList.setSelection(0);
                 itemList.performItemClick(itemList.getAdapter().getView(0, null, null), 0, itemList.getItemIdAtPosition(0));
                 getActivity().removeItems();
-                getActivity().updateBookList(mockInventory);
-                itemList.clearChoices();
                 itemList.requestFocus();
             }
         });

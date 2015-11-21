@@ -292,15 +292,11 @@ public class InventoryActivity extends AppCompatActivity {
 
             case R.id.action_remove_single:
                 removeItems();
-                lv.clearChoices();
-                updateBookList(inventory);
 
                 return true;
 
             case R.id.action_remove_multi:
                 removeItems();
-                lv.clearChoices();
-                updateBookList(inventory);
 
                 return true;
 
@@ -327,6 +323,9 @@ public class InventoryActivity extends AppCompatActivity {
             inventory.removeItem(b);
         }
         selectedBooks=new ArrayList<>();
+
+        lv.clearChoices();
+        updateBookList(inventory);
     }
 
     public void initSearchView(){
