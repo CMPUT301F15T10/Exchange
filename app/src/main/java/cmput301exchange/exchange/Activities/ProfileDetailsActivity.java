@@ -38,6 +38,7 @@ public class ProfileDetailsActivity extends AppCompatActivity {
         email = (TextView)findViewById(R.id.profileEmailDetails);
         location = (TextView)findViewById(R.id.profileLocationDetails);
 
+
         name.setText(person.getName());
         phone.setText(person.getPhoneNumber());
         email.setText(person.getEmail());
