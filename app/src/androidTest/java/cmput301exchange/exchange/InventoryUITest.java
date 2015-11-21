@@ -146,27 +146,18 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
     }
 
     // UC 3.01, 3.03
-    // TODO fix this
     public void testSearchInventory(){
 
         inventory.runOnUiThread(new Runnable() {
             public void run() {
                 itemList.requestFocus();
+                getActivity().searchQuery("books");
             }
         });
 
         mInstrumentation.waitForIdleSync();
 
-        this.sendKeys(KeyEvent.KEYCODE_SEARCH);
-
-        mInstrumentation.waitForIdleSync();
-
-        this.sendKeys("books");
-
-        mInstrumentation.waitForIdleSync();
-
         assertEquals(1, itemList.getCount());
-
     }
 
     // UC 3.02
