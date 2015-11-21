@@ -91,7 +91,7 @@ public class AddBookActivity extends ActionBarActivity {
         book.updateTitle(bookName);
         book.updateAuthor(bookAuthor);
         book.updateQuantity(bookQuantity);
-        book.setQuality(bookQuality);
+        book.updateQuality(bookQuality);
         book.updateCategory(category);
         book.updateComment(bookComments);
         

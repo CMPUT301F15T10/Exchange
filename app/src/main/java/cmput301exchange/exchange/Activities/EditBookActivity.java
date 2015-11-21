@@ -17,6 +17,7 @@ import cmput301exchange.exchange.Controllers.EditBookController;
 import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
 import cmput301exchange.exchange.Fragments.EditBookFragment;
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Others.ObjectSaver;
 import cmput301exchange.exchange.R;
 
@@ -30,6 +31,9 @@ public class EditBookActivity extends AppCompatActivity {
     private Book myBook;
     private EditBookController myController;
     public static String editBookTag="EDIT_BOOK_TAG",editCommentTag="EDIT_Comment_TAG",viewPhotoTag="VIEW_BOOK_TAG";
+    private BackButtonListener currentFragment;
+    private boolean isBackPressed=false;
+    private String originalBook_String=null;
 
 
     @Override
@@ -58,12 +62,15 @@ public class EditBookActivity extends AppCompatActivity {
         fm_T=fm.beginTransaction();
         if (flag==1){
             fm_T.replace(fragmentLayoutID.intValue(),BookEdit,editBookTag);
+            currentFragment=BookEdit;
         }
         if (flag==2){
             fm_T.replace(fragmentLayoutID.intValue(),CommentEdit,editCommentTag);
+            currentFragment=CommentEdit;
         }
         if (flag==3){
             fm_T.replace(fragmentLayoutID.intValue(),Photo,viewPhotoTag);
+//            currentFragment=Photo;
         }
 //        fm_T.addToBackStack(null);
         fm_T.commitAllowingStateLoss();// Alternative is commit
@@ -82,15 +89,19 @@ public class EditBookActivity extends AppCompatActivity {
     @Override
     public void finish(){
         Gson gson = new Gson();
-        String json = gson.toJson(myController.getBook());
-//        Log.e("size inventory InventoryActivity:",String.valueOf(inventory.getInventoryList().size()));
+        String json;
+        if (isBackPressed==false) {
+            json = gson.toJson(myController.getBook());
+        } else{
+            json = originalBook_String;
+        }
         Intent book = new Intent();
         book.putExtra("Book", json);
         setResult(RESULT_OK, book);
         super.finish();
     }
 
-    public void initBook(){
+    public void initBook() {
         Intent intent=getIntent();
         if (intent==null){
             throw new RuntimeException("Intent is null!");
@@ -98,6 +109,7 @@ public class EditBookActivity extends AppCompatActivity {
         String json=intent.getExtras().getString("Edit_Item");
         Gson gson = new Gson();
         myBook=gson.fromJson(json,Book.class);
+        originalBook_String=gson.toJson(myBook);
     }
 
     public EditBookFragment getEditBookFragment(){
@@ -139,6 +151,20 @@ public class EditBookActivity extends AppCompatActivity {
 
     public EditBookController getController(){
         return myController;
+    }
+
+    public void setCurrentFragment(BackButtonListener fragment){
+        currentFragment=fragment;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentFragment!=null){
+            currentFragment.onBackPress();
+        } else{
+            isBackPressed=true;
+            super.onBackPressed();
+        }
     }
 }
 

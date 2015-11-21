@@ -37,7 +37,7 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
     }
 
     // Tests whether the activity starts or not.
-    public void testStart() throws Exception {
+    public void testStart() {
         Activity activity = getActivity();
         assertNotNull(activity);
     }
@@ -57,8 +57,6 @@ public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
         assertNotNull(activity.fm.findFragmentByTag(EditBookActivity.editBookTag)); // By default EditBookFragment should be started
         editBook=activity.getEditBookFragment();
         editComment=activity.getEditCommentFragment();
-        editBook.getView();
-//        initBook();
         initBook2();
         getInstrumentation().waitForIdleSync();
     }

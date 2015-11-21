@@ -52,7 +52,7 @@ public class EditBookController {
     }
     public void updateQuality(String Quality){
         Double Quality_D=Double.parseDouble(Quality);
-        myBook.setQuality(Quality_D.intValue());
+        myBook.updateQuality(Quality_D.intValue());
     }
 
     public void setBook(Book book){

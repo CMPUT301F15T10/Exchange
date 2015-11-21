@@ -15,6 +15,8 @@ public class ModelEnvironment {
 
     private User owner;
     private boolean autoPicDownloads=false;
+    private TradeManager tradeManager=null;
+
     public ModelEnvironment(Context myActivity, String userName){
 
         if (userName==null){
@@ -22,6 +24,11 @@ public class ModelEnvironment {
         } else{
             initOwner(userName);
         }
+
+        if (tradeManager==null){
+            tradeManager= new TradeManager();
+        }
+
     }
 
     public boolean isAutoPicDownloadsEnabled(){
@@ -36,12 +43,13 @@ public class ModelEnvironment {
         DataIO io = new DataIO(myActivity,ModelEnvironment.class);
         ModelEnvironment instance=io.loadEnvironment("GlobalENV");
         setOwner(instance.getOwner());
+        setTradeManager(instance.getTradeManager());
         return instance;
     }
 
     public void saveInstance(Context myActivity){
         DataIO io = new DataIO(myActivity,ModelEnvironment.class);
-        io.saveEnvironment("GlobalENV",this);
+        io.saveEnvironment("GlobalENV", this);
     }
 
     public User getOwner() {
@@ -63,6 +71,14 @@ public class ModelEnvironment {
          * sets owner
          */
         this.owner=owner;
+    }
+
+    public void setTradeManager(TradeManager tradeManager){
+        this.tradeManager=tradeManager;
+    }
+
+    public TradeManager getTradeManager(){
+        return tradeManager;
     }
 
 

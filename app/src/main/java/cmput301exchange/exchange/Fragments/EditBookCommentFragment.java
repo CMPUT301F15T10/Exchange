@@ -13,6 +13,7 @@ import android.widget.TextView;
 import cmput301exchange.exchange.Activities.EditBookActivity;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Controllers.EditBookController;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
 import cmput301exchange.exchange.Others.ObjectSaver;
 import cmput301exchange.exchange.R;
@@ -20,7 +21,7 @@ import cmput301exchange.exchange.R;
 /**
  * Created by touqir on 01/11/15.
  */
-public class EditBookCommentFragment extends Fragment{
+public class EditBookCommentFragment extends Fragment implements BackButtonListener{
 
     private CharSequenceWrapper comment=null;
     private EditBookActivity myActivity;
@@ -45,7 +46,6 @@ public class EditBookCommentFragment extends Fragment{
     public void Done_Handler(){
 
         myEditBookController.updateComment(commentBox.getText().toString());
-        myActivity.setController(myEditBookController);
         exit();
     }
 
@@ -92,5 +92,10 @@ public class EditBookCommentFragment extends Fragment{
     public void exit(){
         myActivity.setController(myEditBookController);
         myActivity.switchFragment(1);
+    }
+
+    @Override
+    public void onBackPress() {
+        exit();
     }
 }

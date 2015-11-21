@@ -114,7 +114,7 @@ public class Book implements Shareable, Comparable<Book> {
      * Sets the Quality of the Book on a scale of 1-5. Accepts an int.
      * @param setCondition an integer value representing the quality of the item
      */
-    public void setQuality(int setCondition){
+    public void updateQuality(int setCondition){
 
         //We have to ensure that the value of the condition never exceeds a certain value
         if (setCondition > 5){
@@ -220,4 +220,5 @@ public class Book implements Shareable, Comparable<Book> {
 
         return "Title: "+this.getName()+"\n"+"Author: "+this.getAuthor();
     }
+
 }

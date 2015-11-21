@@ -19,11 +19,12 @@ import android.widget.Toast;
 import cmput301exchange.exchange.Activities.EditBookActivity;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Controllers.EditBookController;
+import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
 import cmput301exchange.exchange.Others.ObjectSaver;
 import cmput301exchange.exchange.R;
 
-public class EditBookFragment extends Fragment {
+public class EditBookFragment extends Fragment implements BackButtonListener {
 
     private EditBookActivity myActivity;
     private View myView;
@@ -56,7 +57,7 @@ public class EditBookFragment extends Fragment {
         myEditBookController.updateType(type_text.toString());
         myEditBookController.updateQuantity(quantity_text.toString());
         myEditBookController.updateQuality(quality_text.toString());
-        myEditBookController.updateCategory((String)Category.getSelectedItem());
+        myEditBookController.updateCategory((String) Category.getSelectedItem());
     }
 
     public void fetchItemInfo(){
@@ -207,7 +208,6 @@ public class EditBookFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("Category selected: ",(String) Category.getItemAtPosition(position));
                 myEditBookController.updateCategory((String) Category.getItemAtPosition(position));
             }
 
@@ -215,5 +215,11 @@ public class EditBookFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPress() {
+        myActivity.setCurrentFragment(null);
+        myActivity.onBackPressed();
     }
 }

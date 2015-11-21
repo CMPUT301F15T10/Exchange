@@ -13,11 +13,11 @@ public class BookTest extends ApplicationTestCase<Application> {
 
     public void testQualityUpdate(){
         Book book = new Book();
-        book.setQuality(100); // make it a huge value
+        book.updateQuality(100); // make it a huge value
         assertEquals(5,book.getQuality());
-        book.setQuality(-100); // make it a small value
+        book.updateQuality(-100); // make it a small value
         assertEquals(0,book.getQuality());
-        book.setQuality(3); //make it an intermediate
+        book.updateQuality(3); //make it an intermediate
         assertEquals(3, book.getQuality());
     }
 

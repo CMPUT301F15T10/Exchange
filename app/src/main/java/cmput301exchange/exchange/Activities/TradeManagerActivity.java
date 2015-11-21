@@ -12,6 +12,7 @@ import cmput301exchange.exchange.Fragments.TradeListFragment;
 import cmput301exchange.exchange.Fragments.TradeManagerFragment;
 import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Interfaces.TradeMaker;
+import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Trade;
@@ -30,6 +31,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private Person tradePartner=null;
     private BackButtonListener currentFragment;
     private Integer tradeListFlag=null;
+    private ModelEnvironment globalEnv=null;
+    public static String tradeManagerTag="Trade_Manager_TAG",tradeTag="Trade_TAG",tradeItemsTag="Trade_Items_TAG",tradeListTag="Trade_List_TAG";
 
     public Integer getTradeListFlag() {
         return tradeListFlag;
@@ -43,11 +46,21 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trade_manager_layout);
-        myTradeManager= new TradeManager();
+//        myTradeManager= new TradeManager();
+        loadTradeManager();
         initFragments();
         switchFragment(1);
     }
 
+    public void loadTradeManager(){
+        globalEnv= new ModelEnvironment(this, null);
+        myTradeManager=globalEnv.getTradeManager();
+    }
+
+    public void saveTradeManager(){
+        globalEnv.setTradeManager(myTradeManager);
+        globalEnv.saveInstance(this);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_trade_manager, menu);
@@ -69,25 +82,26 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         fm_T=fm.beginTransaction();
 
         if (flag==1){
-            fm_T.replace(fragmentLayoutID,myTradeManagerFragment);
+            fm_T.replace(fragmentLayoutID,myTradeManagerFragment,tradeManagerTag);
             currentFragment= myTradeManagerFragment;
         }
         if (flag==2){
-            fm_T.replace(fragmentLayoutID,myTradeFragment);
+            fm_T.replace(fragmentLayoutID,myTradeFragment,tradeTag);
             currentFragment= myTradeFragment;
         }
         if (flag==3){
-            fm_T.replace(fragmentLayoutID,myTradeListFragment);
+            fm_T.replace(fragmentLayoutID,myTradeListFragment,tradeListTag);
             currentFragment= myTradeListFragment;
         }
         if (flag==4){
-            fm_T.replace(fragmentLayoutID,myItemsTradeFragment);
+            fm_T.replace(fragmentLayoutID,myItemsTradeFragment,tradeItemsTag);
             currentFragment= myItemsTradeFragment;
         }
 
 //        fm_T.addToBackStack(null);
-        fm_T.commit();
-//        fm.executePendingTransactions();
+//        fm_T.commit();
+        fm_T.commitAllowingStateLoss();
+        fm.executePendingTransactions();
     }
 
     //TODO

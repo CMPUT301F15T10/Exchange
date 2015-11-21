@@ -40,7 +40,7 @@ public class Item {
         return Quality.toString();
     }
 
-    public void setQuality(Double quality) {
+    public void updateQuality(Double quality) {
         Quality = quality;
     }
 
