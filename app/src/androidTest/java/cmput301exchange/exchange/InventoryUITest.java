@@ -22,7 +22,6 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
     private Spinner inventoryViewSpinner;
     private ListView itemList;
     public Inventory mockInventory = new MockInventory();
-    private MockBook1 mockBook1 = new MockBook1();
 
     public InventoryUITest() {
         super(cmput301exchange.exchange.Activities.InventoryActivity.class);
@@ -108,22 +107,45 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
 
     }
 
-    public void testRemoveItem(){
+    // UC 1.02
+    public void testAddItem(){
 
         inventory.runOnUiThread(new Runnable() {
             public void run() {
+                Book book = new MockBook1();
+                mockInventory.add(book);
+                getActivity().updateBookList(mockInventory);
+                itemList.clearChoices();
                 itemList.requestFocus();
             }
         });
 
         mInstrumentation.waitForIdleSync();
 
-        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+        assertEquals(3, itemList.getCount());
+
+    }
+
+    // UC 1.03
+    // TODO fix this so that it passes
+    public void testRemoveItem(){
+
+        inventory.runOnUiThread(new Runnable() {
+            public void run() {
+                itemList.requestFocusFromTouch();
+                itemList.setSelection(0);
+                itemList.performItemClick(itemList.getAdapter().getView(0, null, null), 0, itemList.getItemIdAtPosition(0));
+                getActivity().removeItems();
+                getActivity().updateBookList(mockInventory);
+                itemList.clearChoices();
+                itemList.requestFocus();
+            }
+        });
 
         mInstrumentation.waitForIdleSync();
 
         assertEquals(1, itemList.getCount());
 
-        // TODO somehow remove items using removeItems function call
     }
+
 }
