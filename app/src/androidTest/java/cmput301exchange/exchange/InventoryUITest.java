@@ -122,6 +122,8 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
 
         mInstrumentation.waitForIdleSync();
 
-        // TODO somehow remove items using keyevents
+        assertEquals(1, itemList.getCount());
+
+        // TODO somehow remove items using removeItems function call
     }
 }
