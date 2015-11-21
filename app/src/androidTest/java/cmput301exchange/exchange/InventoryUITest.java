@@ -1,10 +1,13 @@
 package cmput301exchange.exchange;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -120,8 +123,12 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
 
         mInstrumentation.waitForIdleSync();
 
-        // TODO select from options menu once menu_inventory.xml is updated and menu code in activity is fixed
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
 
+        mInstrumentation.waitForIdleSync();
 
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+
+        // TODO somehow remove items using keyevents
     }
 }

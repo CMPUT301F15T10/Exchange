@@ -251,8 +251,6 @@ public class InventoryActivity extends AppCompatActivity {
         if((state==2) && (selectedBooks!=null)) {
             if (selectedBooks.size() == 1) {
                 menu.findItem(R.id.action_view).setVisible(true);
-                menu.findItem(R.id.action_edit).setVisible(true);
-                menu.findItem(R.id.action_remove_single).setVisible(true);
             }
         }
 
