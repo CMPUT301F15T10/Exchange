@@ -258,7 +258,7 @@ public class InventoryActivity extends AppCompatActivity {
     }
 
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_inventory, menu);
         mySearchView=(SearchView) menu.findItem(R.id.item_search).getActionView();

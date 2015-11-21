@@ -23,10 +23,9 @@
         android:orderInCategory="400" app:showAsAction="never" />
 
     <item android:id="@+id/action_details" android:title="@string/view_inventory_details"
-        android:orderInCategory="300" app:showAsAction="ifRoom" />
+        android:orderInCategory="300" app:showAsAction="never" />
 
     <item android:id="@+id/action_add" android:title="@string/add_new_book"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
-
 
 </menu>
