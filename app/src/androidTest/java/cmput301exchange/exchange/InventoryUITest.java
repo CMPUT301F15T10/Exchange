@@ -145,4 +145,53 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
 
     }
 
+    // UC 3.01, 3.03
+    // TODO fix this
+    public void testSearchInventory(){
+
+        inventory.runOnUiThread(new Runnable() {
+            public void run() {
+                itemList.requestFocus();
+            }
+        });
+
+        mInstrumentation.waitForIdleSync();
+
+        this.sendKeys(KeyEvent.KEYCODE_SEARCH);
+
+        mInstrumentation.waitForIdleSync();
+
+        this.sendKeys("books");
+
+        mInstrumentation.waitForIdleSync();
+
+        assertEquals(1, itemList.getCount());
+
+    }
+
+    // UC 3.02
+    public void testSearchCategory(){
+
+        inventory.runOnUiThread(new Runnable() {
+            public void run() {
+                inventorySpinner.requestFocus();
+            }
+        });
+
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+
+        mInstrumentation.waitForIdleSync();
+
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
+
+        mInstrumentation.waitForIdleSync();
+
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+
+        mInstrumentation.waitForIdleSync();
+
+        assertEquals(1, itemList.getCount());
+
+    }
+
 }
