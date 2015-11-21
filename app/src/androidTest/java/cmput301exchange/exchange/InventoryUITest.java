@@ -1,19 +1,17 @@
 package cmput301exchange.exchange;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
 
 import cmput301exchange.exchange.Activities.InventoryActivity;
+import cmput301exchange.exchange.Mocks.MockBook1;
 import cmput301exchange.exchange.Mocks.MockInventory;
 
 public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryActivity> {
@@ -24,6 +22,7 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
     private Spinner inventoryViewSpinner;
     private ListView itemList;
     public Inventory mockInventory = new MockInventory();
+    private MockBook1 mockBook1 = new MockBook1();
 
     public InventoryUITest() {
         super(cmput301exchange.exchange.Activities.InventoryActivity.class);
@@ -35,7 +34,7 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
         String json = gson.toJson(mockInventory);
 
         Intent intent = new Intent(); //Create a new Intent
-        intent.putExtra("Inventory", json); //Pack the Intent with a blank Inventory
+        intent.putExtra("Inventory", json); //Pack the Intent with a mock Inventory
         setActivityIntent(intent); //Spoof the Intent
 
         inventory = getActivity(); // get a references to the app under test
@@ -122,12 +121,6 @@ public class InventoryUITest extends ActivityInstrumentationTestCase2<InventoryA
         this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
 
         mInstrumentation.waitForIdleSync();
-
-        this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
-
-        mInstrumentation.waitForIdleSync();
-
-        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
 
         // TODO somehow remove items using keyevents
     }
