@@ -28,7 +28,7 @@ import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.User;
 
-public class HomeActivity extends AppCompatActivity {
+public class  HomeActivity extends AppCompatActivity {
     ModelEnvironment GlobalENV=null;
     Gson gson= new Gson();
     Intent intent;
