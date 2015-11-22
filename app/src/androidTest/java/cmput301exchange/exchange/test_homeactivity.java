@@ -49,7 +49,7 @@ public class test_homeactivity extends ActivityInstrumentationTestCase2 {
                 InventoryActivity.class, receiverActivity.getClass());
         getInstrumentation().removeMonitor(receiverActivityMonitor);
     }
-    
+
 
     public  void test_browse_button (){
         activity= (HomeActivity)getActivity();
