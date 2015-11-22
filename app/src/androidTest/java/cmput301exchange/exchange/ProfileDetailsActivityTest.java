@@ -5,94 +5,91 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-/**
- * Created by bq on 11/21/15.
- */
-/*public class ProfileDetailsActivityTest extends ActivityInstrumentationTestCase2{
-    private EditText name, phone, email, location;
+/*
+ * This class is for testing Profile Details UI
+*/
 
-    private Person person=new Person("Person");
+public class ProfileDetailsActivityTest extends ActivityInstrumentationTestCase2 {
+    private TextView name, phone, email, location;
+
+    private Person person = new Person("Tony12");
 
     private Instrumentation mInstrumentation;
     private Activity profileDetails;
 
-    public ProfileDetailsActivityTest(){
+    public ProfileDetailsActivityTest() {
         super(cmput301exchange.exchange.Activities.ProfileDetailsActivity.class);
 
     }
-    protected void setUp() throws Exception{
+
+    public void testActivityExists() {
+        assertNotNull(profileDetails);
+    }
+
+    protected void setUp() throws Exception {
         super.setUp();
         person.setName("Tony");
         person.setPhoneNumber("123456");
         person.setEmail("123@.com");
         person.setLocation("Edmonton");
         Gson gson = new Gson();
-        String json =gson.toJson(person);
+        String json = gson.toJson(person);
         Intent intent = new Intent();
         intent.putExtra("Person", json);
         setActivityIntent(intent);
-        profileDetails =getActivity();
+        profileDetails = getActivity();
+        testActivityExists();
         mInstrumentation = getInstrumentation();
-
-
-    }
-    public void testActivityExists() {
-        assertNotNull(profileDetails);
-    }
-
-    public void testDetails(){
-        Gson gson = new Gson();
-        Intent intent=getIntent();
-        String json=intent.getExtras().getString("Person");
-        person = gson.fromJson(json, Person.class);
-
-
-        name = (EditText) profileDetails.findViewById(R.id.editName);
-        phone = (EditText) profileDetails.findViewById(R.id.editPhone);
-        email = (EditText) profileDetails.findViewById(R.id.editEmail);
-        location = (EditText) profileDetails.findViewById(R.id.editLocation);
-        name.setText(person.getName());
-        phone.setText(person.getPhoneNumber());
-        email.setText(person.getEmail());
-        location.setText(person.getLocation());
-        assertEquals(name, "Tony");
-        assertEquals(phone, "123456");
-        assertEquals(email, "123@.com");
-        assertEquals(location,"Edmonton");
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public void testDetails() {
+        name = (TextView) profileDetails.findViewById(R.id.profileNameDetails);
+        phone = (TextView) profileDetails.findViewById(R.id.profilePhoneDetails);
+        email = (TextView) profileDetails.findViewById(R.id.profileEmailDetails);
+        location = (TextView) profileDetails.findViewById(R.id.profileLocationDetails);
+//        name.setText(person.getName());
+//        phone.setText(person.getPhoneNumber());
+//        email.setText(person.getEmail());
+//        location.setText(person.getLocation());
+        assertEquals(name.getText().toString(), "Tony12");
+        assertEquals(phone.getText().toString(), "123456");
+        assertEquals(email.getText().toString(), "123@.com");
+        assertEquals(location.getText().toString(), "Edmonton");
+    }
 }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

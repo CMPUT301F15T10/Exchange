@@ -2,24 +2,33 @@ package cmput301exchange.exchange.Activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
+import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Fragments.ItemsTradeFragment;
 import cmput301exchange.exchange.Fragments.TradeFragment;
 import cmput301exchange.exchange.Fragments.TradeListFragment;
 import cmput301exchange.exchange.Fragments.TradeManagerFragment;
 import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Interfaces.TradeMaker;
+import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Trade;
 import cmput301exchange.exchange.TradeManager;
+import cmput301exchange.exchange.User;
 
 public class TradeManagerActivity extends AppCompatActivity implements TradeMaker {
-    private FragmentManager fm;
+    public FragmentManager fm;
     private FragmentTransaction fm_T;
     private TradeFragment myTradeFragment;
     private TradeListFragment myTradeListFragment;
@@ -33,6 +42,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private Integer tradeListFlag=null;
     private ModelEnvironment globalEnv=null;
     public static String tradeManagerTag="Trade_Manager_TAG",tradeTag="Trade_TAG",tradeItemsTag="Trade_Items_TAG",tradeListTag="Trade_List_TAG";
+    private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
+    private Intent personIntent, inventoryIntent;
 
     public Integer getTradeListFlag() {
         return tradeListFlag;
@@ -186,6 +197,56 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         } else{
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void finish(){
+        saveTradeManager();
+        super.finish();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == SEARCH_PEOPLE) {
+            data.setClass(this, TradeManagerActivity.class);
+            personIntent=data;
+//            getTradePartner();
+            switchFragment(2); //switch to trade fragment
+        }
+        if (requestCode == INVENTORY) {
+            data.setClass(this, TradeManagerActivity.class);
+            inventoryIntent = data;
+//            getTradePartner();
+            switchFragment(2); //switch to trade fragment
+        }
+    }
+
+    public Person assignTradePartner() {
+        Gson gson= new Gson();
+        if (personIntent.hasExtra("Trade_Partner")) {
+            String json = personIntent.getExtras().getString("Trade_Partner");
+            return gson.fromJson(json, Person.class);
+        }
+        return null; // if no person is found
+    }
+
+    public Inventory assignBooks(){
+        Gson gson= new Gson();
+        if (inventoryIntent.hasExtra("Inventory_Items")) {
+            String json = personIntent.getExtras().getString("Inventory_Items");
+            return gson.fromJson(json, Inventory.class);
+        }
+        return null;
+    }
+
+    public void selectPerson(){
+        Intent intent= new Intent(this,ViewPersonActivity.class);
+        startActivityForResult(null, SEARCH_PEOPLE);
+    }
+
+    public void selectItems(){
+        Intent intent= new Intent(this,Inventory.class);
+        startActivityForResult(null, INVENTORY);
     }
 
 }

@@ -36,8 +36,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     private TradeMaker myActivity;
     private View myView;
     private Button confirm,abort,tradeItems,checkTradeRequest;
-    private TextView tradeStatusView,tradeIDView;
-    private CharSequenceWrapper tradeStatus=null, tradeID=null;
+    private TextView TradeTypeView,tradeIDView;
+    private CharSequenceWrapper TradeType=null, tradeID=null;
     private TradeController myTradeController;
     private ArrayAdapter<ListItemRunnable> spinnerAdapter;
     private ArrayList<ListItemRunnable> spinnerItems;
@@ -187,7 +187,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void initTextView(){
-        tradeStatusView= (TextView) myView.findViewById(R.id.Trade_status);
+        TradeTypeView= (TextView) myView.findViewById(R.id.Trade_type);
         tradeIDView= (TextView) myView.findViewById(R.id.Trade_ID);
 //        updateTextView();
     }
@@ -200,11 +200,11 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void updateTextView(){
-        if (tradeStatus==null) {
-            tradeStatus = new CharSequenceWrapper(myTradeController.getTradeStatus());
+        if (TradeType==null) {
+            TradeType = new CharSequenceWrapper(myTradeController.getTradeType());
         }
         else {
-            tradeStatus.setText(myTradeController.getTradeStatus());
+            TradeType.setText(myTradeController.getTradeType());
         }
 
         if (tradeID==null){
@@ -214,7 +214,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
             tradeID.setText(myTradeController.getTradeID());
         }
 
-        tradeStatusView.setText(tradeStatus);
+        TradeTypeView.setText(TradeType);
         tradeID.setText("Trade ID "+tradeID.toString());
         tradeIDView.setText(tradeID);
     }

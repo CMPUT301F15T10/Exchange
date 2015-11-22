@@ -50,7 +50,7 @@ public class Person {
     }
 
     public String getName() {
-        return userName;
+        return this.name;
     }
 
     public String getLocation() {

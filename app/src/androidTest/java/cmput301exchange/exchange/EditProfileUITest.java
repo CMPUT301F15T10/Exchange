@@ -13,9 +13,9 @@ import cmput301exchange.exchange.Activities.HomeActivity;
 import cmput301exchange.exchange.Activities.Login;
 
 /**
- * Created by bq on 2015-11-20.
+ * US10.02.01 UI test case!!
  */
-/*public class EditProfileUITest extends ActivityInstrumentationTestCase2 {
+public class EditProfileUITest extends ActivityInstrumentationTestCase2 {
     private Activity editProfile;
     private EditText name, phone, email, location;
     private Person user;
@@ -26,33 +26,30 @@ import cmput301exchange.exchange.Activities.Login;
     public EditProfileUITest() {
         super(cmput301exchange.exchange.Activities.EditProfileActivity.class);
     }
+
     public void testStart() throws Exception {
-        Activity editProfile = getActivity();
+        editProfile = getActivity();
         assertNotNull(editProfile);
     }
 
     protected void setUp() throws Exception {
         super.setUp();
-        Gson gson = new Gson();
-        Intent intent=getIntent();
-        String json=intent.getExtras().getString("User");
-        user = gson.fromJson(json, Person.class);
-
-
+        testStart();
+        editProfile();
         mInstrumentation = getInstrumentation();
     }
 
 
-    public void testedit(){
+    public void editProfile() {
 
         name = (EditText) editProfile.findViewById(R.id.editName);
         phone = (EditText) editProfile.findViewById(R.id.editPhone);
         email = (EditText) editProfile.findViewById(R.id.editEmail);
         location = (EditText) editProfile.findViewById(R.id.editLocation);
-        name.setText(user.getName());
-        phone.setText(user.getPhoneNumber());
-        email.setText(user.getEmail());
-        location.setText(user.getLocation());
+//        name.setText(user.getName());
+//        phone.setText(user.getPhoneNumber());
+//        email.setText(user.getEmail());
+//        location.setText(user.getLocation());
         add_button = (Button) editProfile.findViewById(R.id.add_button);
         mInstrumentation = getInstrumentation();
 
@@ -62,30 +59,21 @@ import cmput301exchange.exchange.Activities.Login;
                 phone.setText("123456");
                 email.setText("bq@123.com");
                 location.setText("Edmonton");
-            }
-        });
-        getInstrumentation().waitForIdleSync();
-
-        editProfile.runOnUiThread(new Runnable() {
-            public void run() {
                 add_button.performClick();
             }
         });
         getInstrumentation().waitForIdleSync();
-
-        editProfile = getActivity();
-
-
-
-
-        assertTrue(editProfile.isFinishing());
-
-
-
-
+        testEditedProfile();
     }
 
+    public void testEditedProfile(){
+        ModelEnvironment global=new ModelEnvironment(editProfile,null);
+        User user=global.getOwner();
+        assertEquals(user.getName(),"tony");
+        assertEquals(user.getPhoneNumber(),"123456");
+        assertEquals(user.getEmail(),"bq@123.com");
+        assertEquals(user.getLocation(),"Edmonton");
+    }
 
-
-}*/
+}
 

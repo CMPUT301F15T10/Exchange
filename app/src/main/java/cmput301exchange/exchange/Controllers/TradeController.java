@@ -40,10 +40,13 @@ public class TradeController {
         myTrade.setListBookPartner(partnerBookList);
     }
 
-    public String getTradeStatus(){
-        int status= myTrade.getTradeStatus();
-        if (status==0){
-            return "In Progress";
+    public String getTradeType(){
+        int status= myTrade.getTradeType();
+        switch (status){
+            case 0:
+                return "In Progress";
+            case 1:
+                return "Completed";
         }
 
         //there will be other conditions too!

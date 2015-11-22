@@ -36,6 +36,7 @@ public class ViewPersonActivity extends AppCompatActivity {
     private static final int MENU_View_Inventory = Menu.FIRST + 2;
     private static final int MENU_Make_Friendship = Menu.FIRST + 3;
     private static final int MENU_View_RemoveFriend = Menu.FIRST + 4;
+    private static final int MENU_Make_Trade = Menu.FIRST + 5;
     private static final int MENU_Group=1; //menu group of 0 is taken by the SearchView item
 
     public ModelEnvironment globalENV;
@@ -43,11 +44,12 @@ public class ViewPersonActivity extends AppCompatActivity {
     private ArrayList<Person> friendList;
     private ArrayList<Person> personList;
     private PersonList allPerson;
-    ArrayAdapter<Person> friendListAdapter, personListAdapter;
+    private ArrayAdapter<Person> friendListAdapter, personListAdapter;
     private Person selectedPerson=null;
     private Person user;
     private Integer state=0;
     private SearchView mySearchView=null;
+    private ModelEnvironment globalEnv=null;
 
 
 
@@ -134,10 +136,12 @@ public class ViewPersonActivity extends AppCompatActivity {
     }
 
     public void initPerson(){
-        Gson gson = new Gson();
-        Intent intent=getIntent();
-        String json=intent.getExtras().getString("User");
-        user = gson.fromJson(json, Person.class);
+//        Gson gson = new Gson();
+//        Intent intent=getIntent();
+//        String json=intent.getExtras().getString("User");
+//        user = gson.fromJson(json, Person.class);
+        globalEnv= new ModelEnvironment(this, null);
+        user=globalEnv.getOwner();
     }
 
     public void finish(){
@@ -149,6 +153,15 @@ public class ViewPersonActivity extends AppCompatActivity {
         super.finish();
     }
 
+    public void sendBackTradePartner(){
+        Gson gson = new Gson();
+        Intent intent=new Intent();
+        String json= gson.toJson(selectedPerson);
+        intent.putExtra("Trade_Partner",json);
+        setResult(RESULT_OK, intent);
+        super.finish();
+    }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         menu.removeGroup(MENU_Group);
@@ -156,6 +169,7 @@ public class ViewPersonActivity extends AppCompatActivity {
             menu.add(MENU_Group, MENU_View_Inventory, Menu.NONE, "View Inventory");
             menu.add(MENU_Group, MENU_View_Profile, Menu.NONE, "View Profile");
             menu.add(MENU_Group, MENU_View_RemoveFriend, Menu.NONE, "Remove "+selectedPerson.toString());
+            menu.add(MENU_Group, MENU_Make_Trade, Menu.NONE, "Offer a Trade");
         }
         if((state==2) && (selectedPerson!=null)) {
             menu.add(MENU_Group, MENU_Make_Friendship, Menu.NONE, "Make Friendship!");
@@ -217,8 +231,8 @@ public class ViewPersonActivity extends AppCompatActivity {
 
         if (id == MENU_View_RemoveFriend){
             user.removeFriend(selectedPerson);
-            selectedPerson=null;
-            lv.clearChoices();
+//            selectedPerson=null;
+//            lv.clearChoices();
             friendList=user.getMyFriendList().getPersonList();
             friendListAdapter.clear();
             friendListAdapter.addAll(friendList);
@@ -226,6 +240,10 @@ public class ViewPersonActivity extends AppCompatActivity {
             selectedPerson=null;
             lv.clearChoices();
             return true;
+        }
+
+        if (id == MENU_Make_Trade){
+            sendBackTradePartner();
         }
 
         return super.onOptionsItemSelected(item);
@@ -288,4 +306,5 @@ public class ViewPersonActivity extends AppCompatActivity {
         allPerson.addPerson(D);
         personList=allPerson.getPersonList();
     }
+
 }

@@ -31,8 +31,9 @@ public class Trade {
     // call this constructor
     // creates an empty trade
     public Trade() {
-        Random rand = new Random();
-        this.tradeId = rand.nextInt(8999);
+
+        Random rand = new Random(System.nanoTime());
+        this.tradeId = rand.nextInt();
     }
     /**
      * Constructor of the trade

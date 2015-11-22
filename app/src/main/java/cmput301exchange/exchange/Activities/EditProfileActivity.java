@@ -27,8 +27,9 @@ public class EditProfileActivity extends AppCompatActivity {
 //    protected DataIO io;
 
     protected EditText name, phone, email, location;
+    ModelEnvironment globalEnv;
 
-    protected Person user;
+    protected User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +65,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void initPerson(){
-        Gson gson = new Gson();
-        Intent intent=getIntent();
-        String json=intent.getExtras().getString("User");
-        user = gson.fromJson(json, Person.class);
+        globalEnv= new ModelEnvironment(this,null);
+        user=globalEnv.getOwner();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,11 +91,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void finish(){
-        Gson gson = new Gson();
-        Intent intent=new Intent();
-        String json= gson.toJson(user);
-        intent.putExtra("User",json);
-        setResult(RESULT_OK, intent);
+        globalEnv.setOwner(user);
+        globalEnv.saveInstance(this);
         super.finish();
     }
 }

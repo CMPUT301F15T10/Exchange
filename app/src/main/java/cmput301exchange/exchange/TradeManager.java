@@ -40,6 +40,18 @@ public class TradeManager {
 
     private ArrayList<Trade> listTrade;
 
+    public void setListPastTrade(ArrayList<Trade> list){
+        listPastTrade=list;
+    }
+
+    public void setListCurrentTrade(ArrayList<Trade> list){
+        listCurrentTrade=list;
+    }
+
+    public void setListTradeRequest(ArrayList<Trade> list){
+        listTradeRequest=list;
+    }
+
     /**
      * Adds a completed trade to the PastTrade List.
      * @param Trade trade
@@ -224,7 +236,7 @@ public class TradeManager {
 
     }
 
-    public ArrayList<Trade> completeTradeList() {
+    public ArrayList<Trade> getCompleteTradeList() {
         int i;
         // TODO return both listCurrentTrade and listPastTrade (???)
         ArrayList<Trade> tempList = new ArrayList<>();
