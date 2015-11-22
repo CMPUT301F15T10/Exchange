@@ -32,7 +32,7 @@ public class ProfileDetailsActivityTest extends ActivityInstrumentationTestCase2
 
     protected void setUp() throws Exception {
         super.setUp();
-        person.setName("Tony");
+        person.setName("Tony12");
         person.setPhoneNumber("123456");
         person.setEmail("123@.com");
         person.setLocation("Edmonton");
