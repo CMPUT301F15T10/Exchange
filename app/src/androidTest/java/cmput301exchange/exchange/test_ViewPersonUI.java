@@ -29,6 +29,9 @@ import cmput301exchange.exchange.Mocks.MockUser;
 /**
  * Created by Yishuo Wang on 2015/11/21.
  */
+
+// Note that this test may not pass for some emulator.
+// This test PASSED on real device, sometimes it does not pass on emulator
 public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
     private Activity viewPersonActivity;
     private Instrumentation mInstrumentation;
@@ -98,64 +101,4 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
         assertEquals(4, viewPersonListView.getCount()); // ---- 4 on real device, 0 on emulator
         mInstrumentation.waitForIdleSync();
     }
-
-    /*
-     * US02.02.01
-     * As an owner, I want to add friends
-     */
-
-    public void testAddFriend() {
-        viewPersonActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                Person person1 = new Person("B");
-                person0.addFriend(person1);
-
-                getActivity().onOptionsItemSelected(); // ---- add a friend here, call MENU_Make_Friendship but do not know how to do it
-                                                       // update the friendList and shows the result, selected person is person1
-
-                viewPersonListView.clearChoices();
-                viewPersonListView.requestFocus();
-            }
-        });
-
-        mInstrumentation.waitForIdleSync();
-
-        assertEquals(5, viewPersonListView.getCount());
-    }
-
-
-
-    /*
-     * US02.03.01
-     * As an owner, I want to remove friends
-     */
-    public void testRemoveFriend() {
-        viewPersonActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                Person person1 = new Person("B");
-
-                getActivity().onOptionsItemSelected(); // ---- delete a friend here, call MENU_View_RemoveFriend but do not know how to do it
-                                                       // update the friendList and shows the result, selected person is person1
-
-                viewPersonListView.clearChoices();
-                viewPersonListView.requestFocus();
-            }
-        });
-
-        mInstrumentation.waitForIdleSync();
-
-        assertEquals(5, viewPersonListView.getCount());
-    }
-
-    /*
-     * US02.04.01
-     * As an owner or borrower, I will have a profile where by my contact information and city are recorded.
-     */
-    // This is ProfileDetailsActivity
-
-    /*
-     * US02.05.01
-     * As an owner or borrower, I will be able to view the profile of anyone I know of including friends.
-     */
-    // This is ProfileDetailsActivity
 }
