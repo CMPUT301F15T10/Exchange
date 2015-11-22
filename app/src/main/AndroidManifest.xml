@@ -7,6 +7,13 @@
 
     <!-- Network State Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- - Access to camera Permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+
+    <!-- - write to SD card permission -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -58,7 +65,10 @@
             android:name=".Activities.ConfigurationActivity"
             android:label="@string/title_activity_configuration" >
         </activity>
-
+        <activity
+            android:name=".Activities.PhotoActivity"
+            android:label="@string/title_activity_photo" >
+        </activity>
 
         <activity
             android:name=".Activities.ProfileDetailsActivity"
