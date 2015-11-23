@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
     public EditText username;
     private ModelEnvironment globalENV;
     private User user;
+    private String userString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void CreateUser(){
-        String userString = username.getText().toString();
-
+        userString = username.getText().toString();
         if(userString.equals("")){
             return;
         }
@@ -51,6 +51,11 @@ public class Login extends AppCompatActivity {
 
     public void login(View  view) {
         CreateUser();
+
+        if(userString.equals("")){
+            return;
+        }
+
         globalENV.saveInstance(this); //saving
         launchHome();
 
