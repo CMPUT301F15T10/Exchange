@@ -32,7 +32,7 @@ public class  HomeActivity extends AppCompatActivity {
     ModelEnvironment GlobalENV=null;
     Gson gson= new Gson();
     Intent intent;
-    ElasticSearch elasticSearch = new ElasticSearch();
+    ElasticSearch elasticSearch = new ElasticSearch(this);
     protected User user;
     private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
 
@@ -55,7 +55,7 @@ public class  HomeActivity extends AppCompatActivity {
         TextView message = (TextView) findViewById(R.id.home_message);
         String string = "Hello "+GlobalENV.getOwner().getName()+"!\n"+message.getText().toString();
         message.setText(string);
-        sendToServer(GlobalENV);
+        elasticSearch.sendToServer(GlobalENV);
     }
 
     public void inventory(View view) {
@@ -192,37 +192,37 @@ public class  HomeActivity extends AppCompatActivity {
         user.addFriend(A);
         user.addFriend(B);
     }
-
-    private Runnable doFinishAdd = new Runnable() {
-        public void run() {
-            //finish();
-        }
-    };
-    public void sendToServer(ModelEnvironment ClientEnvironment){
-        Thread thread = new addThread(ClientEnvironment);
-        thread.start();
-    }
-
-    class addThread extends Thread {
-        private ModelEnvironment modelEnvironment;
-
-        public addThread(ModelEnvironment modelEnvironment){
-            this.modelEnvironment = modelEnvironment;
-
-        }
-
-        @Override
-        public void run(){
-            elasticSearch.sendModelEnvironment(modelEnvironment);
-
-            try{
-                Thread.sleep(500);
-
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            runOnUiThread(doFinishAdd);
-        }
-
-    }
+//
+//    private Runnable doFinishAdd = new Runnable() {
+//        public void run() {
+//            //finish();
+//        }
+//    };
+//    public void sendToServer(ModelEnvironment ClientEnvironment){
+//        Thread thread = new addThread(ClientEnvironment);
+//        thread.start();
+//    }
+//
+//    class addThread extends Thread {
+//        private ModelEnvironment modelEnvironment;
+//
+//        public addThread(ModelEnvironment modelEnvironment){
+//            this.modelEnvironment = modelEnvironment;
+//
+//        }
+//
+//        @Override
+//        public void run(){
+//            elasticSearch.sendModelEnvironment(modelEnvironment);
+//
+//            try{
+//                Thread.sleep(500);
+//
+//            }catch(InterruptedException e){
+//                e.printStackTrace();
+//            }
+//            runOnUiThread(doFinishAdd);
+//        }
+//
+//    }
 }
