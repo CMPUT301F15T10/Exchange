@@ -23,6 +23,7 @@ public class AddBookActivity extends ActionBarActivity {
     private EditText name, author, quality, quantity, comments;
     private String category;
     private Inventory inventory;
+    private Book cloneBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +31,14 @@ public class AddBookActivity extends ActionBarActivity {
         setContentView(R.layout.activity_add_book);
 
         Gson gson= new Gson();
-        String json=getIntent().getStringExtra("Add_Item");
-        inventory=gson.fromJson(json,Inventory.class);
+
+        Bundle extras = getIntent().getExtras();
+
+        String json1 = extras.getString("Inventory");
+        String json2 = extras.getString("Book");
+
+
+        inventory = gson.fromJson(json1,Inventory.class);
 
         name = (EditText) findViewById(R.id.editName);
         author = (EditText) findViewById(R.id.editAuthor);
@@ -47,6 +54,20 @@ public class AddBookActivity extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        if (json2 != null) {
+            cloneBook = gson.fromJson(json2, Book.class);
+            name.setText(cloneBook.getName());
+            author.setText(cloneBook.getAuthor());
+            quality.setText(String.valueOf(cloneBook.getQuality()));
+            quantity.setText(String.valueOf(cloneBook.getQuantity()));
+            comments.setText(cloneBook.getComment());
+            CheckBox is_Sharable= (CheckBox) findViewById(R.id.shareable_checkBox);
+            if (cloneBook.isShareable()) {
+                is_Sharable.setChecked(Boolean.TRUE);
+            }
+            spinner.setSelection(adapter.getPosition(cloneBook.getCategory()));
+        }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
