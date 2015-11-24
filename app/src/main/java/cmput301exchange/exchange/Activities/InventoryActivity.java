@@ -2,6 +2,7 @@ package cmput301exchange.exchange.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -59,6 +60,10 @@ public class InventoryActivity extends AppCompatActivity {
     private Integer bookListState=0;
     private SearchView mySearchView=null;
 
+    private DrawerLayout leftDrawer;
+    private ListView leftNavList;
+    private String[] NavTitles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,13 @@ public class InventoryActivity extends AppCompatActivity {
 //        person=globalENV.getOwner();
 //        initInventory();
         initViewSpinner();
+
+        NavTitles = getResources().getStringArray(R.array.NavigationArray);
+        leftDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        leftNavList = (ListView) findViewById(R.id.left_drawer);
+
+        leftNavList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, NavTitles));
 
         lv = (ListView) findViewById(R.id.listView3);
         lv.setItemsCanFocus(false);
