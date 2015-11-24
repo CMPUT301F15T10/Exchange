@@ -18,7 +18,8 @@
                 android:layout_height="150dp"
                 android:id="@+id/imageButton"
                 android:contentDescription="@string/item_image"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:onClick="addPhoto"/>
 
         <LinearLayout
             android:orientation="vertical"

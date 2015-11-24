@@ -1,6 +1,8 @@
 package cmput301exchange.exchange.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
@@ -21,9 +24,11 @@ import cmput301exchange.exchange.R;
 public class AddBookActivity extends ActionBarActivity {
 
     private EditText name, author, quality, quantity, comments;
+    private ImageButton image;
     private String category;
     private Inventory inventory;
     private Book cloneBook;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class AddBookActivity extends ActionBarActivity {
 
         inventory = gson.fromJson(json1,Inventory.class);
 
+        image = (ImageButton) findViewById(R.id.imageButton);
         name = (EditText) findViewById(R.id.editName);
         author = (EditText) findViewById(R.id.editAuthor);
         quality = (EditText) findViewById(R.id.editQuality);
@@ -117,8 +123,36 @@ public class AddBookActivity extends ActionBarActivity {
         book.updateComment(bookComments);
         
         inventory.add(book);
-        this.onStop();
+        this.finishAdd();
     }
+
+    public void addPhoto(View view){
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            image.setImageBitmap(imageBitmap);
+        }
+    }
+
+    public void finishAdd(){
+        Gson gson= new Gson(); //Create a new Gson Instance
+        String json=gson.toJson(inventory); //Write the existing inventory data to Json
+
+        Intent added = new Intent().putExtra("Inventory",json); //Send it back to the inventory activity
+        setResult(RESULT_OK, added);
+
+        this.finish();
+
+    }
+
     @Override
     public void onStop(){
         //We want this function to be called whenever the activity is killed to prevent losing data
@@ -130,7 +164,6 @@ public class AddBookActivity extends ActionBarActivity {
         Intent added = new Intent().putExtra("Inventory",json); //Send it back to the inventory activity
         setResult(RESULT_OK, added);
 
-        this.finish();
         super.onStop(); //Required for the onStop Function to work
     }
 
@@ -138,7 +171,7 @@ public class AddBookActivity extends ActionBarActivity {
     public void onBackPressed(){
         //This method is called when the back button is pressed, regardless of what data is entered.
         //It basically just stops the data from being entered into the inventory, and quits activity
-        this.onStop();
+        this.finishAdd();
     }
 
     @Override
