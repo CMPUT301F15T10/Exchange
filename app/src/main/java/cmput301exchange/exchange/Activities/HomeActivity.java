@@ -177,7 +177,9 @@ public class  HomeActivity extends AppCompatActivity {
         Book EternalNight=new Book();
         EternalNight.setShareable(true);
         EternalNight.updateTitle("Eternal Night");
-        EternalNight.updateCategory("None");
+        EternalNight.updateCategory("Category2");
+        EternalNight.updateQuality(1);
+        EternalNight.updateQuantity(1);
         user.getMyInventory().add(EternalNight);
         Book HackMe= new Book();
         HackMe.setShareable(false);
