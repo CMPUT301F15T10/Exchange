@@ -2,6 +2,7 @@ package cmput301exchange.exchange.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -59,6 +60,10 @@ public class InventoryActivity extends AppCompatActivity {
     private Integer bookListState=0;
     private SearchView mySearchView=null;
 
+    private DrawerLayout leftDrawer;
+    private ListView leftNavList;
+    private String[] NavTitles;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +82,13 @@ public class InventoryActivity extends AppCompatActivity {
 //        person=globalENV.getOwner();
 //        initInventory();
         initViewSpinner();
+
+        NavTitles = getResources().getStringArray(R.array.NavigationArray);
+        leftDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        leftNavList = (ListView) findViewById(R.id.left_drawer);
+
+        leftNavList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, NavTitles));
 
         lv = (ListView) findViewById(R.id.listView3);
         lv.setItemsCanFocus(false);
@@ -234,6 +246,7 @@ public class InventoryActivity extends AppCompatActivity {
         menu.findItem(R.id.action_edit).setVisible(false);
         menu.findItem(R.id.action_remove_single).setVisible(false);
         menu.findItem(R.id.action_remove_multi).setVisible(false);
+        menu.findItem(R.id.action_clone).setVisible(false);
 
         if(state==1) {
             if (selectedBooks!=null) {
@@ -241,6 +254,7 @@ public class InventoryActivity extends AppCompatActivity {
                     menu.findItem(R.id.action_view).setVisible(true);
                     menu.findItem(R.id.action_edit).setVisible(true);
                     menu.findItem(R.id.action_remove_single).setVisible(true);
+                    menu.findItem(R.id.action_clone).setVisible(true); // temporairly for testing purposes
                 } else if(selectedBooks.size()>1) {
                     menu.findItem(R.id.action_remove_single).setVisible(false);
                     menu.findItem(R.id.action_remove_multi).setVisible(true);
@@ -250,7 +264,9 @@ public class InventoryActivity extends AppCompatActivity {
 
         if((state==2) && (selectedBooks!=null)) {
             if (selectedBooks.size() == 1) {
+                menu.findItem(R.id.action_add).setVisible(false);
                 menu.findItem(R.id.action_view).setVisible(true);
+                menu.findItem(R.id.action_clone).setVisible(true);
             }
         }
 
@@ -274,11 +290,14 @@ public class InventoryActivity extends AppCompatActivity {
         Intent intent;
         Gson gson=new Gson();
         String json;
+        Bundle extras = new Bundle();
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
             case R.id.action_add:
                 json = gson.toJson(inventory);
-                intent = new Intent(this, AddBookActivity.class).putExtra("Add_Item", json);
+                extras.putString("Inventory",json);
+                extras.putString("Book",null);
+                intent = new Intent(this, AddBookActivity.class).putExtras(extras);
                 startActivityForResult(intent, MENU_Add_Item);
 
                 return true;
@@ -287,6 +306,16 @@ public class InventoryActivity extends AppCompatActivity {
                 json = gson.toJson(selectedBooks.get(0));
                 intent = new Intent(this, EditBookActivity.class).putExtra("Edit_Item", json);
                 startActivityForResult(intent, MENU_Edit_Item);
+
+                return true;
+
+            case R.id.action_clone:
+                String json1 = gson.toJson(inventory);
+                String json2 = gson.toJson(selectedBooks.get(0));
+                extras.putString("Inventory", json1);
+                extras.putString("Book", json2);
+                intent = new Intent(this, AddBookActivity.class).putExtras(extras);
+                startActivityForResult(intent, MENU_Add_Item);
 
                 return true;
 

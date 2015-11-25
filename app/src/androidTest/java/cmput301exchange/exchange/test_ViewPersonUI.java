@@ -98,6 +98,23 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
         mInstrumentation.waitForIdleSync();
         this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
         mInstrumentation.waitForIdleSync();
+        assertEquals(2, viewPersonListView.getCount()); // ---- 2 on real device, 0 on emulator
+        mInstrumentation.waitForIdleSync();
+    }
+
+    public void testViewAllPeopleListView() {
+        viewPersonActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                viewPersonSpinner.requestFocus();
+            }
+        });
+        mInstrumentation.waitForIdleSync();
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+        mInstrumentation.waitForIdleSync();
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
+        mInstrumentation.waitForIdleSync();
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+        mInstrumentation.waitForIdleSync();
         assertEquals(4, viewPersonListView.getCount()); // ---- 4 on real device, 0 on emulator
         mInstrumentation.waitForIdleSync();
     }
