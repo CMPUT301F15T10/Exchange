@@ -102,7 +102,7 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
 
-h
+
 // // TODO: 11/25/15  
 private void deletePhoto(File f) {
    f.delete();
