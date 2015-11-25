@@ -63,7 +63,7 @@ public class  HomeActivity extends AppCompatActivity {
 
         intent = getIntent();
         getUser();
-        initFriendList();
+        //initFriendList();
         getInventory();
         //initInventory();
         GlobalENV.setOwner(user);

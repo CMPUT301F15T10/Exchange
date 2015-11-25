@@ -18,6 +18,7 @@ import android.provider.ContactsContract;
 
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.User;
 
 /**
  * Created by touqir on 28/09/15.
@@ -160,6 +161,15 @@ public class DataIO<DataClass> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
+
+//        if (elasticSearch.UserExists(DataEnviro.getOwner().getName()) && // If There Exists a User by this name in the database
+//                elasticSearch.fetchUser(DataEnviro.getOwner().getName()).getTimeStamp()
+//                        > //And their timestamp is better than ours.
+//                DataEnviro.getOwner().getTimeStamp()){
+//            DataEnviro.setOwner(elasticSearch.fetchUser(DataEnviro.getOwner().getName())); //Fetch the owner and make him ours
+//        }
         return DataEnviro;
     }
     public void saveEnvironment(String filename, ModelEnvironment globalenv){
@@ -170,6 +180,7 @@ public class DataIO<DataClass> {
          * @param globalenv the ModelEnvironment you wish to save
          */
     //Removed the needless mental acrobatics needed to understand the above.
+        globalenv.getOwner().setTimeStamp();
         try {
             FileOutputStream fos = context.openFileOutput(filename,
                     0);

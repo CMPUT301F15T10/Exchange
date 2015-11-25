@@ -42,7 +42,9 @@ public class ModelEnvironment {
     public ModelEnvironment loadInstance(Context myActivity){
         DataIO io = new DataIO(myActivity,ModelEnvironment.class);
         ModelEnvironment instance=io.loadEnvironment("GlobalENV");
+
         setOwner(instance.getOwner());
+
         setTradeManager(instance.getTradeManager());
         return instance;
     }

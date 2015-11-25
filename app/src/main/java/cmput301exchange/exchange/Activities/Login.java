@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.User;
 
 public class Login extends AppCompatActivity {
@@ -25,16 +26,16 @@ public class Login extends AppCompatActivity {
     private ModelEnvironment globalENV;
     private User user;
     private String userString;
-
+    private ElasticSearch elasticSearch = new ElasticSearch();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         username = (EditText) findViewById(R.id.LoginName);
         try {
-            DataIO data = new DataIO(getApplicationContext(), ModelEnvironment.class);
-            globalENV = data.loadEnvironment("GlobalENV");
-            launchHome();
+//            DataIO data = new DataIO(getApplicationContext(), ModelEnvironment.class);
+//            globalENV = data.loadEnvironment("GlobalENV");
+//            launchHome();
         }catch(RuntimeException e){
            return;
         }
@@ -50,12 +51,14 @@ public class Login extends AppCompatActivity {
 
 
     public void login(View  view) {
-        CreateUser();
+//        CreateUser();
 
-        if(userString.equals("")){
-            return;
-        }
-
+//        if(userString.equals("")){
+//            return;
+//        }
+        userString = username.getText().toString();
+        elasticSearch.fetchUserFromServer(userString);
+        globalENV.setOwner(elasticSearch.getUser());
         globalENV.saveInstance(this); //saving
         launchHome();
 

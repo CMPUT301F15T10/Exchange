@@ -23,6 +23,16 @@ public class Person {
     private PersonList myFriendList= new PersonList();
     private long TradeCount;
     protected boolean isUser=false;
+
+    public long getTimeStamp() {
+        return TimeStamp;
+    }
+
+    public void setTimeStamp() {
+        TimeStamp = System.currentTimeMillis()/1000L; //Sets the timestamp to the current unix time.
+    }
+
+    private long TimeStamp;
    // private ArrayList<History> historylist;
    // private ArrayList<Trade> tradelist;
 
