@@ -34,7 +34,7 @@ import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 
-public class AddBookActivity extends ActionBarActivity {
+public class AddBookActivity extends PhotoActivity {
 
     private EditText name, author, quality, quantity, comments;
     private ImageButton image;
@@ -252,6 +252,8 @@ public class AddBookActivity extends ActionBarActivity {
 
                         f = temp;
                         File photo = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+
+                        setCurrentImage(/*photo*/);
                         //pic = photo;
                         break;
 

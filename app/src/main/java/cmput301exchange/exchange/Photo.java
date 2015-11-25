@@ -16,4 +16,8 @@ public class Photo {
     public void addPhoto(byte[] b)  {
         photo.add(0, b);
     }
+
+    public boolean downloadYesNo = true; // Download photo by default
+    public boolean enableDownload() { return true;}
+    public boolean disableDownload() { return false;}
 }
