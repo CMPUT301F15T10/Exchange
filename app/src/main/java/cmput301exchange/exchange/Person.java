@@ -20,7 +20,7 @@ public class Person {
     private String userName;
     protected Inventory myInventory;
     private String email;
-    private PersonList myFriendList= new PersonList();
+    protected PersonList myFriendList= new PersonList();
     private long TradeCount;
     protected boolean isUser=false;
    // private ArrayList<History> historylist;
