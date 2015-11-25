@@ -44,6 +44,11 @@ public class ElasticSearch{
     public ElasticSearch(Activity setActivity){ //Constructor for activity
         activity = setActivity;
     }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
     public User getUser(){
         return this.user;
     }

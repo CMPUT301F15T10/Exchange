@@ -57,6 +57,7 @@ public class Login extends AppCompatActivity {
 //            return;
 //        }
         userString = username.getText().toString();
+        elasticSearch.setActivity(this);
         elasticSearch.fetchUserFromServer(userString);
         globalENV.setOwner(elasticSearch.getUser());
         globalENV.saveInstance(this); //saving
