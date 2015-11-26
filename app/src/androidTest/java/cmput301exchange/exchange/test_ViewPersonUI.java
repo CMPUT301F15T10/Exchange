@@ -119,8 +119,9 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2<ViewPers
     public void testAddFriend(){
         viewPersonActivity.runOnUiThread(new Runnable() {
             public void run() {
+                viewPersonSpinner.requestFocus();
                 viewPersonSpinner.setSelection(1);
-                viewPersonSpinner.notify();
+                viewPersonSpinner.performClick();
 
                 viewPersonListView.requestFocusFromTouch();
                 viewPersonListView.setSelection(0);
@@ -128,18 +129,15 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2<ViewPers
 
                 getActivity().makeFriend();
 
-                viewPersonSpinner.setSelection(0);
-                viewPersonSpinner.notify();
-                viewPersonListView.requestFocus();
-
-
+                viewPersonSpinner.requestFocus();
             }
         });
-
         mInstrumentation.waitForIdleSync();
-
-        assertEquals(2, viewPersonListView.getCount());
-
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_UP);
+        mInstrumentation.waitForIdleSync();
+        this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
+        mInstrumentation.waitForIdleSync();
+        assertEquals(3, viewPersonListView.getCount());
         mInstrumentation.waitForIdleSync();
 
     }
@@ -155,8 +153,6 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2<ViewPers
                 viewPersonListView.performItemClick(viewPersonListView.getAdapter().getView(0, null, null), 0, viewPersonListView.getItemIdAtPosition(0));
                 getActivity().removeFriend();
                 viewPersonListView.requestFocus();
-
-
             }
         });
 
