@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     private int FragmentID=2;
     private TradeMaker myActivity;
     private View myView;
-    private Button confirm,abort,tradeItems,checkTradeRequest;
+    private Button confirm,abort,tradeItems;
     private TextView TradeTypeView,tradeIDView;
     private CharSequenceWrapper TradeType=null, tradeID=null;
     private TradeController myTradeController;
@@ -43,8 +44,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     private ArrayList<ListItemRunnable> spinnerItems;
     private Spinner traderSelection;
     private String traderName=null;
-    private TradeManager myTradeManager;
-    private Person tradePartner=null;
+//    private TradeManager myTradeManager;
+//    private Person tradePartner=null;
 
     public TradeFragment() {
         // Required empty public constructor
@@ -53,26 +54,24 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initTrade();
-        initTradePartner();
         spinnerItems= new ArrayList<>();
     }
 
-    public void initTrade(){
-        myTradeManager=myActivity.getTradeManager();
-        Trade myTrade=myActivity.getTrade();
-        myTradeController= new TradeController((Activity) myActivity,myTrade,myTradeManager);
+    public void initTradeController(){
+//        myTradeManager=myActivity.getTradeManager();
+        myTradeController= myActivity.getTradeController();
 
     }
 
     void initTradePartner(){
-        if(myActivity.IsNewTrade()==false){
-            myTradeController.setTradePartner(myActivity.getTradePartner());
-            traderName=myActivity.getTradePartner().getName();
+        if(myTradeController.getTradePartner()!=null){
+//            myTradeController.setTradePartner(myActivity.getTradePartner());
+            traderName=myTradeController.getTradePartner().getName();
+            Log.e("found trade Partner","tradeName");
         }
         else{
-            myTradeController.setTradePartner(null);
             traderName="No Trade Partner Selected!";
+            Log.e("Came here!","initTradePartner");
         }
     }
 
@@ -123,7 +122,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         //May add a dialog box if necessary
         exit();
     }
-    
+
+    //TODO
     public void tradeItems_Handler(){
         //Call TradeListFragment for displaying the items of the trade.
         myActivity.displayItemsToTrade(myTradeController.getTrade());
@@ -196,7 +196,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public void selectTrader(){
         // Should call person search/browse fragment
         // Then should set traderName
-        updateTraderSpinnerItem();
+        myActivity.selectPerson();
+//        updateTraderSpinnerItem();
     }
 
     public void updateTextView(){
@@ -221,6 +222,10 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
     public void onResume(){
         super.onResume();
+        initTradeController();
+        initTradePartner();
+        updateTraderSpinnerItem();
+        traderSelection.setSelection(0);
         updateTextView();
     }
 
@@ -236,7 +241,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
     @Override
     public void onBackPress() {
-        myActivity.setTrade(null);
+        myActivity.setTradeController(myTradeController);
         myActivity.switchFragment(1); //switches back to tradeManager.
     }
 }
