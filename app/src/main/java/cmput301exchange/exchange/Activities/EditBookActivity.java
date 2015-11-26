@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 
 import com.google.gson.Gson;
@@ -14,6 +16,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Controllers.EditBookController;
+import cmput301exchange.exchange.EditItem;
 import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
 import cmput301exchange.exchange.Fragments.EditBookFragment;
 import cmput301exchange.exchange.Book;
@@ -41,6 +44,7 @@ public class EditBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+
         initBook();
         myController= new EditBookController(myBook); //Creating an empty EditBookController
 
@@ -48,6 +52,12 @@ public class EditBookActivity extends AppCompatActivity {
             initFragments();
             switchFragment(1); // By default EditBookFragment
         }
+
+    }
+
+    private void editPhoto(View v) {
+        Intent intent = new Intent(this, PhotoActivity.class);
+        startActivity(intent);
     }
 
     public void initFragments(){

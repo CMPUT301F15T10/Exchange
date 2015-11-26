@@ -42,8 +42,8 @@ public class ViewPersonActivity extends AppCompatActivity {
     public ModelEnvironment globalENV;
     private ListView lv;
     private ArrayList<Person> friendList;
-    private ArrayList<Person> personList;
-    private PersonList allPerson;
+    private ArrayList<Person> personList= new ArrayList<>();
+    private PersonList allPerson = new PersonList();
     private ArrayAdapter<Person> friendListAdapter, personListAdapter;
     private Person selectedPerson=null;
     private Person user;
@@ -157,7 +157,7 @@ public class ViewPersonActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Intent intent=new Intent();
         String json= gson.toJson(selectedPerson);
-        intent.putExtra("Trade_Partner",json);
+        intent.putExtra("Trade_Partner", json);
         setResult(RESULT_OK, intent);
         super.finish();
     }
@@ -291,20 +291,20 @@ public class ViewPersonActivity extends AppCompatActivity {
     }
 
     public void initPersonList(){
-        allPerson=new PersonList();
-        Person A=new Person("Harry1");
-        A.setName("Harry");
-        allPerson.addPerson(A);
-        Person B=new Person("James1");
-        B.setName("James");
-        allPerson.addPerson(B);
-        Person C=new Person("Lily1");
-        C.setName("Lily");
-        allPerson.addPerson(C);
-        Person D=new Person("Dumbledore1");
-        D.setName("Dumbledore");
-        allPerson.addPerson(D);
-        personList=allPerson.getPersonList();
+//        allPerson=new PersonList();
+//        Person A=new Person("Harry1");
+//        A.setName("Harry");
+//        allPerson.addPerson(A);
+//        Person B=new Person("James1");
+//        B.setName("James");
+//        allPerson.addPerson(B);
+//        Person C=new Person("Lily1");
+//        C.setName("Lily");
+//        allPerson.addPerson(C);
+//        Person D=new Person("Dumbledore1");
+//        D.setName("Dumbledore");
+//        allPerson.addPerson(D);
+//        personList=allPerson.getPersonList();
     }
 
 }
