@@ -155,7 +155,7 @@ public class ViewPersonActivity extends AppCompatActivity {
 
     public void sendBackTradePartner(){
         Gson gson = new Gson();
-        Intent intent=new Intent();
+        Intent intent=new Intent(this,TradeManagerActivity.class);
         String json= gson.toJson(selectedPerson);
         intent.putExtra("Trade_Partner", json);
         setResult(RESULT_OK, intent);
