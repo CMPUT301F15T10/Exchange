@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.TradeController;
 import cmput301exchange.exchange.Fragments.ItemsTradeFragment;
 import cmput301exchange.exchange.Fragments.TradeFragment;
 import cmput301exchange.exchange.Fragments.TradeListFragment;
@@ -44,6 +45,19 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     public static String tradeManagerTag="Trade_Manager_TAG",tradeTag="Trade_TAG",tradeItemsTag="Trade_Items_TAG",tradeListTag="Trade_List_TAG";
     private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
     private Intent personIntent, inventoryIntent;
+    private TradeController myTradeController;
+    private Boolean newTrade=null;
+
+    public void initTradeController(){
+        myTradeController=new TradeController(this,myTrade,myTradeManager);
+    }
+    public TradeController getTradeController() {
+        return myTradeController;
+    }
+
+    public void setTradeController(TradeController myTradeController) {
+        this.myTradeController = myTradeController;
+    }
 
     public Integer getTradeListFlag() {
         return tradeListFlag;
@@ -59,7 +73,9 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         setContentView(R.layout.trade_manager_layout);
 //        myTradeManager= new TradeManager();
         loadTradeManager();
+        initTradeController();
         initFragments();
+        newTrade=true; // Change this line once you add the functionality of view person calling this activity
         switchFragment(1);
     }
 
@@ -208,9 +224,9 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == SEARCH_PEOPLE) {
-            data.setClass(this, TradeManagerActivity.class);
+//            data.setClass(this, TradeManagerActivity.class);
             personIntent=data;
-//            getTradePartner();
+            myTradeController.setTradePartner(retrieveTradePartner());
             switchFragment(2); //switch to trade fragment
         }
         if (requestCode == INVENTORY) {
@@ -221,10 +237,14 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         }
     }
 
-    public Person assignTradePartner() {
+    public Person retrieveTradePartner() {
         Gson gson= new Gson();
         if (personIntent.hasExtra("Trade_Partner")) {
             String json = personIntent.getExtras().getString("Trade_Partner");
+            Log.e("got person","Trade");
+            if (gson.fromJson(json, Person.class)==null){
+                throw new RuntimeException("null person");
+            }
             return gson.fromJson(json, Person.class);
         }
         return null; // if no person is found
@@ -241,12 +261,12 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
     public void selectPerson(){
         Intent intent= new Intent(this,ViewPersonActivity.class);
-        startActivityForResult(null, SEARCH_PEOPLE);
+        startActivityForResult(intent, SEARCH_PEOPLE);
     }
 
     public void selectItems(){
         Intent intent= new Intent(this,Inventory.class);
-        startActivityForResult(null, INVENTORY);
+        startActivityForResult(intent, INVENTORY);
     }
 
 }

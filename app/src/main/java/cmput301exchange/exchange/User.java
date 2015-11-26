@@ -1,6 +1,9 @@
 package cmput301exchange.exchange;
 
 import android.graphics.Picture;
+
+import java.util.ArrayList;
+
 /**
  * @Author: Chuck
  * User extends person. It serves as a distinction to use between Friend and User.
@@ -17,5 +20,8 @@ public class User extends Person{
 
     public void setInventory(Inventory inventory){
         this.myInventory=inventory;
+    }
+    public void setFriendList(PersonList friends){
+        this.myFriendList=friends;
     }
 }

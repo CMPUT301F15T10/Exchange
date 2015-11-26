@@ -1,36 +1,163 @@
 package cmput301exchange.exchange.Activities;
 
-import android.content.ContentValues;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.net.Uri;
-import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.FileOutputStream;
 
+import cmput301exchange.exchange.Photo;
 import cmput301exchange.exchange.R;
 
-/*
- * TODO: EditItem and EditBookActivity are the same. Find out which one we're using
- * TODO: once figured out, fix the app crashing every time this activity is called
- * TODO: implement delete photo***
+/* TODO: optionally attach photographs of items to the item
+ *          Need to link to item ID
+ *          gallery or camera? -- taken care of in addBookActivity
+ * TODO: image file to be under 65536 bytes in size.
+ * TODO: delete any attached photograph
+ * TODO: view any attached photograph for an item
+ * TODO: if photo downloads are disabled, I want the option of manually choosing inventory photos to download.
  */
+
+// need to display/preview image in addBookActivity
+//
 
 public class PhotoActivity extends AppCompatActivity {
 
+    public final int MAX_SIZE = 65536; // max size of photo in bytes
+    Button upload;
+    ImageView imageView;
+
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_photo);
+
+        upload = (Button) findViewById(R.id.uploadButton);
+        imageView = (ImageView) findViewById(R.id.imagePreview);
+
+        upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
+
+    }
+
+    private void selectImage() {
+
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(PhotoActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Take Photo")) {
+
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    //pic = f;
+                    startActivityForResult(intent, 1);
+
+                } else if (options[item].equals("Choose from Gallery")) {
+
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, 2);
+
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        builder.show();
+    }
+
+// public boolean underMaxSize(picture) { ///]
+
+    // todo: Preview image. at start, check that downloadYesNo from photo class is true. then do the thing
+    public void setCurrentImage(/*File f*/) {
+        //Photo p;
+        //if (!p.downloadYesNo) { return; }
+        //  FileOutputStream fos = openFileOutput(f, Context.MODE_PRIVATE);
+
+        Integer photos[] = {R.drawable.testphoto};
+
+        imageView.setImageResource(photos[0]);
+    }
+
+
+    // // TODO: 11/25/15
+    private void deletePhoto(File f) {
+        f.delete();
+
+    }
+}
+
+// // TODO: 11/25/15
+// public bool underMaxsize(file pic is in) {
+// if bitmap.size < MAX_SIZE { return true{
+// else return false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
     public static final int IMAGE_GALLERY_REQUEST = 20;
     private ImageView imgPicture;
   //  Button uploadPhoto;
@@ -91,12 +218,12 @@ public class PhotoActivity extends AppCompatActivity {
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+/*                ".jpg",         /* suffix */
+  /*              storageDir      /* directory */
+    //    );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+    /*    mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
 
@@ -146,7 +273,7 @@ public class PhotoActivity extends AppCompatActivity {
         } else { */
 // ##### start
             // Get the dimensions of the bitmap
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+   /*         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             bmOptions.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
             int photoW = bmOptions.outWidth;
@@ -178,13 +305,13 @@ public class PhotoActivity extends AppCompatActivity {
         }
         */
 // ##### START
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+  /*      if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
            /* if (imgPicture.getAllocationByteCount() < 65536) {
                 imgPicture.setImageBitmap(imageBitmap);
             } // else { do somthing ...} */
-        }
+//}
 
 // ##### END
        /* not sure if need
@@ -221,7 +348,7 @@ public class PhotoActivity extends AppCompatActivity {
             }
         }
         */
-    }
+ //   }
 
   /* not sure if need
     //**** START: choose photo from gallery
@@ -245,5 +372,6 @@ public class PhotoActivity extends AppCompatActivity {
     //**** END: choose photo from gallery
 
 */
+            /*
+}*/
 
-}

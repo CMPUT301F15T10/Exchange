@@ -16,6 +16,7 @@ public class ModelEnvironment {
     private User owner;
     private boolean autoPicDownloads=false;
     private TradeManager tradeManager=null;
+    private PersonList personList=null;
 
     public ModelEnvironment(Context myActivity){
 
@@ -30,6 +31,10 @@ public class ModelEnvironment {
 
         if (tradeManager==null){
             tradeManager= new TradeManager();
+        }
+
+        if (personList == null){
+            personList= new PersonList();
         }
 
     }
@@ -49,7 +54,16 @@ public class ModelEnvironment {
         setOwner(instance.getOwner());
 
         setTradeManager(instance.getTradeManager());
+        setPersonList(instance.getPersonList());
         return instance;
+    }
+
+    public PersonList getPersonList(){
+        return personList;
+    }
+
+    public void setPersonList(PersonList list){
+        personList=list;
     }
 
     public void saveInstance(Context myActivity){

@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Interfaces;
 
+import cmput301exchange.exchange.Controllers.TradeController;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.Trade;
 import cmput301exchange.exchange.TradeManager;
@@ -10,8 +11,13 @@ import cmput301exchange.exchange.TradeManager;
 public interface TradeMaker extends FragmentContainer {
     void displayItemsToTrade(Trade trade);
     Trade getTrade();
-    void setTrade(Trade trade);
+//    void setTrade(Trade trade);
+    void setTradeController(TradeController tradeController);
+    TradeController getTradeController();
     TradeManager getTradeManager();
     boolean IsNewTrade();
     Person getTradePartner();
+    void selectPerson();
+    void selectItems();
+
 }

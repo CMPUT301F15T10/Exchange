@@ -8,17 +8,6 @@
     >
 
     <TextView
-        android:text="Edit Item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editItem_EditItem"
-        android:textSize="35dp"
-        android:textColor="#111"
-        android:layout_marginLeft="115dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name:"
@@ -27,6 +16,8 @@
         android:textSize="25dp"
         android:layout_alignParentStart="true"
         android:layout_marginTop="120dp" />
+
+
 
     <EditText
         android:layout_width="250dp"
@@ -94,9 +85,7 @@
         android:id="@+id/EditItem_QuantityInput"
         android:layout_below="@+id/editText9"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="300dp"
-        android:layout_alignEnd="@+id/editItem_EditItem"
-        android:layout_alignStart="@+id/editItem_EditItem" />
+        android:layout_marginTop="300dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -169,5 +158,12 @@
         android:onClick="onSave"
         android:layout_alignTop="@+id/EditItem_Photo"
         android:layout_toStartOf="@+id/EditItem_Photo" />
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

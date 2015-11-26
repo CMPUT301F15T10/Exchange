@@ -74,6 +74,10 @@ public class TradeController {
         }
     }
 
+    public Person getTradePartner(){
+        return myTrade.getTradePartner();
+    }
+
     public void setTrade(Trade trade){
         myTrade=trade;
     }
