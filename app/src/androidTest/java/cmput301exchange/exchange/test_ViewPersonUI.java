@@ -20,19 +20,18 @@ import com.google.gson.Gson;
 
 import java.net.Inet4Address;
 
-import cmput301exchange.exchange.Activities.InventoryActivity;
 import cmput301exchange.exchange.Activities.ViewPersonActivity;
 import cmput301exchange.exchange.Mocks.MockBook1;
 import cmput301exchange.exchange.Mocks.MockInventory;
+import cmput301exchange.exchange.Mocks.MockPersonList;
 import cmput301exchange.exchange.Mocks.MockUser;
 
 /**
  * Created by Yishuo Wang on 2015/11/21.
  */
 
-// Note that this test may not pass for some emulator.
-// This test PASSED on real device, sometimes it does not pass on emulator
-public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
+
+public class test_ViewPersonUI extends ActivityInstrumentationTestCase2<ViewPersonActivity> {
     private Activity viewPersonActivity;
     private Instrumentation mInstrumentation;
 
@@ -40,11 +39,7 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
     private ListView viewPersonListView;
     private TextView viewPersonTextView;
 
-    public Person mockPerson = new MockUser("A");
-
-    public Person person0 = new Person("User");
-
-    private Integer num;
+    private Person mockPerson = new MockUser("A");
 
     public test_ViewPersonUI(){
         super(cmput301exchange.exchange.Activities.ViewPersonActivity.class);
@@ -53,16 +48,16 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
     protected void setUp() throws Exception {
         super.setUp();
         Gson gson = new Gson();
-        String json = gson.toJson(person0);
+        String json = gson.toJson(mockPerson);
         Intent intent = new Intent();
         intent.putExtra("User", json); // HERE
         setActivityIntent(intent);
         viewPersonActivity = getActivity();
+        getActivity().initPersonList();
         viewPersonSpinner = (Spinner) viewPersonActivity.findViewById(R.id.spinner2);
         viewPersonListView = (ListView) viewPersonActivity.findViewById(R.id.listView2);
         viewPersonTextView = (TextView) viewPersonActivity.findViewById(R.id.textView17);
         mInstrumentation = getInstrumentation();
-        num = viewPersonListView.getCount(); // number of friends
     }
 
     // checks the activity exists
@@ -85,7 +80,7 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
      * US02.01.01
      * As an owner, I want to track people I know. Adding a textual username should be enough.
      */
-    public void testViewPeopleListView() {
+    public void testViewFriendListView() {
         viewPersonActivity.runOnUiThread(new Runnable() {
             public void run() {
                 viewPersonListView.requestFocus();
@@ -94,11 +89,9 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
         mInstrumentation.waitForIdleSync();
         this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
         mInstrumentation.waitForIdleSync();
-        this.sendKeys(KeyEvent.KEYCODE_DPAD_DOWN);
-        mInstrumentation.waitForIdleSync();
         this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
         mInstrumentation.waitForIdleSync();
-        assertEquals(2, viewPersonListView.getCount()); // ---- 2 on real device, 0 on emulator
+        assertEquals(2, viewPersonListView.getCount());
         mInstrumentation.waitForIdleSync();
     }
 
@@ -115,7 +108,75 @@ public class test_ViewPersonUI extends ActivityInstrumentationTestCase2 {
         mInstrumentation.waitForIdleSync();
         this.sendKeys(KeyEvent.KEYCODE_DPAD_CENTER);
         mInstrumentation.waitForIdleSync();
-        assertEquals(4, viewPersonListView.getCount()); // ---- 4 on real device, 0 on emulator
+        assertEquals(4, viewPersonListView.getCount());
         mInstrumentation.waitForIdleSync();
     }
+
+    /*
+     * US02.02
+     */
+    // TODO fix this up not passing
+    public void testAddFriend(){
+        viewPersonActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                viewPersonSpinner.setSelection(1);
+                viewPersonSpinner.notify();
+
+                viewPersonListView.requestFocusFromTouch();
+                viewPersonListView.setSelection(0);
+                viewPersonListView.performItemClick(viewPersonListView.getAdapter().getView(0, null, null), 0, viewPersonListView.getItemIdAtPosition(0));
+
+                getActivity().makeFriend();
+
+                viewPersonSpinner.setSelection(0);
+                viewPersonSpinner.notify();
+                viewPersonListView.requestFocus();
+
+
+            }
+        });
+
+        mInstrumentation.waitForIdleSync();
+
+        assertEquals(2, viewPersonListView.getCount());
+
+        mInstrumentation.waitForIdleSync();
+
+    }
+
+    /*
+     * US02.03
+     */
+    public void testRemoveFriend(){
+        viewPersonActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                viewPersonListView.requestFocusFromTouch();
+                viewPersonListView.setSelection(0);
+                viewPersonListView.performItemClick(viewPersonListView.getAdapter().getView(0, null, null), 0, viewPersonListView.getItemIdAtPosition(0));
+                getActivity().removeFriend();
+                viewPersonListView.requestFocus();
+
+
+            }
+        });
+
+        mInstrumentation.waitForIdleSync();
+
+        assertEquals(1, viewPersonListView.getCount());
+
+        mInstrumentation.waitForIdleSync();
+
+    }
+
+    /*
+     * US02.03
+     */
+    public void testViewFriend(){
+
+    }
+
+    // TODO test top traders when implemented
+
+
+
 }

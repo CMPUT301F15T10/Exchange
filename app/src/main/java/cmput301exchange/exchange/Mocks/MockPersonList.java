@@ -8,7 +8,7 @@ import cmput301exchange.exchange.PersonList;
  */
 public class MockPersonList {
     public PersonList personList, friendList;
-    
+
     public MockPersonList(){
         personList=new PersonList();
         friendList=new PersonList();

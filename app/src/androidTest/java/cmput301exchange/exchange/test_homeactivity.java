@@ -77,7 +77,7 @@ public class test_homeactivity extends ActivityInstrumentationTestCase2 {
         getInstrumentation().removeMonitor(receiverActivityMonitor);
     }
 
-
+    // TODO test view my profile
 
 
 

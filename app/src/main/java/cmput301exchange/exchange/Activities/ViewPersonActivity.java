@@ -51,8 +51,6 @@ public class ViewPersonActivity extends AppCompatActivity {
     private SearchView mySearchView=null;
     private ModelEnvironment globalEnv=null;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -61,7 +59,7 @@ public class ViewPersonActivity extends AppCompatActivity {
 
         initPerson();
         friendList=user.getMyFriendList().getPersonList();
-        initPersonList();
+        //initPersonList();
 
         lv = (ListView) findViewById(R.id.listView2);
 
@@ -136,12 +134,12 @@ public class ViewPersonActivity extends AppCompatActivity {
     }
 
     public void initPerson(){
-//        Gson gson = new Gson();
-//        Intent intent=getIntent();
-//        String json=intent.getExtras().getString("User");
-//        user = gson.fromJson(json, Person.class);
-        globalEnv= new ModelEnvironment(this, null);
-        user=globalEnv.getOwner();
+        Gson gson = new Gson();
+        Intent intent=getIntent();
+        String json=intent.getExtras().getString("User");
+        user = gson.fromJson(json, Person.class);
+//        globalEnv= new ModelEnvironment(this, null);
+//        user=globalEnv.getOwner();
     }
 
     public void finish(){
@@ -219,26 +217,12 @@ public class ViewPersonActivity extends AppCompatActivity {
         }
 
         if (id == MENU_Make_Friendship){
-            user.addFriend(selectedPerson);
-            friendList=user.getMyFriendList().getPersonList();
-            friendListAdapter.clear();
-            friendListAdapter.addAll(friendList);
-            friendListAdapter.notifyDataSetChanged();
-            selectedPerson=null;
-            lv.clearChoices();
+            makeFriend();
             return true;
         }
 
         if (id == MENU_View_RemoveFriend){
-            user.removeFriend(selectedPerson);
-//            selectedPerson=null;
-//            lv.clearChoices();
-            friendList=user.getMyFriendList().getPersonList();
-            friendListAdapter.clear();
-            friendListAdapter.addAll(friendList);
-            friendListAdapter.notifyDataSetChanged();
-            selectedPerson=null;
-            lv.clearChoices();
+            removeFriend();
             return true;
         }
 
@@ -290,21 +274,46 @@ public class ViewPersonActivity extends AppCompatActivity {
         }
     }
 
+    public void makeFriend(){
+        user.addFriend(selectedPerson);
+        friendList=user.getMyFriendList().getPersonList();
+        friendListAdapter.clear();
+        friendListAdapter.addAll(friendList);
+        friendListAdapter.notifyDataSetChanged();
+        selectedPerson=null;
+        lv.clearChoices();
+    }
+
+    public void removeFriend(){
+        user.removeFriend(selectedPerson);
+//            selectedPerson=null;
+//            lv.clearChoices();
+        friendList=user.getMyFriendList().getPersonList();
+        friendListAdapter.clear();
+        friendListAdapter.addAll(friendList);
+        friendListAdapter.notifyDataSetChanged();
+        selectedPerson=null;
+        lv.clearChoices();
+    }
+
     public void initPersonList(){
-//        allPerson=new PersonList();
-//        Person A=new Person("Harry1");
-//        A.setName("Harry");
-//        allPerson.addPerson(A);
-//        Person B=new Person("James1");
-//        B.setName("James");
-//        allPerson.addPerson(B);
-//        Person C=new Person("Lily1");
-//        C.setName("Lily");
-//        allPerson.addPerson(C);
-//        Person D=new Person("Dumbledore1");
-//        D.setName("Dumbledore");
-//        allPerson.addPerson(D);
-//        personList=allPerson.getPersonList();
+        allPerson=new PersonList();
+        Person A=new Person("Harry1");
+        A.setName("Harry");
+        allPerson.addPerson(A);
+        Person B=new Person("James1");
+        B.setName("James");
+        allPerson.addPerson(B);
+        Person C = new Person("Lily1");
+        C.setName("Lily");
+        allPerson.addPerson(C);
+        Person D=new Person("Dumbledore1");
+        D.setName("Dumbledore");
+        allPerson.addPerson(D);
+        personList=allPerson.getPersonList();
+        personListAdapter.clear();
+        personListAdapter.addAll(personList);
+        personListAdapter.notifyDataSetChanged();
     }
 
 }
