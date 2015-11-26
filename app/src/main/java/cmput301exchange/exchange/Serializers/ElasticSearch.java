@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 
+import cmput301exchange.exchange.Activities.HomeActivity;
+import cmput301exchange.exchange.Activities.Login;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.User;
 
@@ -33,16 +35,21 @@ import cmput301exchange.exchange.User;
 public class ElasticSearch{
     private User user;
     Gson gson = new Gson();
+    private Login loginActivity;
     private Activity activity;
     private boolean networkStatus;
     ConnectivityManager connectivityManager;
 
     public ElasticSearch(){
-        return;
+
+    }
+    public ElasticSearch(Activity activity){
+        this.activity = activity;
     }
 
-    public ElasticSearch(Activity setActivity){ //Constructor for activity
-        activity = setActivity;
+    public ElasticSearch(Login setActivity, Activity ThisActitivy){ //Constructor for activity
+        loginActivity = setActivity;
+        activity = ThisActitivy;
     }
     public User getUser(){
         return this.user;
@@ -154,9 +161,11 @@ public class ElasticSearch{
 //
 //    }
 
-    private Runnable doFinishAdd = new Runnable() {
+    private Runnable FinishFetch = new Runnable() {
         public void run() {
             //finish();
+//            activity.getApplicationContext()
+            loginActivity.Notified();
         }
     };
 
@@ -214,7 +223,7 @@ public class ElasticSearch{
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
-            activity.runOnUiThread(doFinishAdd);
+            loginActivity.runOnUiThread(FinishFetch);
         }
 
     }
@@ -237,7 +246,7 @@ public class ElasticSearch{
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
-            activity.runOnUiThread(doFinishAdd);
+            //activity.runOnUiThread(doFinishAdd);
         }
 
     }

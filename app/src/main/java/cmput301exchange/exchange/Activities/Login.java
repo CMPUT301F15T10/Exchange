@@ -26,7 +26,7 @@ public class Login extends AppCompatActivity {
     private ModelEnvironment globalENV;
     private User user;
     private String userString;
-    private ElasticSearch elasticSearch = new ElasticSearch();
+    private ElasticSearch elasticSearch = new ElasticSearch(this, this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +57,8 @@ public class Login extends AppCompatActivity {
 //            return;
 //        }
         userString = username.getText().toString();
-        elasticSearch.fetchUserFromServer(userString);
-        globalENV.setOwner(elasticSearch.getUser());
-        globalENV.saveInstance(this); //saving
-        launchHome();
+        elasticSearch.fetchUserFromServer(username.getText().toString());
+
 
 }
 
@@ -89,5 +87,12 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         this.finish();
+    }
+
+    public void Notified(){
+        globalENV = new ModelEnvironment(this);
+        globalENV.setOwner(elasticSearch.getUser());
+        globalENV.saveInstance(this); //saving
+        launchHome();
     }
 }

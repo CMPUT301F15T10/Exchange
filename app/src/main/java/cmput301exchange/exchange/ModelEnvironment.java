@@ -17,6 +17,9 @@ public class ModelEnvironment {
     private boolean autoPicDownloads=false;
     private TradeManager tradeManager=null;
 
+    public ModelEnvironment(Context myActivity){
+
+    }
     public ModelEnvironment(Context myActivity, String userName){
 
         if (userName==null){
