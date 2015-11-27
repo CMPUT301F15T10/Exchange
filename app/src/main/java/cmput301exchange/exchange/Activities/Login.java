@@ -15,6 +15,8 @@ import android.widget.EditText;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+
+import cmput301exchange.exchange.Controllers.LoginController;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
@@ -22,6 +24,7 @@ import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.User;
 
 public class Login extends AppCompatActivity {
+    private LoginController controller = new LoginController();
     public EditText username;
     private ModelEnvironment globalENV;
     private User user;
@@ -32,31 +35,21 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         username = (EditText) findViewById(R.id.LoginName);
-        try {
-//            DataIO data = new DataIO(getApplicationContext(), ModelEnvironment.class);
-//            globalENV = data.loadEnvironment("GlobalENV");
-//            launchHome();
-        }catch(RuntimeException e){
-           return;
-        }
     }
 
     public void CreateUser(){
         userString = username.getText().toString();
-        if(userString.equals("")){
-            return;
-        }
         globalENV = new ModelEnvironment(this,userString);
+        launchHome();
+
     }
 
 
     public void login(View  view) {
-//        CreateUser();
-
-//        if(userString.equals("")){
-//            return;
-//        }
         userString = username.getText().toString();
+        if(userString.equals("")){
+            return;
+        }
         elasticSearch.fetchUserFromServer(username.getText().toString());
 
 
@@ -86,6 +79,7 @@ public class Login extends AppCompatActivity {
     public void launchHome(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+        globalENV.saveInstance(this);
         this.finish();
     }
 

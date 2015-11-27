@@ -64,12 +64,10 @@ public class  HomeActivity extends AppCompatActivity {
         intent = getIntent();
         getUser();
         //initFriendList();
-        getInventory();
+        //getInventory();
         //initInventory();
         GlobalENV.setOwner(user);
         GlobalENV.saveInstance(this);
-
-
         setContentView(R.layout.activity_home);
 
         NavTitles = getResources().getStringArray(R.array.NavigationArray);
