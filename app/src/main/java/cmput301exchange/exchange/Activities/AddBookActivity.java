@@ -160,6 +160,8 @@ public class AddBookActivity extends ActionBarActivity {
         book.updateQuality(bookQuality);
         book.updateCategory(category);
         book.updateComment(bookComments);
+
+        book.setPhotos(compressedImages);
         
         inventory.add(book);
         this.finishAdd();

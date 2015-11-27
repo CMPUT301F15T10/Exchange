@@ -25,7 +25,7 @@ public class Book implements Shareable, Comparable<Book> {
     private int genreID=1; // Required. Let default be category 1.
     protected String author=""; //String to contain the Author
     private String publisher="";
-    private ArrayList <Picture> covers; //List of the pictures. Be sure to use the photo's add method to ensure that the photos are under the size req.
+    private ArrayList <byte[]> photos = new ArrayList<>(); //List of the pictures. Be sure to use the photo's add method to ensure that the photos are under the size req.
     private String ISBN="";
     protected int quality=5; // value between 1 and 5. Let default be 5
     protected int quantity=1; // default quantity 5
@@ -35,6 +35,13 @@ public class Book implements Shareable, Comparable<Book> {
     private String itemType="";
     private Long ID;
 
+    public ArrayList<byte[]> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(ArrayList<byte[]> photos) {
+        this.photos = photos;
+    }
 
     public Long getID(){
         return ID;
