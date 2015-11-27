@@ -11,12 +11,15 @@
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item android:id="@+id/action_remove_multi" android:title="@string/remove_selected_books"
-        android:orderInCategory="800" app:showAsAction="never" />
+        android:orderInCategory="900" app:showAsAction="never" />
 
     <item android:id="@+id/action_remove_single" android:title="@string/remove_selected_book"
-        android:orderInCategory="700" app:showAsAction="never" />
+        android:orderInCategory="800" app:showAsAction="never" />
 
     <item android:id="@+id/action_clone" android:title="@string/clone_selected_book"
+        android:orderInCategory="700" app:showAsAction="never" />
+
+    <item android:id="@+id/action_trade_Item" android:title="@string/select_for_trading"
         android:orderInCategory="600" app:showAsAction="never" />
 
     <item android:id="@+id/action_edit" android:title="@string/edit_selected_book_info"

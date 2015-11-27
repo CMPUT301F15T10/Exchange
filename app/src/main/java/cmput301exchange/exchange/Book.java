@@ -34,7 +34,11 @@ public class Book implements Shareable, Comparable<Book> {
     protected boolean sharable = false; //Default items to false.
     private String itemType="";
     private Long ID;
+    private String availability="";
 
+    public void setAvailability(String availability){
+        availability=availability;
+    }
 
     public Long getID(){
         return ID;
@@ -218,7 +222,7 @@ public class Book implements Shareable, Comparable<Book> {
      */
     public String toString(){
 
-        return "Title: "+this.getName()+"\n"+"Author: "+this.getAuthor();
+        return "Title: "+this.getName()+"\n"+"Author: "+this.getAuthor()+availability;
     }
 
 }

@@ -3,5 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cmput301exchange.exchange.Trade_ItemsInventory">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
+        android:orderInCategory="50" app:showAsAction="never" />
+
+    <item android:id="@+id/Clear_Unavailables" android:title="Remove Unavailables"
+        android:orderInCategory="500" app:showAsAction="never" />
+
+    <item android:id="@+id/View_My_Items" android:title="View My Trade Books"
+        android:orderInCategory="400" app:showAsAction="never" />
+
+    <item android:id="@+id/View_Friend_Inventory" android:title="View Friend's Inventory"
+        android:orderInCategory="300" app:showAsAction="never" />
+
+    <item android:id="@+id/View_Friend_Items" android:title="View Friend's Trade Books"
+        android:orderInCategory="200" app:showAsAction="never" />
+
+    <item android:id="@+id/View_My_Inventory" android:title="View My Inventory"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

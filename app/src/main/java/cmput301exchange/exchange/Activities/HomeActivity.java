@@ -28,6 +28,7 @@ import org.w3c.dom.Text;
 
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
+import cmput301exchange.exchange.Mocks.MockPersonList;
 import cmput301exchange.exchange.ModelEnvironment;
 
 import cmput301exchange.exchange.Person;
@@ -66,8 +67,9 @@ public class  HomeActivity extends AppCompatActivity {
         //initFriendList();
         //getInventory();
         //initInventory();
-        GlobalENV.setOwner(user);
-        GlobalENV.saveInstance(this);
+//        GlobalENV.setOwner(user);
+//        GlobalENV.saveInstance(this);
+        MockObjectInit(); // creates a friendlist,personlist,inventory items and then saves them using global Env
         setContentView(R.layout.activity_home);
 
         NavTitles = getResources().getStringArray(R.array.NavigationArray);
@@ -176,7 +178,6 @@ public class  HomeActivity extends AppCompatActivity {
         // TODO pass through intent the current user's profile
         if (id == R.id.action_view_profile) {
             Intent intent = new Intent(this, ProfileDetailsActivity.class);
-            ;
             String json = gson.toJson(user);
             intent.putExtra("Person", json);
             startActivity(intent);
@@ -198,10 +199,13 @@ public class  HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == INVENTORY) {
-            data.setClass(this, HomeActivity.class);
-            intent = data;
-            getInventory();
-
+//            data.setClass(this, HomeActivity.class);
+//            intent = data;
+//            getInventory();
+            if (data.hasExtra("Trade_Items")){
+                data.setClass(this,TradeManagerActivity.class);
+                startActivity(data);
+            }
         }
         if (requestCode == EDIT_PROFILE) {
             data.setClass(this, HomeActivity.class);
@@ -216,7 +220,9 @@ public class  HomeActivity extends AppCompatActivity {
         }
 
         if (requestCode == SEARCH_PEOPLE) {
-            startActivity(data);
+            if (data.hasExtra("Trade_Partner")){
+                startActivity(data);
+            }
         }
     }
 
@@ -227,27 +233,36 @@ public class  HomeActivity extends AppCompatActivity {
         EternalNight.updateCategory("Category2");
         EternalNight.updateQuality(1);
         EternalNight.updateQuantity(1);
+        user.setInventory(new Inventory());
         user.getMyInventory().add(EternalNight);
         Book HackMe = new Book();
         HackMe.setShareable(false);
         HackMe.updateTitle("Hack Me!");
         HackMe.updateCategory("None");
         user.getMyInventory().add(HackMe);
+//        saveUser();
+    }
+
+    public void saveUser(){
+        GlobalENV.setOwner(user);
+        GlobalENV.saveInstance(this);
     }
 
     public void finish() {
-        GlobalENV.setOwner(user);
-        GlobalENV.saveInstance(this);
+        saveUser();
         super.finish();
     }
 
-    public void initFriendList() {
-        Person A = new Person("Harry1");
-        A.setName("Harry");
-        Person B = new Person("James1");
-        B.setName("James");
-        user.addFriend(A);
-        user.addFriend(B);
+    public void initPeopleList() {
+        MockPersonList list=new MockPersonList();
+        user.setFriendList(list.friendList);
+        GlobalENV.setPersonList(list.personList);
+    }
+
+    public void MockObjectInit(){
+        initPeopleList();
+        initInventory();
+        saveUser();
     }
 
 }

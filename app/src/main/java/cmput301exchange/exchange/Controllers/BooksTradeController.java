@@ -14,19 +14,31 @@ public class BooksTradeController {
         myTrade=trade;
     }
 
-    public ArrayList<String> getMyBookList(){
-        ArrayList<String> stringList= new ArrayList<String>();
-        for (Book b:myTrade.getListBookUser()){
-            stringList.add(b.getName());
-        }
-        return stringList;
+    public ArrayList<Book> getMyBookList(){
+//        ArrayList<String> stringList= new ArrayList<String>();
+//        for (Book b:myTrade.getListBookUser()){
+//            stringList.add(b.getName());
+//        }
+        return myTrade.getListBookUser();
     }
 
-    public ArrayList<String> getFriendBookList(){
-        ArrayList<String> stringList= new ArrayList<String>();
-        for (Book b:myTrade.getListBookPartner()){
-            stringList.add(b.getName());
-        }
-        return stringList;
+    public ArrayList<Book> getFriendBookList(){
+//        ArrayList<String> stringList= new ArrayList<String>();
+//        for (Book b:myTrade.getListBookPartner()){
+//            stringList.add(b.getName());
+//        }
+        return myTrade.getListBookPartner();
+    }
+
+    public void setMyBookList(ArrayList<Book> list){
+        myTrade.setListBookUser(list);
+    }
+
+    public void setFriendBookList(ArrayList<Book> list){
+        myTrade.setListBookPartner(list);
+    }
+
+    public void checkAvailability(){
+        
     }
 }

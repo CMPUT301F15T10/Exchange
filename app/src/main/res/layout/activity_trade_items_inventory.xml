@@ -11,40 +11,21 @@
         android:layout_centerHorizontal="true"
         android:textColor="#111"
         android:textSize="25dp"
-        android:id="@+id/textView19" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Items"
-        android:id="@+id/textView19"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp"
-        android:textColor="#111"
-        android:textSize="22dp" />
-
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="Add More"
-        android:id="@+id/IT_myAddItem"
-        android:layout_marginLeft="200dp"
-        android:layout_marginTop="40dp"
-        android:textSize="20dp" />
+        android:id="@+id/IT_title" />
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="170dp"
-        android:id="@+id/IT_myItems"
-        android:layout_below="@+id/IT_myAddItem" />
+        android:layout_height="300dp"
+        android:id="@+id/IT_Items"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/black"
         android:id="@+id/view"
-        android:layout_alignEnd="@+id/IT_friendAddItem"
-        android:layout_marginTop="265dp" />
+        android:layout_marginTop="350dp" />
 
     <View
         android:layout_width="match_parent"
@@ -54,30 +35,44 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp" />
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="160dp"
-        android:id="@+id/IT_friendItems"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Done"
+        android:id="@+id/IT_friendAddItem"
+        android:textSize="20dp"
+        android:layout_marginTop="430dp"
+        android:layout_marginLeft="100dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Friend&apos;s Items"
-        android:id="@+id/textView20"
-        android:textColor="#111"
+        android:text="Item Quantity : "
+        android:id="@+id/textView5"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="380dp"
         android:textSize="22dp"
-        android:layout_marginTop="277dp" />
+        android:textColor="#000" />
 
-    <Button
-        android:layout_width="150dp"
+    <EditText
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:text="Add More"
-        android:id="@+id/IT_friendAddItem"
-        android:textSize="20dp"
-        android:layout_marginTop="267dp"
-        android:layout_marginLeft="200dp" />
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_alignTop="@+id/textView5"
+        android:layout_toEndOf="@+id/textView5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/view"
+        android:layout_toEndOf="@+id/editText"
+        android:layout_marginTop="350dp"
+        android:textSize="22dp"
+        android:textColor="#111" />
 
 
 </RelativeLayout>

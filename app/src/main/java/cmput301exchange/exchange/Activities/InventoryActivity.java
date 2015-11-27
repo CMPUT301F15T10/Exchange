@@ -26,6 +26,7 @@ import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Person;
+import cmput301exchange.exchange.User;
 
 
 public class InventoryActivity extends AppCompatActivity {
@@ -46,19 +47,22 @@ public class InventoryActivity extends AppCompatActivity {
     private static final int MENU_Remove_Item = Menu.FIRST + 4;
     private static final int MENU_View_Item= Menu.FIRST + 5;
     private static final int MENU_Group=1; //menu group of 0 is taken by the SearchView item
+    private static final int MENU_Add_Trade_Item=Menu.FIRST + 6;
 
     private ListView lv;
-    public ModelEnvironment globalENV;
+    public ModelEnvironment globalEnv;
     protected ArrayAdapter<Book> arrayAdapterBook;
     protected ArrayList<Book> bookList = new ArrayList<Book>();
     protected Person person1;
-    private Integer state=0; //state=1 means inventory of user and state=2 means inventory of a friend.
+    private Integer state=null; //state=1 means inventory of user and state=2 means inventory of a friend.
     private Spinner viewSpinner=null;
     private String category="None";
     private ArrayList<Book> selectedBooks=new ArrayList<>();
     private Inventory inventory;
     private Integer bookListState=0;
     private SearchView mySearchView=null;
+    private User user;
+    private Intent intent;
 
     private DrawerLayout leftDrawer;
     private ListView leftNavList;
@@ -70,13 +74,14 @@ public class InventoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inventory);
 //        Log.e("inside inventoryActivity","Before intent received");
 
-        Intent intent = getIntent();
-        String inventory_json = intent.getStringExtra("Inventory");
-        state=intent.getIntExtra("Inventory_State",0);
-//        Log.e("inside inventoryActivity","After intent received");
-        Gson gson = new Gson();
-        inventory=gson.fromJson(inventory_json,Inventory.class);
-//        Log.e("got far","lo");
+        intent = getIntent();
+        init();
+//        String inventory_json = intent.getStringExtra("Inventory");
+//        state=intent.getIntExtra("Inventory_State",0);
+////        Log.e("inside inventoryActivity","After intent received");
+//        Gson gson = new Gson();
+//        inventory=gson.fromJson(inventory_json,Inventory.class);
+////        Log.e("got far","lo");
 
 //        globalENV=new ModelEnvironment(this,null); // null tells it to load modelEnvironment.
 //        person=globalENV.getOwner();
@@ -142,6 +147,24 @@ public class InventoryActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void init() {
+        globalEnv = new ModelEnvironment(this, null);
+        user = globalEnv.getOwner();
+        if (intent.hasExtra("Friend_Inventory")) {
+            String inventory_json = intent.getStringExtra("Friend_Inventory");
+            Gson gson = new Gson();
+            inventory=gson.fromJson(inventory_json,Inventory.class);
+
+            if (intent.hasExtra("Inventory_State")) {
+                state = intent.getIntExtra("Inventory_State", 0);
+            }
+
+        } else {
+            inventory = user.getMyInventory();
+            state=1;// inventory of user
+        }
     }
 
     public void initViewSpinner(){
@@ -247,6 +270,7 @@ public class InventoryActivity extends AppCompatActivity {
         menu.findItem(R.id.action_remove_single).setVisible(false);
         menu.findItem(R.id.action_remove_multi).setVisible(false);
         menu.findItem(R.id.action_clone).setVisible(false);
+        menu.findItem((R.id.action_trade_Item)).setVisible(false);
 
         if(state==1) {
             if (selectedBooks!=null) {
@@ -255,9 +279,11 @@ public class InventoryActivity extends AppCompatActivity {
                     menu.findItem(R.id.action_edit).setVisible(true);
                     menu.findItem(R.id.action_remove_single).setVisible(true);
                     menu.findItem(R.id.action_clone).setVisible(true); // temporairly for testing purposes
+                    menu.findItem((R.id.action_trade_Item)).setVisible(true);
                 } else if(selectedBooks.size()>1) {
                     menu.findItem(R.id.action_remove_single).setVisible(false);
                     menu.findItem(R.id.action_remove_multi).setVisible(true);
+                    menu.findItem((R.id.action_trade_Item)).setVisible(true);
                 }
             }
         }
@@ -267,6 +293,9 @@ public class InventoryActivity extends AppCompatActivity {
                 menu.findItem(R.id.action_add).setVisible(false);
                 menu.findItem(R.id.action_view).setVisible(true);
                 menu.findItem(R.id.action_clone).setVisible(true);
+            }
+            if (selectedBooks.size()>=1){
+                menu.findItem((R.id.action_trade_Item)).setVisible(true);
             }
         }
 
@@ -383,14 +412,41 @@ public class InventoryActivity extends AppCompatActivity {
         lv.clearChoices();
     }
 
+    public void updateOnline(){
+        // This function should use elastic search to update any changes to user object
+    }
+
+    public void saveUser(){
+        globalEnv.setOwner(user);
+        globalEnv.saveInstance(this);
+    }
+
+    public void sendBackTradeItems(){
+        Gson gson = new Gson();
+        Intent intent=new Intent(this,TradeManagerActivity.class);
+        Inventory inventory= new Inventory();
+        inventory.setInventoryList(selectedBooks);
+        String json= gson.toJson(inventory);
+        intent.putExtra("Trade_Items", json);
+        setResult(RESULT_OK, intent);
+
+        saveUser();
+        updateOnline();
+
+        super.finish();
+    }
     @Override
     public void finish(){
-        Log.e("Destroyed","On Destroy");
-        Gson gson = new Gson();
-        String json = gson.toJson(inventory);
-        Intent inventory = new Intent();
-        inventory.putExtra("Inventory", json);
-        setResult(RESULT_OK, inventory);
+//        Log.e("Destroyed","On Destroy");
+//        Gson gson = new Gson();
+//        String json = gson.toJson(inventory);
+//        Intent inventory = new Intent();
+//        inventory.putExtra("Inventory", json);
+//        setResult(RESULT_OK, inventory);
+        user.setInventory(inventory);
+        saveUser();
+        updateOnline();
+        setResult(RESULT_OK, new Intent());
         super.finish();
     }
 

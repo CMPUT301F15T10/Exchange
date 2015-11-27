@@ -242,8 +242,9 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         if (requestCode == INVENTORY) {
             data.setClass(this, TradeManagerActivity.class);
             inventoryIntent = data;
+            assignBooks();
 //            getTradePartner();
-            switchFragment(2); //switch to trade fragment
+//            switchFragment(2); //switch to trade fragment
         }
     }
 
@@ -264,8 +265,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
     public Inventory assignBooks(){
         Gson gson= new Gson();
-        if (inventoryIntent.hasExtra("Inventory_Items")) {
-            String json = personIntent.getExtras().getString("Inventory_Items");
+        if (inventoryIntent.hasExtra("Trade_Items")) {
+            String json = personIntent.getExtras().getString("Trade_Items");
             return gson.fromJson(json, Inventory.class);
         }
         return null;

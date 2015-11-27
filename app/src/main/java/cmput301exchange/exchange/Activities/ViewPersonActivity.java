@@ -46,7 +46,7 @@ public class ViewPersonActivity extends AppCompatActivity {
     private PersonList allPerson = new PersonList();
     private ArrayAdapter<Person> friendListAdapter, personListAdapter;
     private Person selectedPerson=null;
-    private Person user;
+    private User user;
     private Integer state=0;
     private SearchView mySearchView=null;
     private ModelEnvironment globalEnv=null;
@@ -57,9 +57,7 @@ public class ViewPersonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_person);
 
-        initPerson();
-        friendList=user.getMyFriendList().getPersonList();
-        //initPersonList();
+        init();
 
         lv = (ListView) findViewById(R.id.listView2);
 
@@ -133,22 +131,41 @@ public class ViewPersonActivity extends AppCompatActivity {
 
     }
 
-    public void initPerson(){
-        Gson gson = new Gson();
-        Intent intent=getIntent();
-        String json=intent.getExtras().getString("User");
-        user = gson.fromJson(json, Person.class);
-//        globalEnv= new ModelEnvironment(this, null);
-//        user=globalEnv.getOwner();
+    public void init(){
+//        Gson gson = new Gson();
+//        Intent intent=getIntent();
+//        String json=intent.getExtras().getString("User");
+//        user = gson.fromJson(json, Person.class);
+        globalEnv= new ModelEnvironment(this, null);
+        user=globalEnv.getOwner();
+        friendList=user.getMyFriendList().getPersonList();
+
+        allPerson=globalENV.getPersonList();
+        personList=allPerson.getPersonList();
+        personListAdapter.clear();
+        personListAdapter.addAll(personList);
+        personListAdapter.notifyDataSetChanged();
     }
 
     public void finish(){
-        Gson gson = new Gson();
-        Intent intent=new Intent();
-        String json= gson.toJson(user);
-        intent.putExtra("User",json);
-        setResult(RESULT_OK, intent);
+//        Gson gson = new Gson();
+//        Intent intent=new Intent();
+//        String json= gson.toJson(user);
+//        intent.putExtra("User",json);
+//        setResult(RESULT_OK, intent);
+        saveUser();
+        updateOnline();
+        setResult(RESULT_OK, new Intent());
         super.finish();
+    }
+
+    public void updateOnline(){
+        // This function should use elastic search to update any changes to user object
+    }
+
+    public void saveUser(){
+        globalEnv.setOwner(user);
+        globalEnv.saveInstance(this);
     }
 
     public void sendBackTradePartner(){
@@ -157,6 +174,10 @@ public class ViewPersonActivity extends AppCompatActivity {
         String json= gson.toJson(selectedPerson);
         intent.putExtra("Trade_Partner", json);
         setResult(RESULT_OK, intent);
+
+        saveUser();
+        updateOnline();
+
         super.finish();
     }
 
@@ -202,7 +223,9 @@ public class ViewPersonActivity extends AppCompatActivity {
             Gson gson = new Gson();
             String json = gson.toJson(selectedPerson.getMyInventory());
 
-            Intent intent = new Intent(this, InventoryActivity.class).putExtra("Inventory",json);
+            Intent intent = new Intent(this, InventoryActivity.class);
+            intent.putExtra("Friend_Inventory",json);
+            intent.putExtra("Inventory_State",2);
             startActivity(intent);
             return true;
         }

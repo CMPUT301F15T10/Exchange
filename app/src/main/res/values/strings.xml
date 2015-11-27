@@ -78,6 +78,7 @@
     <string name="remove_selected_books">Remove selected Books</string>
     <string name="search">Search</string>
     <string name="clone_selected_book">Clone Selected Book</string>
+    <string name="select_for_trading">Select for trading</string>
 
     <string-array name="NavigationArray">
         <item>Inventory</item>

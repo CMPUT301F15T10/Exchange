@@ -52,6 +52,10 @@ public class Inventory{
 
     public void add(Book Book) {this.inventoryList.add(Book);}
 
+    public void setInventoryList(ArrayList<Book> items){
+        this.inventoryList=items;
+    }
+
     public void removeItem(Book book){this.inventoryList.remove(book);}
 
     public boolean contains(Book book){return this.inventoryList.contains(book);}
