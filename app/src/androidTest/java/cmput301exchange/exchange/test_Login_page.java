@@ -2,6 +2,7 @@ package cmput301exchange.exchange;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,8 +40,7 @@ public class test_Login_page extends ActivityInstrumentationTestCase2 {
         getInstrumentation().waitForIdleSync();
 
         Instrumentation.ActivityMonitor receiverActivityMonitor =
-                getInstrumentation().addMonitor(HomeActivity.class.getName(),
-                        null, false);
+                getInstrumentation().addMonitor(HomeActivity.class.getName(),null, false);
         activity.runOnUiThread(new Runnable() {
             public void run() {
                 login_button.performClick();
@@ -49,10 +49,11 @@ public class test_Login_page extends ActivityInstrumentationTestCase2 {
         getInstrumentation().waitForIdleSync();
 
 
-        HomeActivity receiverActivity = (HomeActivity)
+       HomeActivity receiverActivity = (HomeActivity)
                 receiverActivityMonitor.waitForActivityWithTimeout(1000);
 
-        assertNotNull("ReceiverActivity is null", receiverActivity);
+
+        assertNotNull("ReceiverActivity is null", receiverActivity.getApplication());
         assertEquals("Monitor for ReceiverActivity has not been called",
                 1, receiverActivityMonitor.getHits());
         assertEquals("Activity is of wrong type",

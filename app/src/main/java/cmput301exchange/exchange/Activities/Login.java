@@ -2,6 +2,7 @@
 
 package cmput301exchange.exchange.Activities;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
@@ -17,19 +18,33 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Controllers.LoginController;
+import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.User;
 
-public class Login extends AppCompatActivity {
+public class Login extends AppCompatActivity implements Observer{
     private LoginController controller = new LoginController();
     public EditText username;
     private ModelEnvironment globalENV;
     private User user;
     private String userString;
+    private ProgressDialog progressDialog;
     private ElasticSearch elasticSearch = new ElasticSearch(this, this);
+
+    @Override
+    public void update() {
+        progressDialog.dismiss();
+        if (elasticSearch.getUserExists()){
+            Notified();
+        }else{
+            CreateUser();
+        }
+        launchHome();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +55,18 @@ public class Login extends AppCompatActivity {
     public void CreateUser(){
         userString = username.getText().toString();
         globalENV = new ModelEnvironment(this,userString);
-        launchHome();
+
 
     }
 
 
     public void login(View  view) {
+        progressDialog = ProgressDialog.show(this,"Logging You In...","Just one Moment",true);
         userString = username.getText().toString();
         if(userString.equals("")){
             return;
         }
+        elasticSearch.addObserver(this);
         elasticSearch.fetchUserFromServer(username.getText().toString());
 
 
@@ -87,6 +104,5 @@ public class Login extends AppCompatActivity {
         globalENV = new ModelEnvironment(this);
         globalENV.setOwner(elasticSearch.getUser());
         globalENV.saveInstance(this); //saving
-        launchHome();
     }
 }

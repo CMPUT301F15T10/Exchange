@@ -24,11 +24,14 @@ import org.apache.http.params.HttpParams;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import cmput301exchange.exchange.Activities.HomeActivity;
 import cmput301exchange.exchange.Activities.Login;
 import cmput301exchange.exchange.Interfaces.Observable;
+import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Photo;
 import cmput301exchange.exchange.User;
 
 
@@ -36,7 +39,7 @@ import cmput301exchange.exchange.User;
  * Created by Charles on 11/19/2015.
  */
 
-public class ElasticSearch {
+public class ElasticSearch implements Observable {
     private int Timeout = 3000;
     private int timeoutSocket = 3000;
 
@@ -44,7 +47,7 @@ public class ElasticSearch {
     Gson gson = new Gson();
     private Login loginActivity;
     private Activity activity;
-    private Observable observable;
+    private ArrayList<Observer> ObserverList = new ArrayList<>();
     private boolean networkStatus;
     ConnectivityManager connectivityManager;
     private ElasticSearchResult<User> ESResult;
@@ -61,6 +64,29 @@ public class ElasticSearch {
     public ElasticSearch(Login setActivity, Activity ThisActitivy) { //Constructor for activity
         loginActivity = setActivity;
         activity = ThisActitivy;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        ObserverList.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        ObserverList.remove(observer);
+    }
+
+    @Override
+    public void notifyObserver(Observer observer) {
+        observer.update();
+    }
+
+    @Override
+    public void notifyAllObserver() {
+        for (Observer i : ObserverList){
+            i.update();
+            Log.i("Notified",i.toString());
+        }
     }
 
     /**
@@ -84,14 +110,16 @@ public class ElasticSearch {
         public void run() {
             //finish();
 //            activity.getApplicationContext()
-            if (getUserExists()) {
-                loginActivity.Notified(); //Replace with Notify Observer
-            } else {
-                loginActivity.CreateUser(); //Replace with Notify Observer
-            }
+//            if (getUserExists()) {
+//                loginActivity.Notified(); //Replace with Notify Observer
+//            } else {
+//                loginActivity.CreateUser(); //Replace with Notify Observer
+//            }
+            notifyAllObserver();
         }
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /**
      * The following Functions allow you to send the POST request to the server.
@@ -196,7 +224,9 @@ public class ElasticSearch {
         NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
         if (netinfo != null && netinfo.isConnectedOrConnecting()) {
             Thread thread = new getThread(username);
+
             thread.start();
+
 
         } else {
             return;
