@@ -43,20 +43,22 @@ public class Login extends AppCompatActivity {
 
     public void CreateUser(){
         userString = username.getText().toString();
-        if(userString.equals("")){
-            return;
-        }
         globalENV = new ModelEnvironment(this,userString);
+        launchHome();
+
     }
 
 
     public void login(View  view) {
 //        CreateUser();
-
-//        if(userString.equals("")){
-//            return;
-//        }
         userString = username.getText().toString();
+        if(userString.equals("")){
+            return;
+        }
+
+//        if (! elasticSearch.UserExists(userString)){
+//            CreateUser();
+//        }
         elasticSearch.fetchUserFromServer(username.getText().toString());
 
 
@@ -86,6 +88,7 @@ public class Login extends AppCompatActivity {
     public void launchHome(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+        globalENV.saveInstance(this);
         this.finish();
     }
 

@@ -32,41 +32,49 @@ import cmput301exchange.exchange.User;
  * Created by Charles on 11/19/2015.
  */
 
-public class ElasticSearch{
+public class ElasticSearch {
     private User user;
     Gson gson = new Gson();
     private Login loginActivity;
     private Activity activity;
     private boolean networkStatus;
     ConnectivityManager connectivityManager;
+    private ElasticSearchResult<User> ESResult;
+    private boolean userExists;
 
-    public ElasticSearch(){
+    public ElasticSearch() {
 
     }
-    public ElasticSearch(Activity activity){
+
+    public ElasticSearch(Activity activity) {
         this.activity = activity;
     }
 
-    public ElasticSearch(Login setActivity, Activity ThisActitivy){ //Constructor for activity
+    public ElasticSearch(Login setActivity, Activity ThisActitivy) { //Constructor for activity
         loginActivity = setActivity;
         activity = ThisActitivy;
     }
-    public User getUser(){
+
+    public User getUser() {
         return this.user;
     }
 
+    public boolean getUserExists() {
+        return userExists;
+    }
+
     /**
-    The following Functions allow you to send the POST request to the server.
+     * The following Functions allow you to send the POST request to the server.
      */
-    public void sendUser(User user){
+    public void sendUser(User user) {
         HttpClient httpClient = new DefaultHttpClient();
         user.setTimeStamp();
-        try{
-            HttpPost addRequest = new HttpPost("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/"+user.getName());
+        try {
+            HttpPost addRequest = new HttpPost("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + user.getName());
 
             StringEntity stringEntity = new StringEntity(gson.toJson(user));
             addRequest.setEntity(stringEntity);
-            addRequest.setHeader("Accept","application/json");
+            addRequest.setHeader("Accept", "application/json");
 
             HttpResponse response = httpClient.execute(addRequest);
             String status = response.getStatusLine().toString();
@@ -74,73 +82,79 @@ public class ElasticSearch{
             Log.i("ElasticGLOBALENV", status);
 
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    public boolean UserExists(String username){
+
+    public boolean UserExists(String username) {
         ElasticSearchResult<User> fetchedUser = null;
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/"+username);
+        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
 
         HttpResponse response = null;
 
-        try{
+        try {
             response = httpClient.execute(httpGet);
-        } catch(ClientProtocolException e1){
+        } catch (ClientProtocolException e1) {
             throw new RuntimeException(e1);
-        } catch (IOException e2){
+        } catch (IOException e2) {
             throw new RuntimeException(e2);
         }
 
-        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>(){}.getType();
+        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>() {
+        }.getType();
 
-        try{
+        try {
             fetchedUser = gson.fromJson(
-                    new InputStreamReader(response.getEntity().getContent()),ElasticSearchResultType);
+                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
 
 
-        }catch (JsonIOException e){
+        } catch (JsonIOException e) {
             throw new RuntimeException(e);
-        }catch (JsonSyntaxException e){
+        } catch (JsonSyntaxException e) {
             throw new RuntimeException(e);
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new RuntimeException(e);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        userExists= fetchedUser.isFound();
         return fetchedUser.isFound();
     }
-    public User fetchUser(String username){
+
+    public User fetchUser(String username) {
         ElasticSearchResult<User> fetchedUser = null;
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/"+username);
+        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
 
         HttpResponse response = null;
 
-        try{
+        try {
             response = httpClient.execute(httpGet);
-        } catch(ClientProtocolException e1){
+        } catch (ClientProtocolException e1) {
             throw new RuntimeException(e1);
-        } catch (IOException e2){
+        } catch (IOException e2) {
             throw new RuntimeException(e2);
         }
 
-        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>(){}.getType();
+        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>() {
+        }.getType();
 
-        try{
+        try {
             fetchedUser = gson.fromJson(
-                    new InputStreamReader(response.getEntity().getContent()),ElasticSearchResultType);
+                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
 
 
-        }catch (JsonIOException e){
+        } catch (JsonIOException e) {
             throw new RuntimeException(e);
-        }catch (JsonSyntaxException e){
+        } catch (JsonSyntaxException e) {
             throw new RuntimeException(e);
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             throw new RuntimeException(e);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -165,17 +179,23 @@ public class ElasticSearch{
         public void run() {
             //finish();
 //            activity.getApplicationContext()
-            loginActivity.Notified();
+            if(getUserExists()) {
+                loginActivity.Notified();
+            }else{
+                loginActivity.CreateUser();
+            }
         }
     };
+
 
     /**
      * Thw following functions are what you would want to use when you send the user object. It calls the sendModelEnvironment
      * from the UI thread.
      * All of the details are handled here. Including dealing with the network state
+     *
      * @param ClientEnvironment
      */
-    public void sendToServer(ModelEnvironment ClientEnvironment){
+    public void sendToServer(ModelEnvironment ClientEnvironment) {
         Context context = activity.getApplicationContext();
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
@@ -183,44 +203,56 @@ public class ElasticSearch{
         if (netinfo != null && netinfo.isConnectedOrConnecting()) {
             Thread thread = new addThread(ClientEnvironment);
             thread.start();
-        }else{return;}
+        } else {
+            return;
+        }
     }
 
-
-
-
-
-    public void fetchUserFromServer(String username){
+    public void fetchUserStatus(String username) {
         Context context = activity.getApplicationContext();
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
-        if (netinfo != null && netinfo.isConnectedOrConnecting()){
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
             Thread thread = new getThread(username);
             thread.start();
 
-        }else{
+        } else {
+            return;
+        }
+    }
+
+
+    public void fetchUserFromServer(String username) {
+        Context context = activity.getApplicationContext();
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
+            Thread thread = new getThread(username);
+            thread.start();
+
+        } else {
             return;
         }
 
     }
 
 
-
-    class getThread extends Thread{
+    class getThread extends Thread {
         private String username;
 
-        public getThread(String username){
+        public getThread(String username) {
             this.username = username;
 
         }
+
         @Override
-        public void run(){
+        public void run() {
             user = fetchUser(username);
 
-            try{
+            try {
                 Thread.sleep(500);
 
-            }catch(InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             loginActivity.runOnUiThread(FinishFetch);
@@ -231,19 +263,19 @@ public class ElasticSearch{
     class addThread extends Thread {
         private ModelEnvironment modelEnvironment;
 
-        public addThread(ModelEnvironment modelEnvironment){
+        public addThread(ModelEnvironment modelEnvironment) {
             this.modelEnvironment = modelEnvironment;
 
         }
 
         @Override
-        public void run(){
+        public void run() {
             sendUser(modelEnvironment.getOwner());
 
-            try{
+            try {
                 Thread.sleep(500);
 
-            }catch(InterruptedException e){
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             //activity.runOnUiThread(doFinishAdd);
@@ -251,5 +283,30 @@ public class ElasticSearch{
 
     }
 
+    class CheckThread extends Thread {
+        private String username;
 
+        public CheckThread(String username) {
+            this.username = username;
+
+        }
+    }
 }
+//        @Override
+//        public void run(){
+//            userExists = UserExists(username);
+//
+//            try{
+//                Thread.sleep(500);
+//
+//            }catch(InterruptedException e){
+//                e.printStackTrace();
+//            }
+//            activity.runOnUiThread();
+//        }
+//
+//    }
+//    }
+
+
+
