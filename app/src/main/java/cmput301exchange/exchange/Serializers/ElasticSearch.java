@@ -61,11 +61,6 @@ public class ElasticSearch implements Observable {
         this.activity = activity;
     }
 
-    public ElasticSearch(Login setActivity, Activity ThisActitivy) { //Constructor for activity
-        loginActivity = setActivity;
-        activity = ThisActitivy;
-    }
-
     @Override
     public void addObserver(Observer observer) {
         ObserverList.add(observer);
@@ -259,7 +254,7 @@ public class ElasticSearch implements Observable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            loginActivity.runOnUiThread(FinishFetch);
+            activity.runOnUiThread(FinishFetch);
         }
 
     }

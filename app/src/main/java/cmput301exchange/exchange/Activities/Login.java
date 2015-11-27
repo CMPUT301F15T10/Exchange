@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity implements Observer{
     private User user;
     private String userString;
     private ProgressDialog progressDialog;
-    private ElasticSearch elasticSearch = new ElasticSearch(this, this);
+    private ElasticSearch elasticSearch = new ElasticSearch(this);
 
     @Override
     public void update() {
