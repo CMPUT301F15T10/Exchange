@@ -20,21 +20,25 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
+import cmput301exchange.exchange.Activities.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 
-public class AddBookActivity extends PhotoActivity {
+public class AddBookActivity extends ActionBarActivity {
 
     private EditText name, author, quality, quantity, comments;
     private ImageButton image;
@@ -42,6 +46,11 @@ public class AddBookActivity extends PhotoActivity {
     private Inventory inventory;
     private Book cloneBook;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private ListView photoList;
+
+    private ArrayList<byte[]> compressedImages = new ArrayList<>();
+    private ArrayList<Bitmap> imageList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +64,13 @@ public class AddBookActivity extends PhotoActivity {
         String json1 = extras.getString("Inventory");
         String json2 = extras.getString("Book");
 
+        photoList = (ListView) findViewById(R.id.photoListView);
 
-        inventory = gson.fromJson(json1,Inventory.class);
+        ArrayAdapter<Bitmap> bmpAdapter = new PhotoAdapter(this, imageList);
+
+        photoList.setAdapter(bmpAdapter);
+
+        inventory = gson.fromJson(json1, Inventory.class);
 
         image = (ImageButton) findViewById(R.id.imageButton);
         name = (EditText) findViewById(R.id.editName);
@@ -178,7 +192,7 @@ public class AddBookActivity extends PhotoActivity {
 
 
 
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery"};
 
 
 
@@ -201,7 +215,6 @@ public class AddBookActivity extends PhotoActivity {
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
 
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    //pic = f;
 
                     startActivityForResult(intent, 1);
 
@@ -215,14 +228,6 @@ public class AddBookActivity extends PhotoActivity {
                     Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                     startActivityForResult(intent, 2);
-
-
-
-                }
-
-                else if (options[item].equals("Cancel")) {
-
-                    dialog.dismiss();
 
                 }
 
@@ -253,8 +258,6 @@ public class AddBookActivity extends PhotoActivity {
                         f = temp;
                         File photo = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
 
-                        setCurrentImage(/*photo*/);
-                        //pic = photo;
                         break;
 
                     }
@@ -296,7 +299,17 @@ public class AddBookActivity extends PhotoActivity {
                         outFile = new FileOutputStream(file);
 
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        //pic=file;
+
+                        // new stuff hope it doesn't break
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, stream);
+                        byte[] byteArray = stream.toByteArray();
+                        compressedImages.add(byteArray);
+
+                        createImageList();
+                        photoList.invalidateViews();
+
+
                         outFile.flush();
 
                         outFile.close();
@@ -305,15 +318,6 @@ public class AddBookActivity extends PhotoActivity {
                     } catch (FileNotFoundException e) {
 
                         e.printStackTrace();
-
-                    } catch (IOException e) {
-
-                        e.printStackTrace();
-
-                    } catch (Exception e) {
-
-                        e.printStackTrace();
-
                     }
 
                 } catch (Exception e) {
@@ -326,8 +330,7 @@ public class AddBookActivity extends PhotoActivity {
 
 
                 Uri selectedImage = data.getData();
-                // h=1;
-                //imgui = selectedImage;
+
                 String[] filePath = {MediaStore.Images.Media.DATA};
 
                 Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -345,11 +348,17 @@ public class AddBookActivity extends PhotoActivity {
 
                 Log.w("path of image from gallery......******************.........", picturePath + "");
 
-
                 image.setImageBitmap(thumbnail);
-
             }
 
+        }
+    }
+
+    private void createImageList(){
+        for(byte[] array: compressedImages)
+        {
+            Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
+            imageList.add(bm);
         }
     }
 
