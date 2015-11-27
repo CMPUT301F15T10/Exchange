@@ -167,33 +167,7 @@ public class AddBookActivity extends ActionBarActivity {
         this.finishAdd();
     }
 
-    private File savebitmap(Bitmap bmp) {
-        String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-        OutputStream outStream = null;
-        // String temp = null;
-        File file = new File(extStorageDirectory, "temp.png");
-        if (file.exists()) {
-            file.delete();
-            file = new File(extStorageDirectory, "temp.png");
-
-        }
-
-        try {
-            outStream = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-            outStream.flush();
-            outStream.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return file;
-    }
-
     private void selectImage() {
-
-
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery"};
 
@@ -290,36 +264,10 @@ public class AddBookActivity extends ActionBarActivity {
                     createImageList();
                     photoList.invalidateViews();
 
-                    String path = android.os.Environment
-
-                            .getExternalStorageDirectory()
-
-                            + File.separator
-
-                            + "Phoenix" + File.separator + "default";
-                    //p = path;
+                    stream.flush();
+                    stream.close();
 
                     f.delete();
-
-                    OutputStream outFile = null;
-
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
-
-                    try {
-
-                        outFile = new FileOutputStream(file);
-
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-
-                        outFile.flush();
-
-                        outFile.close();
-
-
-                    } catch (FileNotFoundException e) {
-
-                        e.printStackTrace();
-                    }
 
                 } catch (Exception e) {
 
@@ -346,8 +294,7 @@ public class AddBookActivity extends ActionBarActivity {
 
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
 
-
-                Log.w("path of image from gallery......******************.........", picturePath + "");
+                Log.w("path image from gallery", picturePath + "");
 
                 image.setImageBitmap(thumbnail);
             }
