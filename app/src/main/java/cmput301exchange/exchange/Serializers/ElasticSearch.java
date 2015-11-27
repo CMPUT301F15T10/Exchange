@@ -24,6 +24,7 @@ import org.apache.http.params.HttpParams;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.Observable;
 
 import cmput301exchange.exchange.Activities.HomeActivity;
 import cmput301exchange.exchange.Activities.Login;
@@ -43,6 +44,7 @@ public class ElasticSearch {
     Gson gson = new Gson();
     private Login loginActivity;
     private Activity activity;
+    private Observable observable;
     private boolean networkStatus;
     ConnectivityManager connectivityManager;
     private ElasticSearchResult<User> ESResult;
@@ -122,43 +124,6 @@ public class ElasticSearch {
 
     }
 
-//    public boolean UserExists(String username) {
-//        ElasticSearchResult<User> fetchedUser = null;
-//        HttpClient httpClient = new DefaultHttpClient();
-//        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
-//
-//        HttpResponse response = null;
-//
-//        try {
-//            response = httpClient.execute(httpGet);
-//        } catch (ClientProtocolException e1) {
-//            throw new RuntimeException(e1);
-//        } catch (IOException e2) {
-//            throw new RuntimeException(e2);
-//        }
-//
-//        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>() {
-//        }.getType();
-//
-//        try {
-//            fetchedUser = gson.fromJson(
-//                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
-//
-//
-//        } catch (JsonIOException e) {
-//            throw new RuntimeException(e);
-//        } catch (JsonSyntaxException e) {
-//            throw new RuntimeException(e);
-//        } catch (IllegalStateException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//
-//        return fetchedUser.isFound();
-//    }
-
     public User fetchUser(String username) {
         ElasticSearchResult<User> fetchedUser = null;
         HttpClient httpClient = new DefaultHttpClient();
@@ -219,19 +184,6 @@ public class ElasticSearch {
         if (netinfo != null && netinfo.isConnectedOrConnecting()) {
             Thread thread = new addThread(ClientEnvironment);
             thread.start();
-        } else {
-            return;
-        }
-    }
-
-    public void fetchUserStatus(String username) {
-        Context context = activity.getApplicationContext();
-        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
-        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
-            Thread thread = new getThread(username);
-            thread.start();
-
         } else {
             return;
         }
