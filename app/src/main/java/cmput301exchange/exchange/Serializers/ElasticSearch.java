@@ -17,6 +17,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,6 +36,9 @@ import cmput301exchange.exchange.User;
  */
 
 public class ElasticSearch {
+    private int Timeout = 3000;
+    private int timeoutSocket = 3000;
+
     private User user;
     Gson gson = new Gson();
     private Login loginActivity;
@@ -55,6 +61,11 @@ public class ElasticSearch {
         activity = ThisActitivy;
     }
 
+    /**
+     * Getters and Setters go in here.
+     * @return
+     */
+
     public User getUser() {
         return this.user;
     }
@@ -63,14 +74,37 @@ public class ElasticSearch {
         return userExists;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * Runnables go Here
+     */
+    private Runnable FinishFetch = new Runnable() {
+        public void run() {
+            //finish();
+//            activity.getApplicationContext()
+            if (getUserExists()) {
+                loginActivity.Notified();
+            } else {
+                loginActivity.CreateUser();
+            }
+        }
+    };
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * The following Functions allow you to send the POST request to the server.
+     * Must be Called from the other methods.
      */
     public void sendUser(User user) {
         HttpClient httpClient = new DefaultHttpClient();
         user.setTimeStamp();
         try {
             HttpPost addRequest = new HttpPost("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + user.getName());
+
+            HttpParams httpParams = new BasicHttpParams(); //Set the Parameters
+            HttpConnectionParams.setConnectionTimeout(httpParams,Timeout); // For Timeout
+            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket); //For Socket Timeout
+            addRequest.setParams(httpParams);
 
             StringEntity stringEntity = new StringEntity(gson.toJson(user));
             addRequest.setEntity(stringEntity);
@@ -88,48 +122,52 @@ public class ElasticSearch {
 
     }
 
-    public boolean UserExists(String username) {
-        ElasticSearchResult<User> fetchedUser = null;
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
-
-        HttpResponse response = null;
-
-        try {
-            response = httpClient.execute(httpGet);
-        } catch (ClientProtocolException e1) {
-            throw new RuntimeException(e1);
-        } catch (IOException e2) {
-            throw new RuntimeException(e2);
-        }
-
-        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>() {
-        }.getType();
-
-        try {
-            fetchedUser = gson.fromJson(
-                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
-
-
-        } catch (JsonIOException e) {
-            throw new RuntimeException(e);
-        } catch (JsonSyntaxException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalStateException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        userExists= fetchedUser.isFound();
-        return fetchedUser.isFound();
-    }
+//    public boolean UserExists(String username) {
+//        ElasticSearchResult<User> fetchedUser = null;
+//        HttpClient httpClient = new DefaultHttpClient();
+//        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
+//
+//        HttpResponse response = null;
+//
+//        try {
+//            response = httpClient.execute(httpGet);
+//        } catch (ClientProtocolException e1) {
+//            throw new RuntimeException(e1);
+//        } catch (IOException e2) {
+//            throw new RuntimeException(e2);
+//        }
+//
+//        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>() {
+//        }.getType();
+//
+//        try {
+//            fetchedUser = gson.fromJson(
+//                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+//
+//
+//        } catch (JsonIOException e) {
+//            throw new RuntimeException(e);
+//        } catch (JsonSyntaxException e) {
+//            throw new RuntimeException(e);
+//        } catch (IllegalStateException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//
+//        return fetchedUser.isFound();
+//    }
 
     public User fetchUser(String username) {
         ElasticSearchResult<User> fetchedUser = null;
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
+        HttpParams httpParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams,Timeout);
+        HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
 
+        httpGet.setParams(httpParams);
         HttpResponse response = null;
 
         try {
@@ -158,34 +196,12 @@ public class ElasticSearch {
             throw new RuntimeException(e);
         }
 
+        userExists = fetchedUser.isFound();
         return fetchedUser.get_source();
     }
 
-//    public ModelEnvironment getModelEnvironment(int id){
-//        HttpClient httpClient = new DefaultHttpClient();
-//        HttpResponse response = null;
-//        HttpGet getRequest = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/DefaultModel/");
-//        try{
-//            response = httpClient.execute(getRequest);
-//        }catch(ClientProtocolException e1){
-//            Log.e("ClientProtocolException Thrown", e1.toString());
-//        }catch(IOException e2){
-//            Log.e("IOException Thrown", e2.toString());
-//        }
-//
-//    }
 
-    private Runnable FinishFetch = new Runnable() {
-        public void run() {
-            //finish();
-//            activity.getApplicationContext()
-            if(getUserExists()) {
-                loginActivity.Notified();
-            }else{
-                loginActivity.CreateUser();
-            }
-        }
-    };
+
 
 
     /**
@@ -237,6 +253,12 @@ public class ElasticSearch {
     }
 
 
+    /**
+     * The Two Functions Below are the Thread Functions. getThread and AddThread.
+     * They invoke the caller of the methods above to instantiate a new thread to do the networking.
+     */
+
+
     class getThread extends Thread {
         private String username;
 
@@ -282,31 +304,7 @@ public class ElasticSearch {
         }
 
     }
-
-    class CheckThread extends Thread {
-        private String username;
-
-        public CheckThread(String username) {
-            this.username = username;
-
-        }
-    }
 }
-//        @Override
-//        public void run(){
-//            userExists = UserExists(username);
-//
-//            try{
-//                Thread.sleep(500);
-//
-//            }catch(InterruptedException e){
-//                e.printStackTrace();
-//            }
-//            activity.runOnUiThread();
-//        }
-//
-//    }
-//    }
 
 
 
