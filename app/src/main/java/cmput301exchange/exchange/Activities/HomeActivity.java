@@ -201,25 +201,25 @@ public class  HomeActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == INVENTORY) {
+        if (requestCode == INVENTORY && data != null) {
             data.setClass(this, HomeActivity.class);
             intent = data;
             getInventory();
 
         }
-        if (requestCode == EDIT_PROFILE) {
+        if (requestCode == EDIT_PROFILE && data != null) {
             data.setClass(this, HomeActivity.class);
             intent = data;
             getUser();
         }
-        if (requestCode == CONFIGURATION) {
+        if (requestCode == CONFIGURATION && data != null) {
             data.setClass(this, HomeActivity.class);
             if (data.hasExtra("Configuration_picDown")) {
                 GlobalENV.setAutoPicDownloads(data.getExtras().getBoolean("Configuration_picDown"));
             }
         }
 
-        if (requestCode == SEARCH_PEOPLE) {
+        if (requestCode == SEARCH_PEOPLE && data != null) {
             data.setClass(this, HomeActivity.class);
             intent = data;
             getUser();

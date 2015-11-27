@@ -257,11 +257,11 @@ public class AddBookActivity extends ActionBarActivity {
 
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, stream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream);
                     byte[] byteArray = stream.toByteArray();
                     compressedImages.add(byteArray);
 
-                    createImageList();
+                    addToImageList(byteArray);
                     photoList.invalidateViews();
 
                     stream.flush();
@@ -302,12 +302,9 @@ public class AddBookActivity extends ActionBarActivity {
         }
     }
 
-    private void createImageList(){
-        for(byte[] array: compressedImages)
-        {
-            Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
-            imageList.add(bm);
-        }
+    private void addToImageList(byte[] array){
+        Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
+        imageList.add(bm);
     }
 
     public void finishAdd(){

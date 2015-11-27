@@ -216,7 +216,7 @@ public class InventoryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Gson gson= new Gson();
 
-        if (requestCode == MENU_Add_Item) {
+        if (requestCode == MENU_Add_Item && data != null) {
             if (data.hasExtra("Inventory")){
                 String json=data.getExtras().getString("Inventory");
                 inventory=gson.fromJson(json,Inventory.class);
@@ -226,7 +226,7 @@ public class InventoryActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == MENU_Edit_Item) {
+        else if (requestCode == MENU_Edit_Item && data != null) {
             if (data.hasExtra("Book")){
                 String json=data.getExtras().getString("Book");
                 Book book=gson.fromJson(json, Book.class);
