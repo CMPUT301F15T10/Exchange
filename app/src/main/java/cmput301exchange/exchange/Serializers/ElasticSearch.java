@@ -26,12 +26,12 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import cmput301exchange.exchange.Activities.HomeActivity;
 import cmput301exchange.exchange.Activities.Login;
 import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
-import cmput301exchange.exchange.Photo;
+import cmput301exchange.exchange.Person;
+import cmput301exchange.exchange.PersonList;
 import cmput301exchange.exchange.User;
 
 
@@ -50,8 +50,9 @@ public class ElasticSearch implements Observable {
     private ArrayList<Observer> ObserverList = new ArrayList<>();
     private boolean networkStatus;
     ConnectivityManager connectivityManager;
-    private ElasticSearchResult<User> ESResult;
+    private SearchHit<User> ESResult;
     private boolean userExists;
+    private PersonList personList = new PersonList();
 
     public ElasticSearch() {
 
@@ -59,6 +60,12 @@ public class ElasticSearch implements Observable {
 
     public ElasticSearch(Activity activity) {
         this.activity = activity;
+    }
+
+    public PersonList getPersonList() {
+        return personList;
+
+
     }
 
     @Override
@@ -148,7 +155,7 @@ public class ElasticSearch implements Observable {
     }
 
     public User fetchUser(String username) {
-        ElasticSearchResult<User> fetchedUser = null;
+        SearchHit<User> fetchedUser = null;
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
         HttpParams httpParams = new BasicHttpParams();
@@ -166,7 +173,7 @@ public class ElasticSearch implements Observable {
             throw new RuntimeException(e2);
         }
 
-        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>() {
+        Type ElasticSearchResultType = new TypeToken<SearchHit<User>>() {
         }.getType();
 
         try {
@@ -188,7 +195,51 @@ public class ElasticSearch implements Observable {
         return fetchedUser.get_source();
     }
 
+    public void SearchByPage (String query, String page){
 
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/_search?+id=" + query+"&size=10&from="+ page );
+        HttpParams httpParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams,Timeout);
+        HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
+
+        httpGet.setParams(httpParams);
+        HttpResponse response = null;
+
+        try {
+            response = httpClient.execute(httpGet);
+            Log.i("HttpGet",response.getStatusLine().toString());
+        } catch (ClientProtocolException e1) {
+            throw new RuntimeException(e1);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
+        }
+
+        Type ElasticSearchResultType = new TypeToken<SearchResponse<Person>>() {
+        }.getType();
+
+        SearchResponse<Person> fetchedUsers;
+
+        try {
+            fetchedUsers = gson.fromJson(
+                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+
+        } catch (JsonIOException e) {
+            throw new RuntimeException(e);
+        } catch (JsonSyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalStateException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (SearchHit<Person> hit : fetchedUsers.getHits().getHits()){
+            personList.addPerson(hit.get_source());
+        }
+
+
+    }
 
 
 
@@ -228,6 +279,21 @@ public class ElasticSearch implements Observable {
         }
 
     }
+    public void fetchAllUsersFromServer(String username, String page) {
+        Context context = activity.getApplicationContext();
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
+            Thread thread = new getAllUsersThread(username, page);
+
+            thread.start();
+
+
+        } else {
+            return;
+        }
+
+    }
 
 
     /**
@@ -247,6 +313,29 @@ public class ElasticSearch implements Observable {
         @Override
         public void run() {
             user = fetchUser(username);
+
+            try {
+                Thread.sleep(500);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            activity.runOnUiThread(FinishFetch);
+        }
+
+    }
+    class getAllUsersThread extends Thread {
+        private String username;
+        private String page;
+        public getAllUsersThread(String username, String page) {
+            this.username = username;
+            this.page = page;
+
+        }
+
+        @Override
+        public void run() {
+             SearchByPage(username, page);
 
             try {
                 Thread.sleep(500);
@@ -281,6 +370,8 @@ public class ElasticSearch implements Observable {
         }
 
     }
+
+
 }
 
 

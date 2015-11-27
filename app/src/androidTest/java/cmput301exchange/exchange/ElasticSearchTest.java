@@ -1,36 +1,52 @@
 package cmput301exchange.exchange;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.test.ActivityInstrumentationTestCase2;
 import android.test.ApplicationTestCase;
 
+import cmput301exchange.exchange.Activities.Login;
+import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 
 
 /**
  * Created by Charles on 11/27/2015.
  */
-public class ElasticSearchTest extends ApplicationTestCase {
-    private Context context;
-    private ElasticSearch elasticSearch = new ElasticSearch();
+public class ElasticSearchTest extends ActivityInstrumentationTestCase2 implements Observer {
+    private Activity activity;
+    private ElasticSearch elasticSearch;
     public ElasticSearchTest(){
-       super (Application.class);
+       super (Login.class);
+    }
+    private User user;
+    private Book book;
+
+    @Override
+    public void update() {
+
+        user = elasticSearch.getUser();
+    }
+
+    public void setUp(){
+        user = new User("frank");
+        activity = getActivity();
+        elasticSearch = new ElasticSearch(activity);
+        elasticSearch.addObserver(this);
     }
 
     public void testStart(){
-        elasticSearch = new ElasticSearch();
+        elasticSearch = new ElasticSearch(activity);
     }
 
     public void testLoad(){
-        User user;
         String username = "arbitraryLongString";
-        synchronized (elasticSearch){
-            user = elasticSearch.fetchUser(username);
-        }
-        assertEquals(user.getName(),username);
+        user = elasticSearch.fetchUser(username);
     }
+
     public void testSave(){
-        User user = new User("BIllyTimBuckets");
-        Book book = new Book();
+        user = new User("BIllyTimBuckets");
+        book = new Book();
         book.updateTitle("Tester");
         book.updateAuthor("BillyTimBuckers");
         user.getMyInventory().add(book);

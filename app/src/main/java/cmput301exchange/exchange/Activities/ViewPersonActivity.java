@@ -1,6 +1,5 @@
 package cmput301exchange.exchange.Activities;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,12 +7,12 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 //import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -21,14 +20,15 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.PersonList;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
-import cmput301exchange.exchange.Serializers.DataIO;
-import cmput301exchange.exchange.User;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
+import cmput301exchange.exchange.Serializers.SearchHit;
 
-public class ViewPersonActivity extends AppCompatActivity {
+public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
 
     private static final int MENU_Settings = Menu.FIRST;
@@ -51,15 +51,20 @@ public class ViewPersonActivity extends AppCompatActivity {
     private SearchView mySearchView=null;
     private ModelEnvironment globalEnv=null;
 
+    private ElasticSearch elasticSearch;
+    private List<SearchHit<Person>> SearchList;
+    private PersonList testlist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_person);
+        elasticSearch = new ElasticSearch(this);
 
         initPerson();
         friendList=user.getMyFriendList().getPersonList();
-        //initPersonList();
+        initPersonList(10);
 
         lv = (ListView) findViewById(R.id.listView2);
 
@@ -94,6 +99,7 @@ public class ViewPersonActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner2);
         // Create an friendListAdapter using the string array and a default spinner layout
@@ -296,24 +302,20 @@ public class ViewPersonActivity extends AppCompatActivity {
         lv.clearChoices();
     }
 
-    public void initPersonList(){
-        allPerson=new PersonList();
-        Person A=new Person("Harry1");
-        A.setName("Harry");
-        allPerson.addPerson(A);
-        Person B=new Person("James1");
-        B.setName("James");
-        allPerson.addPerson(B);
-        Person C = new Person("Lily1");
-        C.setName("Lily");
-        allPerson.addPerson(C);
-        Person D=new Person("Dumbledore1");
-        D.setName("Dumbledore");
-        allPerson.addPerson(D);
-        personList=allPerson.getPersonList();
+    public void initPersonList(Integer integer){
+        String page = integer.toString();
+        elasticSearch.addObserver(this);
+        elasticSearch.fetchAllUsersFromServer("*", page);
+
+
+    }
+
+    @Override
+    public void update() {
+        personList = elasticSearch.getPersonList().getPersonList();
+
         personListAdapter.clear();
         personListAdapter.addAll(personList);
         personListAdapter.notifyDataSetChanged();
     }
-
 }
