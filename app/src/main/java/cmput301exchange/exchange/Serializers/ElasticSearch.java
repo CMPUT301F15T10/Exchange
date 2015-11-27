@@ -24,10 +24,10 @@ import org.apache.http.params.HttpParams;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.Observable;
 
 import cmput301exchange.exchange.Activities.HomeActivity;
 import cmput301exchange.exchange.Activities.Login;
+import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.User;
 
@@ -85,9 +85,9 @@ public class ElasticSearch {
             //finish();
 //            activity.getApplicationContext()
             if (getUserExists()) {
-                loginActivity.Notified();
+                loginActivity.Notified(); //Replace with Notify Observer
             } else {
-                loginActivity.CreateUser();
+                loginActivity.CreateUser(); //Replace with Notify Observer
             }
         }
     };
