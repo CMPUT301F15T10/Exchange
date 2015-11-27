@@ -2,6 +2,7 @@ package cmput301exchange.exchange.Activities.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,20 +13,26 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.R;
 
 public class PhotoAdapter extends ArrayAdapter<Bitmap> {
+    private final Context context;
+    private final ArrayList<Bitmap> photos;
+
     public PhotoAdapter(Context context, ArrayList<Bitmap> photos) {
         super(context, 0, photos);
+        this.context = context;
+        this.photos = photos;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        if(row == null) {
-            // inflate row layout and assign to 'row'
-        }
-        final Bitmap thisPhoto = getItem(position);
-        final ImageView photo = (ImageView) row.findViewById(R.id.photo);
+
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.list_photo, parent, false);
+        ImageView photo = (ImageView) rowView.findViewById(R.id.photo);
+
+        final Bitmap thisPhoto = photos.get(position);
         photo.setImageBitmap(thisPhoto);
 
-        return row;
+        return rowView;
     }
 }

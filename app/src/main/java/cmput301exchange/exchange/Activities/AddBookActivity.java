@@ -66,6 +66,7 @@ public class AddBookActivity extends ActionBarActivity {
 
         photoList = (ListView) findViewById(R.id.photoListView);
 
+
         ArrayAdapter<Bitmap> bmpAdapter = new PhotoAdapter(this, imageList);
 
         photoList.setAdapter(bmpAdapter);
@@ -278,6 +279,14 @@ public class AddBookActivity extends ActionBarActivity {
 
                     image.setImageBitmap(bitmap);
 
+                    // new stuff hope it doesn't break
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    compressedImages.add(byteArray);
+
+                    createImageList();
+                    photoList.invalidateViews();
 
                     String path = android.os.Environment
 
@@ -299,16 +308,6 @@ public class AddBookActivity extends ActionBarActivity {
                         outFile = new FileOutputStream(file);
 
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-
-                        // new stuff hope it doesn't break
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, stream);
-                        byte[] byteArray = stream.toByteArray();
-                        compressedImages.add(byteArray);
-
-                        createImageList();
-                        photoList.invalidateViews();
-
 
                         outFile.flush();
 
