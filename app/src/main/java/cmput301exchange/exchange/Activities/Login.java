@@ -51,6 +51,13 @@ public class Login extends AppCompatActivity implements Observer{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         username = (EditText) findViewById(R.id.LoginName);
+        try{
+            globalENV = new ModelEnvironment(this).loadInstance(this);
+            this.launchHome();
+        }catch(Exception e){
+
+        }
+
     }
 
     public void CreateUser(){
@@ -67,6 +74,7 @@ public class Login extends AppCompatActivity implements Observer{
         if(userString.equals("")){
             return;
         }
+
         elasticSearch.addObserver(this);
         elasticSearch.fetchUserFromServer(username.getText().toString());
 

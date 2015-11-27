@@ -15,6 +15,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -25,8 +26,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
-import cmput301exchange.exchange.Activities.Login;
 import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
@@ -45,12 +46,9 @@ public class ElasticSearch implements Observable {
 
     private User user;
     Gson gson = new Gson();
-    private Login loginActivity;
     private Activity activity;
     private ArrayList<Observer> ObserverList = new ArrayList<>();
-    private boolean networkStatus;
     ConnectivityManager connectivityManager;
-    private SearchHit<User> ESResult;
     private boolean userExists;
     private PersonList personList = new PersonList();
 
@@ -108,15 +106,8 @@ public class ElasticSearch implements Observable {
     /**
      * Runnables go Here
      */
-    private Runnable FinishFetch = new Runnable() {
+    private Runnable FinishThread = new Runnable() {
         public void run() {
-            //finish();
-//            activity.getApplicationContext()
-//            if (getUserExists()) {
-//                loginActivity.Notified(); //Replace with Notify Observer
-//            } else {
-//                loginActivity.CreateUser(); //Replace with Notify Observer
-//            }
             notifyAllObserver();
         }
     };
@@ -156,21 +147,23 @@ public class ElasticSearch implements Observable {
 
     public User fetchUser(String username) {
         SearchHit<User> fetchedUser = null;
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
-        HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams,Timeout);
-        HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
-
-        httpGet.setParams(httpParams);
         HttpResponse response = null;
+        try{
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpParams httpParams = httpClient.getParams().setIntParameter("CONNECTION_MANAGER_TIMEOUT",3000);
+            HttpConnectionParams.setConnectionTimeout(httpParams, Timeout);
+            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
 
-        try {
+            HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
+
             response = httpClient.execute(httpGet);
-        } catch (ClientProtocolException e1) {
-            throw new RuntimeException(e1);
-        } catch (IOException e2) {
-            throw new RuntimeException(e2);
+
+        }catch (ConnectTimeoutException e1){
+            return new User("null");
+        }catch (ClientProtocolException e2) {
+            Log.i("FetchUser", e2.toString());
+        }catch(IOException e3){
+            Log.i("FetchUser",e3.toString());
         }
 
         Type ElasticSearchResultType = new TypeToken<SearchHit<User>>() {
@@ -320,7 +313,7 @@ public class ElasticSearch implements Observable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            activity.runOnUiThread(FinishFetch);
+            activity.runOnUiThread(FinishThread);
         }
 
     }
@@ -343,7 +336,7 @@ public class ElasticSearch implements Observable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            activity.runOnUiThread(FinishFetch);
+            activity.runOnUiThread(FinishThread);
         }
 
     }

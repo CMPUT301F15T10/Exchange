@@ -27,6 +27,7 @@ import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.Serializers.SearchHit;
+import cmput301exchange.exchange.User;
 
 public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
@@ -46,10 +47,9 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     private PersonList allPerson = new PersonList();
     private ArrayAdapter<Person> friendListAdapter, personListAdapter;
     private Person selectedPerson=null;
-    private Person user;
+    private User user;
     private Integer state=0;
     private SearchView mySearchView=null;
-    private ModelEnvironment globalEnv=null;
 
     private ElasticSearch elasticSearch;
     private List<SearchHit<Person>> SearchList;
@@ -60,6 +60,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_person);
+        globalENV = new ModelEnvironment(this);
         elasticSearch = new ElasticSearch(this);
 
         initPerson();
@@ -143,7 +144,9 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         Gson gson = new Gson();
         Intent intent=getIntent();
         String json=intent.getExtras().getString("User");
-        user = gson.fromJson(json, Person.class);
+        user = gson.fromJson(json, User.class);
+        globalENV.setOwner(user);
+
 //        globalEnv= new ModelEnvironment(this, null);
 //        user=globalEnv.getOwner();
     }
@@ -239,6 +242,11 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed(){
+        this.finish();
+    }
+
 
     public void initSearchView(){
         mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -286,6 +294,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         friendListAdapter.clear();
         friendListAdapter.addAll(friendList);
         friendListAdapter.notifyDataSetChanged();
+        globalENV.saveInstance(this);
         selectedPerson=null;
         lv.clearChoices();
     }
@@ -313,7 +322,6 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     @Override
     public void update() {
         personList = elasticSearch.getPersonList().getPersonList();
-
         personListAdapter.clear();
         personListAdapter.addAll(personList);
         personListAdapter.notifyDataSetChanged();

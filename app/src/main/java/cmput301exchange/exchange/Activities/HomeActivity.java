@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 
 import com.google.gson.Gson;
@@ -68,6 +69,7 @@ public class  HomeActivity extends AppCompatActivity {
         //initInventory();
         GlobalENV.setOwner(user);
         GlobalENV.saveInstance(this);
+        elasticSearch.sendToServer(GlobalENV);
         setContentView(R.layout.activity_home);
 
         NavTitles = getResources().getStringArray(R.array.NavigationArray);
@@ -94,6 +96,8 @@ public class  HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
         TextView message = (TextView) findViewById(R.id.home_message);
         String string = "Hello " + GlobalENV.getOwner().getName() + "!\n" + message.getText().toString();
@@ -222,34 +226,12 @@ public class  HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void initInventory() {
-        Book EternalNight = new Book();
-        EternalNight.setShareable(true);
-        EternalNight.updateTitle("Eternal Night");
-        EternalNight.updateCategory("Category2");
-        EternalNight.updateQuality(1);
-        EternalNight.updateQuantity(1);
-        user.getMyInventory().add(EternalNight);
-        Book HackMe = new Book();
-        HackMe.setShareable(false);
-        HackMe.updateTitle("Hack Me!");
-        HackMe.updateCategory("None");
-        user.getMyInventory().add(HackMe);
-    }
-
     public void finish() {
         GlobalENV.setOwner(user);
         GlobalENV.saveInstance(this);
+        elasticSearch.sendToServer(GlobalENV);
         super.finish();
     }
 
-    public void initFriendList() {
-        Person A = new Person("Harry1");
-        A.setName("Harry");
-        Person B = new Person("James1");
-        B.setName("James");
-        user.addFriend(A);
-        user.addFriend(B);
-    }
 
 }
