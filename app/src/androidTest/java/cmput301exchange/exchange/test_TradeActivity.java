@@ -49,7 +49,7 @@ public class test_TradeActivity extends ActivityInstrumentationTestCase2 {
 
 
     public void testTradeManager(){
-        Button makeTrade= (Button) tradeManagerFragment.getView().findViewById(R.id.TM_makeTrade);
+        Button displayTrade= (Button) tradeManagerFragment.getView().findViewById(R.id.TM_displayTrade);
         Button currentTrade= (Button) tradeManagerFragment.getView().findViewById(R.id.TM_currentTrade);
         Button pastTrade= (Button) tradeManagerFragment.getView().findViewById(R.id.TM_pastTrade);
         Button checkTradeRequest= (Button) tradeManagerFragment.getView().findViewById(R.id.TM_checkRequest);

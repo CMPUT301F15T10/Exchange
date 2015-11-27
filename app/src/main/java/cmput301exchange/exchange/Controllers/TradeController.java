@@ -16,8 +16,7 @@ import cmput301exchange.exchange.TradeManager;
 public class TradeController {
     private Trade myTrade;
     private TradeManager myTradeManager;
-    private Person partner=null;
-    private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();
+//    private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();
 
     public TradeController(Context context,Trade trade, TradeManager tradeManager){
         if (trade==null){
@@ -33,11 +32,11 @@ public class TradeController {
         ModelEnvironment globalEnv=new ModelEnvironment(context,null);
         myTrade=new Trade();
         myTrade.setTradeUser(globalEnv.getOwner());
-        myTrade.setTradePartner(partner);
+        myTrade.setTradePartner(null);
         myTrade.setTradeType(0); // By default
         myTrade.setTradeStatus(0);
-        myTrade.setListBookUser(userBookList);
-        myTrade.setListBookPartner(partnerBookList);
+        myTrade.setListBookUser(new ArrayList<Book>());
+        myTrade.setListBookPartner(new ArrayList<Book>());
     }
 
     public String getTradeType(){
@@ -69,8 +68,7 @@ public class TradeController {
         if (partner==null){
             return;
         } else {
-            this.partner = partner;
-            myTrade.setTradePartner(this.partner);
+            myTrade.setTradePartner(partner);
         }
     }
 

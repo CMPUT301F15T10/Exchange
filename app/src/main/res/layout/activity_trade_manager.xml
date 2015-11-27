@@ -38,12 +38,12 @@
         android:layout_width="220dp"
         android:layout_height="60dp"
         android:text="Make A trade"
-        android:id="@+id/TM_makeTrade"
+        android:id="@+id/TM_displayTrade"
         android:layout_below="@+id/TM_checkRequest"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="53dp"
         android:textSize="18dp"
-        android:onClick="onMakeTrade" />
+        android:onClick="ondisplayTrade" />
 
     <Button
         android:layout_width="220dp"

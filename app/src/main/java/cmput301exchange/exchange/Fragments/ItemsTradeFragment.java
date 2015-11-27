@@ -36,8 +36,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
     private Button myAddItem,friendAddItem;
     private ArrayAdapter<String> myItemAdapter, friendItemAdapter;
     private ArrayList<String> myItems= new ArrayList<>(), friendItems= new ArrayList<>();
-    private Trade myTrade;
-    private TradeManager myTradeManager;
+//    private TradeManager myTradeManager;
     private ListView myItemsView,friendItemsView;
     private BooksTradeController myBooksTradeController;
 
@@ -47,13 +46,13 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initTrade();
-        myTradeManager=myActivity.getTradeManager();
-        myBooksTradeController= new BooksTradeController(myTrade);
+//        myTradeManager=myActivity.getTradeManager();
+//        myBooksTradeController= new BooksTradeController(myTrade);
+        initBooksTradeController();
     }
 
-    public void initTrade(){
-        myTrade=myActivity.getTrade();
+    public void initBooksTradeController(){
+        myBooksTradeController=new BooksTradeController(myActivity.getTradeController().getTrade());
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,6 +128,6 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
     @Override
     public void onBackPress() {
-        myActivity.switchFragment(2);
+        myActivity.displayTrade();
     }
 }

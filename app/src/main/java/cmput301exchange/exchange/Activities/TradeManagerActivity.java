@@ -36,7 +36,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private ItemsTradeFragment myItemsTradeFragment;
     private TradeManagerFragment myTradeManagerFragment;
     private TradeManager myTradeManager;
-    private Trade myTrade=null;
+//    private Trade myTrade=null;
     private int fragmentLayoutID=R.id.tradeManager_fragmentLayout;
     private Person tradePartner=null;
     private BackButtonListener currentFragment;
@@ -46,10 +46,10 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
     private Intent personIntent, inventoryIntent;
     private TradeController myTradeController;
-    private Boolean newTrade=null;
+    private Boolean callTradeFragment=null;
 
     public void initTradeController(){
-        myTradeController=new TradeController(this,myTrade,myTradeManager);
+        myTradeController=new TradeController(this,new Trade(),myTradeManager);
     }
     public TradeController getTradeController() {
         return myTradeController;
@@ -67,6 +67,11 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         this.tradeListFlag = tradeListFlag;
     }
 
+    public void processIntent(){
+        personIntent=getIntent();
+        myTradeController.setTradePartner(retrieveTradePartner());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,9 +79,14 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 //        myTradeManager= new TradeManager();
         loadTradeManager();
         initTradeController();
+        processIntent();
         initFragments();
-        newTrade=true; // Change this line once you add the functionality of view person calling this activity
-        switchFragment(1);
+//        newTrade=true; // Change this line once you add the functionality of view person calling this activity
+        if (callTradeFragment==true) {
+            displayTrade();
+        } else{
+            switchFragment(1); // Initiating trade manager fragment
+        }
     }
 
     public void loadTradeManager(){
@@ -145,8 +155,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         switchFragment(3);
     }
 
-    public void makeTrade(){
-        myTrade=null;
+    public void displayTrade(){
+//        myTrade=null;
         switchFragment(2);
     }
 
@@ -158,7 +168,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public void displayItemsToTrade(Trade trade){
-        myTrade=trade;
+        myTradeController.setTrade(trade);
         switchFragment(4);
     }
 
@@ -171,13 +181,13 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         //Code for switching back to other activity that also depends on the calling fragment
     }
 
-    public Trade getTrade(){
-        return myTrade;
-    }
-
-    public void setTrade(Trade trade){
-        myTrade=trade;
-    }
+//    public Trade getTrade(){
+//        return myTrade;
+////    }
+//
+//    public void setTrade(Trade trade){
+//        myTrade=trade;
+//    }
 
     public TradeManagerFragment getTradeManagerFragment(){
         return myTradeManagerFragment;
@@ -199,9 +209,9 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         return tradePartner;
     }
 
-    public boolean IsNewTrade(){
-        return true;
-    }
+//    public boolean IsNewTrade(){
+//        return true;
+//    }
 
     public void setCurrentFragment(BackButtonListener fragment){
         currentFragment=fragment;
@@ -242,11 +252,13 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         if (personIntent.hasExtra("Trade_Partner")) {
             String json = personIntent.getExtras().getString("Trade_Partner");
             Log.e("got person","Trade");
-            if (gson.fromJson(json, Person.class)==null){
-                throw new RuntimeException("null person");
+            if (gson.fromJson(json, Person.class)!=null){
+//                throw new RuntimeException("null person");
+                callTradeFragment=true;
             }
             return gson.fromJson(json, Person.class);
         }
+        callTradeFragment=false;
         return null; // if no person is found
     }
 

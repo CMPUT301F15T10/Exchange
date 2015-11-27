@@ -131,7 +131,7 @@ public class  HomeActivity extends AppCompatActivity {
     public void searchPeople(View view) {
         Gson gson = new Gson();
         String json = gson.toJson(user);
-        Intent intent = new Intent(this, ViewPersonActivity.class).putExtra("User", json);
+        Intent intent = new Intent(this, ViewPersonActivity.class);
         startActivityForResult(intent, SEARCH_PEOPLE);
     }
 
@@ -218,9 +218,7 @@ public class  HomeActivity extends AppCompatActivity {
         }
 
         if (requestCode == SEARCH_PEOPLE) {
-            data.setClass(this, HomeActivity.class);
-            intent = data;
-            getUser();
+            startActivity(data);
         }
     }
 
