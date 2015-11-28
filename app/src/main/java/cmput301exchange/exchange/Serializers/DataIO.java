@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.provider.ContactsContract;
 
+import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.User;
@@ -37,106 +38,63 @@ public class DataIO<DataClass> {
      */
 
     private Context context;
-    private String FILENAME=null;
     private Class dataClassType;
     private ElasticSearch elasticSearch = new ElasticSearch();
-//////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public DataIO(Context context, Class<DataClass> dataClass){
         this.context=context;
         dataClassType=dataClass;
     }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void setFileName(String fileName){
-        this.FILENAME=fileName;
-    }
+    public String loadFromFile(String filename){
+        // http://stackoverflow.com/questions/19459082/read-and-write-data-with-gson
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+        StringBuilder sb;
 
-    public ArrayList<DataClass> loadFromFile(){
-        /**
-         * @deprecated
-         * Type Correct implementation of load from file, Might work for other classes, but for
-         * our use so far, there are issues
-         *
-         * Loads the required arraylist from a file after having filename set by setFileName
-         */
-
-        if (FILENAME==null){
-            throw new RuntimeException("For loading file from DataIO class, filename has not been provided.");
-        }
-
-        DataWrapper<DataClass> myDataWrapper;
-        ArrayList<DataClass> dataList;
         try {
-            FileInputStream fis = context.openFileInput(FILENAME);
+            FileInputStream fis = context.openFileInput(filename);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
-            Gson gson = new Gson();
-            Type listType = new TypeToken<DataWrapper<DataClass>>(){}.getType();
-            myDataWrapper = gson.fromJson(in, listType);
-            dataList=myDataWrapper.getMyData(dataClassType);
-            //Log.e("From DataIO, type of loadedData", size.toString());
+            sb = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+            }
 
         } catch (FileNotFoundException e) {
-            return new ArrayList<DataClass>();
+            throw new RuntimeException(e);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return dataList;
+
+        return sb.toString();
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void saveInFile(String filename, String dataToSave) {
+        // http://stackoverflow.com/questions/19459082/read-and-write-data-with-gson
 
-    public void saveInFile(boolean isLoadFromFile,ArrayList<DataClass> dataToSave) {
-        /**
-         * saves the required arraylist to a file of the name that has been set by setFileName
-         *
-         * @param isLoadFromFile boolean describing whether the file has previously been saved
-         * @param datatosave an ArrayList of the data that you wish to save
-         *
-         *
-         */
-
-        ArrayList<DataClass> toWrite;
-        if (isLoadFromFile==true) {
-            toWrite=loadFromFile();
-            toWrite.addAll(dataToSave);
-        }
-        else {
-            toWrite=dataToSave;
-        }
-
-        DataWrapper<DataClass> myDataWrapper=new DataWrapper<DataClass>(dataClassType,(ArrayList<Object>)toWrite);
         try {
-//            Log.e("From DataIO, type of saveInFile", dataToSave.get(0).getClass().toString());
-            FileOutputStream fos = context.openFileOutput(FILENAME,
-                    0);
-            OutputStreamWriter writer = new OutputStreamWriter(fos);
-            Gson gson = new Gson();
-            gson.toJson(myDataWrapper, writer);
-            writer.flush();
+            FileOutputStream fos = context.openFileOutput(filename, 0);
+            fos.write(dataToSave.getBytes());
             fos.close();
 
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
+
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void deleteData(){
-        /**
-         * Overwrites the save data at saveFileName()
-         */
-        saveInFile(false,new ArrayList<DataClass>());
-    }
+//    public void deleteData(){
+//        /**
+//         * Overwrites the save data at saveFileName()
+//         */
+//        saveInFile(false,new ArrayList<DataClass>());
+//    }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

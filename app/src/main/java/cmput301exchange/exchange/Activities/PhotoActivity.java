@@ -1,118 +1,45 @@
 package cmput301exchange.exchange.Activities;
 
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import java.io.File;
-import java.io.FileOutputStream;
-
 import cmput301exchange.exchange.Photo;
 import cmput301exchange.exchange.R;
 
-/* TODO: optionally attach photographs of items to the item
- *          Need to link to item ID
- *          gallery or camera? -- taken care of in addBookActivity
- * TODO: image file to be under 65536 bytes in size.
- * TODO: delete any attached photograph
- * TODO: view any attached photograph for an item
- * TODO: if photo downloads are disabled, I want the option of manually choosing inventory photos to download.
- */
-
-// need to display/preview image in addBookActivity
-//
-
 public class PhotoActivity extends AppCompatActivity {
 
-    public final int MAX_SIZE = 65536; // max size of photo in bytes
-    Button upload;
-    ImageView imageView;
+    protected int SELECT_FILE;
+    protected int REQUEST_CAMERA;
 
+    Button deletePhotoButton,
+           selectPhotoButton;
+    ImageView imageView;
+    Photo myPhotos;
+    ContentValues cValues;
+    Uri uri;
+    SavePhoto savePhoto;
+    Photo photo;
+    BitmapScaler bmScaler;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-        upload = (Button) findViewById(R.id.uploadButton);
-        imageView = (ImageView) findViewById(R.id.imagePreview);
+        photo = new Photo();
+        bmScaler = new BitmapScaler();
+        savePhoto = new SavePhoto();
 
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectImage();
-            }
-        });
+
 
     }
 
-    private void selectImage() {
-
-        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(PhotoActivity.this);
-        builder.setTitle("Add Photo!");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-
-                if (options[item].equals("Take Photo")) {
-
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    //pic = f;
-                    startActivityForResult(intent, 1);
-
-                } else if (options[item].equals("Choose from Gallery")) {
-
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
-
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-
-        builder.show();
-    }
-
-// public boolean underMaxSize(picture) { ///]
-
-    // todo: Preview image. at start, check that downloadYesNo from photo class is true. then do the thing
-    public void setCurrentImage(/*File f*/) {
-        //Photo p;
-        //if (!p.downloadYesNo) { return; }
-        //  FileOutputStream fos = openFileOutput(f, Context.MODE_PRIVATE);
-
-        Integer photos[] = {R.drawable.testphoto};
-
-        imageView.setImageResource(photos[0]);
-    }
-
-
-    // // TODO: 11/25/15
-    private void deletePhoto(File f) {
-        f.delete();
-
-    }
 }
 
-// // TODO: 11/25/15
-// public bool underMaxsize(file pic is in) {
-// if bitmap.size < MAX_SIZE { return true{
-// else return false
+
 
 
 
