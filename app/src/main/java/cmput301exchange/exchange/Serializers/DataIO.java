@@ -48,6 +48,7 @@ public class DataIO<DataClass> {
 
 
     public String loadFromFile(String filename){
+        // http://stackoverflow.com/questions/19459082/read-and-write-data-with-gson
 
         StringBuilder sb;
 
@@ -70,9 +71,8 @@ public class DataIO<DataClass> {
         return sb.toString();
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public void saveInFile(String filename, String dataToSave) {
+        // http://stackoverflow.com/questions/19459082/read-and-write-data-with-gson
 
         try {
             FileOutputStream fos = context.openFileOutput(filename, 0);
