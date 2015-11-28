@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import cmput301exchange.exchange.Activities.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
 
 public class AddBookActivity extends ActionBarActivity {
 
@@ -308,10 +310,11 @@ public class AddBookActivity extends ActionBarActivity {
     }
 
     public void finishAdd(){
-        Gson gson= new Gson(); //Create a new Gson Instance
-        String json=gson.toJson(inventory); //Write the existing inventory data to Json
+        String json = inventory.toJson(); //Write the existing inventory data to Json
+        DataIO dataIO = new DataIO(this, AddBookActivity.class);
+        dataIO.saveInFile("book.sav", json);
 
-        Intent added = new Intent().putExtra("Inventory",json); //Send it back to the inventory activity
+        Intent added = new Intent().putExtra("Inventory", "book.sav"); //Send it back to the inventory activity
         setResult(RESULT_OK, added);
 
         this.finish();
