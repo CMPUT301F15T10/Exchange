@@ -55,10 +55,6 @@ public class DataIO<DataClass> {
 
         StringBuilder sb;
 
-        if (FILENAME==null){
-            throw new RuntimeException("For loading file from DataIO class, filename has not been provided.");
-        }
-
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
@@ -69,7 +65,7 @@ public class DataIO<DataClass> {
             }
 
         } catch (FileNotFoundException e) {
-            return null;
+            throw new RuntimeException(e);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -88,11 +84,10 @@ public class DataIO<DataClass> {
             fos.close();
 
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
+
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
