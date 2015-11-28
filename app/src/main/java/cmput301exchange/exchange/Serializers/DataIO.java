@@ -38,7 +38,6 @@ public class DataIO<DataClass> {
      */
 
     private Context context;
-    private String FILENAME=null;
     private Class dataClassType;
     private ElasticSearch elasticSearch = new ElasticSearch();
 
@@ -47,16 +46,13 @@ public class DataIO<DataClass> {
         dataClassType=dataClass;
     }
 
-    public void setFileName(String fileName){
-        this.FILENAME=fileName;
-    }
 
-    public String loadFromFile(){
+    public String loadFromFile(String filename){
 
         StringBuilder sb;
 
         try {
-            FileInputStream fis = context.openFileInput(FILENAME);
+            FileInputStream fis = context.openFileInput(filename);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
             sb = new StringBuilder();
             String line;
@@ -76,10 +72,10 @@ public class DataIO<DataClass> {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void saveInFile(String dataToSave) {
+    public void saveInFile(String filename, String dataToSave) {
 
         try {
-            FileOutputStream fos = context.openFileOutput(FILENAME, 0);
+            FileOutputStream fos = context.openFileOutput(filename, 0);
             fos.write(dataToSave.getBytes());
             fos.close();
 
