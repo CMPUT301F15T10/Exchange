@@ -2,9 +2,12 @@ package cmput301exchange.exchange;
 
 import android.graphics.Picture;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Random;
 
+import cmput301exchange.exchange.Interfaces.Serializable;
 import cmput301exchange.exchange.Interfaces.Shareable;
 /**
 
@@ -18,7 +21,7 @@ import cmput301exchange.exchange.Interfaces.Shareable;
  * @Author: Charles Laing
  * @version: 1.0.0
  */
-public class Book implements Shareable, Comparable<Book> {
+public class Book implements Shareable, Comparable<Book>, Serializable {
 
     protected String bookName=""; // Required
     private String genre=""; //String to Contain Genre. A spinner is used to set this, so don't worry about the 10 requirement.
@@ -232,6 +235,11 @@ public class Book implements Shareable, Comparable<Book> {
     public String toString(){
 
         return "Title: "+this.getName()+"\n"+"Author: "+this.getAuthor()+availability;
+    }
+
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }
