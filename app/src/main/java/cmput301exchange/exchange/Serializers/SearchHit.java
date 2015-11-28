@@ -8,7 +8,7 @@ package cmput301exchange.exchange.Serializers;
  * Adapted from Joshua2ua Android Elastic Search:
  * https://github.com/joshua2ua/AndroidElasticSearch/blob/master/app/src/main/java/ca/ualberta/ssrg/movies/es/data/SearchHit.java
  */
-public class ElasticSearchResult<type> {
+public class SearchHit<type> {
     private String _index;
     private String _type;
     private String _id;
@@ -16,7 +16,7 @@ public class ElasticSearchResult<type> {
     private boolean found;
     private type _source;
 
-    public ElasticSearchResult(){
+    public SearchHit(){
     }
 
     public String getIndex() {

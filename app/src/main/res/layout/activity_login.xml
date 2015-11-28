@@ -23,7 +23,9 @@
         android:layout_centerVertical="true"
         android:hint="@string/username"
         android:layout_alignEnd="@+id/AppName"
-        android:layout_alignStart="@+id/AppName" />
+        android:layout_alignStart="@+id/AppName"
+        android:imeOptions="actionGo"
+        />
 
 
     <Button

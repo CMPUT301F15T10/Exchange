@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 
 import com.google.gson.Gson;
@@ -63,13 +64,13 @@ public class  HomeActivity extends AppCompatActivity {
 
 
         intent = getIntent();
-        getUser();
-        //initFriendList();
-        //getInventory();
-        //initInventory();
-//        GlobalENV.setOwner(user);
-//        GlobalENV.saveInstance(this);
-        MockObjectInit(); // creates a friendlist,personlist,inventory items and then saves them using global Env
+        GlobalENV= new ModelEnvironment(this,null);
+        user=GlobalENV.getOwner();
+//        getUser();
+//        MockObjectInit(); // creates a friendlist,personlist,inventory items and then saves them using global Env
+//        saveUser();
+        elasticSearch.sendToServer(GlobalENV);
+
         setContentView(R.layout.activity_home);
 
         NavTitles = getResources().getStringArray(R.array.NavigationArray);
@@ -97,6 +98,8 @@ public class  HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         TextView message = (TextView) findViewById(R.id.home_message);
         String string = "Hello " + GlobalENV.getOwner().getName() + "!\n" + message.getText().toString();
         message.setText(string);
@@ -107,10 +110,8 @@ public class  HomeActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        elasticSearch.sendToServer(GlobalENV);
+//        elasticSearch.sendToServer(GlobalENV);
     }
-
-
 
 
 
@@ -142,13 +143,13 @@ public class  HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    public void getInventory() {
-        if (intent.hasExtra("Inventory")) {
-            String json = intent.getExtras().getString("Inventory");
-            Inventory inventory = gson.fromJson(json, Inventory.class);
-            user.setInventory(inventory);
-        }
-    }
+//    public void getInventory() {
+//        if (intent.hasExtra("Inventory")) {
+//            String json = intent.getExtras().getString("Inventory");
+//            Inventory inventory = gson.fromJson(json, Inventory.class);
+//            user.setInventory(inventory);
+//        }
+//    }
 
     public void getUser() {
         if (intent.hasExtra("User")) {
@@ -198,21 +199,25 @@ public class  HomeActivity extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+
         if (requestCode == INVENTORY) {
 //            data.setClass(this, HomeActivity.class);
 //            intent = data;
 //            getInventory();
-            if (data.hasExtra("Trade_Items")){
-                data.setClass(this,TradeManagerActivity.class);
+            if (data.hasExtra("Trade_Items")) {
+                data.setClass(this, TradeManagerActivity.class);
                 startActivity(data);
             }
+
         }
-        if (requestCode == EDIT_PROFILE) {
-            data.setClass(this, HomeActivity.class);
-            intent = data;
-            getUser();
+
+        if (requestCode == EDIT_PROFILE && data != null) {
+//            data.setClass(this, HomeActivity.class);
+//            intent = data;
+//            getUser();
         }
-        if (requestCode == CONFIGURATION) {
+
+        if (requestCode == CONFIGURATION && data != null) {
             data.setClass(this, HomeActivity.class);
             if (data.hasExtra("Configuration_picDown")) {
                 GlobalENV.setAutoPicDownloads(data.getExtras().getBoolean("Configuration_picDown"));
@@ -220,10 +225,17 @@ public class  HomeActivity extends AppCompatActivity {
         }
 
         if (requestCode == SEARCH_PEOPLE) {
-            if (data.hasExtra("Trade_Partner")){
+            if (data.hasExtra("Trade_Partner")) {
                 startActivity(data);
             }
         }
+
+
+//        if (requestCode == SEARCH_PEOPLE && data != null) {
+////            data.setClass(this, HomeActivity.class);
+////            intent = data;
+////            getUser();
+//        }
     }
 
     public void initInventory() {
@@ -243,13 +255,14 @@ public class  HomeActivity extends AppCompatActivity {
 //        saveUser();
     }
 
-    public void saveUser(){
+    public void saveUser() {
         GlobalENV.setOwner(user);
         GlobalENV.saveInstance(this);
     }
 
     public void finish() {
-        saveUser();
+//        saveUser();
+//        elasticSearch.sendToServer(GlobalENV);
         super.finish();
     }
 
@@ -259,10 +272,15 @@ public class  HomeActivity extends AppCompatActivity {
         GlobalENV.setPersonList(list.personList);
     }
 
+    public void initUser(){
+        GlobalENV= new ModelEnvironment(this, null);
+        user=GlobalENV.getOwner();
+    }
+
     public void MockObjectInit(){
         initPeopleList();
         initInventory();
-        saveUser();
+//        saveUser();
     }
 
 }

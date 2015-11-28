@@ -26,6 +26,7 @@ import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Person;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.User;
 
 
@@ -63,6 +64,8 @@ public class InventoryActivity extends AppCompatActivity {
     private SearchView mySearchView=null;
     private User user;
     private Intent intent;
+    private ElasticSearch elasticSearch;
+    private boolean fromAddBook=false;
 
     private DrawerLayout leftDrawer;
     private ListView leftNavList;
@@ -75,6 +78,7 @@ public class InventoryActivity extends AppCompatActivity {
 //        Log.e("inside inventoryActivity","Before intent received");
 
         intent = getIntent();
+        elasticSearch= new ElasticSearch(this);
         init();
 //        String inventory_json = intent.getStringExtra("Inventory");
 //        state=intent.getIntExtra("Inventory_State",0);
@@ -239,8 +243,9 @@ public class InventoryActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Gson gson= new Gson();
 
-        if (requestCode == MENU_Add_Item) {
+        if (requestCode == MENU_Add_Item && data != null) {
             if (data.hasExtra("Inventory")){
+                fromAddBook=true;
                 String json=data.getExtras().getString("Inventory");
                 inventory=gson.fromJson(json,Inventory.class);
                 updateBookList(inventory);
@@ -249,7 +254,7 @@ public class InventoryActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == MENU_Edit_Item) {
+        else if (requestCode == MENU_Edit_Item && data != null) {
             if (data.hasExtra("Book")){
                 String json=data.getExtras().getString("Book");
                 Book book=gson.fromJson(json, Book.class);
@@ -412,13 +417,41 @@ public class InventoryActivity extends AppCompatActivity {
         lv.clearChoices();
     }
 
-    public void updateOnline(){
-        // This function should use elastic search to update any changes to user object
-    }
-
     public void saveUser(){
+        user.setInventory(inventory);
         globalEnv.setOwner(user);
         globalEnv.saveInstance(this);
+    }
+
+    public void downloadServer(){
+        user=elasticSearch.getUser();
+    }
+    public void updateOnline(){
+        // This function should use elastic search to update any changes to user object
+        elasticSearch.sendToServer(globalEnv);
+    }
+
+    public void loadUser(){
+        if (fromAddBook==true){
+            // DO nothing(No need to reload from local storage!)
+            fromAddBook=false;
+        } else {
+            globalEnv.loadInstance(this);
+            user = globalEnv.getOwner();
+            updateBookList(user.getMyInventory());
+        }
+    }
+
+    public void onResume(){
+        loadUser();
+//        downloadServer();
+        super.onResume();
+    }
+
+    public void onPause(){
+        saveUser();
+        updateOnline();
+        super.onPause();
     }
 
     public void sendBackTradeItems(){
@@ -429,9 +462,6 @@ public class InventoryActivity extends AppCompatActivity {
         String json= gson.toJson(inventory);
         intent.putExtra("Trade_Items", json);
         setResult(RESULT_OK, intent);
-
-        saveUser();
-        updateOnline();
 
         super.finish();
     }

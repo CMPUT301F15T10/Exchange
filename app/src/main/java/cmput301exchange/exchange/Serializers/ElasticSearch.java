@@ -15,6 +15,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -24,11 +25,14 @@ import org.apache.http.params.HttpParams;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.Observable;
+import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
-import cmput301exchange.exchange.Activities.HomeActivity;
-import cmput301exchange.exchange.Activities.Login;
+import cmput301exchange.exchange.Interfaces.Observable;
+import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Person;
+import cmput301exchange.exchange.PersonList;
 import cmput301exchange.exchange.User;
 
 
@@ -36,19 +40,17 @@ import cmput301exchange.exchange.User;
  * Created by Charles on 11/19/2015.
  */
 
-public class ElasticSearch {
+public class ElasticSearch implements Observable {
     private int Timeout = 3000;
     private int timeoutSocket = 3000;
 
     private User user;
     Gson gson = new Gson();
-    private Login loginActivity;
     private Activity activity;
-    private Observable observable;
-    private boolean networkStatus;
+    private ArrayList<Observer> ObserverList = new ArrayList<>();
     ConnectivityManager connectivityManager;
-    private ElasticSearchResult<User> ESResult;
     private boolean userExists;
+    private PersonList personList = new PersonList();
 
     public ElasticSearch() {
 
@@ -58,9 +60,33 @@ public class ElasticSearch {
         this.activity = activity;
     }
 
-    public ElasticSearch(Login setActivity, Activity ThisActitivy) { //Constructor for activity
-        loginActivity = setActivity;
-        activity = ThisActitivy;
+    public PersonList getPersonList() {
+        return personList;
+
+
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        ObserverList.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        ObserverList.remove(observer);
+    }
+
+    @Override
+    public void notifyObserver(Observer observer) {
+        observer.update();
+    }
+
+    @Override
+    public void notifyAllObserver() {
+        for (Observer i : ObserverList){
+            i.update();
+            Log.i("Notified",i.toString());
+        }
     }
 
     /**
@@ -80,18 +106,13 @@ public class ElasticSearch {
     /**
      * Runnables go Here
      */
-    private Runnable FinishFetch = new Runnable() {
+    private Runnable FinishThread = new Runnable() {
         public void run() {
-            //finish();
-//            activity.getApplicationContext()
-            if (getUserExists()) {
-                loginActivity.Notified();
-            } else {
-                loginActivity.CreateUser();
-            }
+            notifyAllObserver();
         }
     };
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /**
      * The following Functions allow you to send the POST request to the server.
@@ -125,25 +146,27 @@ public class ElasticSearch {
     }
 
     public User fetchUser(String username) {
-        ElasticSearchResult<User> fetchedUser = null;
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
-        HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams,Timeout);
-        HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
-
-        httpGet.setParams(httpParams);
+        SearchHit<User> fetchedUser = null;
         HttpResponse response = null;
+        try{
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpParams httpParams = httpClient.getParams().setIntParameter("CONNECTION_MANAGER_TIMEOUT",3000);
+            HttpConnectionParams.setConnectionTimeout(httpParams, Timeout);
+            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
 
-        try {
+            HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
+
             response = httpClient.execute(httpGet);
-        } catch (ClientProtocolException e1) {
-            throw new RuntimeException(e1);
-        } catch (IOException e2) {
-            throw new RuntimeException(e2);
+
+        }catch (ConnectTimeoutException e1){
+            return new User("null");
+        }catch (ClientProtocolException e2) {
+            Log.i("FetchUser", e2.toString());
+        }catch(IOException e3){
+            Log.i("FetchUser",e3.toString());
         }
 
-        Type ElasticSearchResultType = new TypeToken<ElasticSearchResult<User>>() {
+        Type ElasticSearchResultType = new TypeToken<SearchHit<User>>() {
         }.getType();
 
         try {
@@ -165,7 +188,51 @@ public class ElasticSearch {
         return fetchedUser.get_source();
     }
 
+    public void SearchByPage (String query, String page){
 
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/_search?+id=" + query+"&size=10&from="+ page );
+        HttpParams httpParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams,Timeout);
+        HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
+
+        httpGet.setParams(httpParams);
+        HttpResponse response = null;
+
+        try {
+            response = httpClient.execute(httpGet);
+            Log.i("HttpGet",response.getStatusLine().toString());
+        } catch (ClientProtocolException e1) {
+            throw new RuntimeException(e1);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
+        }
+
+        Type ElasticSearchResultType = new TypeToken<SearchResponse<Person>>() {
+        }.getType();
+
+        SearchResponse<Person> fetchedUsers;
+
+        try {
+            fetchedUsers = gson.fromJson(
+                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+
+        } catch (JsonIOException e) {
+            throw new RuntimeException(e);
+        } catch (JsonSyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalStateException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (SearchHit<Person> hit : fetchedUsers.getHits().getHits()){
+            personList.addPerson(hit.get_source());
+        }
+
+
+    }
 
 
 
@@ -196,7 +263,24 @@ public class ElasticSearch {
         NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
         if (netinfo != null && netinfo.isConnectedOrConnecting()) {
             Thread thread = new getThread(username);
+
             thread.start();
+
+
+        } else {
+            return;
+        }
+
+    }
+    public void fetchAllUsersFromServer(String username, String page) {
+        Context context = activity.getApplicationContext();
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
+            Thread thread = new getAllUsersThread(username, page);
+
+            thread.start();
+
 
         } else {
             return;
@@ -229,7 +313,30 @@ public class ElasticSearch {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            loginActivity.runOnUiThread(FinishFetch);
+            activity.runOnUiThread(FinishThread);
+        }
+
+    }
+    class getAllUsersThread extends Thread {
+        private String username;
+        private String page;
+        public getAllUsersThread(String username, String page) {
+            this.username = username;
+            this.page = page;
+
+        }
+
+        @Override
+        public void run() {
+             SearchByPage(username, page);
+
+            try {
+                Thread.sleep(500);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            activity.runOnUiThread(FinishThread);
         }
 
     }
@@ -256,6 +363,8 @@ public class ElasticSearch {
         }
 
     }
+
+
 }
 
 

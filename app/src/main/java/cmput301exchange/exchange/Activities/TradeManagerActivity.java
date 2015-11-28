@@ -49,7 +49,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private Boolean callTradeFragment=null;
 
     public void initTradeController(){
-        myTradeController=new TradeController(this,new Trade(),myTradeManager);
+        myTradeController=new TradeController(this,null,myTradeManager);
     }
     public TradeController getTradeController() {
         return myTradeController;
@@ -90,7 +90,10 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public void loadTradeManager(){
-        globalEnv= new ModelEnvironment(this, null);
+        if (globalEnv==null){
+            globalEnv=new ModelEnvironment(this,null);
+        }
+        globalEnv.loadInstance(this);
         myTradeManager=globalEnv.getTradeManager();
     }
 
@@ -102,6 +105,18 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_trade_manager, menu);
         return true;
+    }
+
+    public void onPause(){
+        saveTradeManager();
+//        updateOnline()
+        super.onPause();
+    }
+
+    public void onResume(){
+        loadTradeManager();
+//        downloadServer();
+        super.onResume();
     }
 
     //TODO
@@ -274,12 +289,23 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
     public void selectPerson(){
         Intent intent= new Intent(this,ViewPersonActivity.class);
+        intent.putExtra("From_TradeManagerActivity","");
         startActivityForResult(intent, SEARCH_PEOPLE);
     }
 
     public void selectItems(){
         Intent intent= new Intent(this,Inventory.class);
+        intent.putExtra("From_TradeManagerActivity","");
         startActivityForResult(intent, INVENTORY);
     }
+
+//    public void downloadServer(){
+//        user=elasticSearch.getUser();
+//    }
+//    public void updateOnline(){
+//        // This function should use elastic search to update any changes to user object
+//        elasticSearch.sendToServer(globalEnv);
+//    }
+
 
 }
