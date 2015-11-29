@@ -49,10 +49,11 @@ public class AddBookActivity extends ActionBarActivity {
     private Book cloneBook;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    private ListView photoList;
+    private Spinner photoList;
 
     private ArrayList<byte[]> compressedImages = new ArrayList<>();
     private ArrayList<Bitmap> imageList = new ArrayList<>();
+    private ArrayAdapter<Bitmap> bmpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +67,11 @@ public class AddBookActivity extends ActionBarActivity {
         String json1 = extras.getString("Inventory");
         String json2 = extras.getString("Book");
 
-        photoList = (ListView) findViewById(R.id.photoListView);
+        photoList = (Spinner) findViewById(R.id.photoListView);
 
 
-        ArrayAdapter<Bitmap> bmpAdapter = new PhotoAdapter(this, imageList);
+        bmpAdapter = new PhotoAdapter(this, imageList);
+        bmpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         photoList.setAdapter(bmpAdapter);
 
@@ -264,7 +266,7 @@ public class AddBookActivity extends ActionBarActivity {
                     compressedImages.add(byteArray);
 
                     addToImageList(byteArray);
-                    photoList.invalidateViews();
+                    bmpAdapter.notifyDataSetChanged();
 
                     stream.flush();
                     stream.close();

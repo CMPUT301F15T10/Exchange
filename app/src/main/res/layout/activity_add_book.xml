@@ -20,19 +20,16 @@
                 android:contentDescription="@string/item_image"
                 android:layout_gravity="center_horizontal" />
 
-
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal">
 
-            <ListView
+            <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/photoListView"
-                android:layout_gravity="center_horizontal" />
+                android:id="@+id/photoListView" />
 
         </LinearLayout>
 
