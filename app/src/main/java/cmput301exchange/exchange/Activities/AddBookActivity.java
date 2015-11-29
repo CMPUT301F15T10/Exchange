@@ -134,13 +134,9 @@ public class AddBookActivity extends ActionBarActivity {
 
 
         image.setOnClickListener(new View.OnClickListener() {
-
             @Override
-
             public void onClick(View v) {
-
                 selectImage();
-
             }
         });
     }
@@ -295,16 +291,15 @@ public class AddBookActivity extends ActionBarActivity {
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-
-                            bitmapOptions);
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
+                    Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.2), (int)(bitmap.getHeight()*0.2), true);
 
 
                     image.setImageBitmap(bitmap);
 
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+                    resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
                     byte[] byteArray = stream.toByteArray();
                     compressedImages.add(byteArray);
 
