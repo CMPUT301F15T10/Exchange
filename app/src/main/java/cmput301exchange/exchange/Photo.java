@@ -13,10 +13,15 @@ public class Photo {
     private boolean downloadYesNo = true; // download photo by default
     private final int MAX_SIZE = 65536;   // max size of photo in bytes
     public boolean empty = true;          // if empty list, i.e no photo, will be true
+    public int owner;                     // Person.ID
 
     public Photo() {
         photo = new ArrayList<>();
         empty = true;
+    }
+
+    public int getOwner() {
+        return owner;
     }
 
     public boolean isEmpty() { return empty; }

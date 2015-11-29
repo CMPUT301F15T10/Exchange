@@ -19,14 +19,16 @@ import cmput301exchange.exchange.Controllers.EditBookController;
 import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
 import cmput301exchange.exchange.Fragments.EditBookFragment;
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Fragments.EditPhotoFragment;
 import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Others.ObjectSaver;
 import cmput301exchange.exchange.R;
 
+
 public class EditBookActivity extends AppCompatActivity {
     private EditBookFragment BookEdit;
     private EditBookCommentFragment CommentEdit;
-    private Fragment Photo; // Its fragment type will be replaced by Photo's fragment class.;
+    private Fragment editPhoto; // Its fragment type will be replaced by Photo's fragment class.;
     public FragmentManager fm;
     private FragmentTransaction fm_T;
     private Integer fragmentLayoutID=R.id.fragmentR;
@@ -38,10 +40,12 @@ public class EditBookActivity extends AppCompatActivity {
     private String originalBook_String=null;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
 
         initBook();
         myController= new EditBookController(myBook); //Creating an empty EditBookController
@@ -53,16 +57,17 @@ public class EditBookActivity extends AppCompatActivity {
 
     }
 
-    private void editPhoto(View v) {
+  /*  private void editPhoto(View v) {
         Intent intent = new Intent(this, PhotoActivity.class);
         startActivity(intent);
     }
-
+*/
     public void initFragments(){
         fm=getFragmentManager();
         fm_T=fm.beginTransaction();
         BookEdit = new EditBookFragment();
         CommentEdit = new EditBookCommentFragment();
+        editPhoto = new EditPhotoFragment();
         // Put here code for initializing photo view/edit fragment
     }
 
@@ -77,8 +82,8 @@ public class EditBookActivity extends AppCompatActivity {
             currentFragment=CommentEdit;
         }
         if (flag==3){
-            fm_T.replace(fragmentLayoutID.intValue(),Photo,viewPhotoTag);
-//            currentFragment=Photo;
+            fm_T.replace(fragmentLayoutID.intValue(),editPhoto,viewPhotoTag);
+         //   currentFragment=editPhoto;
         }
 //        fm_T.addToBackStack(null);
         fm_T.commitAllowingStateLoss();// Alternative is commit
@@ -127,6 +132,8 @@ public class EditBookActivity extends AppCompatActivity {
     public EditBookCommentFragment getEditCommentFragment(){
         return CommentEdit;
     }
+
+  //  public EditPhotoFragment getEditPhotoFragment() {return editPhoto;}
 
 //    protected void onSaveInstanceState(Bundle outState) {
 //        // TODO Auto-generated method stub

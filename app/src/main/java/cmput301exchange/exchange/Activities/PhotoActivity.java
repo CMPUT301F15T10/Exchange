@@ -28,16 +28,16 @@ import cmput301exchange.exchange.Photo;
 import cmput301exchange.exchange.R;
 
 
-// cant get the intent in EditBookActivity to call this successfully. Crashes the app 100% of time
+
 public class PhotoActivity extends AppCompatActivity {
 
     protected int REQUEST_CAMERA;
     protected int SELECT_FILE;
 
-    Button deletePhotoButton,
+    /*Button deletePhotoButton,
            selectPhotoButton,
            acceptButton;
-    ImageView imageView;
+    ImageView imageView; */
     ContentValues cValues;
     Uri uri;
     SavePhoto savePhoto;
@@ -51,7 +51,7 @@ public class PhotoActivity extends AppCompatActivity {
         photo = new Photo();
         bmScaler = new BitmapScaler();
         savePhoto = new SavePhoto();
-
+/*
         photo = savePhoto.loadPhoto(getApplicationContext());
         deletePhotoButton = (Button)findViewById(R.id.deletePhotoButton);
         selectPhotoButton = (Button)findViewById(R.id.selectPhotoButton);
@@ -80,6 +80,7 @@ public class PhotoActivity extends AppCompatActivity {
                 accept();
             }
         });
+        */
 
     }
 

@@ -11,7 +11,6 @@
         android:layout_height="100dp"
         android:text="Select Photo"
         android:id="@+id/selectPhotoButton"
-        android:layout_below="@+id/imageView"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -22,13 +21,6 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
@@ -37,4 +29,12 @@
         android:id="@+id/acceptButton"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/deletePhotoButton" />
+
+    <ImageView
+        android:layout_width="375dp"
+        android:layout_height="360dp"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/acceptButton"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

@@ -51,7 +51,6 @@ public class EditBookFragment extends Fragment implements BackButtonListener {
         name_text.setText(Name.getText().toString());
         type_text.setText(Type.getText().toString());
         quality_text.setText(Quality.getText().toString());
-        quantity_text.setText(Quantity.getText().toString());
 
         myEditBookController.updateName(name_text.toString());
         myEditBookController.updateType(type_text.toString());
