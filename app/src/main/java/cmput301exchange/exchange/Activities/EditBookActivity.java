@@ -16,7 +16,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Controllers.EditBookController;
-import cmput301exchange.exchange.EditItem;
 import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
 import cmput301exchange.exchange.Fragments.EditBookFragment;
 import cmput301exchange.exchange.Book;

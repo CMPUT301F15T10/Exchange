@@ -9,6 +9,7 @@ import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.Trade;
 import cmput301exchange.exchange.TradeManager;
+import cmput301exchange.exchange.User;
 
 /**
  * Created by touqir on 04/11/15.
@@ -18,25 +19,35 @@ public class TradeController {
     private TradeManager myTradeManager;
 //    private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();
 
-    public TradeController(Context context,Trade trade, TradeManager tradeManager){
+    public TradeController(Context context,Trade trade, TradeManager tradeManager, User user){
+        myTradeManager=tradeManager;
         if (trade==null){
-            createTrade(context);
+            createTrade(context, user);
         } else {
             myTrade = trade;
         }
-        myTradeManager=tradeManager;
+
     }
 
-    public void createTrade(Context context){
+    public void createTrade(Context context, User user){
 
-        ModelEnvironment globalEnv=new ModelEnvironment(context,null);
         myTrade=new Trade();
-        myTrade.setTradeUser(globalEnv.getOwner());
+        myTrade.setTradeUser(user);
         myTrade.setTradePartner(null);
         myTrade.setTradeType(0); // By default
         myTrade.setTradeStatus(0);
         myTrade.setListBookUser(new ArrayList<Book>());
         myTrade.setListBookPartner(new ArrayList<Book>());
+    }
+
+    public void addToCurrentList(){
+        myTrade.setTimeStamp();
+        myTrade.setDate();
+        myTradeManager.addTrade(myTrade);
+    }
+
+    public boolean hasTradePartner(){
+        return myTrade.hasTradePartner();
     }
 
     public String getTradeType(){
@@ -82,5 +93,10 @@ public class TradeController {
 
     public Trade getTrade(){
         return myTrade;
+    }
+
+    public void saveTrade(){
+        myTradeManager.lightenTrade(myTrade);
+        myTrade=null;
     }
 }

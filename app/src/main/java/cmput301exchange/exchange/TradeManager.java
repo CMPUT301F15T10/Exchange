@@ -1,6 +1,10 @@
 package cmput301exchange.exchange;
 
+import android.content.Context;
+
 import java.util.ArrayList;
+
+import cmput301exchange.exchange.Serializers.deepClone;
 
 
 /*
@@ -54,7 +58,7 @@ public class TradeManager {
 
     /**
      * Adds a completed trade to the PastTrade List.
-     * @param Trade trade
+     * @param "Trade" trade
      */
     public void addCompleteTrade(Trade trade) {
 
@@ -64,11 +68,114 @@ public class TradeManager {
         deleteOngoingTrade(trade);
     }
 
-    /**
-     * Creates a new trade that will be sent to the other user.
-     * @param Trade trade
+    public Trade load(Long ID, int choice, Context activity){
+
+        switch(choice){
+            case 1:
+                for (Trade trade:listPastTrade){
+                    if (trade.getTradeId().longValue()==ID.longValue()){
+                        loadPersons(trade,activity);
+                        return trade;
+                    }
+                }
+                break;
+            case 2:
+                for (Trade trade:listCurrentTrade){
+                    if (trade.getTradeId().longValue()==ID.longValue()){
+                        loadPersons(trade,activity);
+                        return trade;
+                    }
+                }
+                break;
+            case 3:
+                for (Trade trade:listTradeRequest){
+                    if (trade.getTradeId().longValue()==ID.longValue()){
+                        loadPersons(trade,activity);
+                        return trade;
+                    }
+                }
+                break;
+        }
+        return null;
+    }
+
+    public ArrayList<Trade> getTradeListByDate(int choice){
+        ArrayList<Trade> tradeList= new ArrayList<>();
+        Trade latestTrade= new Trade();
+        Long latestTime= new Long(0);
+        ArrayList<Trade> list;
+
+        switch (choice){
+            case 1:
+                list= (ArrayList<Trade>) deepClone.deepClone(listPastTrade);
+                while (true) {
+                    for (Trade trade : list) {
+                        if (latestTime < trade.getTimeStamp()) {
+                            latestTime = trade.getTimeStamp();
+                            latestTrade = trade;
+                        }
+                    }
+                    tradeList.add(latestTrade);
+                    list.remove(latestTrade);
+                    if (list.size()==0){
+                        return tradeList;
+                    }
+                }
+
+            case 2:
+                list= (ArrayList<Trade>) deepClone.deepClone(listCurrentTrade);
+                while (true) {
+                    for (Trade trade : list) {
+                        if (latestTime < trade.getTimeStamp()) {
+                            latestTime = trade.getTimeStamp();
+                            latestTrade = trade;
+                        }
+                    }
+                    tradeList.add(latestTrade);
+                    list.remove(latestTrade);
+                    if (list.size()==0){
+                        return tradeList;
+                    }
+                }
+
+            case 3:
+                list= (ArrayList<Trade>) deepClone.deepClone(listTradeRequest);
+                while (true) {
+                    for (Trade trade : list) {
+                        if (latestTime < trade.getTimeStamp()) {
+                            latestTime = trade.getTimeStamp();
+                            latestTrade = trade;
+                        }
+                    }
+                    tradeList.add(latestTrade);
+                    list.remove(latestTrade);
+                    if (list.size()==0){
+                        return tradeList;
+                    }
+                }
+        }
+        return null;
+    }
+
+    public void loadPersons(Trade trade, Context activity){
+        ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
+        trade.setTradeUser(globalEnv.getOwner());
+        if (trade.hasTradePartner()==true) {
+            trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()));
+        }
+    }
+
+
+    /*
+
+    this method removes the person objects
      */
-    // DO NOT CALL THIS FUNCTION IF addTrade() IS ALREADY CALLED
+    public void lightenTrade(Trade trade){
+        trade.removePersons();
+    }
+
+
+
     public void addOngoingTrade(Trade trade) {
 
         // add the trade to the listCurrentTrade
@@ -78,7 +185,7 @@ public class TradeManager {
     // creates an empty trade and user can user setters to add more details about the trade
     /**
      * Creates and empty trade and user can use setters to add more details about the trade
-     * @param None
+     * @param
      */
     public Trade createTrade() {
 
@@ -86,13 +193,7 @@ public class TradeManager {
         return trade;
     }
 
-    /**
-     * Creates a new trade and adds it to the listCurrentTrade
-     * @param tradeUser The user of the application
-     * @param tradePartner The friend that the user wishes to trade with
-     * @param tradeStatus The status of the trade
-     * @param tradeType The type of trade
-     */
+
     public void addTrade(Trade trade) {
 
         // Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, Integer tradeType)
@@ -117,65 +218,10 @@ public class TradeManager {
                 listCurrentTrade.get(i).setTradeStatus(1);
                 listPastTrade.add(listCurrentTrade.get(i));
                 listCurrentTrade.remove(i);
-                /* // no need to swap their book
-                // remove books from both user (if any) and give the books to the other user
-                ArrayList<Book> booklist0 = trade.getListBookUser();
-                ArrayList<Book> booklist1 = trade.getListBookPartner();
-                ArrayList<Book> booklisttemp = new ArrayList<>();
-                // give partner's books to user
-                listCurrentTrade.get(i).setListBookUser(booklist1);
-                // give user's books to partner
-                listCurrentTrade.get(i).setListBookPartner(booklist0);
-                listPastTrade.add(listCurrentTrade.get(i));
-                listCurrentTrade.remove(i);
-                */
                 break;
             }
         }
-        /*
-        int i;
-        int n = listCurrentTrade.size();
-        for (i = 0; i < n;i++) {
-            if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId())) {
-                // remove the trade in listCurrentTrade and add it to the listPastTrade
-                // set the tradeStatus to 1
-                listCurrentTrade.get(i).setTradeStatus(1);
-                // NOTE: make sure that change the inventory outside this class
-                // remove books from both user (if any) and give the book to the other user
-                ArrayList<Book> booklist0 = trade.getListBookUser();
-                ArrayList<Book> booklist1 = trade.getListBookPartner();
-                ArrayList<Book> booklisttemp = new ArrayList<>();
-                Book tempBook;
-                int j;
-                int n0 = booklist0.size(); // number of books from user
-                int n1 = booklist1.size(); // number of books from partner
-                // remove books from user and add them to the partner
-                for (j = 0; j < n0; j++) {
-                    booklisttemp.add(booklist0.get(j));
-                    booklist0.remove(j);
-                }
-                // swap their booklist
-                booklist0 = booklist1;
-                booklist1 = booklisttemp;
-                // now update inventory from both user and partner
-                n0 = booklist0.size(); // number of books from user
-                n1 = booklist1.size(); // number of books from partner
-                // update the user's inventory
-                for (j = 0; j < n0; j++) {
-                    listCurrentTrade.get(i).getTradeUser().getMyInventory().add(booklist0.get(j));
-                }
-                listCurrentTrade.get(i).setListBookUser(booklist0);
-                // update the partner's inventory
-                for (j = 0; j < n1; j++) {
-                    listCurrentTrade.get(i).getTradePartner().getMyInventory().add(booklist1.get(j));
-                }
-                listCurrentTrade.get(i).setListBookPartner(booklist1);
-                addCompleteTrade(listCurrentTrade.get(i));
-                break;
-            }
-        }
-        */
-        // TODO send notification to the other user
+
     }
 
     /**
@@ -240,12 +286,7 @@ public class TradeManager {
         int i;
         // TODO return both listCurrentTrade and listPastTrade (???)
         ArrayList<Trade> tempList = new ArrayList<>();
-        int n0 = listCurrentTrade.size();
         int n1 = listPastTrade.size();
-        // add all current trade to the tempList
-        for (i = 0; i < n0; i++) {
-            tempList.add(listCurrentTrade.get(i));
-        }
         // add all past trade to the tempList
         for (i = 0; i < n1; i++) {
             tempList.add(listPastTrade.get(i));
@@ -375,8 +416,6 @@ public class TradeManager {
         return tempPastTrade;
     }
 
-    public void searchPastTrade() {}
-
     /**
      * Updates the Trade Request List
      * @param person the person who's trade request list that is needed to be updated.
@@ -393,14 +432,6 @@ public class TradeManager {
                 tempList.add(listCurrentTrade.get(i));
             }
         }
-        /*
-        // add thades that were offered to the user
-        for (i = 0; i < n1; i++) {
-            if (listPastTrade.get(i).getTradePartner().getID() == person.getID()) {
-                tempList.add(listPastTrade.get(i));
-            }
-        }
-        */
         this.listTradeRequest = tempList;
     }
 
@@ -421,29 +452,28 @@ public class TradeManager {
      * Else returns NULL
      * @param id the ID of the trade you are looking for.
      */
-    public Trade searchTrade(Integer id) {
+    public Trade searchTrade(Long id, int choice) {
 
-        // search the trade which involves user via tradeId
-        // as tradeId is a primary key and one tradeId is assigned to one and the only one trade,
-        //   return the trade as soon as we find it
-        // else, return NULL
-        int i;
-        int n0 = listCurrentTrade.size();
-        int n1 = listPastTrade.size();
-        // search through listCurrentTrade
-        for (i = 0; i < n0; i++) {
-            if (listCurrentTrade.get(i).getTradeId() == id) {
-                return listCurrentTrade.get(i);
+        if (choice==1){
+            for (Trade trade:listPastTrade){
+                if (trade.getTradeId().longValue()==id.longValue()){
+                    return trade;
+                }
+            }
+        } else if (choice==2){
+            for (Trade trade:listCurrentTrade) {
+                if (trade.getTradeId().longValue() == id.longValue()) {
+                    return trade;
+                }
+            }
+        } else if (choice==3){
+            for (Trade trade:listTradeRequest) {
+                if (trade.getTradeId().longValue() == id.longValue()) {
+                    return trade;
+                }
             }
         }
-        /*
-        // search through listPastTrade
-        for (i = 0; i < n1; i++) {
-            if (listPastTrade.get(i).getTradeId() == id) {
-                return listPastTrade.get(i);
-            }
-        }
-        */
+
         return null;
     }
 

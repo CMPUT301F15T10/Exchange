@@ -87,4 +87,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/Trade_type" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/Trade_save"
+        android:layout_above="@+id/Trade_confirm"
+        android:layout_marginLeft="120dp"
+        />
+
 </RelativeLayout>

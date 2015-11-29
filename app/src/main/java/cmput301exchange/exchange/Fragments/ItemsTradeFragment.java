@@ -199,15 +199,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
     
     public void initButtons(){
-//        myAddItem= (Button) myView.findViewById(R.id.IT_myAddItem);
-//        friendAddItem= (Button) myView.findViewById(R.id.IT_friendAddItem);
 
-
-//        myAddItem.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                myAddItem_Handler();
-//            }
-//        });
         Done= (Button) myView.findViewById(R.id.IT_Done);
         Done.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -215,17 +207,11 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
             }
         });
 
-//        friendAddItem.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                friendAddItem_Handler();
-//            }
-//        });
     }
 
 
     public  void done_Handler(){
-        myBooksTradeController.saveTrade();
-        myActivity.switchFragment(2);
+       exit();
     }
 
     public void updateAdapters(){
@@ -300,8 +286,11 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
         myActivity = (TradeMaker) activity;
     }
 
+    public void exit(){
+        myActivity.switchFragment(2);
+    }
     @Override
     public void onBackPress() {
-        myActivity.displayTrade();
+        exit();
     }
 }

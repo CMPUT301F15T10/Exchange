@@ -14,7 +14,7 @@ import cmput301exchange.exchange.TradeManager;
  */
 public interface TradeMaker extends FragmentContainer {
     void displayItemsToTrade(Trade trade);
-    void displayTrade();
+    void displayTrade(Trade trade);
 //    Trade getTrade();
 //    void setTrade(Trade trade);
     void setTradeController(TradeController tradeController);

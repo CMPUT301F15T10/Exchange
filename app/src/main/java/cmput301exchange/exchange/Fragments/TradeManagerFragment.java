@@ -100,7 +100,7 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
     }
 
     public void displayTrade_Handler(){
-        myActivity.displayTrade();
+        myActivity.makeTrade();
     }
 
     public void CurrentTrade_Handler(){
