@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 
+import cmput301exchange.exchange.Photo;
+
 /**
  * Code inspired by Joshua Campbell
  * https://github.com/joshua2ua/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
@@ -60,23 +62,48 @@ public class SavePhoto {
         return account;
     }
 
-    //adding this for storing images to pass between actvities
-    public void savePhotos(Context context, Contacts.Photos photoList){
 
+    public void saveImage(Context context, Photo photo) {
+    // saveImage() instead of savePhoto() b/cc of a var named savePhoto in PhotoActivity
         try {
             FileOutputStream fos = context.openFileOutput(PHOTO, 0);
             BufferedWriter out=new BufferedWriter(new OutputStreamWriter(fos));
             Gson gson=new Gson();
-            gson.toJson(photoList, out);
+            gson.toJson(photo, out);
             out.flush();
             fos.close();
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             throw new RuntimeException(e);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             throw new RuntimeException(e);
         }
     }
 
+    public Photo loadPhoto(Context context){
+
+        Photo myPhoto = null;
+        try {
+            FileInputStream fis = context.openFileInput(PHOTO);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+            Gson gson = new Gson();
+            Type type=new TypeToken<Photo>() {}.getType();
+            myPhoto = gson.fromJson(br,type);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return myPhoto;
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+

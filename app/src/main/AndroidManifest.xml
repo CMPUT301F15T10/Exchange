@@ -69,7 +69,7 @@
         </activity>
         <activity
             android:name=".Activities.PhotoActivity"
-            android:label="@string/title_activity_photo" >
+            android:label="Edit Photo" >
         </activity>
 
         <activity

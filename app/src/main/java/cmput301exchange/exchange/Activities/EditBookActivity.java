@@ -44,7 +44,6 @@ public class EditBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-
         initBook();
         myController= new EditBookController(myBook); //Creating an empty EditBookController
 
@@ -177,4 +176,3 @@ public class EditBookActivity extends AppCompatActivity {
         }
     }
 }
-

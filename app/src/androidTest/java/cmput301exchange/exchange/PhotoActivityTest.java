@@ -1,11 +1,22 @@
 package cmput301exchange.exchange;
 
+import cmput301exchange.exchange.Activities.PhotoActivity;
+
 /**
  * Created by Kaleb on 10/8/2015.
  */
 
+public class PhotoActivityTest {
+
+    public PhotoActivityTest() {}
+
+
+}
+
+
+
+
 /*
-public class PhotographTest {
 
   // testing case US06.01.01
   // goal: attach photo to items
@@ -53,7 +64,7 @@ public class PhotographTest {
 // goal: Image file less than 65536 bytes
 
   public void testImageSize(Photo photo) {
-	
+
 	  final int MAXSIZE = 65536;
 	  ItemList item = new ItemList;
 	  item.add(photo);
@@ -63,19 +74,19 @@ public class PhotographTest {
 
 
 // testing case US06.05.01
-// goal: enable/disable downloads 
+// goal: enable/disable downloads
 
 
   public void testPhotoDownloads() {
 
 	  boolean loaded;
 	  ItemList item = new ItemList;
-	  item.loadImages = true;       // implies user chose to have thumbnails downlaoded 
+	  item.loadImages = true;       // implies user chose to have thumbnails downlaoded
 
 	  if (item.loadImages == true) {
   		loaded = item.GetImage();
 	  	assertTrue(loaded)
-		
+
 	  }
 	}
 }

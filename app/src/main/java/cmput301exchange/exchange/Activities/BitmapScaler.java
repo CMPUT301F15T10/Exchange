@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
  * https://guides.codepath.com/android/Working-with-the-ImageView#scaling-a-bitmap
  * accessed 28/11/2015
  */
+
+// TODO: 11/28/15 figure out if this is actually needed. no longer see use for it 
 public class BitmapScaler
 {
     // Scale and maintain aspect ratio given a desired width
