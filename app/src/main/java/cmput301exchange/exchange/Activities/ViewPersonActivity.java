@@ -152,7 +152,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         globalEnv = new ModelEnvironment(this, null);
 //        user=elasticSearch.getUser();
         user = globalEnv.getOwner();
-        friendList = user.getMyFriendList().getPersonList();
+        friendList = user.getMyFriendList(this).getPersonList();
 
         allPerson = globalEnv.getPersonList();
         personList = allPerson.getPersonList();
@@ -320,9 +320,9 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
         if (state==1){
             if (query.isEmpty()){ //if query is empty
-                friendList=user.getMyFriendList().getPersonList();
+                friendList=user.getMyFriendList(this).getPersonList();
             }else{
-                friendList = user.getMyFriendList().searchPerson(query);
+                friendList = user.getMyFriendList(this).searchPerson(query);
             }
             friendListAdapter.clear();
             friendListAdapter.addAll(friendList);
@@ -344,7 +344,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     public void makeFriend(){
         user.addFriend(selectedPerson);
 //        saveUser();
-        friendList=user.getMyFriendList().getPersonList();
+        friendList=user.getMyFriendList(this).getPersonList();
         friendListAdapter.clear();
         friendListAdapter.addAll(friendList);
         friendListAdapter.notifyDataSetChanged();
@@ -357,7 +357,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 //        saveUser();
 //            selectedPerson=null;
 //            lv.clearChoices();
-        friendList=user.getMyFriendList().getPersonList();
+        friendList=user.getMyFriendList(this).getPersonList();
         friendListAdapter.clear();
         friendListAdapter.addAll(friendList);
         friendListAdapter.notifyDataSetChanged();

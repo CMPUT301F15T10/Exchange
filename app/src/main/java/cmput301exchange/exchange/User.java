@@ -22,6 +22,10 @@ public class User extends Person{
         this.myInventory=inventory;
     }
     public void setFriendList(PersonList friends){
-        this.myFriendList=friends;
+        ArrayList<Long> list=new ArrayList<>();
+        for (Person person:friends.getPersonList()){
+            list.add(person.getID());
+        }
+        this.myFriendList=list;
     }
 }

@@ -1,6 +1,9 @@
 package cmput301exchange.exchange;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 
 
@@ -29,6 +32,9 @@ public class Trade {
     private Integer tradeId; // generate a trade id, PRIMARY KEY
     private Long UserID,PartnerID;
 
+    private String creationDate;
+    private Long timeStamp;
+
 
     // call this constructor
     // creates an empty trade
@@ -42,7 +48,6 @@ public class Trade {
      * @param tradeUser the user that initates the trade
      * @param tradePartner the Partner that you are sending the trade to
      * @param listBookUser List of the books the User is offering
-     * @param listbookPartner List of books the partner is offering
      */
     public Trade(Person tradeUser, Person tradePartner, ArrayList<Book> listBookUser, ArrayList<Book> listBookPartner) {//to creat a trade, include traders, items and booklist for both side
 
@@ -77,6 +82,22 @@ public class Trade {
         this.tradeId = tradeId;
     }
 
+    public Long getPartnerID() {
+        return PartnerID;
+    }
+
+    public void setPartnerID(Long partnerID) {
+        PartnerID = partnerID;
+    }
+
+    public Long getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(Long userID) {
+        UserID = userID;
+    }
+
     /*
     public Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, ArrayList<Item> listItemUser, ArrayList<Item> listItemPartner, Integer tradeType) {
         this.tradeUser = tradeUser;
@@ -88,6 +109,7 @@ public class Trade {
         Random rand = new Random();
         this.tradeId = rand.nextInt();
     }
+
     */
 
     // tradeUser
@@ -97,6 +119,7 @@ public class Trade {
 
     public void setTradeUser(Person tradeUser) {
         this.tradeUser = tradeUser;
+        this.UserID = tradeUser.getID();
     }
 
     // tradePartner
@@ -106,6 +129,28 @@ public class Trade {
 
     public void setTradePartner(Person tradePartner) {
         this.tradePartner = tradePartner;
+        this.PartnerID= tradePartner.getID();
+    }
+
+    public void setTimeStamp(){
+        timeStamp=System.currentTimeMillis();
+    }
+
+    public Long getTimeStamp(){
+        return timeStamp;
+    }
+
+    public void setDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        creationDate=dateFormat.format(date);
+    }
+
+    public boolean equals(Trade trade){
+        if (trade.getTradeId().longValue()==tradeId.longValue()){
+            return true;
+        }
+        return false;
     }
 
     // tradeStatus
@@ -167,5 +212,11 @@ public class Trade {
 
     public void setListBookPartner(ArrayList<Book> listBookPartner) {
         this.listBookPartner = listBookPartner;
+    }
+
+    //TODO
+    public String toString(){
+        // You may have to add other texts depending on the status
+        return "Trade Partner: "+tradePartner.getName()+ "\n"+ "Created: "+creationDate;
     }
 }

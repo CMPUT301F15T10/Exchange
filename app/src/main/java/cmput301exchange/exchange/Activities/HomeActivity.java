@@ -158,7 +158,7 @@ public class  HomeActivity extends AppCompatActivity {
         if (intent.hasExtra("User")) {
             String json = intent.getExtras().getString("User");
             user = gson.fromJson(json, User.class);
-            Log.e("User friendlist size: ", String.valueOf(user.getMyFriendList().getPersonList().size()));
+            Log.e("User friendlist size: ", String.valueOf(user.getMyFriendList(this).getPersonList().size()));
             if (GlobalENV == null) {
                 GlobalENV = new ModelEnvironment(this, "i");
             }
