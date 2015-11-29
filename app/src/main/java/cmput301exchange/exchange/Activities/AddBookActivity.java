@@ -234,9 +234,25 @@ public class AddBookActivity extends ActionBarActivity {
                         startActivityForResult(intent, 2);
 
                     } else if (more_options[item].equals("Save Photo")) {
-                       // write method that saves bitmap from bitmap array to disc
+                       String path = Environment.getExternalStorageDirectory().toString();
+                       String item_title = name.getText().toString();
+                       File newFolder = new File(path + "/Exchange/" + item_title);
+                       newFolder.mkdir();
+                       File file = new File(path + "/Exchange/" + item_title, item_title + String.valueOf(currentBitmapPos) + ".jpg"); // the File to save to
+                       try {
+                           OutputStream fOut = new FileOutputStream(file);
+                           Bitmap pictureBitmap = imageList.get(currentBitmapPos);
+                           pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                           fOut.flush();
+                           fOut.close();
+                           MediaStore.Images.Media.insertImage(getContentResolver(), file.getPath(), file.getName(), file.getName());
+                       } catch (FileNotFoundException e){
 
-                    } else if (more_options[item].equals("Delete Photo")) {
+                       } catch (IOException e){
+
+                       }
+
+                   } else if (more_options[item].equals("Delete Photo")) {
                        imageList.remove(currentBitmapPos);
                        compressedImages.remove(currentBitmapPos);
                        if (imageList.size() == 0){
