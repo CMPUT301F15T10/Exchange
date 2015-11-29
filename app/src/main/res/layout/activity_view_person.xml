@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:text="View:"
         android:textSize="16sp"
+        android:textColor="#111"
         android:id="@+id/textView17"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
@@ -30,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner2"
+        android:textColor="#111"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/textView17"
@@ -39,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView2"
+        android:textColor="#111"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/view2" />
 
