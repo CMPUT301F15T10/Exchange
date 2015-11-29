@@ -1,8 +1,12 @@
 package cmput301exchange.exchange;
 
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Map;
+
+import cmput301exchange.exchange.Interfaces.Serializable;
 
 /**
  * Stores an inventory for a person
@@ -10,7 +14,7 @@ import java.util.Map;
  */
 
 
-public class Inventory{
+public class Inventory implements Serializable{
 
     protected User inventoryOwner;
     protected ArrayList<Book> inventoryList = new ArrayList<>();
@@ -157,5 +161,9 @@ public class Inventory{
 
         }
         return result;
+    }
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

@@ -2,82 +2,121 @@ package cmput301exchange.exchange.Activities;
 
 
 import android.app.AlertDialog;
-import android.content.Context;
+import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 import cmput301exchange.exchange.Photo;
 import cmput301exchange.exchange.R;
 
-/* TODO: optionally attach photographs of items to the item
- *          Need to link to item ID
- *          gallery or camera? -- taken care of in addBookActivity
- * TODO: image file to be under 65536 bytes in size.
- * TODO: delete any attached photograph
- * TODO: view any attached photograph for an item
- * TODO: if photo downloads are disabled, I want the option of manually choosing inventory photos to download.
- */
 
-// need to display/preview image in addBookActivity
-//
-
+// cant get the intent in EditBookActivity to call this successfully. Crashes the app 100% of time
 public class PhotoActivity extends AppCompatActivity {
 
-    public final int MAX_SIZE = 65536; // max size of photo in bytes
-    Button upload;
-    ImageView imageView;
+    protected int REQUEST_CAMERA;
+    protected int SELECT_FILE;
 
+    Button deletePhotoButton,
+           selectPhotoButton,
+           acceptButton;
+    ImageView imageView;
+    ContentValues cValues;
+    Uri uri;
+    SavePhoto savePhoto;
+    Photo photo;
+    BitmapScaler bmScaler;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
-        upload = (Button) findViewById(R.id.uploadButton);
-        imageView = (ImageView) findViewById(R.id.imagePreview);
+        photo = new Photo();
+        bmScaler = new BitmapScaler();
+        savePhoto = new SavePhoto();
 
-        upload.setOnClickListener(new View.OnClickListener() {
+        photo = savePhoto.loadPhoto(getApplicationContext());
+        deletePhotoButton = (Button)findViewById(R.id.deletePhotoButton);
+        selectPhotoButton = (Button)findViewById(R.id.selectPhotoButton);
+        acceptButton = (Button)findViewById(R.id.acceptButton);
+        imageView = (ImageView)findViewById(R.id.imageView);
+
+
+        selectPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectImage();
+                selectPhoto();
+            }
+        });
+
+        deletePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePhoto();
+            }
+        });
+
+        // idk if below is needed
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                accept();
             }
         });
 
     }
 
-    private void selectImage() {
+
+
+    // Inspired by Tejas Jasani
+    // http://www.theappguruz.com/blog/android-take-photo-camera-gallery-code-sample
+
+    public void selectPhoto() {
 
         final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(PhotoActivity.this);
         builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
-
+            // TODO: 11/28/15 grab user ID. Fit that into file name
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
                 if (options[item].equals("Take Photo")) {
 
+
+                    // Written by stackoverflow user 'antrromet'
+                    // http://stackoverflow.com/questions/10377783/low-picture-image-quality-when-capture-from-camera
+                    cValues.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    cValues.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                    uri = getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cValues);
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    //pic = f;
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                     startActivityForResult(intent, 1);
 
                 } else if (options[item].equals("Choose from Gallery")) {
-
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
+                    intent.setType("image/*");
+
 
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
@@ -86,33 +125,75 @@ public class PhotoActivity extends AppCompatActivity {
         });
 
         builder.show();
-    }
-
-// public boolean underMaxSize(picture) { ///]
-
-    // todo: Preview image. at start, check that downloadYesNo from photo class is true. then do the thing
-    public void setCurrentImage(/*File f*/) {
-        //Photo p;
-        //if (!p.downloadYesNo) { return; }
-        //  FileOutputStream fos = openFileOutput(f, Context.MODE_PRIVATE);
-
-        Integer photos[] = {R.drawable.testphoto};
-
-        imageView.setImageResource(photos[0]);
-    }
-
-
-    // // TODO: 11/25/15
-    private void deletePhoto(File f) {
-        f.delete();
 
     }
+
+    // TODO: 11/28/15
+    public void deletePhoto() {
+        photo.removePhoto(1);
+
+    }
+
+    // TODO: 11/28/15
+    public void accept() {
+        if(photo.getPhoto().size() > 0){
+            photo.empty = false;
+        } else {
+            photo.empty = true;
+        }
+        Intent result = new Intent();
+        setResult(PhotoActivity.RESULT_OK, result);
+        savePhoto.saveImage(getApplicationContext(), photo);
+        finish();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA) {
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    String photoAddress = uriPath(uri);
+
+                    BitmapFactory.Options bmfO = new BitmapFactory.Options();
+                    // inSampleSize returns an image that is 1/4 the width/height of the original,
+                    // and 1/16 the number of pixels
+                    // via http://developer.android.com/reference/android/graphics/BitmapFactory.Options.html
+                    bmfO.inSampleSize = 4;
+                    Bitmap oldBitmap = BitmapFactory.decodeFile(photoAddress, bmfO);
+                    ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
+                    oldBitmap.compress(Bitmap.CompressFormat.PNG, 80, byteOutStream);
+                    photo.addPhoto(byteOutStream.toByteArray());
+
+                    Bitmap scale = bmScaler.scaleToFitWidth(oldBitmap, 250);
+                    photo.empty = false;
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+        }
+    }
+
+    // Written by stackoverflow user 'antrromet'
+    // http://stackoverflow.com/questions/10377783/low-picture-image-quality-when-capture-from-camera
+    public String uriPath(Uri u) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(u, proj, null, null, null);
+        int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(index);
+    }
+
 }
 
-// // TODO: 11/25/15
-// public bool underMaxsize(file pic is in) {
-// if bitmap.size < MAX_SIZE { return true{
-// else return false
+
+
+
 
 
 

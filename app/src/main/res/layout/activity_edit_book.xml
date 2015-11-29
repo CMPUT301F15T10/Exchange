@@ -23,8 +23,9 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:id="@+id/EditItem_NameInput"
+        android:layout_gravity="top|left"
         android:layout_alignTop="@+id/textView9"
-        android:layout_alignEnd="@+id/EditItem_TypeInput" />
+        android:layout_toEndOf="@+id/textView10" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -156,7 +157,7 @@
         android:id="@+id/EditItem_Done"
         android:textSize="14dp"
         android:onClick="onSave"
-        android:layout_alignTop="@+id/EditItem_Photo"
+        android:layout_alignParentBottom="true"
         android:layout_toStartOf="@+id/EditItem_Photo" />
 
     <ImageView

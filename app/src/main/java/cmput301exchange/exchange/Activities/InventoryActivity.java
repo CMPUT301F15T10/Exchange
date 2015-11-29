@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Book;
@@ -26,6 +27,7 @@ import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Person;
+import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.User;
 
@@ -276,7 +278,11 @@ public class InventoryActivity extends AppCompatActivity {
         if (requestCode == MENU_Add_Item && data != null) {
             if (data.hasExtra("Inventory")){
                 fromAddBook=true;
-                String json=data.getExtras().getString("Inventory");
+//                String json=data.getExtras().getString("Inventory");
+                DataIO dataIO = new DataIO(this, InventoryActivity.class);
+                String json = dataIO.loadFromFile("book.sav");
+                File file = new File(getFilesDir(), "book.sav");
+                file.delete();
                 inventory=gson.fromJson(json,Inventory.class);
                 updateBookList(inventory);
                 lv.clearChoices();
