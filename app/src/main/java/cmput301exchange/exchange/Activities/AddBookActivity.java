@@ -71,7 +71,6 @@ public class AddBookActivity extends ActionBarActivity {
 
 
         bmpAdapter = new PhotoAdapter(this, imageList);
-        bmpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         photoList.setAdapter(bmpAdapter);
 
