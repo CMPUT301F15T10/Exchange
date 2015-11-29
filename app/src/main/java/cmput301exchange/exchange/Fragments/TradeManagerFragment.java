@@ -23,7 +23,7 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
 
     private TradeManagerActivity myActivity;
     private View myView;
-    private Button displayTrade,viewCurrentTrade,viewPastTrade,checkTradeRequest;
+    private Button displayTrade,viewCurrentTrade,viewPastTrade,checkTradeRequest,unInitiatedTrade;
     private TextView tradeRequestsView;
     private CharSequenceWrapper tradeRequests_no=null;
     private TradeManagerController myTradeManagerController;
@@ -54,6 +54,7 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
         viewCurrentTrade= (Button) myView.findViewById(R.id.TM_currentTrade);
         viewPastTrade= (Button) myView.findViewById(R.id.TM_pastTrade);
         checkTradeRequest= (Button) myView.findViewById(R.id.TM_checkRequest);
+        unInitiatedTrade= (Button) myView.findViewById(R.id.TM_unInitiated);
 
         displayTrade.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -78,6 +79,16 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
                 CheckRequest_Handler();
             }
         });
+
+        unInitiatedTrade.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                unInitiated_Handler();
+            }
+        });
+    }
+
+    public void unInitiated_Handler(){
+
     }
 
     public void initTextView(){

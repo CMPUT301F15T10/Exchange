@@ -32,11 +32,11 @@ import cmput301exchange.exchange.TradeManager;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TradeFragment extends Fragment implements BackButtonListener {
+public class TradeFragment2 extends Fragment implements BackButtonListener {
     private int FragmentID=2;
     private TradeMaker myActivity;
     private View myView;
-    private Button sendOffer,delete,tradeItems,save;
+    private Button accept,decline,tradeItems,save;
     private TextView TradeTypeView,tradeIDView;
     private CharSequenceWrapper TradeType=null, tradeID=null;
     private TradeController myTradeController;
@@ -47,7 +47,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 //    private TradeManager myTradeManager;
 //    private Person tradePartner=null;
 
-    public TradeFragment() {
+    public TradeFragment2() {
         // Required empty public constructor
     }
 
@@ -81,7 +81,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        myView=inflater.inflate(R.layout.activity_trade, container, false);
+        myView=inflater.inflate(R.layout.activity_trade2, container, false);
         initButtons();
         initTextView();
         initAdapter();
@@ -91,24 +91,24 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
 
     public void initButtons(){
-        sendOffer= (Button) myView.findViewById(R.id.Trade_sendOffer);
-        delete= (Button) myView.findViewById(R.id.Trade_delete);
-        tradeItems= (Button) myView.findViewById(R.id.Trade_viewItems);
-        save=(Button) myView.findViewById(R.id.Trade_save);
+        accept= (Button) myView.findViewById(R.id.Trade2_accept);
+        decline= (Button) myView.findViewById(R.id.Trade2_decline);
+        tradeItems= (Button) myView.findViewById(R.id.Trade2_viewItems);
+        save=(Button) myView.findViewById(R.id.Trade2_save);
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 onSave_Handler();
             }
         });
-        sendOffer.setOnClickListener(new View.OnClickListener() {
+        accept.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                sendOffer_Handler();
+                accept_Handler();
             }
         });
-        delete.setOnClickListener(new View.OnClickListener() {
+        decline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                delete_Handler();
+                decline_Handler();
             }
         });
         tradeItems.setOnClickListener(new View.OnClickListener() {
@@ -122,15 +122,15 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public void onSave_Handler(){
         exit();
     }
-    
-    public void sendOffer_Handler(){
-        myTradeController.sendOfferTrade();
+
+    public void accept_Handler(){
+        myTradeController.acceptTrade();
         //May add a dialog box if necessary
         exit();
     }
-    
-    public void delete_Handler(){
-        myTradeController.deleteTrade();
+
+    public void decline_Handler(){
+        myTradeController.declineTrade();
         //May add a dialog box if necessary
         exit();
     }
@@ -149,7 +149,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void initSpinner(){
-        traderSelection= (Spinner) myView.findViewById(R.id.Trade_spinner);
+        traderSelection= (Spinner) myView.findViewById(R.id.Trade2_spinner);
         traderSelection.setAdapter(spinnerAdapter);
         traderSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -199,8 +199,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void initTextView(){
-        TradeTypeView= (TextView) myView.findViewById(R.id.Trade_type);
-        tradeIDView= (TextView) myView.findViewById(R.id.Trade_ID);
+        TradeTypeView= (TextView) myView.findViewById(R.id.Trade2_type);
+        tradeIDView= (TextView) myView.findViewById(R.id.Trade2_ID);
 //        updateTextView();
     }
 

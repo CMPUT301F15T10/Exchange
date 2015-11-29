@@ -168,6 +168,17 @@ public class TradeManager {
         return null;
     }
 
+    public void deleteCompleteTrade(Trade trade1){
+        int i=0;
+        for (Trade trade:listCompleteTrade){
+            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()){
+                listCompleteTrade.remove(i);
+                break;
+            }
+            i=i+1;
+        }
+    }
+
     public void loadPersons(Trade trade, Context activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
         trade.setTradeUser(globalEnv.getOwner());

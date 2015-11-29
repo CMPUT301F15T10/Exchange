@@ -32,22 +32,21 @@ import cmput301exchange.exchange.TradeManager;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TradeFragment extends Fragment implements BackButtonListener {
+public class TradeFragment3 extends Fragment implements BackButtonListener {
     private int FragmentID=2;
     private TradeMaker myActivity;
     private View myView;
-    private Button sendOffer,delete,tradeItems,save;
-    private TextView TradeTypeView,tradeIDView;
+    private Button tradeItems,back;
+    private TextView TradeTypeView,tradeIDView,tradePartnerView;
     private CharSequenceWrapper TradeType=null, tradeID=null;
     private TradeController myTradeController;
     private ArrayAdapter<ListItemRunnable> spinnerAdapter;
     private ArrayList<ListItemRunnable> spinnerItems;
-    private Spinner traderSelection;
     private String traderName=null;
 //    private TradeManager myTradeManager;
 //    private Person tradePartner=null;
 
-    public TradeFragment() {
+    public TradeFragment3() {
         // Required empty public constructor
     }
 
@@ -81,36 +80,23 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        myView=inflater.inflate(R.layout.activity_trade, container, false);
+        myView=inflater.inflate(R.layout.activity_trade3, container, false);
         initButtons();
         initTextView();
-        initAdapter();
-        initSpinner();
         return myView;
     }
 
 
     public void initButtons(){
-        sendOffer= (Button) myView.findViewById(R.id.Trade_sendOffer);
-        delete= (Button) myView.findViewById(R.id.Trade_delete);
-        tradeItems= (Button) myView.findViewById(R.id.Trade_viewItems);
-        save=(Button) myView.findViewById(R.id.Trade_save);
+        tradeItems= (Button) myView.findViewById(R.id.Trade3_viewItems);
+        back=(Button) myView.findViewById(R.id.Trade3_back);
 
-        save.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                onSave_Handler();
+                onBack_Handler();
             }
         });
-        sendOffer.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                sendOffer_Handler();
-            }
-        });
-        delete.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                delete_Handler();
-            }
-        });
+
         tradeItems.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 tradeItems_Handler();
@@ -119,19 +105,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
     }
 
-    public void onSave_Handler(){
-        exit();
-    }
-    
-    public void sendOffer_Handler(){
-        myTradeController.sendOfferTrade();
-        //May add a dialog box if necessary
-        exit();
-    }
-    
-    public void delete_Handler(){
-        myTradeController.deleteTrade();
-        //May add a dialog box if necessary
+    public void onBack_Handler(){
         exit();
     }
 
@@ -141,75 +115,12 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         myActivity.displayItemsToTrade(null);
     }
 
-    public void initAdapter() {
-        spinnerAdapter =
-                new ArrayAdapter<>((Context) myActivity, android.R.layout.simple_spinner_item, spinnerItems);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-    }
-
-    public void initSpinner(){
-        traderSelection= (Spinner) myView.findViewById(R.id.Trade_spinner);
-        traderSelection.setAdapter(spinnerAdapter);
-        traderSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ((ListItemRunnable) traderSelection.getItemAtPosition(i)).run(null);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        initSpinnerItems();
-        spinnerAdapter.notifyDataSetChanged();
-    }
-
-    public void initSpinnerItems(){
-        spinnerItems.add(null);
-        updateTraderSpinnerItem();
-        spinnerItems.add(new ListItemRunnable() {
-            String text = "Choose new trade partner";
-
-            @Override
-            public void run(Object obj) {
-                selectTrader();
-            }
-
-            public String toString() {
-                return text;
-            }
-        });
-    }
-
-    public void updateTraderSpinnerItem(){
-        spinnerItems.set(0, new ListItemRunnable() {
-            String text = traderName;
-
-            @Override
-            public void run(Object obj) {
-
-            }
-
-            public String toString() {
-                return text;
-            }
-        });
-    }
-
     public void initTextView(){
-        TradeTypeView= (TextView) myView.findViewById(R.id.Trade_type);
-        tradeIDView= (TextView) myView.findViewById(R.id.Trade_ID);
+        TradeTypeView= (TextView) myView.findViewById(R.id.Trade3_type);
+        tradeIDView= (TextView) myView.findViewById(R.id.Trade3_ID);
+        tradePartnerView=(TextView) myView.findViewById(R.id.Trade3_Partner);
+        tradePartnerView.setText(traderName);
 //        updateTextView();
-    }
-
-    //TODO
-    public void selectTrader(){
-        // Should call person search/browse fragment
-        // Then should set traderName
-        myActivity.selectPerson();
-//        updateTraderSpinnerItem();
     }
 
     public void updateTextView(){
@@ -236,8 +147,6 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         super.onResume();
 //        initTradeController();
 //        initTradePartner();
-        updateTraderSpinnerItem();
-        traderSelection.setSelection(0);
         updateTextView();
     }
 

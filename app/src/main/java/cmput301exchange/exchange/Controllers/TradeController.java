@@ -18,6 +18,7 @@ import cmput301exchange.exchange.User;
 public class TradeController {
     private Trade myTrade;
     private TradeManager myTradeManager;
+    private int status;
 //    private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();
 
     public TradeController(Context context,Trade trade, TradeManager tradeManager, User user){
@@ -30,12 +31,15 @@ public class TradeController {
 
     }
 
+    public void setStatus(int status){
+        this.status=status;
+    }
+
     public void createTrade(Context context, User user){
 
         myTrade=new Trade();
         myTrade.setTradeUser(user);
         myTrade.setTradePartner(null);
-        myTrade.setTradeType(0); // By default
         myTrade.setTradeStatus(0);
         myTrade.setListBookUser(new ArrayList<Book>());
         myTrade.setListBookPartner(new ArrayList<Book>());
@@ -48,12 +52,16 @@ public class TradeController {
         Log.e("size current list TradeController: ", String.valueOf(myTradeManager.getListCurrentTrade().size()));
     }
 
+    public void deleteCompleteTrade(){
+        myTradeManager.deleteCompleteTrade(myTrade);
+    }
+
     public boolean hasTradePartner(){
         return myTrade.hasTradePartner();
     }
 
     public String getTradeType(){
-        int status= myTrade.getTradeType();
+        int status= myTrade.getTradeStatus();
         switch (status){
             case 0:
                 return "In Progress";
@@ -63,6 +71,10 @@ public class TradeController {
 
         //there will be other conditions too!
         return "";
+    }
+
+    public void setCompleteTrade(){
+        myTradeManager.setCompleteTrade(myTrade);
     }
 
     public void setTradeManager(TradeManager tradeManager){

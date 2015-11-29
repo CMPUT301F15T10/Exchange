@@ -93,8 +93,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trade_manager_layout);
 
-        loadTradeManager();
         loadUser();
+        loadTradeManager();
         initTradeController();
         processIntent();
         initFragments();
@@ -106,11 +106,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public void loadTradeManager(){
-        if (globalEnv==null){
-            globalEnv=new ModelEnvironment(this,null);
-        }
-        globalEnv.loadInstance(this);
-        myTradeManager=globalEnv.getTradeManager();
+
+        myTradeManager=user.getTradeManager();
         if (myTradeManager==null){
             myTradeManager=new TradeManager();
             Log.e("creates trade managager","trade manager activity");
@@ -119,11 +116,15 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public void loadUser(){
+        if (globalEnv==null){
+            globalEnv=new ModelEnvironment(this,null);
+        } else {
+            globalEnv.loadInstance(this);
+        }
         user=globalEnv.getOwner();
     }
 
     public void saveTradeManager(){
-        globalEnv.setTradeManager(myTradeManager);
         globalEnv.saveInstance(this);
     }
     @Override

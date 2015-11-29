@@ -48,7 +48,7 @@
     <Button
         android:layout_width="220dp"
         android:layout_height="60dp"
-        android:text="My Current Trades"
+        android:text="Ongoing Trades"
         android:id="@+id/TM_currentTrade"
         android:layout_marginTop="250dp"
         android:layout_marginLeft="120dp"
@@ -59,7 +59,7 @@
     <Button
         android:layout_width="220dp"
         android:layout_height="60dp"
-        android:text="My Past Trades"
+        android:text="Completed Trades"
         android:id="@+id/TM_pastTrade"
         android:layout_marginTop="325dp"
         android:layout_alignStart="@+id/TM_currentTrade"
@@ -74,6 +74,17 @@
         android:id="@+id/view"
         android:layout_alignParentEnd="false"
         android:layout_marginTop="40dp" />
+
+    <Button
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:text="NOn initiated Trades"
+        android:id="@+id/TM_unInitiated"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="400dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="17dp" />
 
 
 </RelativeLayout>
