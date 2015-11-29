@@ -234,4 +234,11 @@ public class Book implements Shareable, Comparable<Book> {
         return "Title: "+this.getName()+"\n"+"Author: "+this.getAuthor()+availability;
     }
 
+    public boolean equals(Book another){
+        if (this.ID==another.getID()){
+            return true;
+        }
+        return false;
+    }
+
 }

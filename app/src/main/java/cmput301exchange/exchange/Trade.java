@@ -19,7 +19,7 @@ public class Trade {
     private Person tradeUser; // the one that offer trades to their friends
     private Person tradePartner=null; // the one that receive trades from their friends
     private Integer tradeStatus; // 0 -> ongoing trades, not accepted by the other user yet;
-                                 // 1 -> accepted; 2 -> declined; 3 -> counterTrade;
+                                  // 1 -> accepted; 2 -> declined; 3 -> counterTrade;
     private Integer tradeType; // 0 -> in progress; 1 -> completed
     //private ArrayList<Item> listItemUser;
     //private ArrayList<Item> listItemPartner;
@@ -27,6 +27,8 @@ public class Trade {
     private ArrayList<Book> listBookPartner; // list of books the partner wants to trade
 
     private Integer tradeId; // generate a trade id, PRIMARY KEY
+    private Long UserID,PartnerID;
+
 
     // call this constructor
     // creates an empty trade

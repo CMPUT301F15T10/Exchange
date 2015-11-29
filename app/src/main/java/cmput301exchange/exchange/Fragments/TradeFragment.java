@@ -55,6 +55,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         spinnerItems= new ArrayList<>();
+        myActivity.getBookTradeController().createQuantityDictionaryFriend();
     }
 
     public void initTradeController(){
@@ -126,7 +127,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     //TODO
     public void tradeItems_Handler(){
         //Call TradeListFragment for displaying the items of the trade.
-        myActivity.displayItemsToTrade(myTradeController.getTrade());
+        myActivity.displayItemsToTrade(null);
     }
 
     public void initAdapter() {

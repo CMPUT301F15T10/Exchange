@@ -2,6 +2,7 @@ package cmput301exchange.exchange;
 
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Stores an inventory for a person
@@ -14,9 +15,28 @@ public class Inventory{
     protected User inventoryOwner;
     protected ArrayList<Book> inventoryList = new ArrayList<>();
 
+
     private boolean shareable;
     public void setShareable(boolean bool){shareable = bool;}
     public boolean isShareable(){return shareable;}
+    private boolean isUpdated=false;
+
+    public boolean isUpdated() {
+        return isUpdated;
+    }
+
+    public void setIsUpdated(boolean isUpdated) {
+        this.isUpdated = isUpdated;
+    }
+
+    public Book getBookByID(Long ID){
+        for (Book book:inventoryList){
+            if (book.getID().longValue()==ID.longValue()){
+                return book;
+            }
+        }
+        return null;
+    }
 
     public Book Search(String searchString){
         /**
@@ -50,13 +70,18 @@ public class Inventory{
         return inventoryList;
     }
 
-    public void add(Book Book) {this.inventoryList.add(Book);}
+    public void add(Book book) {
+        this.inventoryList.add(book);
+    }
 
     public void setInventoryList(ArrayList<Book> items){
         this.inventoryList=items;
     }
 
-    public void removeItem(Book book){this.inventoryList.remove(book);}
+
+    public void removeItem(Book book){
+        this.inventoryList.remove(book);
+    }
 
     public boolean contains(Book book){return this.inventoryList.contains(book);}
 

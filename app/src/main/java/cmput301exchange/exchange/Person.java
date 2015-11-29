@@ -1,7 +1,9 @@
 package cmput301exchange.exchange;
 
+import android.content.Context;
 import android.graphics.Picture;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -20,7 +22,7 @@ public class Person {
     private String userName;
     protected Inventory myInventory;
     private String email;
-    protected PersonList myFriendList= new PersonList();
+    protected ArrayList<Long> myFriendList= new ArrayList<>();
     private long TradeCount;
     protected boolean isUser=false;
 
@@ -33,9 +35,6 @@ public class Person {
     }
 
     private long TimeStamp;
-   // private ArrayList<History> historylist;
-   // private ArrayList<Trade> tradelist;
-
 
     public Person(String username) {
         this.userName = username;
@@ -91,40 +90,11 @@ public class Person {
         return email;
     }
 
-    public PersonList getMyFriendList(){
-        return myFriendList;
+    public PersonList getMyFriendList(Context context){
+        PersonManager pm= new PersonManager(context);
+        return pm.extractPersonList(myFriendList);
     }
 
-/* TODO IMPLEMENT THE HISTORY AND TRADE OBJECTS
-    public void setHistorylist(ArrayList<History> historylist) {
-        this.historylist = historylist;
-    }
-
-    public void addHistorylist(History event) {
-        this.historylist.add(event);
-    }
-
-    public void setTradelist(ArrayList<Trade> tradelist) {
-        this.tradelist = tradelist;
-    }
-
-    public void addTradelist(Trade trade) {
-        this.tradelist.add(trade);
-    }
-
-    public PersonList getMyfriendlist() {
-        return myfriendlist;
-    }
-
-    public ArrayList<History> getHistorylist() {
-        return historylist;
-    }
-
-    public ArrayList<Trade> getTradelist() {
-        return tradelist;
-    }
-
-*/
     public void setName(String name) {
         this.name = name;
     }
@@ -150,11 +120,11 @@ public class Person {
     }
 
     public void addFriend(Person friend){
-        myFriendList.addPerson(friend);
+        myFriendList.add(friend.getID());
     }
 
     public void removeFriend(Person person){
-        myFriendList.removePerson(person);
+        myFriendList.remove(person.getID());
     }
 
 }

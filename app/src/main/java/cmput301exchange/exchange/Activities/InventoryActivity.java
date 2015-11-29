@@ -66,6 +66,8 @@ public class InventoryActivity extends AppCompatActivity {
     private Intent intent;
     private ElasticSearch elasticSearch;
     private boolean fromAddBook=false;
+    private ArrayList<Integer> tradeItemsSelectedPos=null;
+    private boolean fromTradeUI=false;
 
     private DrawerLayout leftDrawer;
     private ListView leftNavList;
@@ -107,6 +109,7 @@ public class InventoryActivity extends AppCompatActivity {
         arrayAdapterBook.addAll(inventory.getInventoryList());
 
         lv.setAdapter(arrayAdapterBook);
+        checkItems();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner1);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -156,16 +159,43 @@ public class InventoryActivity extends AppCompatActivity {
     public void init() {
         globalEnv = new ModelEnvironment(this, null);
         user = globalEnv.getOwner();
-        if (intent.hasExtra("Friend_Inventory")) {
+        processIntents();
+    }
+    
+    public void checkItems(){
+        if (tradeItemsSelectedPos!=null){
+            for (Integer position:tradeItemsSelectedPos){
+                lv.setItemChecked(position,true);
+                selectedBooks.add(inventory.getInventoryList().get(position));
+            }
+        }
+    }
+    
+    public void processIntents(){
+        if (intent.hasExtra("From_ViewPersonActivity")) {
             String inventory_json = intent.getStringExtra("Friend_Inventory");
             Gson gson = new Gson();
             inventory=gson.fromJson(inventory_json,Inventory.class);
-
-            if (intent.hasExtra("Inventory_State")) {
-                state = intent.getIntExtra("Inventory_State", 0);
+            state=2;
+        } else if (intent.hasExtra("From_TradeManagerActivity")) {
+            fromTradeUI=true;
+            if (intent.hasExtra("Friend_Inventory")) {
+                String inventory_json = intent.getStringExtra("Friend_Inventory");
+                Gson gson = new Gson();
+                inventory = gson.fromJson(inventory_json, Inventory.class);
+                String json=intent.getStringExtra("Selected_Books_Position");
+                tradeItemsSelectedPos=(ArrayList<Integer>)gson.fromJson(json,ArrayList.class);
+                state = 2;
+            } else if (intent.hasExtra("User_Inventory")){
+                Gson gson = new Gson();
+                String inventory_json = intent.getStringExtra("User_Inventory");
+                inventory = gson.fromJson(inventory_json, Inventory.class);
+                String json=intent.getStringExtra("Selected_Books_Position");
+                tradeItemsSelectedPos=(ArrayList<Integer>)gson.fromJson(json,ArrayList.class);
+//                inventory = user.getMyInventory();
+                state=1;// inventory of user
             }
-
-        } else {
+        } else{
             inventory = user.getMyInventory();
             state=1;// inventory of user
         }
@@ -284,11 +314,10 @@ public class InventoryActivity extends AppCompatActivity {
                     menu.findItem(R.id.action_edit).setVisible(true);
                     menu.findItem(R.id.action_remove_single).setVisible(true);
                     menu.findItem(R.id.action_clone).setVisible(true); // temporairly for testing purposes
-                    menu.findItem((R.id.action_trade_Item)).setVisible(true);
+
                 } else if(selectedBooks.size()>1) {
                     menu.findItem(R.id.action_remove_single).setVisible(false);
                     menu.findItem(R.id.action_remove_multi).setVisible(true);
-                    menu.findItem((R.id.action_trade_Item)).setVisible(true);
                 }
             }
         }
@@ -304,6 +333,9 @@ public class InventoryActivity extends AppCompatActivity {
             }
         }
 
+        if (fromTradeUI==true){
+            menu.findItem((R.id.action_trade_Item)).setVisible(true);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -376,10 +408,15 @@ public class InventoryActivity extends AppCompatActivity {
                 startActivity(intent);
 
                 return true;
+
+            case R.id.action_trade_Item:
+                sendBackTradeItems();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     public void removeItems(){
         for (Book b:selectedBooks){
@@ -462,9 +499,9 @@ public class InventoryActivity extends AppCompatActivity {
         String json= gson.toJson(inventory);
         intent.putExtra("Trade_Items", json);
         setResult(RESULT_OK, intent);
-
         super.finish();
     }
+
     @Override
     public void finish(){
 //        Log.e("Destroyed","On Destroy");

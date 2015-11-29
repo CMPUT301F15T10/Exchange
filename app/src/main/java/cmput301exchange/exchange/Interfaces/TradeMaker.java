@@ -1,6 +1,10 @@
 package cmput301exchange.exchange.Interfaces;
 
+import java.util.ArrayList;
+
+import cmput301exchange.exchange.Controllers.BooksTradeController;
 import cmput301exchange.exchange.Controllers.TradeController;
+import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.Trade;
 import cmput301exchange.exchange.TradeManager;
@@ -19,6 +23,7 @@ public interface TradeMaker extends FragmentContainer {
 //    boolean IsNewTrade();
     Person getTradePartner();
     void selectPerson();
-    void selectItems();
-
+    void selectItems(int type, Inventory inventory, ArrayList<Integer> position_array);
+    Inventory assignBooks();
+    BooksTradeController getBookTradeController();
 }

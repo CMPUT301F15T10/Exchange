@@ -27,8 +27,11 @@ import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
+import cmput301exchange.exchange.Mocks.MockBooks;
 import cmput301exchange.exchange.Mocks.MockPersonList;
 import cmput301exchange.exchange.ModelEnvironment;
 
@@ -37,6 +40,7 @@ import cmput301exchange.exchange.PersonList;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
+import cmput301exchange.exchange.Serializers.deepClone;
 import cmput301exchange.exchange.User;
 
 public class  HomeActivity extends AppCompatActivity {
@@ -61,7 +65,6 @@ public class  HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         intent = getIntent();
         GlobalENV= new ModelEnvironment(this,null);

@@ -73,4 +73,14 @@ public class PersonList {
             }
         }
     }
+
+    public Person getPersonByID(long ID){
+        for (Person person:personList){
+            if (person.getID()==ID){
+                return person;
+            }
+        }
+        return null;
+    }
+
 }

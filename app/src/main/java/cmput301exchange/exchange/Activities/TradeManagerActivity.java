@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.BooksTradeController;
 import cmput301exchange.exchange.Controllers.TradeController;
 import cmput301exchange.exchange.Fragments.ItemsTradeFragment;
 import cmput301exchange.exchange.Fragments.TradeFragment;
@@ -46,8 +47,21 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
     private Intent personIntent, inventoryIntent;
     private TradeController myTradeController;
-    private Boolean callTradeFragment=null;
 
+    public BooksTradeController getBookTradeController() {
+        return myBookTradeController;
+    }
+
+    public void setBookTradeController(BooksTradeController myBookTradeController) {
+        this.myBookTradeController = myBookTradeController;
+    }
+
+    private Boolean callTradeFragment=null;
+    private BooksTradeController myBookTradeController=null;
+
+    public void initBookTradeController(){
+        myBookTradeController= new BooksTradeController(myTradeController.getTrade(),1,this);
+    }
     public void initTradeController(){
         myTradeController=new TradeController(this,null,myTradeManager);
     }
@@ -79,6 +93,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 //        myTradeManager= new TradeManager();
         loadTradeManager();
         initTradeController();
+        initBookTradeController();
         processIntent();
         initFragments();
 //        newTrade=true; // Change this line once you add the functionality of view person calling this activity
@@ -183,7 +198,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public void displayItemsToTrade(Trade trade){
-        myTradeController.setTrade(trade);
+//        myTradeController.setTrade(trade);
         switchFragment(4);
     }
 
@@ -257,7 +272,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         if (requestCode == INVENTORY) {
             data.setClass(this, TradeManagerActivity.class);
             inventoryIntent = data;
-            assignBooks();
+            displayItemsToTrade(null);
+//            assignBooks();
 //            getTradePartner();
 //            switchFragment(2); //switch to trade fragment
         }
@@ -280,6 +296,9 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
     public Inventory assignBooks(){
         Gson gson= new Gson();
+        if (inventoryIntent==null){
+            return null;
+        }
         if (inventoryIntent.hasExtra("Trade_Items")) {
             String json = personIntent.getExtras().getString("Trade_Items");
             return gson.fromJson(json, Inventory.class);
@@ -293,10 +312,27 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         startActivityForResult(intent, SEARCH_PEOPLE);
     }
 
-    public void selectItems(){
-        Intent intent= new Intent(this,Inventory.class);
-        intent.putExtra("From_TradeManagerActivity","");
-        startActivityForResult(intent, INVENTORY);
+    public void selectItems(int type, Inventory inventory, ArrayList<Integer> position_array){
+        Gson gson= new Gson();
+        String json="";
+
+        if (inventory!=null){
+            json=gson.toJson(inventory);
+        }
+
+        if (type==1) {
+            Intent intent = new Intent(this, Inventory.class);
+            intent.putExtra("From_TradeManagerActivity","");
+            intent.putExtra("User_Inventory",json);
+            intent.putExtra("Selected_Books_Position",position_array);
+            startActivityForResult(intent, INVENTORY);
+        } else if (type==2){
+            Intent intent = new Intent(this, Inventory.class);
+            intent.putExtra("From_TradeManagerActivity","");
+            intent.putExtra("Friend_Inventory",json);
+            intent.putExtra("Selected_Books_Position",position_array);
+            startActivityForResult(intent, INVENTORY);
+        }
     }
 
 //    public void downloadServer(){
