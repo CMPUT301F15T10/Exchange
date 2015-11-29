@@ -65,7 +65,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         elasticSearch = new ElasticSearch(this);
         init();
 //        friendList=user.getMyFriendList().getPersonList();
-        initPersonList(10);
+        initPersonList(1);
 
         lv = (ListView) findViewById(R.id.listView2);
 
