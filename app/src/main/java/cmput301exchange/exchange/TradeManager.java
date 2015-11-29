@@ -27,16 +27,18 @@ NOTES:
 public class TradeManager {
 
     /*
-    private ArrayList<String> listAcceptedTradeOwner;
+    private ArrayList<String> listTransactionedTradeOwner;
     private ArrayList<String> listCurrentTradeOwner;
-    private ArrayList<String> listAcceptedTradeBorrower;
+    private ArrayList<String> listTransactionedTradeBorrower;
     private ArrayList<String> listCurrentTadeBorrower;
     */
 
-    private ArrayList<Trade> listAcceptedTrade = new ArrayList<>(); // to read/load from file
+    private ArrayList<Trade> listTransactionedTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCompleteTrade= new ArrayList<>();
     private ArrayList<Trade> listTradeRequest = new ArrayList<>();
+    
+    private ArrayList<ArrayList<Book>> temporaryInsufficientBookList= new ArrayList<>();
 
     private String filePastTrade;
     private String fileCurrentTrade;
@@ -52,9 +54,9 @@ public class TradeManager {
         this.listCompleteTrade = listCompleteTrade;
     }
 
-    public void setListAcceptedTrade(ArrayList<Trade> list){
+    public void setListTransactionedTrade(ArrayList<Trade> list){
 
-        listAcceptedTrade=list;
+        listTransactionedTrade=list;
     }
 
     public void setListCurrentTrade(ArrayList<Trade> list){
@@ -71,8 +73,8 @@ public class TradeManager {
      */
     public void addCompleteTrade(Trade trade) {
 
-        // trade is complete, add the trade to the listAcceptedTrade
-        listAcceptedTrade.add(trade);
+        // trade is complete, add the trade to the listTransactionedTrade
+        listTransactionedTrade.add(trade);
         // search the trade in the listCurrentTrade and remove it
         deleteOngoingTrade(trade);
     }
@@ -81,7 +83,7 @@ public class TradeManager {
 
         switch(choice){
             case 1:
-                for (Trade trade:listAcceptedTrade){
+                for (Trade trade:listTransactionedTrade){
                     if (trade.getTradeId().longValue()==ID.longValue()){
                         loadPersons(trade,activity);
                         return trade;
@@ -116,7 +118,7 @@ public class TradeManager {
 
         switch (choice){
             case 1:
-                list= (ArrayList<Trade>) deepClone.deepClone(listAcceptedTrade);
+                list= (ArrayList<Trade>) deepClone.deepClone(listTransactionedTrade);
                 while (true) {
                     for (Trade trade : list) {
                         if (latestTime < trade.getTimeStamp()) {
@@ -211,7 +213,7 @@ public class TradeManager {
     }
 
     /**
-     *search for that trade and change the tradeStatus to 1 and add the trade to listAcceptedTrade
+     *search for that trade and change the tradeStatus to 1 and add the trade to listTransactionedTrade
      *update both user and partner's inventory
      * @param  trade The trade that you wish to accept
      */
@@ -225,7 +227,7 @@ public class TradeManager {
                 // trade found
                 // set the tradeStatus to 1: trade is accepted
                 listCurrentTrade.get(i).setTradeStatus(1);
-                listAcceptedTrade.add(listCurrentTrade.get(i));
+                listTransactionedTrade.add(listCurrentTrade.get(i));
                 listCurrentTrade.remove(i);
                 break;
             }
@@ -246,13 +248,13 @@ public class TradeManager {
         int n = listCurrentTrade.size();
         for (i = 0; i < n;i++) {
             if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) && (listCurrentTrade.get(i).getTradeUser().getID() == trade.getTradeUser().getID())) {
-                // remove the trade in listCurrentTrade and add it to the listAcceptedTrade
+                // remove the trade in listCurrentTrade and add it to the listTransactionedTrade
                 listCurrentTrade.get(i).setTradeStatus(2);
                 if (choice == 0) {
                     counterTrade(trade);
                 }
                 if (choice == 1) {
-                    listAcceptedTrade.add(listCurrentTrade.get(i));
+                    listTransactionedTrade.add(listCurrentTrade.get(i));
                     listCurrentTrade.remove(i);
                 }
                 break;
@@ -265,28 +267,29 @@ public class TradeManager {
     /**
      * Swaps the role of the owner and borrower, edits the trade
      * constructs a new trade, and asks the user to edit the trade
-     * @param trade The trade that you want to counter
+     * @param trade1 The trade that you want to counter
      */
-    public void counterTrade(Trade trade) {
+    public void counterTrade(Trade trade1) {
 
-        // swap the role of owner and borrower, edit the trade
-        // construct a new trade, and ask user to edit the trade
-        Trade tradetemp = new Trade(trade.getTradePartner(), trade.getTradeUser(), 3, 0, trade.getListBookPartner(), trade.getListBookUser(), trade.getTradeId());
-        // update the trade details from listCurrentTrade
-        //   to do so, remove the trade and add the new trade in it
-        deleteOngoingTrade(trade);
-        addOngoingTrade(tradetemp);
-        //return tradetemp;
+        int index=0;
+        for (Trade trade:listTradeRequest) {
+            if (trade.getTradeId().longValue() == trade1.getTradeId().longValue()) {
+                listTradeRequest.remove(index);
+                break;
+            }
+            index=index+1;
+        }
+        listCurrentTrade.add(trade1);
     }
 
     public ArrayList<Trade> getCompleteTradeList() {
         int i;
-        // TODO return both listCurrentTrade and listAcceptedTrade (???)
+        // TODO return both listCurrentTrade and listTransactionedTrade (???)
         ArrayList<Trade> tempList = new ArrayList<>();
-        int n1 = listAcceptedTrade.size();
+        int n1 = listTransactionedTrade.size();
         // add all past trade to the tempList
         for (i = 0; i < n1; i++) {
-            tempList.add(listAcceptedTrade.get(i));
+            tempList.add(listTransactionedTrade.get(i));
         }
         return tempList;
     }
@@ -294,9 +297,9 @@ public class TradeManager {
     /**
      * Getter for Past Trade List
      */
-    public ArrayList<Trade> getListAcceptedTrade() {
+    public ArrayList<Trade> getListTransactionedTrade() {
 
-        return listAcceptedTrade;
+        return listTransactionedTrade;
     }
 
     /**
@@ -307,11 +310,154 @@ public class TradeManager {
         return listCurrentTrade;
     }
 
+    /*
+    This method is for completing the trade
+     */
+    public void returnTradeItems(Trade trade){
+        revertTransaction(trade);
+    }
+
+    public boolean findInsufficientBooks(Trade trade1, int choice){
+        //choice 1 is for performTransaction, choice 2 is for revertTransaction
+        temporaryInsufficientBookList= new ArrayList<>();
+        temporaryInsufficientBookList.add(new ArrayList<Book>());
+        temporaryInsufficientBookList.add(new ArrayList<Book>());
+
+        boolean insufficientUserBook=false;
+        boolean insufficientPartnerBook=false;
+
+        Inventory userInventory=trade1.getTradeUser().getMyInventory();
+        Inventory partnerInventory=trade1.getTradePartner().getMyInventory();
+
+        if (choice==1) {
+            for (Book book : trade1.getListBookUser()) {
+                if (userInventory.hasBook(book) == false) {
+                    insufficientUserBook = true;
+                    temporaryInsufficientBookList.get(0).add(book);
+                    continue;
+                }
+                if (userInventory.getBookByID(book.getID()).getQuantity() < book.getQuantity()) {
+                    insufficientUserBook = true;
+                    temporaryInsufficientBookList.get(0).add(book);
+                }
+            }
+
+            for (Book book : trade1.getListBookPartner()) {
+                if (partnerInventory.hasBook(book) == false) {
+                    insufficientPartnerBook = true;
+                    temporaryInsufficientBookList.get(1).add(book);
+                    continue;
+                }
+
+                if (partnerInventory.getBookByID(book.getID()).getQuantity() < book.getQuantity()) {
+                    insufficientPartnerBook = true;
+                    temporaryInsufficientBookList.get(1).add(book);
+                }
+            }
+
+        } else if (choice==2){
+            for (Book book : trade1.getListBookUser()) {
+                if (partnerInventory.hasBook(book) == false) {
+                    insufficientPartnerBook = true;
+                    temporaryInsufficientBookList.get(1).add(book);
+                    continue;
+                }
+                if (partnerInventory.getBookByID(book.getID()).getQuantity() < book.getQuantity()) {
+                    insufficientPartnerBook = true;
+                    temporaryInsufficientBookList.get(1).add(book);
+                }
+            }
+
+            for (Book book : trade1.getListBookPartner()) {
+                if (userInventory.hasBook(book) == false) {
+                    insufficientUserBook = true;
+                    temporaryInsufficientBookList.get(0).add(book);
+                    continue;
+                }
+
+                if (userInventory.getBookByID(book.getID()).getQuantity() < book.getQuantity()) {
+                    insufficientUserBook = true;
+                    temporaryInsufficientBookList.get(0).add(book);
+                }
+            }
+        }
+        return insufficientPartnerBook || insufficientUserBook;
+    }
+
+    public boolean performTransaction(Trade trade1){
+
+        if (findInsufficientBooks(trade1,1)){ // choice is 1
+            return false;
+        } else {
+            Inventory userInventory=trade1.getTradeUser().getMyInventory();
+            Inventory partnerInventory=trade1.getTradePartner().getMyInventory();
+
+            for (Book book:trade1.getListBookUser()){
+                Book book1=userInventory.getBookByID(book.getID());
+                book1.updateQuantity(book1.getQuantity()-book.getQuantity());
+                if (partnerInventory.hasBook(book)){
+                    Book book2=partnerInventory.getBookByID(book.getID());
+                    book2.updateQuantity(book2.getQuantity()+book.getQuantity());
+                } else {
+                    partnerInventory.add(book);
+                }
+            }
+
+            for (Book book:trade1.getListBookPartner()){
+                Book book1=partnerInventory.getBookByID(book.getID());
+                book1.updateQuantity(book1.getQuantity()-book.getQuantity());
+                if (userInventory.hasBook(book)){
+                    Book book2=userInventory.getBookByID(book.getID());
+                    book2.updateQuantity(book2.getQuantity()+book.getQuantity());
+                } else {
+                    userInventory.add(book);
+                }
+            }
+            return true;
+        }
+    }
+
+    public boolean revertTransaction(Trade trade1){
+
+        if (findInsufficientBooks(trade1,2)){
+            return false;
+        } else {
+            Inventory userInventory=trade1.getTradeUser().getMyInventory();
+            Inventory partnerInventory=trade1.getTradePartner().getMyInventory();
+
+            for (Book book:trade1.getListBookUser()){
+                Book book1=partnerInventory.getBookByID(book.getID());
+                book1.updateQuantity(book1.getQuantity()-book.getQuantity());
+                if (userInventory.hasBook(book)){
+                    Book book2=userInventory.getBookByID(book.getID());
+                    book2.updateQuantity(book2.getQuantity()+book.getQuantity());
+                } else {
+                    userInventory.add(book);
+                }
+            }
+
+            for (Book book:trade1.getListBookPartner()){
+                Book book1=userInventory.getBookByID(book.getID());
+                book1.updateQuantity(book1.getQuantity()-book.getQuantity());
+                if (partnerInventory.hasBook(book)){
+                    Book book2=partnerInventory.getBookByID(book.getID());
+                    book2.updateQuantity(book2.getQuantity()+book.getQuantity());
+                } else {
+                    partnerInventory.add(book);
+                }
+            }
+            return true;
+        }
+
+    }
     /**
      * Deletes an ongoing trade
      * @param trade1 the trade you wish to cancel
      */
     public void deleteOngoingTrade(Trade trade1) {
+    // choice = 1 meaning trade only composed or getting composed and not offered.
+    // choice = 2 meaning we delete
+
         int index=0;
         for (Trade trade:listCurrentTrade){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
@@ -341,22 +487,22 @@ public class TradeManager {
         ArrayList<Trade> tempPastTrade = new ArrayList<>();
         if (role == 0) {
             int i;
-            int n = listAcceptedTrade.size();
+            int n = listTransactionedTrade.size();
             for (i = 0; i < n; i++) {
-                if (listAcceptedTrade.get(i).getTradeUser().getID() == person.getID()) {
-                    tempPastTrade.add(listAcceptedTrade.get(i));
+                if (listTransactionedTrade.get(i).getTradeUser().getID() == person.getID()) {
+                    tempPastTrade.add(listTransactionedTrade.get(i));
                 }
             }
         } else if (role == 1) {
             int i;
-            int n = listAcceptedTrade.size();
+            int n = listTransactionedTrade.size();
             for (i = 0; i < n; i++) {
-                if (listAcceptedTrade.get(i).getTradePartner().getID() == person.getID()) {
-                    tempPastTrade.add(listAcceptedTrade.get(i));
+                if (listTransactionedTrade.get(i).getTradePartner().getID() == person.getID()) {
+                    tempPastTrade.add(listTransactionedTrade.get(i));
                 }
             }
         } else {
-            return listAcceptedTrade;
+            return listTransactionedTrade;
         }
         return tempPastTrade;
     }
@@ -408,12 +554,27 @@ public class TradeManager {
     }
 
     //TODO change tradeStatus
+    public void declineTradeRequest(Trade trade1){
+        int index=0;
+        for (Trade trade:listTradeRequest){
+            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+                listTradeRequest.remove(index);
+                listTransactionedTrade.add(trade);
+                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
+                break;
+            }
+            index = index + 1;
+        }
+
+    }
+    
+    //TODO change tradeStatus
     public void acceptTradeRequest(Trade trade1){
         int index=0;
         for (Trade trade:listTradeRequest){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
                 listTradeRequest.remove(index);
-                listAcceptedTrade.add(trade);
+                listTransactionedTrade.add(trade);
                 trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
                 break;
             }
@@ -427,7 +588,7 @@ public class TradeManager {
         for (Trade trade:listCurrentTrade){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
                 listCurrentTrade.remove(index);
-                listAcceptedTrade.add(trade);
+                listTransactionedTrade.add(trade);
                 trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
                 break;
             }
@@ -449,7 +610,7 @@ public class TradeManager {
     public Trade searchTrade(Long id, int choice) {
 
         if (choice==1){
-            for (Trade trade:listAcceptedTrade){
+            for (Trade trade:listTransactionedTrade){
                 if (trade.getTradeId().longValue()==id.longValue()){
                     return trade;
                 }

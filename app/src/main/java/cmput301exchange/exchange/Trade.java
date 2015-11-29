@@ -21,15 +21,13 @@ public class Trade {
 
     private Person tradeUser; // the one that offer trades to their friends
     private Person tradePartner=null; // the one that receive trades from their friends
-    private Integer tradeStatus; // 0 -> ongoing trades, not accepted by the other user yet;
-                                  // 1 -> accepted; 2 -> declined; 3 -> counterTrade;
-    private Integer tradeType; // 0 -> in progress; 1 -> completed
-    //private ArrayList<Item> listItemUser;
-    //private ArrayList<Item> listItemPartner;
+    private Integer tradeStatus; // 0 -> getting composed; 1 -> ongoing trades offer made, not accepted by the other user yet;
+                                  // 2 -> accepted; 3 -> declined; 4 -> counterTrade; 5 -> tradeRequest 6-> Complete trade
+
     private ArrayList<Book> listBookUser; // list of books the user wants to trade
     private ArrayList<Book> listBookPartner; // list of books the partner wants to trade
 
-    private Integer tradeId; // generate a trade id, PRIMARY KEY
+    private Long tradeId; // generate a trade id, PRIMARY KEY
     private Long UserID=null,PartnerID=null;
 
     private String creationDate;
@@ -42,7 +40,7 @@ public class Trade {
     public Trade() {
 
         Random rand = new Random(System.nanoTime());
-        this.tradeId = rand.nextInt();
+        this.tradeId = rand.nextLong();
     }
     /**
      * Constructor of the trade
@@ -57,36 +55,34 @@ public class Trade {
         this.listBookUser = listBookUser;
         this.listBookPartner = listBookPartner;
         this.tradeStatus = 0; // default
-        this.tradeType = 0; // default
         if (tradePartner!=null) {
             this.hasPartner = true;
         }
-        Random rand = new Random();
-        this.tradeId = rand.nextInt(8999);
+        Random rand = new Random(System.nanoTime());
+        this.tradeId = rand.nextLong();
     }
 
     public Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, Integer tradeType, ArrayList<Book> listBookUser, ArrayList<Book> listBookPartner) {
         this.tradeUser = tradeUser;
         this.tradePartner = tradePartner;
         this.tradeStatus = tradeStatus;
-        this.tradeType = tradeType;
         this.listBookUser = listBookUser;
         this.listBookPartner = listBookPartner;
-        if (tradePartner!=null) {
+        if (tradePartner != null) {
             this.hasPartner = true;
         }
-        Random rand = new Random();
-        this.tradeId = rand.nextInt(8999);
+        Random rand = new Random(System.nanoTime());
+        this.tradeId = rand.nextLong();
     }
 
     public Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, Integer tradeType, ArrayList<Book> listBookUser, ArrayList<Book> listBookPartner, Integer tradeId) {
         this.tradeUser = tradeUser;
         this.tradePartner = tradePartner;
         this.tradeStatus = tradeStatus;
-        this.tradeType = tradeType;
         this.listBookUser = listBookUser;
         this.listBookPartner = listBookPartner;
-        this.tradeId = tradeId;
+        Random rand = new Random(System.nanoTime());
+        this.tradeId = rand.nextLong();
         if (tradePartner!=null) {
             this.hasPartner = true;
         }
@@ -184,17 +180,9 @@ public class Trade {
         this.tradeStatus = tradeStatus;
     }
 
-    // tradeType
-    public Integer getTradeType() {
-        return tradeType;
-    }
-
-    public void setTradeType(Integer tradeType) {
-        this.tradeType = tradeType;
-    }
 
     // tradeId
-    public Integer getTradeId() {
+    public Long getTradeId() {
         return tradeId;
     }
 

@@ -166,4 +166,14 @@ public class Inventory implements Serializable{
         Gson gson = new Gson();
         return gson.toJson(this);
     }
+
+    public boolean hasBook(Book book) {
+        for (Book book1 : inventoryList) {
+            if (book.getID().longValue() == book1.getID().longValue()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
