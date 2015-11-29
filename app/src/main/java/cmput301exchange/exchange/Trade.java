@@ -30,10 +30,11 @@ public class Trade {
     private ArrayList<Book> listBookPartner; // list of books the partner wants to trade
 
     private Integer tradeId; // generate a trade id, PRIMARY KEY
-    private Long UserID,PartnerID;
+    private Long UserID=null,PartnerID=null;
 
     private String creationDate;
     private Long timeStamp;
+    private boolean hasPartner=false;
 
 
     // call this constructor
@@ -57,6 +58,9 @@ public class Trade {
         this.listBookPartner = listBookPartner;
         this.tradeStatus = 0; // default
         this.tradeType = 0; // default
+        if (tradePartner!=null) {
+            this.hasPartner = true;
+        }
         Random rand = new Random();
         this.tradeId = rand.nextInt(8999);
     }
@@ -68,6 +72,9 @@ public class Trade {
         this.tradeType = tradeType;
         this.listBookUser = listBookUser;
         this.listBookPartner = listBookPartner;
+        if (tradePartner!=null) {
+            this.hasPartner = true;
+        }
         Random rand = new Random();
         this.tradeId = rand.nextInt(8999);
     }
@@ -80,6 +87,9 @@ public class Trade {
         this.listBookUser = listBookUser;
         this.listBookPartner = listBookPartner;
         this.tradeId = tradeId;
+        if (tradePartner!=null) {
+            this.hasPartner = true;
+        }
     }
 
     public Long getPartnerID() {
@@ -117,9 +127,18 @@ public class Trade {
         return tradeUser;
     }
 
+    public boolean hasTradePartner(){
+        return hasPartner;
+    }
+
     public void setTradeUser(Person tradeUser) {
         this.tradeUser = tradeUser;
         this.UserID = tradeUser.getID();
+    }
+
+    public void removePersons(){
+        this.tradeUser=null;
+        this.tradePartner=null;
     }
 
     // tradePartner
@@ -129,7 +148,10 @@ public class Trade {
 
     public void setTradePartner(Person tradePartner) {
         this.tradePartner = tradePartner;
-        this.PartnerID= tradePartner.getID();
+        if (tradePartner != null){
+            this.PartnerID = tradePartner.getID();
+        this.hasPartner = true;
+        }
     }
 
     public void setTimeStamp(){
@@ -161,26 +183,6 @@ public class Trade {
     public void setTradeStatus(Integer tradeStatus) {
         this.tradeStatus = tradeStatus;
     }
-
-    /*
-    // listItemUser
-    public ArrayList<Item> getListItemUser() {
-        return listItemUser;
-    }
-
-    public void setListItemUser(ArrayList<Item> listItemUser) {
-        this.listItemUser = listItemUser;
-    }
-
-    // listItemPartner
-    public ArrayList<Item> getListItemPartner() {
-        return listItemPartner;
-    }
-
-    public void setListItemPartner(ArrayList<Item> listItemPartner) {
-        this.listItemPartner = listItemPartner;
-    }
-    */
 
     // tradeType
     public Integer getTradeType() {

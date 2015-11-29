@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -39,6 +41,7 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
     private TradeListController myTradeListController;
     private SearchView tradeSearchView;
     private Integer queryType=null;
+    private Menu menu;
 
     public Integer getQueryType() {
         return queryType;
@@ -69,7 +72,7 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
     }
 
     public void initSearchView(){
-        tradeSearchView= (SearchView) myView.findViewById(R.id.TL_searchView);
+        tradeSearchView= (SearchView) menu.findItem(R.id.trade_search);
         tradeSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -108,12 +111,25 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
         tradeListView.setAdapter(tradeListAdapter);
         tradeListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             Trade trade;
+
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 trade = (Trade) tradeListView.getItemAtPosition(i);
+                showTrade(trade);
                 return false;
             }
         });
+    }
+
+    public void showTrade(Trade trade){
+        myActivity.displayTrade(trade);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.menu_trade_listing, menu);
+        super.onCreateOptionsMenu(menu, menuInflater);
+        this.menu=menu;
     }
 
 

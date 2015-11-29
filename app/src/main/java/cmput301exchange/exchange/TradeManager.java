@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import cmput301exchange.exchange.Serializers.deepClone;
+
 
 /*
 NOTES:
@@ -98,22 +100,59 @@ public class TradeManager {
     }
 
     public ArrayList<Trade> getTradeListByDate(int choice){
+        ArrayList<Trade> tradeList= new ArrayList<>();
         Trade latestTrade= new Trade();
         Long latestTime= new Long(0);
+        ArrayList<Trade> list;
 
         switch (choice){
             case 1:
-                for (Trade trade: listPastTrade){
-                    if (latestTime<trade.getTimeStamp()){
-                        latestTime=trade.getTimeStamp();
-                        latestTrade=trade;
+                list= (ArrayList<Trade>) deepClone.deepClone(listPastTrade);
+                while (true) {
+                    for (Trade trade : list) {
+                        if (latestTime < trade.getTimeStamp()) {
+                            latestTime = trade.getTimeStamp();
+                            latestTrade = trade;
+                        }
+                    }
+                    tradeList.add(latestTrade);
+                    list.remove(latestTrade);
+                    if (list.size()==0){
+                        return tradeList;
                     }
                 }
-                break;
+
             case 2:
-                break;
+                list= (ArrayList<Trade>) deepClone.deepClone(listCurrentTrade);
+                while (true) {
+                    for (Trade trade : list) {
+                        if (latestTime < trade.getTimeStamp()) {
+                            latestTime = trade.getTimeStamp();
+                            latestTrade = trade;
+                        }
+                    }
+                    tradeList.add(latestTrade);
+                    list.remove(latestTrade);
+                    if (list.size()==0){
+                        return tradeList;
+                    }
+                }
+
             case 3:
-                break;
+                list= (ArrayList<Trade>) deepClone.deepClone(listTradeRequest);
+                while (true) {
+                    for (Trade trade : list) {
+                        if (latestTime < trade.getTimeStamp()) {
+                            latestTime = trade.getTimeStamp();
+                            latestTrade = trade;
+                        }
+                    }
+                    tradeList.add(latestTrade);
+                    list.remove(latestTrade);
+                    if (list.size()==0){
+                        return tradeList;
+                    }
+                }
         }
         return null;
     }
@@ -121,8 +160,21 @@ public class TradeManager {
     public void loadPersons(Trade trade, Context activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
         trade.setTradeUser(globalEnv.getOwner());
-        trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()));
+        if (trade.hasTradePartner()==true) {
+            trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()));
+        }
     }
+
+
+    /*
+
+    this method removes the person objects
+     */
+    public void lightenTrade(Trade trade){
+        trade.removePersons();
+    }
+
+
 
     public void addOngoingTrade(Trade trade) {
 

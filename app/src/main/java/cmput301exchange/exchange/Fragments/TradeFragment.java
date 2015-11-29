@@ -36,7 +36,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     private int FragmentID=2;
     private TradeMaker myActivity;
     private View myView;
-    private Button confirm,abort,tradeItems;
+    private Button confirm,abort,tradeItems,save;
     private TextView TradeTypeView,tradeIDView;
     private CharSequenceWrapper TradeType=null, tradeID=null;
     private TradeController myTradeController;
@@ -55,7 +55,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         spinnerItems= new ArrayList<>();
-        myActivity.getBookTradeController().createQuantityDictionaryFriend();
+        initTradeController();
+        initTradePartner();
     }
 
     public void initTradeController(){
@@ -65,7 +66,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     void initTradePartner(){
-        if(myTradeController.getTradePartner()!=null){
+        if(myTradeController.hasTradePartner()){
 //            myTradeController.setTradePartner(myActivity.getTradePartner());
             traderName=myTradeController.getTradePartner().getName();
             Log.e("found trade Partner","tradeName");
@@ -93,9 +94,15 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         confirm= (Button) myView.findViewById(R.id.Trade_confirm);
         abort= (Button) myView.findViewById(R.id.Trade_abort);
         tradeItems= (Button) myView.findViewById(R.id.Trade_viewItems);
+        save=(Button) myView.findViewById(R.id.Trade_save);
 
-        confirm.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        save.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onSave_Handler();
+            }
+        });
+        confirm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 confirm_Handler();
             }
         });
@@ -110,6 +117,10 @@ public class TradeFragment extends Fragment implements BackButtonListener {
             }
         });
 
+    }
+
+    public void onSave_Handler(){
+        exit();
     }
     
     public void confirm_Handler(){
@@ -223,8 +234,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
     public void onResume(){
         super.onResume();
-        initTradeController();
-        initTradePartner();
+//        initTradeController();
+//        initTradePartner();
         updateTraderSpinnerItem();
         traderSelection.setSelection(0);
         updateTextView();
@@ -237,12 +248,13 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void exit(){
-        myActivity.closeFragment(FragmentID);
+        myActivity.setTradeController(myTradeController);
+        myTradeController.saveTrade();
+        myActivity.switchFragment(1); //switches back to tradeManager.
     }
 
     @Override
     public void onBackPress() {
-        myActivity.setTradeController(myTradeController);
-        myActivity.switchFragment(1); //switches back to tradeManager.
+        exit();
     }
 }

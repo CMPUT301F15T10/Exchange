@@ -35,10 +35,10 @@ public class TradeListController {
 
     public void initTradeList(){
         if (mode==1) {
-            myTradeList=myTradeManager.getListCurrentTrade(); //current trade
+            myTradeList=myTradeManager.getListPastTrade(); //current trade
         }
         if (mode==2){
-            myTradeList=myTradeManager.getListPastTrade(); //past trade
+            myTradeList=myTradeManager.getListCurrentTrade(); //past trade
         }
         if (mode==3){
             myTradeList=myTradeManager.getListTradeRequest(owner); //trade requests

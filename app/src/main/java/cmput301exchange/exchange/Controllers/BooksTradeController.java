@@ -27,11 +27,13 @@ public class BooksTradeController {
     Map<Long, Integer> quantityDictionaryFriend=null;
     Context activity;
     Person lastTradePartner=null;
+    User user;
 
-    public BooksTradeController(Trade trade, Integer type, Context activity){
+    public BooksTradeController(Trade trade, Integer type, Context activity, User user){
         myTrade=trade;
         this.type=type;
         this.activity=activity;
+        this.user=user;
         initQuantityDictionary();
     }
 
@@ -44,8 +46,6 @@ public class BooksTradeController {
     }
 
     public void createQuantityDictionaryUser(){
-        ModelEnvironment globalEnv= new ModelEnvironment(activity,null);
-        User user=globalEnv.getOwner();
 
         if (quantityDictionaryUser==null || user.getMyInventory().isUpdated()) {
             quantityDictionaryUser = new HashMap<Long, Integer>();
@@ -140,10 +140,6 @@ public class BooksTradeController {
     }
 
     public void checkAvailability(){
-
-    }
-
-    public void saveTrade(){
 
     }
 

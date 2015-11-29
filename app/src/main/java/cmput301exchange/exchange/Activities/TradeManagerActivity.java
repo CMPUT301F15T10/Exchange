@@ -47,6 +47,8 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
     private Intent personIntent, inventoryIntent;
     private TradeController myTradeController;
+    private User user;
+    private boolean fromInventory=false;
 
     public BooksTradeController getBookTradeController() {
         return myBookTradeController;
@@ -60,10 +62,10 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private BooksTradeController myBookTradeController=null;
 
     public void initBookTradeController(){
-        myBookTradeController= new BooksTradeController(myTradeController.getTrade(),1,this);
+        myBookTradeController= new BooksTradeController(myTradeController.getTrade(),1,this,user);
     }
     public void initTradeController(){
-        myTradeController=new TradeController(this,null,myTradeManager);
+        myTradeController=new TradeController(this,null,myTradeManager,user);
     }
     public TradeController getTradeController() {
         return myTradeController;
@@ -90,15 +92,14 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.trade_manager_layout);
-//        myTradeManager= new TradeManager();
+
         loadTradeManager();
+        loadUser();
         initTradeController();
-        initBookTradeController();
         processIntent();
         initFragments();
-//        newTrade=true; // Change this line once you add the functionality of view person calling this activity
         if (callTradeFragment==true) {
-            displayTrade();
+            makeTrade();
         } else{
             switchFragment(1); // Initiating trade manager fragment
         }
@@ -110,6 +111,10 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         }
         globalEnv.loadInstance(this);
         myTradeManager=globalEnv.getTradeManager();
+    }
+
+    public void loadUser(){
+        user=globalEnv.getOwner();
     }
 
     public void saveTradeManager(){
@@ -185,8 +190,17 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         switchFragment(3);
     }
 
-    public void displayTrade(){
+    public void makeTrade(){
+        myTradeController.createTrade(this,user);
+        myTradeController.addToCurrentList();
+        initBookTradeController();
+        switchFragment(2);
+    }
+
+    public void displayTrade(Trade trade){
 //        myTrade=null;
+        myTradeController.setTrade(trade);
+        initBookTradeController();
         switchFragment(2);
     }
 
@@ -211,13 +225,6 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         //Code for switching back to other activity that also depends on the calling fragment
     }
 
-//    public Trade getTrade(){
-//        return myTrade;
-////    }
-//
-//    public void setTrade(Trade trade){
-//        myTrade=trade;
-//    }
 
     public TradeManagerFragment getTradeManagerFragment(){
         return myTradeManagerFragment;
@@ -239,9 +246,6 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         return tradePartner;
     }
 
-//    public boolean IsNewTrade(){
-//        return true;
-//    }
 
     public void setCurrentFragment(BackButtonListener fragment){
         currentFragment=fragment;
@@ -264,7 +268,6 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == SEARCH_PEOPLE) {
-//            data.setClass(this, TradeManagerActivity.class);
             personIntent=data;
             myTradeController.setTradePartner(retrieveTradePartner());
             switchFragment(2); //switch to trade fragment
@@ -273,9 +276,6 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
             data.setClass(this, TradeManagerActivity.class);
             inventoryIntent = data;
             displayItemsToTrade(null);
-//            assignBooks();
-//            getTradePartner();
-//            switchFragment(2); //switch to trade fragment
         }
     }
 
@@ -301,6 +301,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         }
         if (inventoryIntent.hasExtra("Trade_Items")) {
             String json = personIntent.getExtras().getString("Trade_Items");
+            fromInventory=true;
             return gson.fromJson(json, Inventory.class);
         }
         return null;
