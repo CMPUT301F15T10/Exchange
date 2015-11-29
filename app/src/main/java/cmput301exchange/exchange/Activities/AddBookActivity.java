@@ -16,11 +16,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -54,6 +56,7 @@ public class AddBookActivity extends ActionBarActivity {
     private ArrayList<byte[]> compressedImages = new ArrayList<>();
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
+    private int currentBitmapPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +71,7 @@ public class AddBookActivity extends ActionBarActivity {
         String json2 = extras.getString("Book");
 
         photoList = (Spinner) findViewById(R.id.photoListView);
-
-
         bmpAdapter = new PhotoAdapter(this, imageList);
-
         photoList.setAdapter(bmpAdapter);
 
         inventory = gson.fromJson(json1, Inventory.class);
@@ -118,14 +118,25 @@ public class AddBookActivity extends ActionBarActivity {
             }
         });
 
-        image.setOnClickListener(new View.OnClickListener() {
-
+        photoList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //on selecting a spinner item
+                currentBitmapPos = position;
+                image.setImageBitmap(imageList.get(position));
 
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-
                 selectImage();
-
             }
         });
     }
@@ -173,47 +184,76 @@ public class AddBookActivity extends ActionBarActivity {
     private void selectImage() {
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery"};
-
-
+        final CharSequence[] more_options = { "View Bigger Photo", "Take Photo", "Choose from Gallery", "Save Photo", "Delete Photo"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(AddBookActivity.this);
 
-        builder.setTitle("Add Photo!");
+        builder.setTitle("Photo Options");
 
-        builder.setItems(options, new DialogInterface.OnClickListener() {
+        if (null == image.getDrawable()) {
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
 
-            @Override
+                    if (options[item].equals("Take Photo")) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                        startActivityForResult(intent, 1);
+                    } else if (options[item].equals("Choose from Gallery")) {
 
-            public void onClick(DialogInterface dialog, int item) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
 
-                if (options[item].equals("Take Photo"))
+                    }
+                }
 
-                {
+            });
+        }
+        else {
+            builder.setItems(more_options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
 
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                   if (more_options[item].equals("View Bigger Photo")) {
+                       // send image to another activity where the full image can be expanded
 
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                   } else if (more_options[item].equals("Take Photo")) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                        startActivityForResult(intent, 1);
 
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    } else if (more_options[item].equals("Choose from Gallery")) {
 
-                    startActivityForResult(intent, 1);
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
 
+                    } else if (more_options[item].equals("Save Photo")) {
+                       String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+                       String item_title = name.getText().toString();
+                       File newFolder = new File(path + "/Exchange/" + item_title);
+                       newFolder.mkdir();
+                       File file = new File(path + "/Exchange/" + item_title, item_title + String.valueOf(currentBitmapPos) + ".jpg"); // the File to save to
+                       MediaStore.Images.Media.insertImage(getContentResolver(), imageList.get(currentBitmapPos), file.getName(), file.getName());
+
+                   } else if (more_options[item].equals("Delete Photo")) {
+                       imageList.remove(currentBitmapPos);
+                       compressedImages.remove(currentBitmapPos);
+                       if (imageList.size() == 0){
+                           image.setImageDrawable(null);
+                       }
+                       else {
+                           image.setImageBitmap(imageList.get(0));
+                       }
+                       bmpAdapter.notifyDataSetChanged();
+                    }
 
                 }
 
-                else if (options[item].equals("Choose from Gallery"))
+            });
 
-                {
-
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                    startActivityForResult(intent, 2);
-
-                }
-
-            }
-
-        });
+        }
 
         builder.show();
 
@@ -251,16 +291,15 @@ public class AddBookActivity extends ActionBarActivity {
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-
-                            bitmapOptions);
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
+                    Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.2), (int)(bitmap.getHeight()*0.2), true);
 
 
                     image.setImageBitmap(bitmap);
 
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+                    resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
                     byte[] byteArray = stream.toByteArray();
                     compressedImages.add(byteArray);
 
