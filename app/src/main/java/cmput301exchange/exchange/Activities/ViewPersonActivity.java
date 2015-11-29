@@ -55,16 +55,7 @@ public class ViewPersonActivity extends AppCompatActivity {
 //        downloadServer();
         super.onResume();
     }
-    public void finish(){
-//        Gson gson = new Gson();
-//        Intent intent=new Intent();
-//        String json= gson.toJson(user);
-//        intent.putExtra("User",json);
-//        setResult(RESULT_OK, intent);
 
-//        saveUser();
-        super.finish();
-    }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         controller.prepareOptionsMenu(menu);
@@ -92,7 +83,16 @@ public class ViewPersonActivity extends AppCompatActivity {
         this.finish();
     }
 
+    @Override
+    public void finish(){
+        if (controller.getState() == 2) {
+            controller.sendBackTradePartner();
+        }else{
+            setResult(RESULT_OK, new Intent());
 
+        }
+        super.finish();
+    }
 
 
 }

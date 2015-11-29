@@ -44,6 +44,11 @@ public class ViewPersonController implements Observer{
     private Context context;
     private ElasticSearch elasticSearch;
     private ModelEnvironment globalEnv;
+
+    public User getUser() {
+        return user;
+    }
+
     private User user;
     private Person selectedPerson;
     private Activity activity;
