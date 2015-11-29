@@ -25,6 +25,7 @@ public class Person {
     protected ArrayList<Long> myFriendList= new ArrayList<>();
     private long TradeCount;
     protected boolean isUser=false;
+    private TradeManager tradeManager;
 
     public long getTimeStamp() {
         return TimeStamp;
@@ -40,6 +41,11 @@ public class Person {
         this.userName = username;
         myInventory = new Inventory(); //Each user has only one Inventory.
         initID();
+        initTradeManager();
+    }
+
+    public void initTradeManager(){
+        tradeManager=new TradeManager();
     }
 
     public boolean isUser(){
@@ -66,7 +72,7 @@ public class Person {
         return location;
     }
 
-    public long getID() {
+    public Long getID() {
         return ID;
     }
 
@@ -125,6 +131,22 @@ public class Person {
 
     public void removeFriend(Person person){
         myFriendList.remove(person.getID());
+    }
+
+    public boolean equals(Person person){
+        if (person.getID().longValue()==ID.longValue()){
+            return true;
+        }
+
+        return false;
+    }
+
+    public void setTradeManager(TradeManager tradeManager){
+        this.tradeManager=tradeManager;
+    }
+
+    public TradeManager getTradeManager(){
+        return this.tradeManager;
     }
 
 }

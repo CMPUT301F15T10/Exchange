@@ -111,6 +111,11 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         }
         globalEnv.loadInstance(this);
         myTradeManager=globalEnv.getTradeManager();
+        if (myTradeManager==null){
+            myTradeManager=new TradeManager();
+            Log.e("creates trade managager","trade manager activity");
+        }
+        Log.e("Loads Trade manager","");
     }
 
     public void loadUser(){
@@ -130,12 +135,14 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     public void onPause(){
         saveTradeManager();
 //        updateOnline()
+        Log.e("current list size: ",String.valueOf(myTradeManager.getListCurrentTrade().size()));
         super.onPause();
     }
 
     public void onResume(){
         loadTradeManager();
 //        downloadServer();
+        myTradeController.setTradeManager(myTradeManager);
         super.onResume();
     }
 
@@ -179,21 +186,23 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     //TODO
     public void displayCurrentTrades(){
         // Set TradeListFragment for displaying current trades
-        setTradeListFlag(1);
+        setTradeListFlag(2);
         switchFragment(3);
     }
 
     //TODO
     public void displayPastTrades(){
         // // Set TradeListFragment for displaying past trades
-        setTradeListFlag(2);
+        setTradeListFlag(1);
         switchFragment(3);
     }
 
     public void makeTrade(){
-        myTradeController.createTrade(this,user);
+        myTradeController.createTrade(this, user);
         myTradeController.addToCurrentList();
         initBookTradeController();
+//        myTradeManager.getListCurrentTrade().
+        Log.e("current list size: ", String.valueOf(myTradeManager.getListCurrentTrade().size()));
         switchFragment(2);
     }
 

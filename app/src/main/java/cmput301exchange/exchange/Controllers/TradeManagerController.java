@@ -25,6 +25,10 @@ public class TradeManagerController {
         initEnv();
     }
 
+    public void setMyTradeManager(TradeManager tradeManager){
+        this.myTradeManager=tradeManager;
+    }
+
     public Trade createTrade(){
         return myTradeManager.createTrade();
     }

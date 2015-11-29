@@ -31,6 +31,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.HomeActivityController;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.Mocks.MockBooks;
 import cmput301exchange.exchange.Mocks.MockPersonList;
@@ -56,6 +57,7 @@ public class  HomeActivity extends AppCompatActivity {
     private ListView leftNavList;
     private String[] NavTitles;
     private ActionBarDrawerToggle navToggle;
+    private HomeActivityController controller;
 
     private boolean getNetworkStatus() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
@@ -70,6 +72,8 @@ public class  HomeActivity extends AppCompatActivity {
         intent = getIntent();
         GlobalENV= new ModelEnvironment(this,null);
         user=GlobalENV.getOwner();
+//        controller=new HomeActivityController(this,GlobalENV);
+//        controller.fetchPersons(10); // Less than 10 users currently!!
 //        getUser();
 //        MockObjectInit(); // creates a friendlist,personlist,inventory items and then saves them using global Env
 //        saveUser();

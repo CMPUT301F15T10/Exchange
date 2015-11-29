@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -80,6 +81,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
                              Bundle savedInstanceState) {
 
         myView=inflater.inflate(R.layout.activity_trade_items_inventory, container, false);
+        setHasOptionsMenu(true);
         initButtons();
         initAdapter();
         initListView();
@@ -88,11 +90,12 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void initMenu(){
-        menu.findItem(R.id.View_My_Inventory).setVisible(true);
-        menu.findItem(R.id.View_Friend_Items).setVisible(true);
-        menu.findItem(R.id.View_Friend_Inventory).setVisible(true);
-        menu.findItem(R.id.View_My_Items).setVisible(true);
+        menu.findItem(R.id.View_My_Inventory).setVisible(false);
+        menu.findItem(R.id.View_Friend_Items).setVisible(false);
+        menu.findItem(R.id.View_Friend_Inventory).setVisible(false);
+        menu.findItem(R.id.View_My_Items).setVisible(false);
 
+        Log.e("came to create menu","initMenu");
         if (inventoryType==1){
             menu.findItem(R.id.View_My_Inventory).setVisible(true);
             menu.findItem(R.id.View_Friend_Items).setVisible(true);
@@ -106,6 +109,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
         menuInflater.inflate(R.menu.menu_trade__items_inventory, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
+        this.menu=menu;
         initMenu();
     }
 
@@ -186,6 +190,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
                 if (ItemsView.isItemChecked(position)) {
                     selectedBook = (Book) ItemsView.getItemAtPosition(position);
+                    setVisibility(true);
                     updateTextViews();
 //                    Toast.makeText(getBaseContext(), selectedPerson.toString(), Toast.LENGTH_LONG).show();
                 } else {

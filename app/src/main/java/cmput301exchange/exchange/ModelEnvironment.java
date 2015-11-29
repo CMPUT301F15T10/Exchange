@@ -15,7 +15,6 @@ public class ModelEnvironment {
 
     private User owner;
     private boolean autoPicDownloads=false;
-    private TradeManager tradeManager=null;
     private PersonList personList=null;
 
     public ModelEnvironment(Context myActivity){
@@ -27,10 +26,6 @@ public class ModelEnvironment {
             loadInstance(myActivity);
         } else{
             initOwner(userName);
-        }
-
-        if (tradeManager==null){
-            tradeManager= new TradeManager();
         }
 
         if (personList == null){
@@ -52,8 +47,6 @@ public class ModelEnvironment {
         ModelEnvironment instance=io.loadEnvironment("GlobalENV");
 
         setOwner(instance.getOwner());
-
-        setTradeManager(instance.getTradeManager());
         setPersonList(instance.getPersonList());
         return instance;
     }
@@ -90,14 +83,6 @@ public class ModelEnvironment {
          * sets owner
          */
         this.owner=owner;
-    }
-
-    public void setTradeManager(TradeManager tradeManager){
-        this.tradeManager=tradeManager;
-    }
-
-    public TradeManager getTradeManager(){
-        return tradeManager;
     }
 
 

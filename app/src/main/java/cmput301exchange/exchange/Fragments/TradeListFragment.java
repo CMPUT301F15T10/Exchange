@@ -13,8 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
+//import android.widget.SearchView;
 import android.widget.TextView;
+import android.support.v7.widget.SearchView;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
     }
 
     public void initSearchView(){
-        tradeSearchView= (SearchView) menu.findItem(R.id.trade_search);
+        tradeSearchView= (SearchView) menu.findItem(R.id.trade_search).getActionView();
         tradeSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -130,6 +131,7 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
         menuInflater.inflate(R.menu.menu_trade_listing, menu);
         super.onCreateOptionsMenu(menu, menuInflater);
         this.menu=menu;
+        initSearchView();
     }
 
 
@@ -137,9 +139,10 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
                              Bundle savedInstanceState) {
 
         myView=inflater.inflate(R.layout.activity_trade_listing, container, false);
+        setHasOptionsMenu(true);
         initAdapter();
         initListView();
-        initSearchView();
+//        initSearchView();
         return myView;
     }
 

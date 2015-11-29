@@ -31,14 +31,18 @@ public class TradeListController {
         ModelEnvironment globalEnv= new ModelEnvironment(context,null);
         owner=globalEnv.getOwner();
         initTradeList();
+        Log.e("list mode: ", String.valueOf(mode));
     }
 
+    public void setMyTradeManager(TradeManager tradeManager){
+        this.myTradeManager=tradeManager;
+    }
     public void initTradeList(){
         if (mode==1) {
-            myTradeList=myTradeManager.getListPastTrade(); //current trade
+            myTradeList=myTradeManager.getListPastTrade(); //past trade
         }
         if (mode==2){
-            myTradeList=myTradeManager.getListCurrentTrade(); //past trade
+            myTradeList=myTradeManager.getListCurrentTrade(); //current trade
         }
         if (mode==3){
             myTradeList=myTradeManager.getListTradeRequest(owner); //trade requests

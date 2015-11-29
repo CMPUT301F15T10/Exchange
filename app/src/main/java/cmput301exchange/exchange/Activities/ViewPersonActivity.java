@@ -65,7 +65,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         elasticSearch = new ElasticSearch(this);
         init();
 //        friendList=user.getMyFriendList().getPersonList();
-        initPersonList(1);
+        initPersonList(10);
 
         lv = (ListView) findViewById(R.id.listView2);
 
@@ -155,8 +155,8 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         user = globalEnv.getOwner();
         friendList = user.getMyFriendList(this).getPersonList();
 
-        allPerson = globalEnv.getPersonList();
-        personList = allPerson.getPersonList();
+//        allPerson = globalEnv.getPersonList();
+//        personList = allPerson.getPersonList();
 
 
 //        personListAdapter.clear();
@@ -377,6 +377,12 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     @Override
     public void update() {
         personList = elasticSearch.getPersonList().getPersonList();
+//        for (int i=0;i<personList.size();++i){
+//            if (personList.get(i).getID()==user.getID()){
+//                personList.remove(i);
+//            }
+//        }
+        personList.remove(user.getID());
         Log.e("update_viewperson: ",String.valueOf(personList.size()));
         personListAdapter.clear();
         personListAdapter.addAll(personList);

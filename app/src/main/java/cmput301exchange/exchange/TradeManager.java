@@ -27,15 +27,15 @@ NOTES:
 public class TradeManager {
 
     /*
-    private ArrayList<String> listPastTradeOwner;
+    private ArrayList<String> listAcceptedTradeOwner;
     private ArrayList<String> listCurrentTradeOwner;
-    private ArrayList<String> listPastTradeBorrower;
+    private ArrayList<String> listAcceptedTradeBorrower;
     private ArrayList<String> listCurrentTadeBorrower;
     */
 
-    private ArrayList<Trade> listPastTrade = new ArrayList<>(); // to read/load from file
+    private ArrayList<Trade> listAcceptedTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
-
+    private ArrayList<Trade> listCompleteTrade= new ArrayList<>();
     private ArrayList<Trade> listTradeRequest = new ArrayList<>();
 
     private String filePastTrade;
@@ -44,8 +44,17 @@ public class TradeManager {
 
     private ArrayList<Trade> listTrade;
 
-    public void setListPastTrade(ArrayList<Trade> list){
-        listPastTrade=list;
+    public ArrayList<Trade> getListCompleteTrade() {
+        return listCompleteTrade;
+    }
+
+    public void setListCompleteTrade(ArrayList<Trade> listCompleteTrade) {
+        this.listCompleteTrade = listCompleteTrade;
+    }
+
+    public void setListAcceptedTrade(ArrayList<Trade> list){
+
+        listAcceptedTrade=list;
     }
 
     public void setListCurrentTrade(ArrayList<Trade> list){
@@ -62,8 +71,8 @@ public class TradeManager {
      */
     public void addCompleteTrade(Trade trade) {
 
-        // trade is complete, add the trade to the listPastTrade
-        listPastTrade.add(trade);
+        // trade is complete, add the trade to the listAcceptedTrade
+        listAcceptedTrade.add(trade);
         // search the trade in the listCurrentTrade and remove it
         deleteOngoingTrade(trade);
     }
@@ -72,7 +81,7 @@ public class TradeManager {
 
         switch(choice){
             case 1:
-                for (Trade trade:listPastTrade){
+                for (Trade trade:listAcceptedTrade){
                     if (trade.getTradeId().longValue()==ID.longValue()){
                         loadPersons(trade,activity);
                         return trade;
@@ -107,7 +116,7 @@ public class TradeManager {
 
         switch (choice){
             case 1:
-                list= (ArrayList<Trade>) deepClone.deepClone(listPastTrade);
+                list= (ArrayList<Trade>) deepClone.deepClone(listAcceptedTrade);
                 while (true) {
                     for (Trade trade : list) {
                         if (latestTime < trade.getTimeStamp()) {
@@ -202,7 +211,7 @@ public class TradeManager {
     }
 
     /**
-     *search for that trade and change the tradeStatus to 1 and add the trade to listPastTrade
+     *search for that trade and change the tradeStatus to 1 and add the trade to listAcceptedTrade
      *update both user and partner's inventory
      * @param  trade The trade that you wish to accept
      */
@@ -216,7 +225,7 @@ public class TradeManager {
                 // trade found
                 // set the tradeStatus to 1: trade is accepted
                 listCurrentTrade.get(i).setTradeStatus(1);
-                listPastTrade.add(listCurrentTrade.get(i));
+                listAcceptedTrade.add(listCurrentTrade.get(i));
                 listCurrentTrade.remove(i);
                 break;
             }
@@ -237,13 +246,13 @@ public class TradeManager {
         int n = listCurrentTrade.size();
         for (i = 0; i < n;i++) {
             if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) && (listCurrentTrade.get(i).getTradeUser().getID() == trade.getTradeUser().getID())) {
-                // remove the trade in listCurrentTrade and add it to the listPastTrade
+                // remove the trade in listCurrentTrade and add it to the listAcceptedTrade
                 listCurrentTrade.get(i).setTradeStatus(2);
                 if (choice == 0) {
                     counterTrade(trade);
                 }
                 if (choice == 1) {
-                    listPastTrade.add(listCurrentTrade.get(i));
+                    listAcceptedTrade.add(listCurrentTrade.get(i));
                     listCurrentTrade.remove(i);
                 }
                 break;
@@ -263,7 +272,6 @@ public class TradeManager {
         // swap the role of owner and borrower, edit the trade
         // construct a new trade, and ask user to edit the trade
         Trade tradetemp = new Trade(trade.getTradePartner(), trade.getTradeUser(), 3, 0, trade.getListBookPartner(), trade.getListBookUser(), trade.getTradeId());
-        editTrade(tradetemp);
         // update the trade details from listCurrentTrade
         //   to do so, remove the trade and add the new trade in it
         deleteOngoingTrade(trade);
@@ -271,25 +279,14 @@ public class TradeManager {
         //return tradetemp;
     }
 
-    /**
-     * Ask the user to edit the trade details, more like creating a new trade, but gives details
-     * about the trade. User can click the area on where they want to edit. Call setter from trade
-     * class.
-     * @param trade trade that you wish to edit
-     */
-    public void editTrade(Trade trade) {
-
-
-    }
-
     public ArrayList<Trade> getCompleteTradeList() {
         int i;
-        // TODO return both listCurrentTrade and listPastTrade (???)
+        // TODO return both listCurrentTrade and listAcceptedTrade (???)
         ArrayList<Trade> tempList = new ArrayList<>();
-        int n1 = listPastTrade.size();
+        int n1 = listAcceptedTrade.size();
         // add all past trade to the tempList
         for (i = 0; i < n1; i++) {
-            tempList.add(listPastTrade.get(i));
+            tempList.add(listAcceptedTrade.get(i));
         }
         return tempList;
     }
@@ -297,9 +294,9 @@ public class TradeManager {
     /**
      * Getter for Past Trade List
      */
-    public ArrayList<Trade> getListPastTrade() {
+    public ArrayList<Trade> getListAcceptedTrade() {
 
-        return listPastTrade;
+        return listAcceptedTrade;
     }
 
     /**
@@ -311,38 +308,19 @@ public class TradeManager {
     }
 
     /**
-     * Change the trade partner
-     * Updates the Current Trade List
-     * @param trade Trade you want to change
-     * @param newPartner The person you want to turn into a trade partner.
-     *
-     */
-    public void changePartner(Trade trade, Person newPartner) {
-
-        // change the trade Partner
-        // update the listCurrentTrade
-        deleteOngoingTrade(trade);
-        trade.setTradePartner(newPartner);
-        addOngoingTrade(trade); // make sure we have the right trade partner
-    }
-
-    public void sendNotification() {}
-
-    /**
      * Deletes an ongoing trade
-     * @param trade the trade you wish to cancel
+     * @param trade1 the trade you wish to cancel
      */
-    public void deleteOngoingTrade(Trade trade) {
-
-        int i;
-        int n = listCurrentTrade.size();
-        for (i = 0; i < n;i++) {
-            if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) && (listCurrentTrade.get(i).getTradeUser().getID() == trade.getTradeUser().getID())) {
-                // remove the trade in listCurrentTrade
-                listCurrentTrade.remove(i);
+    public void deleteOngoingTrade(Trade trade1) {
+        int index=0;
+        for (Trade trade:listCurrentTrade){
+            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+                listCurrentTrade.remove(index);
                 break;
             }
+            index = index + 1;
         }
+
     }
 
     public void setMessage(String message) { this.message = message; }
@@ -363,22 +341,22 @@ public class TradeManager {
         ArrayList<Trade> tempPastTrade = new ArrayList<>();
         if (role == 0) {
             int i;
-            int n = listPastTrade.size();
+            int n = listAcceptedTrade.size();
             for (i = 0; i < n; i++) {
-                if (listPastTrade.get(i).getTradeUser().getID() == person.getID()) {
-                    tempPastTrade.add(listPastTrade.get(i));
+                if (listAcceptedTrade.get(i).getTradeUser().getID() == person.getID()) {
+                    tempPastTrade.add(listAcceptedTrade.get(i));
                 }
             }
         } else if (role == 1) {
             int i;
-            int n = listPastTrade.size();
+            int n = listAcceptedTrade.size();
             for (i = 0; i < n; i++) {
-                if (listPastTrade.get(i).getTradePartner().getID() == person.getID()) {
-                    tempPastTrade.add(listPastTrade.get(i));
+                if (listAcceptedTrade.get(i).getTradePartner().getID() == person.getID()) {
+                    tempPastTrade.add(listAcceptedTrade.get(i));
                 }
             }
         } else {
-            return listPastTrade;
+            return listAcceptedTrade;
         }
         return tempPastTrade;
     }
@@ -416,35 +394,51 @@ public class TradeManager {
         return tempPastTrade;
     }
 
-    /**
-     * Updates the Trade Request List
-     * @param person the person who's trade request list that is needed to be updated.
-     */
-    private void updateListTradeRequest(Person person) {
 
-        ArrayList<Trade> tempList = new ArrayList<>();
-        int i;
-        int n0 = listCurrentTrade.size();
-        int n1 = listPastTrade.size();
-        // add trades that are offered to the user
-        for (i = 0; i < n0; i++) {
-            if (listCurrentTrade.get(i).getTradePartner().getID() == person.getID()) {
-                tempList.add(listCurrentTrade.get(i));
-            }
-        }
-        this.listTradeRequest = tempList;
-    }
-
-    public ArrayList<Trade> getListTradeRequest(Person person) {
-        updateListTradeRequest(person);
+    public ArrayList<Trade> getListTradeRequest() {
         return listTradeRequest;
     }
 
-    public Integer getTradeRequest_no(Person person) {
-        updateListTradeRequest(person);
+    public Integer getTradeRequest_no() {
         return listTradeRequest.size();
     }
 
+    public void processTradeRequest(Trade trade){
+        listTradeRequest.add(trade);
+    }
+
+    //TODO change tradeStatus
+    public void acceptTradeRequest(Trade trade1){
+        int index=0;
+        for (Trade trade:listTradeRequest){
+            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+                listTradeRequest.remove(index);
+                listAcceptedTrade.add(trade);
+                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
+                break;
+            }
+            index = index + 1;
+        }
+    }
+
+    //TODO change trade status
+    public void tradeGotAccepted(Trade trade1){
+        int index=0;
+        for (Trade trade:listCurrentTrade){
+            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+                listCurrentTrade.remove(index);
+                listAcceptedTrade.add(trade);
+                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
+                break;
+            }
+            index = index + 1;
+        }
+    }
+
+    //TODO change trade status
+    public void sendTradeOffer(Trade trade){
+        trade.getTradePartner().getTradeManager().processTradeRequest(trade);
+    }
     /**
      * Searches the trade which involves user via tradeID
      * As a tradeID as a primary key, and one tradeID is assigned to one and only one trade
@@ -455,7 +449,7 @@ public class TradeManager {
     public Trade searchTrade(Long id, int choice) {
 
         if (choice==1){
-            for (Trade trade:listPastTrade){
+            for (Trade trade:listAcceptedTrade){
                 if (trade.getTradeId().longValue()==id.longValue()){
                     return trade;
                 }

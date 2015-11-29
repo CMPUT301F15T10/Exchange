@@ -1,6 +1,7 @@
 package cmput301exchange.exchange.Controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,7 @@ public class TradeController {
         myTrade.setTimeStamp();
         myTrade.setDate();
         myTradeManager.addTrade(myTrade);
+        Log.e("size current list TradeController: ", String.valueOf(myTradeManager.getListCurrentTrade().size()));
     }
 
     public boolean hasTradePartner(){
@@ -63,6 +65,9 @@ public class TradeController {
         return "";
     }
 
+    public void setTradeManager(TradeManager tradeManager){
+        myTradeManager=tradeManager;
+    }
     public String getTradeID(){
         return myTrade.getTradeId().toString();
     }
