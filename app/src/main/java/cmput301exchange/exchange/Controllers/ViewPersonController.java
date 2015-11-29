@@ -71,6 +71,7 @@ public class ViewPersonController implements Observer{
         SetClickListener();
         setSpinner();
         setSpinnerListener();
+        init();
 
 
 
@@ -225,7 +226,7 @@ public class ViewPersonController implements Observer{
 //        user = gson.fromJson(json, Person.class);
         Intent intent=activity.getIntent();
         if (intent.hasExtra("From_TradeManagerActivity")){
-
+            setState(2);
         }
         globalEnv = new ModelEnvironment(context, null);
 //        user=elasticSearch.getUser();
@@ -240,6 +241,10 @@ public class ViewPersonController implements Observer{
         personListAdapter.clear();
         personListAdapter.addAll(personList);
         personListAdapter.notifyDataSetChanged();
+
+        friendListAdapter.clear();
+        friendListAdapter.addAll(friendList);
+        friendListAdapter.notifyDataSetChanged();
     }
     public void downloadServer(){
         user=elasticSearch.getUser();
@@ -268,7 +273,8 @@ public class ViewPersonController implements Observer{
 //        saveUser();
 //        updateOnline();
 
-        //setResult(RESULT_OK, intent);
+        activity.setResult(activity.RESULT_OK, intent);
+        activity.finish();
 
     }
 

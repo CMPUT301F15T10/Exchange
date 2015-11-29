@@ -63,9 +63,6 @@ public class ViewPersonActivity extends AppCompatActivity {
 //        setResult(RESULT_OK, intent);
 
 //        saveUser();
-//        updateOnline();
-        setResult(RESULT_OK, new Intent());
-
         super.finish();
     }
     @Override
