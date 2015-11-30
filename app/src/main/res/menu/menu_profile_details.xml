@@ -2,4 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cmput301exchange.exchange.ProfileDetails">
+
+    <item android:id="@+id/action_Logout" android:title="Log Out"
+        android:orderInCategory="900" app:showAsAction="never" />
 </menu>

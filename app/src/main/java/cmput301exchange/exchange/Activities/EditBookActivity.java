@@ -123,31 +123,6 @@ public class EditBookActivity extends AppCompatActivity {
         return CommentEdit;
     }
 
-//    protected void onSaveInstanceState(Bundle outState) {
-//        // TODO Auto-generated method stub
-//        super.onSaveInstanceState(outState);
-//        ObjectSaver.savedObjects=new ArrayList<Object>();
-//        ObjectSaver.savedObjects.add(BookEdit);
-//        ObjectSaver.savedObjects.add(CommentEdit);
-//        ObjectSaver.savedObjects.add(Photo);
-//        ObjectSaver.savedObjects.add(fm);
-//        ObjectSaver.savedObjects.add(fm_T);
-//        ObjectSaver.savedObjects.add(fragmentLayoutID);
-//        ObjectSaver.savedObjects.add(myBook);
-//    }
-//
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        // TODO Auto-generated method stub
-//        super.onRestoreInstanceState(savedInstanceState);
-//        BookEdit=(EditBookFragment) ObjectSaver.savedObjects.get(0);
-//        CommentEdit=(EditBookCommentFragment) ObjectSaver.savedObjects.get(1);
-//        Photo=(Fragment) ObjectSaver.savedObjects.get(2); // Change this to Photo fragments class type
-//        fm=(FragmentManager) ObjectSaver.savedObjects.get(3);
-//        fm_T=(FragmentTransaction) ObjectSaver.savedObjects.get(4);
-//        fragmentLayoutID=(Integer) ObjectSaver.savedObjects.get(5);
-//        myBook=(Book) ObjectSaver.savedObjects.get(6);
-//    }
-
     public void setController(EditBookController controller){
         myController=controller;
     }
