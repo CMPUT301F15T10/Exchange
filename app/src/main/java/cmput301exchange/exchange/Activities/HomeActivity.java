@@ -1,7 +1,9 @@
 package cmput301exchange.exchange.Activities;
 
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
@@ -207,7 +209,35 @@ public class  HomeActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+        if (id == R.id.action_Logout){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Logout();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+            builder.setMessage("Are you sure you want to Log out?");
+            builder.show();
+
+        }
+
+
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void Logout(){
+        DataIO dataIO = new DataIO(this,ModelEnvironment.class);
+        dataIO.saveInFile("GlobalENV","");
+        this.startActivity(new Intent(this, Login.class));
+        this.finishAffinity();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
