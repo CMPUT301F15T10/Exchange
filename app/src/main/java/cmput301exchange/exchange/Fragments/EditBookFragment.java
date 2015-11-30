@@ -30,7 +30,7 @@ public class EditBookFragment extends Fragment implements BackButtonListener {
     private View myView;
     private EditBookController myEditBookController;
     private Book myBook;
-    private EditText Name,Type,Quantity,Quality;
+    private EditText Name,Author,Quantity,Quality;
     private CharSequenceWrapper name_text=null, type_text=null, quantity_text=null, quality_text=null, category_text=null;
     private Spinner Category;
     private Button ViewComment,Done,ViewPhoto;
@@ -41,7 +41,7 @@ public class EditBookFragment extends Fragment implements BackButtonListener {
 
     public void setupView(){
         Name=(EditText) myView.findViewById(R.id.EditItem_NameInput);
-        Type=(EditText) myView.findViewById(R.id.EditItem_TypeInput);
+        Author=(EditText) myView.findViewById(R.id.EditItem_TypeInput);
         Quality=(EditText) myView.findViewById(R.id.EditItem_QualityInput);
         Quantity=(EditText) myView.findViewById(R.id.EditItem_QuantityInput);
         Category=(Spinner) myView.findViewById(R.id.EditItem_CategorySpinner);
@@ -49,7 +49,7 @@ public class EditBookFragment extends Fragment implements BackButtonListener {
 
     public void pushItemInfo(){
         name_text.setText(Name.getText().toString());
-        type_text.setText(Type.getText().toString());
+        type_text.setText(Author.getText().toString());
         quality_text.setText(Quality.getText().toString());
         quantity_text.setText(Quantity.getText().toString());
 
@@ -98,7 +98,7 @@ public class EditBookFragment extends Fragment implements BackButtonListener {
     public void updateView(){
         fetchItemInfo();
         Name.setText(name_text, TextView.BufferType.EDITABLE);
-        Type.setText(type_text, TextView.BufferType.EDITABLE);
+        Author.setText(type_text, TextView.BufferType.EDITABLE);
         Quality.setText(quality_text, TextView.BufferType.EDITABLE);
         Quantity.setText(quantity_text, TextView.BufferType.EDITABLE);
         updateCategorySpinner();
@@ -150,25 +150,11 @@ public class EditBookFragment extends Fragment implements BackButtonListener {
     }
 
     public void initButtons(){
-        ViewComment= (Button) myView.findViewById(R.id.EditItem_ViewComments);
-        Done= (Button) myView.findViewById(R.id.EditItem_Done);
-        ViewPhoto= (Button) myView.findViewById(R.id.EditItem_Photo);
-
-        ViewComment.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ViewComments_Handler();
-            }
-        });
+        Done = (Button) myView.findViewById(R.id.EditItem_Done);
 
         Done.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Save_Handler();
-            }
-        });
-
-        ViewPhoto.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                ClickPhoto_Handler();
             }
         });
 
