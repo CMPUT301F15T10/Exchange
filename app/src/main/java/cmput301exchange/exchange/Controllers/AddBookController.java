@@ -65,7 +65,7 @@ public class AddBookController implements Observable{
     private CheckBox checkBox;
 
     private int currentBitmapPos;
-    private ArrayList<byte[]> compressedImages = new ArrayList<>();
+    private ArrayList<String> compressedImages = new ArrayList<>();
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
     private ArrayAdapter<CharSequence> adapter;
@@ -229,17 +229,25 @@ public class AddBookController implements Observable{
             builder.setItems(options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-
-                    if (options[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    /*
+                    click on photo field, a dialog with two options pops up
+                    following are the behaviours of two different options
+                    take photo calls device camera and take a picture
+                    choose from gallery leads to gallery of device allows us to
+                    choose a picture from it
+                     */
+                    Intent intent;
+                    switch(options[item].toString()){
+                        case "Take Photo":
+                        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");//take a pic called temp.jpg
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                         activity.startActivityForResult(intent, 1);
-                    } else if (options[item].equals("Choose from Gallery")) {
-
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        break;
+                        case "Choose from Gallery":
+                        intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         activity.startActivityForResult(intent, 2);
-
+                        break;
                     }
                 }
 
@@ -249,9 +257,11 @@ public class AddBookController implements Observable{
             builder.setItems(more_options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-
+                    //same as options, more_options offers various methods to deal with photo
+                    //code structure is same as switch
                     if (more_options[item].equals("View Bigger Photo")) {
-                        String photo = getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
+                        PhotoController photoController = new PhotoController();
+                        String photo = photoController.getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
                         dataIO.saveInFile("detailed_photo.sav", photo);
 
                         Intent intent = new Intent(activity, DetailedPhoto.class);
@@ -302,7 +312,7 @@ public class AddBookController implements Observable{
 
         if (resultCode == activity.RESULT_OK) {
 
-            if (requestCode == 1) {
+            if (requestCode == 1) {//means took photo via camera
                 //h=0;
                 File f = new File(Environment.getExternalStorageDirectory().toString());
 
@@ -317,10 +327,10 @@ public class AddBookController implements Observable{
 
                     }
 
-                }
+                }//find the file named 'temp.jpg'
 
                 try {
-
+                    //try upload the photo
                     Bitmap bitmap;
 
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
@@ -335,17 +345,16 @@ public class AddBookController implements Observable{
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    byte[] byteArray = stream.toByteArray();
-                    compressedImages.add(byteArray);
+                    compressedImages.add(stream.toString());
 
-                    this.addToImageList(byteArray);
+                    this.addToImageList(stream.toByteArray());
                     bmpAdapter.notifyDataSetChanged();
 
                     stream.flush();
                     stream.close();
 
                     f.delete();
-
+                    //delete the temp photo after uploaded
                 } catch (Exception e) {
 
                     e.printStackTrace();
@@ -353,7 +362,7 @@ public class AddBookController implements Observable{
                 }
 
             } else if (requestCode == 2) {
-
+                //this is the case that choose photo from gallery
 
                 Uri selectedImage = data.getData();
 
@@ -377,20 +386,6 @@ public class AddBookController implements Observable{
             }
 
         }
-    }
-    private String getStringFromBitmap(Bitmap bitmapPicture) {
-     /*
-     * This functions converts Bitmap picture to a string which can be
-     * JSONified.
-     * */
-        final int COMPRESSION_QUALITY = 100;
-        String encodedImage;
-        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
-                byteArrayBitmapStream);
-        byte[] b = byteArrayBitmapStream.toByteArray();
-        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return encodedImage;
     }
 
     public void addToImageList(byte[] array){

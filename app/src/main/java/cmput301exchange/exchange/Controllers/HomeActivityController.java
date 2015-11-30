@@ -24,6 +24,7 @@ public class HomeActivityController implements Observer {
     ModelEnvironment globalEnv;
 
     public HomeActivityController(Activity activity,ModelEnvironment globalEnv){
+        //constructor, basic setups
         this.activity=activity;
         elasticSearch= new ElasticSearch(activity);
         this.globalEnv=globalEnv;

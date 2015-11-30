@@ -15,13 +15,15 @@ import com.google.gson.Gson;
 import java.io.File;
 
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.PhotoController;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 
 public class DetailedPhoto extends ActionBarActivity {
     Bitmap detailedPhoto;
-
+    // this is  a class called detailed photo, it has been called after user click
+    // on the photo of profile,Then it use the IO manager to download the detail photo and show it on the screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +31,8 @@ public class DetailedPhoto extends ActionBarActivity {
 
         DataIO dataIO = new DataIO(this, DetailedPhoto.class);
         String photoString = dataIO.loadFromFile("detailed_photo.sav");
-        detailedPhoto = getBitmapFromString(photoString);
+        PhotoController photoController = new PhotoController();
+        detailedPhoto = photoController.getBitmapFromString(photoString);
         File file = new File(getFilesDir(), "detailed_photo.sav");
         file.delete();
 
@@ -58,14 +61,6 @@ public class DetailedPhoto extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private Bitmap getBitmapFromString(String stringPicture) {
-    /*
-    * This Function converts the String back to Bitmap
-    * */
-            byte[] decodedString = Base64.decode(stringPicture, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
 }

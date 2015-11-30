@@ -373,6 +373,8 @@ public class InventoryActivity extends AppCompatActivity {
         Intent intent;
         Gson gson=new Gson();
         String json;
+        String json1;
+        String json2;
         Bundle extras = new Bundle();
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
@@ -386,15 +388,20 @@ public class InventoryActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_edit:
-                json = gson.toJson(selectedBooks.get(0));
-                intent = new Intent(this, EditBookActivity.class).putExtra("Edit_Item", json);
-                startActivityForResult(intent, MENU_Edit_Item);
+                json1 = gson.toJson(inventory);
+                json2 = gson.toJson(selectedBooks.get(0));
+                DataIO dataIO = new DataIO(this, InventoryActivity.class);
+                dataIO.saveInFile("inventory.sav", json1);
+                dataIO.saveInFile("book.sav", json2);
+
+                intent = new Intent(this, EditBookActivity.class);
+                startActivityForResult(intent, 0);
 
                 return true;
 
             case R.id.action_clone:
-                String json1 = gson.toJson(inventory);
-                String json2 = gson.toJson(selectedBooks.get(0));
+                json1 = gson.toJson(inventory);
+                json2 = gson.toJson(selectedBooks.get(0));
                 extras.putString("Inventory", json1);
                 extras.putString("Book", json2);
                 intent = new Intent(this, AddBookActivity.class).putExtras(extras);

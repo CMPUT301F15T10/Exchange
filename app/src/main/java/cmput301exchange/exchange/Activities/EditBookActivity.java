@@ -1,147 +1,127 @@
 package cmput301exchange.exchange.Activities;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 
-import cmput301exchange.exchange.Controllers.EditBookController;
-import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
-import cmput301exchange.exchange.Fragments.EditBookFragment;
+import cmput301exchange.exchange.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
-import cmput301exchange.exchange.Interfaces.BackButtonListener;
-import cmput301exchange.exchange.Others.ObjectSaver;
+import cmput301exchange.exchange.Controllers.AddBookController;
+import cmput301exchange.exchange.Controllers.EditBookController;
+import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Serializers.DataIO;
 
-public class EditBookActivity extends AppCompatActivity {
-    private EditBookFragment BookEdit;
-    private EditBookCommentFragment CommentEdit;
-    private Fragment Photo; // Its fragment type will be replaced by Photo's fragment class.;
-    public FragmentManager fm;
-    private FragmentTransaction fm_T;
-    private Integer fragmentLayoutID=R.id.fragmentR;
-    private Book myBook;
-    private EditBookController myController;
-    public static String editBookTag="EDIT_BOOK_TAG",editCommentTag="EDIT_Comment_TAG",viewPhotoTag="VIEW_BOOK_TAG";
-    private BackButtonListener currentFragment;
-    private boolean isBackPressed=false;
-    private String originalBook_String=null;
+public class EditBookActivity extends ActionBarActivity {
 
+
+    private EditText name, author, quality, quantity, comments;
+    private ImageButton image;
+    private String category;
+    private Inventory inventory;
+    private Book cloneBook;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    private Spinner photoList;
+
+    private ArrayList<byte[]> compressedImages = new ArrayList<>();
+    private ArrayList<Bitmap> imageList = new ArrayList<>();
+    private ArrayAdapter<Bitmap> bmpAdapter;
+    private int currentBitmapPos;
+
+    private DataIO dataIO = new DataIO(this, AddBookActivity.class);
+
+    private EditBookController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_edit_book);
 
-        initBook();
-        myController= new EditBookController(myBook); //Creating an empty EditBookController
-
-        if (savedInstanceState == null) {
-            initFragments();
-            switchFragment(1); // By default EditBookFragment
-        }
-
+        controller = new EditBookController(this, this);
+        controller.Setup();
     }
 
-    public void initFragments(){
-        fm=getFragmentManager();
-        fm_T=fm.beginTransaction();
-        BookEdit = new EditBookFragment();
-        CommentEdit = new EditBookCommentFragment();
-        // Put here code for initializing photo view/edit fragment
+    public void add(View view){
+        controller.add(view);
     }
 
-    public void switchFragment(int flag){
-        fm_T=fm.beginTransaction();
-        if (flag==1){
-            fm_T.replace(fragmentLayoutID.intValue(),BookEdit,editBookTag);
-            currentFragment=BookEdit;
-        }
-        if (flag==2){
-            fm_T.replace(fragmentLayoutID.intValue(),CommentEdit,editCommentTag);
-            currentFragment=CommentEdit;
-        }
-        if (flag==3){
-            fm_T.replace(fragmentLayoutID.intValue(),Photo,viewPhotoTag);
-//            currentFragment=Photo;
-        }
-//        fm_T.addToBackStack(null);
-        fm_T.commitAllowingStateLoss();// Alternative is commit
-//        fm_T.commit();
-        fm.executePendingTransactions();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        controller.ActivityResult(requestCode,resultCode,data);
     }
 
-    public Book getBook(){
-        return myBook;
-    }
 
-    public void setBook(Book book){
-        myBook=book;
+
+    @Override
+    public void onStop(){
+        //We want this function to be called whenever the activity is killed to prevent losing data
+        //I pulled the gson writing from the add function, and generalized it.
+
+        Gson gson= new Gson(); //Create a new Gson Instance
+        String json=gson.toJson(inventory); //Write the existing inventory data to Json
+
+        Intent added = new Intent().putExtra("Inventory",json); //Send it back to the inventory activity
+        setResult(RESULT_OK, added);
+
+        super.onStop(); //Required for the onStop Function to work
     }
 
     @Override
-    public void finish(){
-        Gson gson = new Gson();
-        String json;
-        if (isBackPressed==false) {
-            json = gson.toJson(myController.getBook());
-        } else{
-            json = originalBook_String;
-        }
-        Intent book = new Intent();
-        book.putExtra("Book", json);
-        setResult(RESULT_OK, book);
-        super.finish();
-    }
-
-    public void initBook() {
-        Intent intent=getIntent();
-        if (intent==null){
-            throw new RuntimeException("Intent is null!");
-        }
-        String json=intent.getExtras().getString("Edit_Item");
-        Gson gson = new Gson();
-        myBook=gson.fromJson(json,Book.class);
-        originalBook_String=gson.toJson(myBook);
-    }
-
-    public EditBookFragment getEditBookFragment(){
-        return BookEdit;
-    }
-
-    public EditBookCommentFragment getEditCommentFragment(){
-        return CommentEdit;
-    }
-
-    public void setController(EditBookController controller){
-        myController=controller;
-    }
-
-    public EditBookController getController(){
-        return myController;
-    }
-
-    public void setCurrentFragment(BackButtonListener fragment){
-        currentFragment=fragment;
+    public void onBackPressed(){
+        //This method is called when the back button is pressed, regardless of what data is entered.
+        //It basically just stops the data from being entered into the inventory, and quits activity
+        controller.finishAdd();
     }
 
     @Override
-    public void onBackPressed() {
-        if (currentFragment!=null){
-            currentFragment.onBackPress();
-        } else{
-            isBackPressed=true;
-            super.onBackPressed();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_add_item, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 }
+
