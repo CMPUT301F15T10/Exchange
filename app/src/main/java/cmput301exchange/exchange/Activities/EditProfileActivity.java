@@ -22,7 +22,7 @@ import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
 
 public class EditProfileActivity extends AppCompatActivity {
-
+    //This is a class called edit profile
     ModelEnvironment GlobalENV;
 //    protected DataIO io;
 
