@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -296,6 +298,86 @@ public class AddBookController implements Observable{
 
     }
 
+    public void ActivityResult(int requestCode, int resultCode, Intent data){
+
+        if (resultCode == activity.RESULT_OK) {
+
+            if (requestCode == 1) {
+                //h=0;
+                File f = new File(Environment.getExternalStorageDirectory().toString());
+
+                for (File temp : f.listFiles()) {
+
+                    if (temp.getName().equals("temp.jpg")) {
+
+                        f = temp;
+                        File photo = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+
+                        break;
+
+                    }
+
+                }
+
+                try {
+
+                    Bitmap bitmap;
+
+                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+
+
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
+                    Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.2), (int)(bitmap.getHeight()*0.2), true);
+
+
+                    image.setImageBitmap(bitmap);
+
+                    // new stuff hope it doesn't break
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    compressedImages.add(byteArray);
+
+                    this.addToImageList(byteArray);
+                    bmpAdapter.notifyDataSetChanged();
+
+                    stream.flush();
+                    stream.close();
+
+                    f.delete();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                }
+
+            } else if (requestCode == 2) {
+
+
+                Uri selectedImage = data.getData();
+
+                String[] filePath = {MediaStore.Images.Media.DATA};
+
+                Cursor c = activity.getContentResolver().query(selectedImage, filePath, null, null, null);
+
+                c.moveToFirst();
+
+                int columnIndex = c.getColumnIndex(filePath[0]);
+
+                String picturePath = c.getString(columnIndex);
+
+                c.close();
+
+                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+
+                Log.w("path image from gallery", picturePath + "");
+
+                image.setImageBitmap(thumbnail);
+            }
+
+        }
+    }
     private String getStringFromBitmap(Bitmap bitmapPicture) {
      /*
      * This functions converts Bitmap picture to a string which can be

@@ -73,86 +73,8 @@ public class AddBookActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK) {
-
-            if (requestCode == 1) {
-                //h=0;
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-
-                for (File temp : f.listFiles()) {
-
-                    if (temp.getName().equals("temp.jpg")) {
-
-                        f = temp;
-                        File photo = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
-
-                        break;
-
-                    }
-
-                }
-
-                try {
-
-                    Bitmap bitmap;
-
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
-
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
-                    Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.2), (int)(bitmap.getHeight()*0.2), true);
-
-
-                    image.setImageBitmap(bitmap);
-
-                    // new stuff hope it doesn't break
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    byte[] byteArray = stream.toByteArray();
-                    compressedImages.add(byteArray);
-
-                    controller.addToImageList(byteArray);
-                    bmpAdapter.notifyDataSetChanged();
-
-                    stream.flush();
-                    stream.close();
-
-                    f.delete();
-
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-
-                }
-
-            } else if (requestCode == 2) {
-
-
-                Uri selectedImage = data.getData();
-
-                String[] filePath = {MediaStore.Images.Media.DATA};
-
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-
-                c.moveToFirst();
-
-                int columnIndex = c.getColumnIndex(filePath[0]);
-
-                String picturePath = c.getString(columnIndex);
-
-                c.close();
-
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-
-                Log.w("path image from gallery", picturePath + "");
-
-                image.setImageBitmap(thumbnail);
-            }
-
-        }
+        controller.ActivityResult(requestCode,resultCode,data);
     }
 
 
