@@ -250,7 +250,7 @@ public class TradeFragment2 extends Fragment implements BackButtonListener {
 
     public void exit(){
         myActivity.setTradeController(myTradeController);
-        myTradeController.saveTrade();
+        myTradeController.saveTradeUnInitiated();
         myActivity.switchFragment(1); //switches back to tradeManager.
     }
 

@@ -65,7 +65,6 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
         setQueryType(myActivity.getTradeListFlag());
         myTradeManager=myActivity.getTradeManager();
         myTradeListController= new TradeListController(myTradeManager,getQueryType(),myActivity);
-        getOriginalTradeList();
     }
 
 
@@ -149,6 +148,7 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
         setHasOptionsMenu(true);
         initAdapter();
         initListView();
+        getOriginalTradeList();
 //        initSearchView();
         return myView;
     }

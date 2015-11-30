@@ -221,9 +221,13 @@ public class Trade {
         this.listBookPartner = listBookPartner;
     }
 
+
     //TODO
     public String toString(){
         // You may have to add other texts depending on the status
+        if (hasTradePartner()==false){
+            return "Created: "+creationDate;
+        }
         return "Trade Partner: "+tradePartner.getName()+ "\n"+ "Created: "+creationDate;
     }
 }

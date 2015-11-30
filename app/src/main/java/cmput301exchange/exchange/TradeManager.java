@@ -220,13 +220,6 @@ public class TradeManager {
     }
 
 
-    public void addTrade(Trade trade) {
-
-        // Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, Integer tradeType)
-        // create a new trade and add it to the listCurrentTrade
-        listCurrentTrade.add(trade);
-    }
-
 
     /**
      * Swaps the role of the owner and borrower, edits the trade
@@ -603,10 +596,14 @@ public class TradeManager {
     }
 
 
-    public void sendTradeOffer(Trade trade){
+    public boolean sendTradeOffer(Trade trade){
         trade.setTradeStatus(1); // Ongoing offer made
         lightenTrade(trade);
+        if (trade.hasTradePartner()==false){
+            return false;
+        }
         trade.getTradePartner().getTradeManager().processTradeRequest(trade);
+        return true;
     }
 
     public Integer sendEmail(Trade trade, String comments) {

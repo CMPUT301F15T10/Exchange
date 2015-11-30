@@ -491,6 +491,7 @@ public class InventoryActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    //TODO
     public void onPause(){
         saveUser();
         updateOnline();

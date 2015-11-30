@@ -12,6 +12,7 @@ import java.util.Collections;
 public class PersonList {
 
     private ArrayList<Person> personList;
+    private ArrayList<Long> personIDList;
     /**
      * Returns a List of Friends.
      */
@@ -22,6 +23,11 @@ public class PersonList {
 
     public PersonList() {
         personList= new ArrayList<>();
+        personIDList = new ArrayList<>();
+    }
+
+    public ArrayList<Long> getPersonIDList(){
+        return personIDList;
     }
     /**
      * Searches the personList for a string
@@ -51,6 +57,7 @@ public class PersonList {
         if (personList.contains(aperson)) {
             //Do nothing as we dont want to add duplicates.
         } else {
+            personIDList.add(aperson.getID());
             personList.add(aperson);
         }
     }
@@ -69,6 +76,7 @@ public class PersonList {
         for(int i = 0;i<n;i++){
             if(personList.get(i).getID()==aperson.getID()){
                 personList.remove(i);
+                personIDList.remove(i);
                 break;
             }
         }

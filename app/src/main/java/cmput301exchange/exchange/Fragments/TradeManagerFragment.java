@@ -88,7 +88,7 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
     }
 
     public void unInitiated_Handler(){
-
+        myActivity.displayCurrentTrades();
     }
 
     public void initTextView(){
@@ -115,11 +115,11 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
     }
 
     public void CurrentTrade_Handler(){
-        myActivity.displayCurrentTrades();
+        myActivity.displayTransactionedTrades();
     }
 
     public void PastTrade_Handler(){
-        myActivity.displayPastTrades();
+        myActivity.displayCompleteTrades();
     }
 
     public void onResume(){

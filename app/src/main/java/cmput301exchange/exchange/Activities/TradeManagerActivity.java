@@ -17,6 +17,10 @@ import cmput301exchange.exchange.Controllers.BooksTradeController;
 import cmput301exchange.exchange.Controllers.TradeController;
 import cmput301exchange.exchange.Fragments.ItemsTradeFragment;
 import cmput301exchange.exchange.Fragments.TradeFragment;
+import cmput301exchange.exchange.Fragments.TradeFragment2;
+import cmput301exchange.exchange.Fragments.TradeFragment3;
+import cmput301exchange.exchange.Fragments.TradeFragment4;
+import cmput301exchange.exchange.Fragments.TradeFragment5;
 import cmput301exchange.exchange.Fragments.TradeListFragment;
 import cmput301exchange.exchange.Fragments.TradeManagerFragment;
 import cmput301exchange.exchange.Interfaces.BackButtonListener;
@@ -33,6 +37,10 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     public FragmentManager fm;
     private FragmentTransaction fm_T;
     private TradeFragment myTradeFragment;
+    private TradeFragment2 myTradeFragment2;
+    private TradeFragment3 myTradeFragment3;
+    private TradeFragment4 myTradeFragment4;
+    private TradeFragment5 myTradeFragment5;
     private TradeListFragment myTradeListFragment;
     private ItemsTradeFragment myItemsTradeFragment;
     private TradeManagerFragment myTradeManagerFragment;
@@ -43,12 +51,13 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private BackButtonListener currentFragment;
     private Integer tradeListFlag=null;
     private ModelEnvironment globalEnv=null;
-    public static String tradeManagerTag="Trade_Manager_TAG",tradeTag="Trade_TAG",tradeItemsTag="Trade_Items_TAG",tradeListTag="Trade_List_TAG";
+    public static String tradeManagerTag="Trade_Manager_TAG",tradeTag="Trade_TAG",tradeItemsTag="Trade_Items_TAG",tradeListTag="Trade_List_TAG",tradeTag2="Trade_TAG2",tradeTag3="Trade_TAG3",tradeTag4="Trade_TAG4",tradeTag5="Trade_TAG5";
     private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
     private Intent personIntent, inventoryIntent;
     private TradeController myTradeController;
     private User user;
     private boolean fromInventory=false;
+    private Person retrievedTradePartner=null;
 
     public BooksTradeController getBookTradeController() {
         return myBookTradeController;
@@ -85,7 +94,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
     public void processIntent(){
         personIntent=getIntent();
-        myTradeController.setTradePartner(retrieveTradePartner());
+        retrievedTradePartner=retrieveTradePartner();
     }
 
     @Override
@@ -110,7 +119,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         myTradeManager=user.getTradeManager();
         if (myTradeManager==null){
             myTradeManager=new TradeManager();
-            Log.e("creates trade managager","trade manager activity");
+            Log.e("creates trade managager", "trade manager activity");
         }
         Log.e("Loads Trade manager","");
     }
@@ -150,12 +159,16 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     //TODO
     public void initFragments(){
         fm=getFragmentManager();
-        fm_T=fm.beginTransaction();
+//        fm_T=fm.beginTransaction();
         myTradeFragment = new TradeFragment();
+        myTradeFragment2 = new TradeFragment2();
+        myTradeFragment3 = new TradeFragment3();
+        myTradeFragment4 = new TradeFragment4();
+        myTradeFragment5 = new TradeFragment5();
         myTradeListFragment = new TradeListFragment();
         myItemsTradeFragment= new ItemsTradeFragment();
         myTradeManagerFragment= new TradeManagerFragment();
-        // Put here code for initializing photo view/edit fragment
+
     }
 
     public void switchFragment(int flag){
@@ -170,10 +183,26 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
             currentFragment= myTradeFragment;
         }
         if (flag==3){
+            fm_T.replace(fragmentLayoutID,myTradeFragment2,tradeTag2);
+            currentFragment= myTradeFragment2;
+        }
+        if (flag==4){
+            fm_T.replace(fragmentLayoutID,myTradeFragment3,tradeTag3);
+            currentFragment= myTradeFragment3;
+        }
+        if (flag==5){
+            fm_T.replace(fragmentLayoutID,myTradeFragment4,tradeTag4);
+            currentFragment= myTradeFragment4;
+        }
+        if (flag==6){
+            fm_T.replace(fragmentLayoutID,myTradeFragment5,tradeTag5);
+            currentFragment= myTradeFragment5;
+        }
+        if (flag==7){
             fm_T.replace(fragmentLayoutID,myTradeListFragment,tradeListTag);
             currentFragment= myTradeListFragment;
         }
-        if (flag==4){
+        if (flag==8){
             fm_T.replace(fragmentLayoutID,myItemsTradeFragment,tradeItemsTag);
             currentFragment= myItemsTradeFragment;
         }
@@ -188,19 +217,26 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     public void displayCurrentTrades(){
         // Set TradeListFragment for displaying current trades
         setTradeListFlag(2);
-        switchFragment(3);
+        switchFragment(7);
+    }
+
+    public void displayTransactionedTrades(){
+        // Set TradeListFragment for displaying current trades
+        setTradeListFlag(4);
+        switchFragment(7);
     }
 
     //TODO
-    public void displayPastTrades(){
+    public void displayCompleteTrades(){
         // // Set TradeListFragment for displaying past trades
         setTradeListFlag(1);
-        switchFragment(3);
+        switchFragment(7);
     }
 
     public void makeTrade(){
         myTradeController.createTrade(this, user);
-        myTradeController.addToCurrentList();
+        myTradeController.setTime();
+//        myTradeController.addToCurrentList();
         initBookTradeController();
 //        myTradeManager.getListCurrentTrade().
         Log.e("current list size: ", String.valueOf(myTradeManager.getListCurrentTrade().size()));
@@ -210,21 +246,23 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     public void displayTrade(Trade trade){
 //        myTrade=null;
         myTradeController.setTrade(trade);
-        myTradeController.getTradeStatus();
+        int tradeDisplayFlag=myTradeController.getControllerStatus()+2;
+
         initBookTradeController();
-        switchFragment(2);
+        Log.e(String.valueOf(tradeDisplayFlag),"Value______");
+        switchFragment(tradeDisplayFlag);
     }
 
     //TODO
     public void displayTradeRequests(){
         // Set ItemsTradeFragment for displaying current trades
         setTradeListFlag(3);
-        switchFragment(3);
+        switchFragment(7);
     }
 
     public void displayItemsToTrade(Trade trade){
 //        myTradeController.setTrade(trade);
-        switchFragment(4);
+        switchFragment(8);
     }
 
     public TradeManager getTradeManager(){

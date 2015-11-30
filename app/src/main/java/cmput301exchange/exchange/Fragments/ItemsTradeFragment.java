@@ -215,7 +215,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
     }
 
 
-    public  void done_Handler(){
+    public void done_Handler(){
        exit();
     }
 

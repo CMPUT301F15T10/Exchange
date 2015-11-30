@@ -2,7 +2,9 @@ package cmput301exchange.exchange.Fragments;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.test.ActivityInstrumentationTestCase2;
@@ -124,7 +126,11 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
     
     public void sendOffer_Handler(){
-        myTradeController.sendTradeOffer();
+        if (myTradeController.sendTradeOffer()==false){
+            showNoPartnerDialogue();
+            return;
+        }
+
         //May add a dialog box if necessary
         exit();
     }
@@ -133,6 +139,20 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         myTradeController.deleteTrade();
         //May add a dialog box if necessary
         exit();
+    }
+
+    public void showNoPartnerDialogue(){
+        new AlertDialog.Builder((Context) myActivity)
+                .setTitle("No Trade Partner")
+                .setMessage("Please first select a trade partner before sending a trade offer!")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     //TODO
@@ -249,7 +269,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
     public void exit(){
         myActivity.setTradeController(myTradeController);
-        myTradeController.saveTrade();
+        myTradeController.saveTradeUnInitiated();
         myActivity.switchFragment(1); //switches back to tradeManager.
     }
 

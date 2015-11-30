@@ -26,4 +26,5 @@ public interface TradeMaker extends FragmentContainer {
     void selectItems(int type, Inventory inventory, ArrayList<Integer> position_array);
     Inventory assignBooks();
     BooksTradeController getBookTradeController();
+    public void displayTransactionedTrades();
 }

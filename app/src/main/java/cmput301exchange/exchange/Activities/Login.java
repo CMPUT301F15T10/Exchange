@@ -24,6 +24,7 @@ import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
+import cmput301exchange.exchange.TradeManager;
 import cmput301exchange.exchange.User;
 
 public class Login extends AppCompatActivity implements Observer{
@@ -65,20 +66,20 @@ public class Login extends AppCompatActivity implements Observer{
     public void CreateUser(){
         userString = username.getText().toString();
         globalENV = new ModelEnvironment(this,userString);
-
-
+        globalENV.getOwner().setTradeManager(new TradeManager());
     }
 
 
     public void login(View  view) {
-        progressDialog = ProgressDialog.show(this,"Logging You In...","Just one Moment",true);
+        progressDialog = ProgressDialog.show(this, "Logging You In...", "Just one Moment", true);
         userString = username.getText().toString();
         if(userString.equals("")){
             return;
         }
 
         elasticSearch.addObserver(this);
-        elasticSearch.fetchUserFromServer(username.getText().toString());
+
+        elasticSearch.fetchUserFromServer(username.getText().toString()); //Right Now it will rely on offline data
 
 
 }
@@ -112,7 +113,7 @@ public class Login extends AppCompatActivity implements Observer{
     }
 
     public void Notified(){
-        globalENV = new ModelEnvironment(this);
+        globalENV = new ModelEnvironment(this); // shouldnt be null //TODO
         globalENV.setOwner(elasticSearch.getUser());
         globalENV.saveInstance(this); //saving
     }

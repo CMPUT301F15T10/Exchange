@@ -43,6 +43,7 @@ import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.Serializers.deepClone;
+import cmput301exchange.exchange.TradeManager;
 import cmput301exchange.exchange.User;
 
 public class  HomeActivity extends AppCompatActivity {
@@ -77,9 +78,12 @@ public class  HomeActivity extends AppCompatActivity {
 //        getUser();
 //        MockObjectInit(); // creates a friendlist,personlist,inventory items and then saves them using global Env
 //        saveUser();
+
+
         elasticSearch.sendToServer(GlobalENV);
 
         setContentView(R.layout.activity_home);
+//        MockObjectInit();
 
         NavTitles = getResources().getStringArray(R.array.NavigationArray);
         leftDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,6 +115,7 @@ public class  HomeActivity extends AppCompatActivity {
         TextView message = (TextView) findViewById(R.id.home_message);
         String string = "Hello " + GlobalENV.getOwner().getName() + "!\n" + message.getText().toString();
         message.setText(string);
+
         elasticSearch.sendToServer(GlobalENV);
 
     }
@@ -260,6 +265,8 @@ public class  HomeActivity extends AppCompatActivity {
         HackMe.updateTitle("Hack Me!");
         HackMe.updateCategory("None");
         user.getMyInventory().add(HackMe);
+        MockBooks mock= new MockBooks();
+        GlobalENV.getPersonList().getPersonList().get(0).getMyInventory().getInventoryList().addAll(mock.getSharableBooks());
 //        saveUser();
     }
 
@@ -276,6 +283,9 @@ public class  HomeActivity extends AppCompatActivity {
 
     public void initPeopleList() {
         MockPersonList list=new MockPersonList();
+        for (Person person:list.personList.getPersonList()){
+            person.setTradeManager(new TradeManager());
+        }
         user.setFriendList(list.friendList);
         GlobalENV.setPersonList(list.personList);
     }
@@ -283,11 +293,14 @@ public class  HomeActivity extends AppCompatActivity {
     public void initUser(){
         GlobalENV= new ModelEnvironment(this, null);
         user=GlobalENV.getOwner();
+        user.setTradeManager(new TradeManager());
     }
 
     public void MockObjectInit(){
+        initUser();
         initPeopleList();
         initInventory();
+        GlobalENV.saveInstance(this);
 //        saveUser();
     }
 

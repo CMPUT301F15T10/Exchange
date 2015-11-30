@@ -38,8 +38,8 @@ public class TradeController {
 //        this.status=status;
 //    }
 
-    public int getControllerStatus(int tradeStatus){
-        return status[tradeStatus];
+    public int getControllerStatus(){
+        return status[myTrade.getTradeStatus().intValue()];
     }
 
     public int getTradeStatus(){
@@ -56,9 +56,12 @@ public class TradeController {
         myTrade.setListBookPartner(new ArrayList<Book>());
     }
 
-    public void sendTradeOffer(){
-        myTradeManager.sendTradeOffer(myTrade);
+    public boolean sendTradeOffer(){
+        if (myTradeManager.sendTradeOffer(myTrade)==false){
+            return false;
+        }
         myTradeManager.pushChanges(myTrade);
+        return true;
     }
 
     public void deleteTrade(){
@@ -66,10 +69,9 @@ public class TradeController {
         myTradeManager.deleteUnInitiatedTrade(myTrade);
     }
 
-    public void addToCurrentList(){
+    public void setTime(){
         myTrade.setTimeStamp();
         myTrade.setDate();
-        myTradeManager.addTrade(myTrade);
         Log.e("size current list TradeController: ", String.valueOf(myTradeManager.getListCurrentTrade().size()));
     }
 
@@ -165,8 +167,9 @@ public class TradeController {
         return myTrade;
     }
 
-    public void saveTrade(){
-        myTradeManager.lightenTrade(myTrade);
+    public void saveTradeUnInitiated(){
+
+        myTradeManager.addUnInitiatedTrade(myTrade);
         myTrade=null;
     }
 }

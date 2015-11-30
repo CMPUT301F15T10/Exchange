@@ -165,6 +165,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     }
 
     @Override
+//    TODO
     public void onPause(){
         saveUser();
         updateOnline();
@@ -366,9 +367,11 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         lv.clearChoices();
     }
 
+    //TODO
     public void initPersonList(Integer integer){
         String page = integer.toString();
         elasticSearch.addObserver(this);
+
         elasticSearch.fetchAllUsersFromServer("*", page);
 
 
