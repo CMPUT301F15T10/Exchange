@@ -59,6 +59,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private boolean fromInventory=false;
     private Person retrievedTradePartner=null;
     private boolean bookRequested=false;
+    private int currentFragmentID;
 
     public BooksTradeController getBookTradeController() {
         return myBookTradeController;
@@ -213,6 +214,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
 //        fm_T.addToBackStack(null);
 //        fm_T.commit();
+        currentFragmentID=flag;
         fm_T.commitAllowingStateLoss();
         fm.executePendingTransactions();
     }
@@ -324,8 +326,9 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         if (requestCode == SEARCH_PEOPLE) {
             personIntent=data;
             myTradeController.setTradePartner(retrieveTradePartner());
+            displayTrade(myTradeController.getTrade());
 //            displayTrade(myTradeController.getTrade());
-            switchFragment(2); //switch to trade fragment
+//            switchFragment(2); //switch to trade fragment
         }
         if (requestCode == INVENTORY) {
             data.setClass(this, TradeManagerActivity.class);

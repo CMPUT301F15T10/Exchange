@@ -24,8 +24,9 @@ public class deepClone {
             return ois.readObject();
         }
         catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("failed to perform deep clone");
+//            e.printStackTrace();
+//            return null;
         }
     }
 }

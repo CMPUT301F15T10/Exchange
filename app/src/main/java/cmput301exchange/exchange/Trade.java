@@ -36,6 +36,9 @@ public class Trade {
     private Long timeStamp;
     private boolean hasPartner=false;
 
+    private String partnerName;
+    private String userName;
+
     private boolean isLoaded=false;
 
     public boolean isLoaded() {
@@ -115,6 +118,19 @@ public class Trade {
 //        UserID = userID;
 //    }
 
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+
     /*
     public Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, ArrayList<Item> listItemUser, ArrayList<Item> listItemPartner, Integer tradeType) {
         this.tradeUser = tradeUser;
@@ -147,6 +163,7 @@ public class Trade {
     public void setTradeUser(Person tradeUser) {
         this.tradeUser = tradeUser;
         this.UserID = tradeUser.getID();
+        this.userName= tradeUser.getName();
     }
 
     public void removePersons(){
@@ -161,16 +178,17 @@ public class Trade {
 
     public void setTradePartner(Person tradePartner, Boolean isCounterTrade) {
         Log.e("Trade Partner is selected","-----");
-        if (isCounterTrade==true){
-            this.tradePartner=null;
-            this.hasPartner=false;
-            this.PartnerID=null;
-            return;
-        }
+//        if (isCounterTrade==true){
+//            this.tradePartner=;
+//            this.hasPartner=false;
+//            this.PartnerID=null;
+//            return;
+//        }
 
         this.tradePartner = tradePartner;
 
         if (tradePartner != null){
+            this.partnerName=tradePartner.getName();
             this.PartnerID = tradePartner.getID();
             this.hasPartner = true;
         }
@@ -237,6 +255,34 @@ public class Trade {
         if (hasTradePartner()==false){
             return "Created: "+creationDate;
         }
-        return "Trade Partner: "+tradePartner.getName()+ "\n"+ "Created: "+creationDate;
+        return "Owner: "+partnerName+". Burrower: "+userName + "\n"+ "Created: "+creationDate;
+    }
+
+    public void setTradeId(Long tradeId) {
+        this.tradeId = tradeId;
+    }
+
+    public Trade clone(){
+        Trade cloned=new Trade();
+        cloned.setTradeUser(tradeUser);
+        cloned.setTradePartner(tradePartner,false);
+
+        ArrayList<Book> userBooks=new ArrayList<>();
+        for (Book book:listBookUser){
+            userBooks.add(book);
+        }
+        cloned.setListBookUser(userBooks);
+
+        ArrayList<Book> partnerBooks=new ArrayList<>();
+        for (Book book:listBookPartner){
+            partnerBooks.add(book);
+        }
+
+        cloned.setListBookPartner(partnerBooks);
+        cloned.setTradeStatus(tradeStatus.intValue());
+        cloned.setTradeId(this.tradeId.longValue());
+        cloned.setCreationDate(creationDate);
+        cloned.setTimeStamp(timeStamp);
+        return cloned;
     }
 }

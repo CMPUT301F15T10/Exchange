@@ -59,6 +59,9 @@ public class TradeController {
     }
 
     public boolean sendTradeOffer() {
+        if (myTrade==null){
+            throw new RuntimeException("Trade is null");
+        }
         if (myTradeManager.sendTradeOffer(myTrade) == false) {
             return false;
         }
@@ -116,9 +119,13 @@ public class TradeController {
         myTradeManager.pushChanges(null); // The partner object's tradeManager wont be pushed as only its the user side's trademanager that is changing
     }
 
-    public void acceptTrade() {
-        myTradeManager.acceptTradeRequest(myTrade);
-        myTradeManager.pushChanges(myTrade);
+    public boolean acceptTrade() {
+        if(myTradeManager.acceptTradeRequest(myTrade)==true){
+            myTradeManager.pushChanges(myTrade);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setTradeManager(TradeManager tradeManager) {
@@ -133,7 +140,8 @@ public class TradeController {
     public void setTradePartner(Person partner) {
         if (myTrade.getTradeStatus().intValue() == 5) {
             // In case of trade offer request being made to user
-            myTradeManager.counterTrade(myTrade);
+            myTradeManager.counterTrade(myTrade,partner);
+            return;
         }
 
         if (user.getID() != myTrade.getUserID()) {

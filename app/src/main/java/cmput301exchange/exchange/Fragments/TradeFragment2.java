@@ -2,7 +2,9 @@ package cmput301exchange.exchange.Fragments;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.test.ActivityInstrumentationTestCase2;
@@ -108,7 +110,7 @@ public class TradeFragment2 extends Fragment implements BackButtonListener {
         });
         decline.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                decline_Handler();
+                showTradeDeclineDialog();
             }
         });
         tradeItems.setOnClickListener(new View.OnClickListener() {
@@ -124,9 +126,48 @@ public class TradeFragment2 extends Fragment implements BackButtonListener {
     }
 
     public void accept_Handler(){
-        myTradeController.acceptTrade();
+        if (myTradeController.acceptTrade()==true){
+            showTradeAcceptDialog();
+        };
         //May add a dialog box if necessary
         exit();
+    }
+
+    //TODO may have to implement the email sending!
+    public void showTradeAcceptDialog(){
+        new AlertDialog.Builder((Context) myActivity)
+                .setTitle("Accepted!")
+                .setMessage("You have accepted a trade offer from "+myTradeController.getTrade().getTradeUser().getName())
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        exit();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
+
+    public void showTradeDeclineDialog(){
+        new AlertDialog.Builder((Context) myActivity)
+                .setTitle("Declined!")
+                .setMessage("You have declined a trade offer from " + myTradeController.getTrade().getTradeUser().getName()
+                        + "\n" + "Would you instead perform a counter Trade with another user? Press Yes to select a user or No to decline")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        performCounterTrade();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        decline_Handler();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
+    }
+
+    public void performCounterTrade(){
+        myActivity.selectPerson();
     }
 
     public void decline_Handler(){
@@ -250,8 +291,8 @@ public class TradeFragment2 extends Fragment implements BackButtonListener {
 
     public void exit(){
         myActivity.setTradeController(myTradeController);
-        myTradeController.saveTradeUnInitiated();
-        myActivity.switchFragment(1); //switches back to tradeManager.
+//        myTradeController.saveTradeUnInitiated();
+        myActivity.displayTradeRequests(); //switches back to tradeManager.
     }
 
     @Override

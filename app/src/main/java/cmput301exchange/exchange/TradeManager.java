@@ -206,6 +206,11 @@ public class TradeManager {
 
         // add the trade to the listCurrentTrade
         lightenTrade(trade);
+        for (Trade trade1: listCurrentTrade){
+            if (trade.getTradeId().equals(trade1.getTradeId())){
+                return;
+            }
+        }
         listCurrentTrade.add(trade);
     }
 
@@ -227,7 +232,7 @@ public class TradeManager {
      * constructs a new trade, and asks the user to edit the trade
      * @param trade1 The trade that you want to counter
      */
-    public void counterTrade(Trade trade1) {
+    public void counterTrade(Trade trade1, Person partner) {
 
         int index=0;
         trade1.setTradeStatus(4);
@@ -240,7 +245,15 @@ public class TradeManager {
         }
         listCurrentTrade.add(trade1);
         trade1.setTradeUser(trade1.getTradePartner());
-        trade1.setTradePartner(null,true);
+        ArrayList<Book> partnerBooks;
+        if (partner.getID().equals(trade1.getTradeUser().getID())){
+            partnerBooks=trade1.getListBookUser();
+        } else{
+            partnerBooks= new ArrayList<>();
+        }
+        trade1.setListBookUser(trade1.getListBookPartner());
+        trade1.setListBookPartner(partnerBooks);
+        trade1.setTradePartner(partner, true);
     }
 
 
@@ -506,9 +519,10 @@ public class TradeManager {
     }
 
     public void processTradeRequest(Trade trade){
-        lightenTrade(trade);
-        Trade trade1=(Trade) deepClone.deepClone(trade);
+//        lightenTrade(trade);
+        Trade trade1=trade.clone();
         trade1.setTradeStatus(5); //trade request
+        lightenTrade(trade1);
         listTradeRequest.add(trade);
     }
 
@@ -598,11 +612,12 @@ public class TradeManager {
 
 
     public boolean sendTradeOffer(Trade trade){
-        trade.setTradeStatus(1); // Ongoing offer made
-        lightenTrade(trade);
+//        lightenTrade(trade);
         if (trade.hasTradePartner()==false){
             return false;
         }
+
+        trade.setTradeStatus(1);
         trade.getTradePartner().getTradeManager().processTradeRequest(trade);
         return true;
     }
