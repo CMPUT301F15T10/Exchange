@@ -211,7 +211,6 @@ public class AddBookActivity extends ActionBarActivity {
 
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
-                        // TODO: 11/29/15 -------------------------------------------------------------------------------------------------
 
                     }
                 }
@@ -225,7 +224,6 @@ public class AddBookActivity extends ActionBarActivity {
 
                    if (more_options[item].equals("View Bigger Photo")) {
                        // send image to another activity where the full image can be expanded
-                       // TODO: 11/29/15 -------------------------------------------------------------------------------------------------
 
                    } else if (more_options[item].equals("Take Photo")) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -234,7 +232,7 @@ public class AddBookActivity extends ActionBarActivity {
                         startActivityForResult(intent, 1);
 
                     } else if (more_options[item].equals("Choose from Gallery")) {
-                       // TODO: 11/29/15 -------------------------------------------------------------------------------------------------
+
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
 
@@ -244,6 +242,7 @@ public class AddBookActivity extends ActionBarActivity {
 
                        photoLocation = saveToSDCard(pictureBitmap);
 /*
+MediaStore.Images.Media.insertImage(getContentResolver(), yourBitmap, yourTitle , yourDescription);
                        String path = Environment.getExternalStorageDirectory().toString();
                        String item_title = name.getText().toString();
                        File newFolder = new File(path + "/Exchange/" + item_title);
@@ -292,7 +291,7 @@ public class AddBookActivity extends ActionBarActivity {
 
     // credit to stackoverflow user 'RajaReddy PolamReddy'
     // http://stackoverflow.com/questions/7887078/android-saving-file-to-external-storage
-    public String saveToSDCard(Bitmap bitmap) {
+  public String saveToSDCard(Bitmap bitmap) {
 
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/saved_images");
@@ -312,12 +311,13 @@ public class AddBookActivity extends ActionBarActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
-
+            MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, fname, fname);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return fname;
+
     }
 
     @Override
