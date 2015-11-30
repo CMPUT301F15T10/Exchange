@@ -75,6 +75,8 @@ public class InventoryActivity extends AppCompatActivity {
     private ListView leftNavList;
     private String[] NavTitles;
 
+    private DataIO dataIO = new DataIO(this, InventoryActivity.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +166,7 @@ public class InventoryActivity extends AppCompatActivity {
         user = globalEnv.getOwner();
         processIntents();
     }
-    
+
     public void checkItems(){
         if (tradeItemsSelectedPos!=null) {
             for (Double position : tradeItemsSelectedPos) {
@@ -178,7 +180,7 @@ public class InventoryActivity extends AppCompatActivity {
         }
 
     }
-    
+
     public void processIntents(){
         if (intent.hasExtra("From_ViewPersonActivity")) {
             String inventory_json = intent.getStringExtra("Friend_Inventory");
@@ -390,7 +392,6 @@ public class InventoryActivity extends AppCompatActivity {
             case R.id.action_edit:
                 json1 = gson.toJson(inventory);
                 json2 = gson.toJson(selectedBooks.get(0));
-                DataIO dataIO = new DataIO(this, InventoryActivity.class);
                 dataIO.saveInFile("inventory.sav", json1);
                 dataIO.saveInFile("book.sav", json2);
 
@@ -421,7 +422,8 @@ public class InventoryActivity extends AppCompatActivity {
 
             case R.id.action_view:
                 json = gson.toJson(selectedBooks.get(0));
-                intent = new Intent(this, BookDetailsActivity.class).putExtra("Book", json);
+                dataIO.saveInFile("book.sav", json);
+                intent = new Intent(this, BookDetailsActivity.class);
                 startActivity(intent);
 
                 return true;

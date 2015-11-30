@@ -41,7 +41,6 @@ public class Login extends AppCompatActivity implements Observer{
 
     @Override
     public void update() {
-        progressDialog.dismiss();
         if (elasticSearch.getUserExists()){
             Notified();
             Log.e("User exists","");
@@ -109,6 +108,7 @@ public class Login extends AppCompatActivity implements Observer{
         return super.onOptionsItemSelected(item);
     }
     public void launchHome(){
+
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         globalENV.saveInstance(this);
@@ -119,5 +119,6 @@ public class Login extends AppCompatActivity implements Observer{
         globalENV = new ModelEnvironment(this); // shouldnt be null //TODO
         globalENV.setOwner(elasticSearch.getUser());
         globalENV.saveInstance(this); //saving
+        progressDialog.dismiss();
     }
 }

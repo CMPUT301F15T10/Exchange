@@ -5,10 +5,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
+import junit.framework.Assert;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -158,6 +162,7 @@ public class ElasticSearch implements Observable {
 
             response = httpClient.execute(httpGet);
 
+
         }catch (ConnectTimeoutException e1){
             return new User("null");
         }catch (ClientProtocolException e2) {
@@ -170,8 +175,12 @@ public class ElasticSearch implements Observable {
         }.getType();
 
         try {
-            fetchedUser = gson.fromJson(
-                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+            if (response != null) {
+                fetchedUser = gson.fromJson(
+                        new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+            }else{
+                return new User(username);
+            }
 
 
         } catch (JsonIOException e) {
@@ -181,7 +190,9 @@ public class ElasticSearch implements Observable {
         } catch (IllegalStateException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Toast toast = Toast.makeText(activity, "You are Logged in Offline...",Toast.LENGTH_LONG);
+            toast.show();
+            return new User(username);
         }
 
         userExists = fetchedUser.isFound();
@@ -205,7 +216,7 @@ public class ElasticSearch implements Observable {
         } catch (ClientProtocolException e1) {
             throw new RuntimeException(e1);
         } catch (IOException e2) {
-            throw new RuntimeException(e2);
+            return;
         }
 
         Type ElasticSearchResultType = new TypeToken<SearchResponse<Person>>() {
