@@ -2,14 +2,9 @@ package cmput301exchange.exchange;
 
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.ActivityUnitTestCase;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import junit.framework.TestCase;
-
-import cmput301exchange.exchange.Activities.ConfigurationActivity;
 import cmput301exchange.exchange.Controllers.ConfigurationController;
 
 /**

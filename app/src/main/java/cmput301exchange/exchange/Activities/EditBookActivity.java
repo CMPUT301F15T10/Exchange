@@ -53,11 +53,6 @@ public class EditBookActivity extends AppCompatActivity {
 
     }
 
-    private void editPhoto(View v) {
-        Intent intent = new Intent(this, PhotoActivity.class);
-        startActivity(intent);
-    }
-
     public void initFragments(){
         fm=getFragmentManager();
         fm_T=fm.beginTransaction();

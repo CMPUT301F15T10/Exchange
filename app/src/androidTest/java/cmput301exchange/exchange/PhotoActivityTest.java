@@ -1,7 +1,5 @@
 package cmput301exchange.exchange;
 
-import cmput301exchange.exchange.Activities.PhotoActivity;
-
 /**
  * Created by Kaleb on 10/8/2015.
  */

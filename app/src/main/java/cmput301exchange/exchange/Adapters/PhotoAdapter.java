@@ -1,4 +1,4 @@
-package cmput301exchange.exchange.Activities.Adapters;
+package cmput301exchange.exchange.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
