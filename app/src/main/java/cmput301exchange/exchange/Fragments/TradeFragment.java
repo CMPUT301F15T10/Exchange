@@ -124,7 +124,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
     
     public void sendOffer_Handler(){
-        myTradeController.sendOfferTrade();
+        myTradeController.sendTradeOffer();
         //May add a dialog box if necessary
         exit();
     }
@@ -221,10 +221,10 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         }
 
         if (tradeID==null){
-            tradeID= new CharSequenceWrapper(myTradeController.getTradeID());
+            tradeID= new CharSequenceWrapper(myTradeController.getTradeID_Text());
         }
         else {
-            tradeID.setText(myTradeController.getTradeID());
+            tradeID.setText(myTradeController.getTradeID_Text());
         }
 
         TradeTypeView.setText(TradeType);

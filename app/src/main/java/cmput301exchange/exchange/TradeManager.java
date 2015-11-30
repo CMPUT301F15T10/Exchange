@@ -21,7 +21,7 @@ NOTES:
 /**
 
  * Instantiate this to deal with trades.
- * @Author Yishuo
+ * @Author Touqir, Yishuo
  * @version 0.0.1
  */
 public class TradeManager {
@@ -71,13 +71,6 @@ public class TradeManager {
      * Adds a completed trade to the PastTrade List.
      * @param "Trade" trade
      */
-    public void addCompleteTrade(Trade trade) {
-
-        // trade is complete, add the trade to the listTransactionedTrade
-        listTransactionedTrade.add(trade);
-        // search the trade in the listCurrentTrade and remove it
-        deleteOngoingTrade(trade);
-    }
 
     public Trade load(Long ID, int choice, Context activity){
 
@@ -100,6 +93,15 @@ public class TradeManager {
                 break;
             case 3:
                 for (Trade trade:listTradeRequest){
+                    if (trade.getTradeId().longValue()==ID.longValue()){
+                        loadPersons(trade,activity);
+                        return trade;
+                    }
+                }
+                break;
+
+            case 4:
+                for (Trade trade:listCompleteTrade){
                     if (trade.getTradeId().longValue()==ID.longValue()){
                         loadPersons(trade,activity);
                         return trade;
@@ -179,11 +181,12 @@ public class TradeManager {
         }
     }
 
+    //TODO
     public void loadPersons(Trade trade, Context activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
         trade.setTradeUser(globalEnv.getOwner());
         if (trade.hasTradePartner()==true) {
-            trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()));
+            trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()),false);
         }
     }
 
@@ -198,9 +201,10 @@ public class TradeManager {
 
 
 
-    public void addOngoingTrade(Trade trade) {
+    public void addUnInitiatedTrade(Trade trade) {
 
         // add the trade to the listCurrentTrade
+        lightenTrade(trade);
         listCurrentTrade.add(trade);
     }
 
@@ -223,57 +227,6 @@ public class TradeManager {
         listCurrentTrade.add(trade);
     }
 
-    /**
-     *search for that trade and change the tradeStatus to 1 and add the trade to listTransactionedTrade
-     *update both user and partner's inventory
-     * @param  trade The trade that you wish to accept
-     */
-
-    public void acceptTrade(Trade trade) {
-        int i;
-        int n = listCurrentTrade.size();
-        // search for that trade
-        for (i = 0; i < n; i++) {
-            if (listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) {
-                // trade found
-                // set the tradeStatus to 1: trade is accepted
-                listCurrentTrade.get(i).setTradeStatus(1);
-                listTransactionedTrade.add(listCurrentTrade.get(i));
-                listCurrentTrade.remove(i);
-                break;
-            }
-        }
-
-    }
-
-    /**
-     * Search for trades and changes the tradeStatus to 2, which represents cancelled
-     * If choice = 0 -> offer a counter trade
-     * if choice = 1 -> not offering a counter trade
-     * @param trade the trade that you wish to decline
-     */
-    public void declineTrade(Trade trade, int choice) {
-
-        // search for that trade and change the tradeStatus to 2
-        int i;
-        int n = listCurrentTrade.size();
-        for (i = 0; i < n;i++) {
-            if ((listCurrentTrade.get(i).getTradeId() == trade.getTradeId()) && (listCurrentTrade.get(i).getTradeUser().getID() == trade.getTradeUser().getID())) {
-                // remove the trade in listCurrentTrade and add it to the listTransactionedTrade
-                listCurrentTrade.get(i).setTradeStatus(2);
-                if (choice == 0) {
-                    counterTrade(trade);
-                }
-                if (choice == 1) {
-                    listTransactionedTrade.add(listCurrentTrade.get(i));
-                    listCurrentTrade.remove(i);
-                }
-                break;
-            }
-        }
-        // ask user if they want to make a counter trade
-        //   -> swap the User and Borrower and their inventories
-    }
 
     /**
      * Swaps the role of the owner and borrower, edits the trade
@@ -283,6 +236,7 @@ public class TradeManager {
     public void counterTrade(Trade trade1) {
 
         int index=0;
+        trade1.setTradeStatus(4);
         for (Trade trade:listTradeRequest) {
             if (trade.getTradeId().longValue() == trade1.getTradeId().longValue()) {
                 listTradeRequest.remove(index);
@@ -291,19 +245,10 @@ public class TradeManager {
             index=index+1;
         }
         listCurrentTrade.add(trade1);
+        trade1.setTradeUser(trade1.getTradePartner());
+        trade1.setTradePartner(null,true);
     }
 
-    public ArrayList<Trade> getCompleteTradeList() {
-        int i;
-        // TODO return both listCurrentTrade and listTransactionedTrade (???)
-        ArrayList<Trade> tempList = new ArrayList<>();
-        int n1 = listTransactionedTrade.size();
-        // add all past trade to the tempList
-        for (i = 0; i < n1; i++) {
-            tempList.add(listTransactionedTrade.get(i));
-        }
-        return tempList;
-    }
 
     /**
      * Getter for Past Trade List
@@ -324,8 +269,13 @@ public class TradeManager {
     /*
     This method is for completing the trade
      */
-    public void returnTradeItems(Trade trade){
-        revertTransaction(trade);
+    public boolean returnTradeItems(Trade trade){
+        if (revertTransaction(trade)==false){
+            return false;
+        } else {
+            setTradeComplete(trade);
+            return true;
+        }
     }
 
     public boolean findInsufficientBooks(Trade trade1, int choice){
@@ -424,6 +374,7 @@ public class TradeManager {
                     userInventory.add(book);
                 }
             }
+            trade1.setTradeStatus(2);
             return true;
         }
     }
@@ -465,7 +416,7 @@ public class TradeManager {
      * Deletes an ongoing trade
      * @param trade1 the trade you wish to cancel
      */
-    public void deleteOngoingTrade(Trade trade1) {
+    public void deleteUnInitiatedTrade(Trade trade1) {
     // choice = 1 meaning trade only composed or getting composed and not offered.
     // choice = 2 meaning we delete
 
@@ -490,30 +441,30 @@ public class TradeManager {
      *        2 -> all
      * @param person the Person who's trade history you are viewing
      */
-    public ArrayList<Trade> browsePastTrade(Integer role, Person person) {
+    public ArrayList<Trade> browseCompletedTrade(Integer role, Person person) {
 
         // role: 0 -> User as an owner
         //       1 -> User as a borrower
         //       2 -> All
         ArrayList<Trade> tempPastTrade = new ArrayList<>();
-        if (role == 0) {
+        if (role == 1) {
             int i;
-            int n = listTransactionedTrade.size();
+            int n = listCompleteTrade.size();
             for (i = 0; i < n; i++) {
-                if (listTransactionedTrade.get(i).getTradeUser().getID() == person.getID()) {
-                    tempPastTrade.add(listTransactionedTrade.get(i));
+                if (listCompleteTrade.get(i).getUserID() == person.getID()) {
+                    tempPastTrade.add(listCompleteTrade.get(i));
                 }
             }
-        } else if (role == 1) {
+        } else if (role == 0) {
             int i;
             int n = listTransactionedTrade.size();
             for (i = 0; i < n; i++) {
-                if (listTransactionedTrade.get(i).getTradePartner().getID() == person.getID()) {
-                    tempPastTrade.add(listTransactionedTrade.get(i));
+                if (listCompleteTrade.get(i).getPartnerID() == person.getID()) {
+                    tempPastTrade.add(listCompleteTrade.get(i));
                 }
             }
         } else {
-            return listTransactionedTrade;
+            return listCompleteTrade;
         }
         return tempPastTrade;
     }
@@ -529,24 +480,24 @@ public class TradeManager {
         //       1 -> User as a borrower
         //       2 -> All
         ArrayList<Trade> tempPastTrade = new ArrayList<>();
-        if (role == 0) {
+        if (role == 1) {
             int i;
-            int n = listCurrentTrade.size();
+            int n = listTransactionedTrade.size();
             for (i = 0; i < n; i++) {
-                if (listCurrentTrade.get(i).getTradeUser().getID() == person.getID()) {
-                    tempPastTrade.add(listCurrentTrade.get(i));
+                if (listTransactionedTrade.get(i).getUserID() == person.getID()) {
+                    tempPastTrade.add(listTransactionedTrade.get(i));
                 }
             }
-        } else if (role == 1) {
+        } else if (role == 0) {
             int i;
-            int n = listCurrentTrade.size();
+            int n = listTransactionedTrade.size();
             for (i = 0; i < n; i++) {
-                if (listCurrentTrade.get(i).getTradePartner().getID() == person.getID()) {
-                    tempPastTrade.add(listCurrentTrade.get(i));
+                if (listTransactionedTrade.get(i).getPartnerID() == person.getID()) {
+                    tempPastTrade.add(listTransactionedTrade.get(i));
                 }
             }
         } else {
-            return listCurrentTrade;
+            return listTransactionedTrade;
         }
         return tempPastTrade;
     }
@@ -561,86 +512,101 @@ public class TradeManager {
     }
 
     public void processTradeRequest(Trade trade){
+        lightenTrade(trade);
+        Trade trade1=(Trade) deepClone.deepClone(trade);
+        trade1.setTradeStatus(5); //trade request
         listTradeRequest.add(trade);
     }
 
-    //TODO change tradeStatus
     public void declineTradeRequest(Trade trade1){
         int index=0;
+        trade1.setTradeStatus(3); //declined
         for (Trade trade:listTradeRequest){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
                 listTradeRequest.remove(index);
-                listTransactionedTrade.add(trade);
-                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
+                trade.getTradeUser().getTradeManager().tradeGotDeclined(trade1);
+                lightenTrade(trade1);
+                listTransactionedTrade.add(trade1);
                 break;
             }
             index = index + 1;
         }
+    }
 
+    public void tradeGotDeclined(Trade trade1){
+        trade1.setTradeStatus(3); //declined
+        int index=0;
+        for (Trade trade:listCurrentTrade){
+            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+                listCurrentTrade.remove(index);
+                lightenTrade(trade1);
+                listTransactionedTrade.add(trade1);
+                break;
+            }
+            index = index + 1;
+        }
     }
     
-    //TODO change tradeStatus
-    public void acceptTradeRequest(Trade trade1){
+
+    public boolean acceptTradeRequest(Trade trade1){
+        boolean success=performTransaction(trade1);
+        if (success==false){
+            return false;
+        }
         int index=0;
         for (Trade trade:listTradeRequest){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
                 listTradeRequest.remove(index);
-                listTransactionedTrade.add(trade);
-                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
+                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade1);
+                lightenTrade(trade1);
+                trade1.setTradeStatus(2); //Accepted
+                listTransactionedTrade.add(trade1);
                 break;
             }
             index = index + 1;
         }
+        return true;
     }
 
-    //TODO change trade status
+
     public void tradeGotAccepted(Trade trade1){
         int index=0;
         for (Trade trade:listCurrentTrade){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
                 listCurrentTrade.remove(index);
+                lightenTrade(trade1);
+                trade1.setTradeStatus(2); //Accepted
                 listTransactionedTrade.add(trade);
-                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade);
                 break;
             }
             index = index + 1;
         }
     }
 
-    //TODO change trade status
-    public void sendTradeOffer(Trade trade){
-        trade.getTradePartner().getTradeManager().processTradeRequest(trade);
-    }
-    /**
-     * Searches the trade which involves user via tradeID
-     * As a tradeID as a primary key, and one tradeID is assigned to one and only one trade
-     * Return the trade as soon as we find it
-     * Else returns NULL
-     * @param id the ID of the trade you are looking for.
-     */
-    public Trade searchTrade(Long id, int choice) {
+    //TODO
+    public void pushChanges(Trade trade1){
 
-        if (choice==1){
-            for (Trade trade:listTransactionedTrade){
-                if (trade.getTradeId().longValue()==id.longValue()){
-                    return trade;
-                }
+    }
+
+    public void setTradeComplete(Trade trade1){
+        int i=0;
+        trade1.setTradeStatus(6); // for complete
+        lightenTrade(trade1);
+        listCompleteTrade.add(trade1);
+        for (Trade trade: listTransactionedTrade){
+            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()){
+                listTransactionedTrade.remove(i);
             }
-        } else if (choice==2){
-            for (Trade trade:listCurrentTrade) {
-                if (trade.getTradeId().longValue() == id.longValue()) {
-                    return trade;
-                }
-            }
-        } else if (choice==3){
-            for (Trade trade:listTradeRequest) {
-                if (trade.getTradeId().longValue() == id.longValue()) {
-                    return trade;
-                }
-            }
+            i=i+1;
         }
 
-        return null;
+    }
+
+
+    public void sendTradeOffer(Trade trade){
+        trade.setTradeStatus(1); // Ongoing offer made
+        lightenTrade(trade);
+        trade.getTradePartner().getTradeManager().processTradeRequest(trade);
     }
 
     public Integer sendEmail(Trade trade, String comments) {

@@ -148,6 +148,7 @@ public class TradeFragment2 extends Fragment implements BackButtonListener {
 
     }
 
+
     public void initSpinner(){
         traderSelection= (Spinner) myView.findViewById(R.id.Trade2_spinner);
         traderSelection.setAdapter(spinnerAdapter);
@@ -221,10 +222,10 @@ public class TradeFragment2 extends Fragment implements BackButtonListener {
         }
 
         if (tradeID==null){
-            tradeID= new CharSequenceWrapper(myTradeController.getTradeID());
+            tradeID= new CharSequenceWrapper(myTradeController.getTradeID_Text());
         }
         else {
-            tradeID.setText(myTradeController.getTradeID());
+            tradeID.setText(myTradeController.getTradeID_Text());
         }
 
         TradeTypeView.setText(TradeType);

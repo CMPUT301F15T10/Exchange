@@ -37,15 +37,19 @@ public class TradeListController {
     public void setMyTradeManager(TradeManager tradeManager){
         this.myTradeManager=tradeManager;
     }
+
     public void initTradeList(){
         if (mode==1) {
-            myTradeList=myTradeManager.getListPastTrade(); //past trade
+            myTradeList=myTradeManager.getListCompleteTrade(); //past trade
         }
         if (mode==2){
             myTradeList=myTradeManager.getListCurrentTrade(); //current trade
         }
         if (mode==3){
-            myTradeList=myTradeManager.getListTradeRequest(owner); //trade requests
+            myTradeList=myTradeManager.getListTradeRequest(); //trade requests
+        }
+        if (mode==4){
+            myTradeList=myTradeManager.getListTransactionedTrade(); // List of trades that were either accepted or declined
         }
     }
 
@@ -53,6 +57,13 @@ public class TradeListController {
         return myTradeList;
     }
 
+    public void getTradeListAsBurrower(){
+
+    }
+
+    public void getTradeListAsOwner(){
+
+    }
     //Todo
     //Figure out how to use searcher for searching through tradelist.
     public ArrayList<Trade> searchTrade(String query){

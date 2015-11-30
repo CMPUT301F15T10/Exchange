@@ -34,7 +34,7 @@ public class TradeManagerController {
     }
 
     public String getTradeRequests_no(){
-        Integer numberRequests=myTradeManager.getTradeRequest_no(owner);
+        Integer numberRequests=myTradeManager.getTradeRequest_no();
         return numberRequests.toString()+" Trade Requests!";
     }
 

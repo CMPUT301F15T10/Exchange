@@ -145,10 +145,10 @@ public class TradeFragment5 extends Fragment implements BackButtonListener {
         }
 
         if (tradeID==null){
-            tradeID= new CharSequenceWrapper(myTradeController.getTradeID());
+            tradeID= new CharSequenceWrapper(myTradeController.getTradeID_Text());
         }
         else {
-            tradeID.setText(myTradeController.getTradeID());
+            tradeID.setText(myTradeController.getTradeID_Text());
         }
 
         TradeTypeView.setText(TradeType);

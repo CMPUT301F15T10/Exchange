@@ -210,6 +210,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     public void displayTrade(Trade trade){
 //        myTrade=null;
         myTradeController.setTrade(trade);
+        myTradeController.getTradeStatus();
         initBookTradeController();
         switchFragment(2);
     }

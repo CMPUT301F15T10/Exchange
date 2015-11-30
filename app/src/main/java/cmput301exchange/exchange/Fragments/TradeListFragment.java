@@ -4,9 +4,11 @@ package cmput301exchange.exchange.Fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -83,7 +85,6 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
             @Override
             public boolean onQueryTextChange(String s) {
                 searchQuery(s);
-                updateAdapters();
                 return false;
             }
         });
@@ -91,6 +92,9 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
 
     public void getOriginalTradeList(){
         tradeList=myTradeListController.getTradeList();
+        tradeListAdapter.clear();
+        tradeListAdapter.addAll(tradeList);
+        updateAdapters();
     }
 
     public void searchQuery(String query){
@@ -99,7 +103,10 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
             getOriginalTradeList();
             return;
         } else {
-            tradeList = result;
+            tradeList=result;
+            tradeListAdapter.clear();
+            tradeListAdapter.addAll(tradeList);
+            updateAdapters();
         }
     }
 
@@ -144,6 +151,37 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
         initListView();
 //        initSearchView();
         return myView;
+    }
+
+    public void initMenu(){
+        menu.findItem(R.id.TL_Burrower).setVisible(false);
+        menu.findItem(R.id.TL_Owner).setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.TL_Burrower:
+                showAsBurrower();
+                return true;
+
+            case R.id.TL_Owner:
+                showAsOwner();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showAsBurrower(){
+        myTradeListController.getTradeListAsBurrower();
+
+    }
+
+    public void showAsOwner(){
+        myTradeListController.getTradeListAsOwner();
     }
 
     public void onResume(){

@@ -18,10 +18,13 @@ import cmput301exchange.exchange.User;
 public class TradeController {
     private Trade myTrade;
     private TradeManager myTradeManager;
-    private int status;
+    private int[] status= new int[]{0,2,3,3,0,1,4,3};
+    private User user;
+    private Context context;
 //    private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();
 
     public TradeController(Context context,Trade trade, TradeManager tradeManager, User user){
+        this.context=context;
         myTradeManager=tradeManager;
         if (trade==null){
             createTrade(context, user);
@@ -31,18 +34,36 @@ public class TradeController {
 
     }
 
-    public void setStatus(int status){
-        this.status=status;
+//    public void setStatus(int status){
+//        this.status=status;
+//    }
+
+    public int getControllerStatus(int tradeStatus){
+        return status[tradeStatus];
+    }
+
+    public int getTradeStatus(){
+        return myTrade.getTradeStatus();
     }
 
     public void createTrade(Context context, User user){
 
         myTrade=new Trade();
         myTrade.setTradeUser(user);
-        myTrade.setTradePartner(null);
+        myTrade.setTradePartner(null,false);
         myTrade.setTradeStatus(0);
         myTrade.setListBookUser(new ArrayList<Book>());
         myTrade.setListBookPartner(new ArrayList<Book>());
+    }
+
+    public void sendTradeOffer(){
+        myTradeManager.sendTradeOffer(myTrade);
+        myTradeManager.pushChanges(myTrade);
+    }
+
+    public void deleteTrade(){
+        // This method deletes trades that have not been functional and were under construction
+        myTradeManager.deleteUnInitiatedTrade(myTrade);
     }
 
     public void addToCurrentList(){
@@ -54,6 +75,7 @@ public class TradeController {
 
     public void deleteCompleteTrade(){
         myTradeManager.deleteCompleteTrade(myTrade);
+        myTradeManager.pushChanges(null); // Only its user side's trademanager that has changed
     }
 
     public boolean hasTradePartner(){
@@ -64,9 +86,21 @@ public class TradeController {
         int status= myTrade.getTradeStatus();
         switch (status){
             case 0:
-                return "In Progress";
+                return "Trade initialization";
             case 1:
-                return "Completed";
+                return "Trade offer sent!";
+            case 2:
+                return "Accepted!";
+            case 3:
+                return "Declined";
+            case 4:
+                return "Counter Trade!";
+            case 5:
+                return "Trade Invitation";
+            case 6:
+                return "Trade Completed";
+            case 7:
+                return "Books returned!";
         }
 
         //there will be other conditions too!
@@ -74,37 +108,56 @@ public class TradeController {
     }
 
     public void setCompleteTrade(){
-        myTradeManager.setCompleteTrade(myTrade);
+        myTradeManager.setTradeComplete(myTrade);
+        myTradeManager.pushChanges(null); // The partner object's tradeManager wont be pushed as only its the user side's trademanager that is changing
+    }
+
+    public void acceptTrade(){
+        myTradeManager.acceptTradeRequest(myTrade);
+        myTradeManager.pushChanges(myTrade);
     }
 
     public void setTradeManager(TradeManager tradeManager){
         myTradeManager=tradeManager;
     }
-    public String getTradeID(){
+    public String getTradeID_Text(){
         return myTrade.getTradeId().toString();
     }
 
-    public void confirmTrade(){
-        myTradeManager.acceptTrade(myTrade);
-    }
-
-    public void cancelTrade(){
-        myTradeManager.declineTrade(myTrade, 1);
-    }
 
     public void setTradePartner(Person partner){
+        if (myTrade.getTradeStatus()==5){
+            // In case of trade offer request being made to user
+            myTradeManager.counterTrade(myTrade);
+        }
+
+        if (user.getID()!=myTrade.getUserID()){
+            throw new RuntimeException("Not allowed to change partner as you yourself are the owner");
+        }
         if (partner==null){
             return;
         } else {
-            myTrade.setTradePartner(partner);
+            myTrade.setTradePartner(partner,false);
         }
     }
 
+    public void declineTrade(){
+        myTradeManager.declineTradeRequest(myTrade);
+        myTradeManager.pushChanges(myTrade);
+    }
+
     public Person getTradePartner(){
-        return myTrade.getTradePartner();
+        if (user.getID()==myTrade.getUserID()) {
+            return myTrade.getTradePartner();
+        } else{
+            return myTrade.getTradeUser();
+        }
     }
 
     public void setTrade(Trade trade){
+        if (trade.isLoaded()==false){
+            myTradeManager.loadPersons(trade,context);
+        }
         myTrade=trade;
     }
 

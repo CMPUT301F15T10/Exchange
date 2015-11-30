@@ -22,7 +22,7 @@ public class Trade {
     private Person tradeUser; // the one that offer trades to their friends
     private Person tradePartner=null; // the one that receive trades from their friends
     private Integer tradeStatus; // 0 -> getting composed; 1 -> ongoing trades offer made, not accepted by the other user yet;
-                                  // 2 -> accepted; 3 -> declined; 4 -> counterTrade; 5 -> tradeRequest 6-> Complete trade
+                                  // 2 -> accepted; 3 -> declined; 4 -> counterTrade; 5 -> tradeRequest 6-> Complete trade 7->Item returned
 
     private ArrayList<Book> listBookUser; // list of books the user wants to trade
     private ArrayList<Book> listBookPartner; // list of books the partner wants to trade
@@ -34,6 +34,15 @@ public class Trade {
     private Long timeStamp;
     private boolean hasPartner=false;
 
+    private boolean isLoaded=false;
+
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
+    public void setIsLoaded(boolean isLoaded) {
+        this.isLoaded = isLoaded;
+    }
 
     // call this constructor
     // creates an empty trade
@@ -92,17 +101,17 @@ public class Trade {
         return PartnerID;
     }
 
-    public void setPartnerID(Long partnerID) {
-        PartnerID = partnerID;
-    }
+//    public void setPartnerID(Long partnerID) {
+//        PartnerID = partnerID;
+//    }
 
     public Long getUserID() {
         return UserID;
     }
 
-    public void setUserID(Long userID) {
-        UserID = userID;
-    }
+//    public void setUserID(Long userID) {
+//        UserID = userID;
+//    }
 
     /*
     public Trade(Person tradeUser, Person tradePartner, Integer tradeStatus, ArrayList<Item> listItemUser, ArrayList<Item> listItemPartner, Integer tradeType) {
@@ -142,11 +151,19 @@ public class Trade {
         return tradePartner;
     }
 
-    public void setTradePartner(Person tradePartner) {
+    public void setTradePartner(Person tradePartner, Boolean isCounterTrade) {
+        if (isCounterTrade==true){
+            this.tradePartner=null;
+            this.hasPartner=false;
+            this.PartnerID=null;
+            return;
+        }
+
         this.tradePartner = tradePartner;
+
         if (tradePartner != null){
             this.PartnerID = tradePartner.getID();
-        this.hasPartner = true;
+            this.hasPartner = true;
         }
     }
 

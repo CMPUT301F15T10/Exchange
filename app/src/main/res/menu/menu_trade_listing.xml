@@ -12,4 +12,11 @@
         android:orderInCategory="200"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 
+    <item android:id="@+id/TL_Burrower" android:title="List trades as Burrower"
+        android:orderInCategory="200" app:showAsAction="never" />
+
+    <item android:id="@+id/TL_Owner" android:title="List trades as Owner"
+        android:orderInCategory="100" app:showAsAction="never" />
+
+
 </menu>
