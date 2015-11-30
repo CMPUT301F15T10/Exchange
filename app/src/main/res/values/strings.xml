@@ -5,7 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_inventory">Inventory</string>
     <string name="title_activity_view_person">Browse/Search People</string>
-    <string name="title_activity_edit_item">EditItem</string>
+    <string name="title_activity_edit_item">Edit Book</string>
     <string name="title_activity_edit_profile">EditProfile</string>
     <string name="title_activity_item_details">ItemDetails</string>
     <string name="title_activity_profile_details">Profile Details</string>
