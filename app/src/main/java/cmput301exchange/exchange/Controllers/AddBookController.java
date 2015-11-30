@@ -344,7 +344,7 @@ public class AddBookController implements Observable{
 
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                     PhotoController photoController = new PhotoController();
                     compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
@@ -384,6 +384,28 @@ public class AddBookController implements Observable{
                 Log.w("path image from gallery", picturePath + "");
 
                 image.setImageBitmap(thumbnail);
+
+                try {
+
+                    Bitmap resized = Bitmap.createScaledBitmap(thumbnail, (int) (thumbnail.getWidth() * 0.2), (int) (thumbnail.getHeight() * 0.2), true);
+                    // new stuff hope it doesn't break
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
+
+                    this.addToImageList(stream.toByteArray());
+                    bmpAdapter.notifyDataSetChanged();
+
+                    stream.flush();
+                    stream.close();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                }
+
             }
 
         }

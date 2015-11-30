@@ -198,7 +198,7 @@ public class EditBookController implements Observable{
 
     public void createBitmapArray(ArrayList<String> compressedImages){
         for (String i: compressedImages){
-            addToImageList(i);
+            addToImageList(i.getBytes());
         }
     }
 
@@ -432,7 +432,7 @@ public class EditBookController implements Observable{
                     PhotoController photoController = new PhotoController();
                     compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
-                    this.addToImageList(stream.toString());
+                    this.addToImageList(stream.toByteArray());
                     bmpAdapter.notifyDataSetChanged();
 
                     stream.flush();
@@ -468,15 +468,35 @@ public class EditBookController implements Observable{
                 Log.w("path image from gallery", picturePath + "");
 
                 image.setImageBitmap(thumbnail);
+
+                try {
+
+                    Bitmap resized = Bitmap.createScaledBitmap(thumbnail, (int) (thumbnail.getWidth() * 0.2), (int) (thumbnail.getHeight() * 0.2), true);
+                    // new stuff hope it doesn't break
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
+
+                    this.addToImageList(stream.toByteArray());
+                    bmpAdapter.notifyDataSetChanged();
+
+                    stream.flush();
+                    stream.close();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                }
             }
 
         }
     }
 
 
-    public void addToImageList(String photo){
-        PhotoController photoController = new PhotoController();
-        Bitmap bm = photoController.getBitmapFromString(photo); //use android built-in functions
+    public void addToImageList(byte[] array){
+        Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
         imageList.add(bm);
     }
 
