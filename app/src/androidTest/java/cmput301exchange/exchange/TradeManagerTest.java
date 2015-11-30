@@ -91,7 +91,7 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
         testOfferTrade();
         // decline trade and not offering a counter trade
         tradeManager0.tradeGotDeclined(trade0);
-        // now the tradeStatus should be 2: trade declined
+        // now the tradeStatus should be 3: trade declined
         int testTradeStatus = tradeManager0.getListTransactionedTrade().get(0).getTradeStatus();
         assertEquals(testTradeStatus, 3);
     }
@@ -100,19 +100,22 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
      * US04.04.01
      * As an owner, upon declining a trade I can offer a counter trade initialized with the items of the declined trade.
      */
-/*
-    public void testCounterTrade() {
-        // setup
-        testSetup();
-        // offer a trade
-        testOfferTrade();
-        // decline trade and offering a counter trade
-        tradeManager0.counterTrade(trade0);
-        // now the tradeStatus should be 3: counter trade
-        int testTradeStatus = tradeManager0.getListCurrentTrade().get(0).getTradeStatus();
-        assertEquals(testTradeStatus, 3);
-    }
-*/
+
+    // TODO Needs Person object in counterTrade() but it has already set to null
+
+//    public void testCounterTrade() {
+//        // setup
+//        testSetup();
+//        // offer a trade
+//        testOfferTrade();
+//        // decline trade and offering a counter trade
+//        tradeManager0.counterTrade(trade0);
+//        // now the tradeStatus should be 3: counter trade
+//        int testTradeStatus = tradeManager0.getListCurrentTrade().get(0).getTradeStatus();
+//        assertEquals(testTradeStatus, 4);
+//    }
+
+
     /*
      * US04.05.01
      * As a borrower or owner, when composing a trade or counter-trade I can edit the trade.
@@ -152,48 +155,32 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
         assertEquals(tmpsize, 0);
     }
 
-//    /*
-//     * US04.07.01
-//     * As an owner, if I accept a trade both parties will be emailed all trade and item information
-//     * relevant to the trade, as well owner comments for how to continue on with the trade.
-//     */
-//    // Sending emails can be done by starting a new activity
-//
-//    public void testSentEmail() {
-//        // setup
-//        testSetup();
-//        // offer a trade
-//        testOfferTrade();
-//        // accept a trade
-//        tradeManager0.tradeGotAccepted(trade0);
-//        String comments = "TEST";
-//        int i = tradeManager0.sendEmail(trade0, comments);
-//        // 0 indicates that successfully sending email
-//        assertEquals(i, 0);
-//    }
+    /*
+     * US04.07.01
+     * As an owner, if I accept a trade both parties will be emailed all trade and item information
+     * relevant to the trade, as well owner comments for how to continue on with the trade.
+     */
+    // Sending emails can be done by starting a new activity
+
 
     /*
      * US04.08.01
      * As an owner or borrower, I can browse all past and current trades involving me.
      */
-
-//    public void testBrowseTrade0() {
-//        // setup
-//        testSetup();
-//        // offer a trade
-//        testOfferTrade();
-//        // browse current trades
-//        ArrayList<Trade> tmpList = new ArrayList<>();
-//        //tradeManager0.tradeGotAccepted(trade0);
-//        tmpList = tradeManager0.browseCurrentTrade(0, person0);
-//        Long tmpName = tmpList.get(0).getTradeId();
-//        assertEquals(tmpName, "A");
-////        // browse past trades
-////        tradeManager0.tradeGotAccepted(trade0);
-////        tmpList = tradeManager0.browseCompletedTrade(0, person0);
-////        tmpName = tmpList.get(0).getTradeUser().getName();
-////        assertEquals(tmpName, "A");
-//    }
+    // TODO Needs Person object in browseCurrentTrade() but it has already set to null
+    public void testBrowseTrade0() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // browse current trades
+        // ----
+        assertEquals(tradeManager0.getListCurrentTrade().get(0).getListBookUser().get(0).getBookName(), "Harry Potter and the Philosopher's Stone");
+        // accept the trade
+        tradeManager0.tradeGotAccepted(trade0);
+        // browse past trade
+        assertEquals(tradeManager0.getListTransactionedTrade().get(0).getListBookUser().get(0).getBookName(), "Harry Potter and the Philosopher's Stone");
+    }
 
 
     /*
@@ -201,70 +188,72 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
      * As an owner or borrower, I can browse all past and current trades involving me as either
      * borrower or owner. I should look at my trades and trades offered to me.
      */
-/*
+
     public void testBrowseTrade1() {
-        // Note that this is similar as the above user case while this one is more advanced
+//        // Note that this is similar as the above user case while this one is more advanced
         // setup
         testSetup();
         // offer a trade
         testOfferTrade();
         // browse current trades
-        ArrayList<Trade> tmpList = new ArrayList<>();
-        tmpList = tradeManager0.browseCurrentTrade(0, person0);
-        String tmpName = tmpList.get(0).getTradeUser().getName();
-        assertEquals(tmpName, "A");
-        // browse past trades
-        tradeManager0.acceptTrade(trade0);
-        tmpList = tradeManager0.browsePastTrade(0, person0);
-        tmpName = tmpList.get(0).getTradeUser().getName();
-        assertEquals(tmpName, "A");
+        assertEquals(tradeManager0.getListCurrentTrade().get(0).getListBookUser().get(0).getBookName(), "Harry Potter and the Philosopher's Stone");
+        // accept trade
+        tradeManager0.tradeGotAccepted(trade0);
+        // browse past trade
+        assertEquals(tradeManager0.getListTransactionedTrade().get(0).getListBookUser().get(0).getBookName(), "Harry Potter and the Philosopher's Stone");
     }
-*/
-
-    // -----------------------------------------------------
-    // Below is the new requirements
-    // -----------------------------------------------------
 
     /*
      * US04.10.01 [must]
      * As an owner, I can set a trade to complete when the borrower returns the item and the item is now available again.
      */
-/*
+
     public void testSetTradeComplete() {
         // setup
         testSetup();
         // offer a trade
         testOfferTrade();
-        // accecp trade
-        tradeManager0.acceptTrade(trade0);
-        tradeManager0.getListPastTrade().get(0).setTradeType(1);
-        int tmp = tradeManager0.getListPastTrade().get(0).getTradeType();
-        assertEquals(tmp, 1);
+        // accept trade
+        tradeManager0.tradeGotAccepted(trade0);
+        // set trade to "complete"
+        tradeManager0.setTradeComplete(trade0);
+        int tmp = tradeManager0.getListCompleteTrade().get(0).getTradeStatus();
+        assertEquals(tmp, 6);
     }
-*/
+
 
     /*
      * US04.11.01 [must]
      * As an owner or borrower, a trade is considered current and in-progress when the item is borrowed.
      */
-/*
+    //
     public void testInProgress() {
         // setup
         testSetup();
         // offer a trade
         testOfferTrade();
-        // accecp trade
-        tradeManager0.acceptTrade(trade0);
+        // accept trade
+        tradeManager0.tradeGotAccepted(trade0);
         // trade is considered current and in-progress by default
-        //   where tradeType = 0
-        int tmp = tradeManager0.getListPastTrade().get(0).getTradeType();
-        assertEquals(tmp, 0);
+        // a trade is considered in-progress when the trade is accepted with tradeStatus = 2
+        int tmp = tradeManager0.getListTransactionedTrade().get(0).getTradeStatus();
+        assertEquals(tmp, 2);
     }
-*/
+
 
     /*
      * US04.12.01 [must]
      * As an owner or borrower, I should be able to browse in-progress trades, and complete trades.
      */
+    public void testBrowseInProgress() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        Long tmp = trade0.getTradeId();
+        // accept trade
+        tradeManager0.tradeGotAccepted(trade0);
+        assertSame(tmp, tradeManager0.getListTransactionedTrade().get(0).getTradeId());
+    }
 
 }
