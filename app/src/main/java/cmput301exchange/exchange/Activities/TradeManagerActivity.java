@@ -58,6 +58,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private User user;
     private boolean fromInventory=false;
     private Person retrievedTradePartner=null;
+    private boolean bookRequested=false;
 
     public BooksTradeController getBookTradeController() {
         return myBookTradeController;
@@ -71,6 +72,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private BooksTradeController myBookTradeController=null;
 
     public void initBookTradeController(){
+        Log.e("Book trade controller created!","" );
         myBookTradeController= new BooksTradeController(myTradeController.getTrade(),1,this,user);
     }
     public void initTradeController(){
@@ -348,6 +350,11 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public Inventory assignBooks(){
+        if (bookRequested==true){
+            bookRequested=false;
+        } else{
+            return null;
+        }
         Gson gson= new Gson();
         if (inventoryIntent==null){
             return null;
@@ -367,24 +374,24 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public void selectItems(int type, Inventory inventory, ArrayList<Integer> position_array){
+        bookRequested=true;
         Gson gson= new Gson();
-        String json="";
 
-        if (inventory!=null){
-            json=gson.toJson(inventory);
-        }
+//        Log.e("Position Array: ",position_array.toString());
+        String json_inventory=gson.toJson(inventory);
+        String json_positionArray=gson.toJson(position_array);
 
         if (type==1) {
             Intent intent = new Intent(this, InventoryActivity.class);
             intent.putExtra("From_TradeManagerActivity","");
-            intent.putExtra("User_Inventory",json);
-            intent.putExtra("Selected_Books_Position",position_array);
+            intent.putExtra("User_Inventory",json_inventory);
+            intent.putExtra("Selected_Books_Position",json_positionArray);
             startActivityForResult(intent, INVENTORY);
         } else if (type==2){
             Intent intent = new Intent(this, InventoryActivity.class);
             intent.putExtra("From_TradeManagerActivity","");
-            intent.putExtra("Friend_Inventory",json);
-            intent.putExtra("Selected_Books_Position",position_array);
+            intent.putExtra("Friend_Inventory",json_inventory);
+            intent.putExtra("Selected_Books_Position",json_positionArray);
             startActivityForResult(intent, INVENTORY);
         }
     }

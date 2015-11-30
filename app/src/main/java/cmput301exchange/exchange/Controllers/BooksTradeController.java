@@ -33,13 +33,15 @@ public class BooksTradeController {
 
     public BooksTradeController(Trade trade, Integer type, Context activity, User user){
         myTrade=trade;
-        this.type=type;
+//        this.type=type;
         this.activity=activity;
         this.user=user;
         if (user.getID().equals(myTrade.getUserID())){
             status=1;
+            this.type=1;
         } else {
             status=0;
+            this.type=2;
         }
         initQuantityDictionary();
     }
@@ -84,8 +86,23 @@ public class BooksTradeController {
         return null;
     }
 
+    public boolean hasTradePartner(){
+        if (status==1){
+            return myTrade.hasTradePartner();
+        }
+        else {
+            if (myTrade.getTradeUser()!=null){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public Integer setTradeBookQuantity(Long ID,int quantity){
+        int tempQuantity=getOriginalBookQuantity(ID);
+        if (tempQuantity>getOriginalBookQuantity(ID)){
+            quantity=tempQuantity;
+        }
         if (type==1){
             for (Book book:myTrade.getListBookUser()){
                 if (book.getID().longValue()==ID.longValue()){
@@ -161,20 +178,20 @@ public class BooksTradeController {
             for (Book tradeBook:myTrade.getListBookUser()){
                 index=0;
                 for (Book inventoryBook:myTrade.getTradeUser().getMyInventory().getInventoryList()){
-                    index=index+1;
                     if (tradeBook.getID().longValue()==inventoryBook.getID().longValue()){
                         Position.add(index);
                     }
+                    index=index+1;
                 }
             }
         } else if (type==2){
             for (Book tradeBook:myTrade.getListBookPartner()){
                 index=0;
                 for (Book inventoryBook:myTrade.getTradePartner().getMyInventory().getInventoryList()){
-                    index=index+1;
                     if (tradeBook.getID().longValue()==inventoryBook.getID().longValue()){
                         Position.add(index);
                     }
+                    index=index+1;
                 }
             }
         }
@@ -195,6 +212,25 @@ public class BooksTradeController {
 
     public int getInventoryType(){
         return this.type;
+    }
+
+    public void removeBook(Book book){
+        int index=0;
+        if (type==1) {
+            for (Book book1 : myTrade.getListBookUser()) {
+                if (book1.getID().equals(book.getID())) {
+                    myTrade.getListBookUser().remove(index);
+                }
+                index = index + 1;
+            }
+        } else if (type==2){
+            for (Book book1:myTrade.getListBookPartner()){
+                if (book1.getID().equals(book.getID())){
+                    myTrade.getListBookPartner().remove(index);
+                }
+                index=index+1;
+            }
+        }
     }
 
     public void addFromInventory(Inventory inventory){

@@ -68,7 +68,7 @@ public class InventoryActivity extends AppCompatActivity {
     private Intent intent;
     private ElasticSearch elasticSearch;
     private boolean fromAddBook=false;
-    private ArrayList<Integer> tradeItemsSelectedPos=null;
+    private ArrayList<Double> tradeItemsSelectedPos=null;
     private boolean fromTradeUI=false;
 
     private DrawerLayout leftDrawer;
@@ -111,7 +111,6 @@ public class InventoryActivity extends AppCompatActivity {
         arrayAdapterBook.addAll(inventory.getInventoryList());
 
         lv.setAdapter(arrayAdapterBook);
-        checkItems();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner1);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -156,6 +155,8 @@ public class InventoryActivity extends AppCompatActivity {
                 }
             }
         });
+
+        checkItems();
     }
 
     public void init() {
@@ -165,12 +166,17 @@ public class InventoryActivity extends AppCompatActivity {
     }
     
     public void checkItems(){
-        if (tradeItemsSelectedPos!=null){
-            for (Integer position:tradeItemsSelectedPos){
-                lv.setItemChecked(position,true);
-                selectedBooks.add(inventory.getInventoryList().get(position));
+        if (tradeItemsSelectedPos!=null) {
+            for (Double position : tradeItemsSelectedPos) {
+                lv.setItemChecked(position.intValue(), true);
+                selectedBooks.add(inventory.getInventoryList().get(position.intValue()));
+            }
+            if (tradeItemsSelectedPos.size() > 0) {
+                tradeItemsSelectedPos = null;
+                Log.e("selected Books size: ", (selectedBooks.get(0).getName()));
             }
         }
+
     }
     
     public void processIntents(){
@@ -181,19 +187,23 @@ public class InventoryActivity extends AppCompatActivity {
             state=2;
         } else if (intent.hasExtra("From_TradeManagerActivity")) {
             fromTradeUI=true;
+            Log.e("InventoryUI: ","Inside tradmanager acitivity");
             if (intent.hasExtra("Friend_Inventory")) {
+                Log.e("InventoryUI: ","Inside Friend inventory");
                 String inventory_json = intent.getStringExtra("Friend_Inventory");
                 Gson gson = new Gson();
                 inventory = gson.fromJson(inventory_json, Inventory.class);
                 String json=intent.getStringExtra("Selected_Books_Position");
-                tradeItemsSelectedPos=(ArrayList<Integer>)gson.fromJson(json,ArrayList.class);
+                tradeItemsSelectedPos=(ArrayList<Double>)gson.fromJson(json,ArrayList.class);
                 state = 2;
             } else if (intent.hasExtra("User_Inventory")){
+                Log.e("InventoryUI: ","Inside User inventory");
                 Gson gson = new Gson();
                 String inventory_json = intent.getStringExtra("User_Inventory");
                 inventory = gson.fromJson(inventory_json, Inventory.class);
                 String json=intent.getStringExtra("Selected_Books_Position");
-                tradeItemsSelectedPos=(ArrayList<Integer>)gson.fromJson(json,ArrayList.class);
+//                Log.e("InventoryUI: ",json);
+                tradeItemsSelectedPos=(ArrayList<Double>)gson.fromJson(json,ArrayList.class);
 //                inventory = user.getMyInventory();
                 state=1;// inventory of user
             }
@@ -201,6 +211,7 @@ public class InventoryActivity extends AppCompatActivity {
             inventory = user.getMyInventory();
             state=1;// inventory of user
         }
+        Log.e("Position Array: ", tradeItemsSelectedPos.toString());
     }
 
     public void initViewSpinner(){

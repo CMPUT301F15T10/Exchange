@@ -255,7 +255,7 @@ public class Book implements Shareable, Comparable<Book>, Serializable {
      */
     public String toString() {
 
-        return "Title: " + this.getName() + "\n" + "Author: " + this.getAuthor() + availability;
+        return "Title: " + this.getName() + ". " + "Author: " + this.getAuthor()+"\n"+"Quantity: "+String.valueOf(this.getQuantity()) + availability;
     }
 
     public boolean equals(Book another) {
