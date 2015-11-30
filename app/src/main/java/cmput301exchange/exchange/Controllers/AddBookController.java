@@ -65,7 +65,7 @@ public class AddBookController implements Observable{
     private CheckBox checkBox;
 
     private int currentBitmapPos;
-    private ArrayList<byte[]> compressedImages = new ArrayList<>();
+    private ArrayList<String> compressedImages = new ArrayList<>();
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
     private ArrayAdapter<CharSequence> adapter;
@@ -252,7 +252,8 @@ public class AddBookController implements Observable{
                 public void onClick(DialogInterface dialog, int item) {
 
                     if (more_options[item].equals("View Bigger Photo")) {
-                        String photo = getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
+                        PhotoController photoController = new PhotoController();
+                        String photo = photoController.getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
                         dataIO.saveInFile("detailed_photo.sav", photo);
 
                         Intent intent = new Intent(activity, DetailedPhoto.class);
@@ -336,10 +337,9 @@ public class AddBookController implements Observable{
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    byte[] byteArray = stream.toByteArray();
-                    compressedImages.add(byteArray);
+                    compressedImages.add(stream.toString());
 
-                    this.addToImageList(byteArray);
+                    this.addToImageList(stream.toByteArray());
                     bmpAdapter.notifyDataSetChanged();
 
                     stream.flush();
@@ -378,20 +378,6 @@ public class AddBookController implements Observable{
             }
 
         }
-    }
-    private String getStringFromBitmap(Bitmap bitmapPicture) {
-     /*
-     * This functions converts Bitmap picture to a string which can be
-     * JSONified.
-     * */
-        final int COMPRESSION_QUALITY = 100;
-        String encodedImage;
-        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
-                byteArrayBitmapStream);
-        byte[] b = byteArrayBitmapStream.toByteArray();
-        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return encodedImage;
     }
 
     public void addToImageList(byte[] array){
