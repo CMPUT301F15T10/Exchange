@@ -55,6 +55,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     private ElasticSearch elasticSearch;
     private List<SearchHit<Person>> SearchList;
     private PersonList testlist;
+    private Intent intent = new Intent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,10 +148,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 //        Intent intent=getIntent();
 //        String json=intent.getExtras().getString("User");
 //        user = gson.fromJson(json, Person.class);
-        Intent intent=getIntent();
-        if (intent.hasExtra("From_TradeManagerActivity")){
 
-        }
         globalEnv = new ModelEnvironment(this, null);
         user=elasticSearch.getUser();
         user = globalEnv.getOwner();
@@ -184,6 +182,12 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 //        String json= gson.toJson(user);
 //        intent.putExtra("User",json);
 //        setResult(RESULT_OK, intent);
+        Intent fromIntent =getIntent();
+        if (fromIntent.hasExtra("From_TradeManagerActivity")){
+            Gson gson = new Gson();
+            String json = gson.toJson(selectedPerson);
+            this.intent.putExtra("Trade_Partner",json);
+        }
 
 //        saveUser();
 //        updateOnline();
