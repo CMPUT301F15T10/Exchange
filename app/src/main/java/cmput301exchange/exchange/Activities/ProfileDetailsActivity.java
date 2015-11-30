@@ -27,6 +27,7 @@ public class ProfileDetailsActivity extends AppCompatActivity{
 
     protected TextView name, phone, email, location;
     private Person person;
+    private ModelEnvironment modelEnvironment;
     
     // TODO: implement photo once available
 
@@ -55,10 +56,12 @@ public class ProfileDetailsActivity extends AppCompatActivity{
     }
 
     public void initPerson(){
-        Gson gson = new Gson();
-        Intent intent=getIntent();
-        String json=intent.getExtras().getString("Person");
-        person = gson.fromJson(json, Person.class);
+//        Gson gson = new Gson();
+//        Intent intent=getIntent();
+//        String json=intent.getExtras().getString("Person");
+//        person = gson.fromJson(json, Person.class);
+        modelEnvironment = new ModelEnvironment(this, null);
+        person = modelEnvironment.getOwner();
     }
 
     @Override
