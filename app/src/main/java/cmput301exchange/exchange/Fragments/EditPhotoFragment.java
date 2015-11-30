@@ -1,7 +1,9 @@
 package cmput301exchange.exchange.Fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +36,7 @@ public class EditPhotoFragment extends Fragment {
             acceptButton;
     ImageView imageView;
 
-    public void EditPhotoFragment() {
-    }
+    public EditPhotoFragment() {}
 
     public void setupView() {
         deletePhotoButton = (Button)myView.findViewById(R.id.deletePhotoButton);
@@ -55,13 +56,14 @@ public class EditPhotoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myEditPhotoController = getController(); // The item controller can be passed down if this becomes a fragment!
+
     }
 
     public EditPhotoController getController(){
         return myEditPhotoController;
     }
 
-    @Override
+   // @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -95,7 +97,7 @@ public class EditPhotoFragment extends Fragment {
     }
 
     public void choosePhoto(){
-        myActivity.selectPhoto();
+        //myActivity.selectPhoto();
     }
 
     public void removePhoto() {myActivity.deletePhoto();}

@@ -29,7 +29,7 @@ public class SavePhoto {
     protected static final String PHOTO = "photo.sav";
 
     public SavePhoto() { }
-
+/*
     public void saveInFile(Context context,Account account) {
         try {
             FileOutputStream fos = context.openFileOutput(FILENAME, 0);
@@ -46,7 +46,7 @@ public class SavePhoto {
             throw new RuntimeException(e);
         }
     }
-
+*/
 
     public Account loadFromFile(Context context) {
         Account account=null;

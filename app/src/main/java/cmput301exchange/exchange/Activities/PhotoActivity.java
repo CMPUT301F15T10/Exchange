@@ -15,18 +15,31 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 
+import cmput301exchange.exchange.Activities.Adapters.PhotoAdapter;
+import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Inventory;
+import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.Photo;
 import cmput301exchange.exchange.R;
-
+import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.User;
+import com.google.gson.Gson;
 
 
 public class PhotoActivity extends AppCompatActivity {
@@ -34,30 +47,58 @@ public class PhotoActivity extends AppCompatActivity {
     protected int REQUEST_CAMERA;
     protected int SELECT_FILE;
 
-    /*Button deletePhotoButton,
+    private ArrayList<Bitmap> imageList = new ArrayList<>();
+    private Book book;
+    private String name;
+   // private Long userID;
+    private int currentBitmapPos;
+    private Spinner photoList;
+    private ArrayList<byte[]> compressedImages = new ArrayList<>();
+    private ArrayAdapter<Bitmap> bmpAdapter;
+    private Inventory inventory;
+
+    Button deletePhotoButton,
            selectPhotoButton,
            acceptButton;
-    ImageView imageView; */
     ContentValues cValues;
     Uri uri;
     SavePhoto savePhoto;
     Photo photo;
     BitmapScaler bmScaler;
+    ImageView iv;
+    ImageButton imageButton;
+    Person person;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
 
+        Bundle extras = getIntent().getExtras();
+        Gson gson= new Gson();
+       // String json = extras.getString("Inventory");
+
         photo = new Photo();
+        
         bmScaler = new BitmapScaler();
         savePhoto = new SavePhoto();
-/*
+        photo.setPhotos(compressedImages);
+        photoList = (Spinner) findViewById(R.id.photoListView);
+        bmpAdapter = new PhotoAdapter(this, imageList);
+        photoList.setAdapter(bmpAdapter);
+
+
+      //  userID = person.getID();
+//        name = (book.getName());
         photo = savePhoto.loadPhoto(getApplicationContext());
         deletePhotoButton = (Button)findViewById(R.id.deletePhotoButton);
         selectPhotoButton = (Button)findViewById(R.id.selectPhotoButton);
         acceptButton = (Button)findViewById(R.id.acceptButton);
-        imageView = (ImageView)findViewById(R.id.imageView);
+        imageButton = (ImageButton)findViewById(R.id.imageButton);
+      //  inventory = gson.fromJson(json, Inventory.class);
 
+      //  imageButton = (ImageButton) findViewById(R.id.imageBu);
+        imageButton.setImageResource(R.drawable.testphoto);
 
         selectPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,68 +121,148 @@ public class PhotoActivity extends AppCompatActivity {
                 accept();
             }
         });
-        */
+
+        photoList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //on selecting a spinner item
+                currentBitmapPos = position;
+                imageButton.setImageBitmap(imageList.get(position));
+            }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+
+
+        });
+    }
+
+    public void add(View view){
+
+        Book book = new Book();
+
+
+        book.setPhotos(compressedImages);
+
+        inventory.add(book);
+        this.finishAdd();
+
+    }
+
+    public void finishAdd(){
+        String json = inventory.toJson(); //Write the existing inventory data to Json
+        DataIO dataIO = new DataIO(this, PhotoActivity.class);
+        dataIO.saveInFile("photo.sav", json);
+
+        Intent added = new Intent().putExtra("Edit Book", "photo.sav"); //Send it back to the inventory activity
+        setResult(RESULT_OK, added);
+
+        this.finish();
 
     }
 
 
-
     // Inspired by Tejas Jasani
     // http://www.theappguruz.com/blog/android-take-photo-camera-gallery-code-sample
+    private void selectPhoto() {
 
-    public void selectPhoto() {
-
-        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery"};
+        final CharSequence[] more_options = { "View Bigger Photo", "Take Photo", "Choose from Gallery", "Save Photo", "Delete Photo"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(PhotoActivity.this);
-        builder.setTitle("Add Photo!");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            // TODO: 11/28/15 grab user ID. Fit that into file name
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
 
-                if (options[item].equals("Take Photo")) {
+        builder.setTitle("Photo Options");
 
+         if (null == imageButton.getDrawable()) {
+             builder.setItems(options, new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int item) {
 
-                    // Written by stackoverflow user 'antrromet'
-                    // http://stackoverflow.com/questions/10377783/low-picture-image-quality-when-capture-from-camera
-                    cValues.put(MediaStore.Images.Media.TITLE, "New Picture");
-                    cValues.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                    uri = getContentResolver().insert(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cValues);
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                    startActivityForResult(intent, 1);
+                     if (options[item].equals("Take Photo")) {
+                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                         File f = new File(android.os.Environment.getExternalStorageDirectory(), "tempPic.jpg");
+                         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                         assert photo.fileUnderMaxSize(f);
+                         startActivityForResult(intent, 1);
+                     } else if (options[item].equals("Choose from Gallery")) {
 
-                } else if (options[item].equals("Choose from Gallery")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, 2);
-                    intent.setType("image/*");
+                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                         startActivityForResult(intent, 2);
 
+                     }
+                 }
 
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
+             });
+         } else {
+            builder.setItems(more_options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+
+                    if (more_options[item].equals("View Bigger Photo")) {
+                        // send image to another activity where the full image can be expanded
+
+                    } else if (more_options[item].equals("Take Photo")) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                        startActivityForResult(intent, 1);
+
+                    } else if (more_options[item].equals("Choose from Gallery")) {
+
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+
+                    } else if (more_options[item].equals("Save Photo")) {
+                        String path = Environment.getExternalStorageDirectory().toString();
+                        String item_title = name;
+                        File newFolder = new File(path + "/Exchange/" + item_title);
+                        newFolder.mkdir();
+                        File file = new File(path + "/Exchange/" + item_title, item_title + String.valueOf(currentBitmapPos) + ".jpg"); // the File to save to
+                        try {
+                            OutputStream fOut = new FileOutputStream(file);
+                            Bitmap pictureBitmap = imageList.get(currentBitmapPos);
+                            pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                            fOut.flush();
+                            fOut.close();
+                            MediaStore.Images.Media.insertImage(getContentResolver(), file.getPath(), file.getName(), file.getName());
+                        } catch (FileNotFoundException e) {
+
+                        } catch (IOException e) {
+
+                        }
+
+                    } else if (more_options[item].equals("Delete Photo")) {
+                        deletePhoto();
+                    }
+
                 }
-            }
-        });
+
+            });
+
+        }
 
         builder.show();
 
     }
 
+
     // TODO: 11/28/15
     public void deletePhoto() {
-        photo.removePhoto(1);
+        imageList.remove(currentBitmapPos);
+        compressedImages.remove(currentBitmapPos);
+        if (imageList.size() == 0) {
+            imageButton.setImageDrawable(null);
+        } else {
+            imageButton.setImageBitmap(imageList.get(0));
+        }
+        bmpAdapter.notifyDataSetChanged();
 
     }
 
     // TODO: 11/28/15
     public void accept() {
-        if(photo.getPhoto().size() > 0){
-            photo.empty = false;
-        } else {
-            photo.empty = true;
-        }
         Intent result = new Intent();
         setResult(PhotoActivity.RESULT_OK, result);
         savePhoto.saveImage(getApplicationContext(), photo);
@@ -189,6 +310,8 @@ public class PhotoActivity extends AppCompatActivity {
         cursor.moveToFirst();
         return cursor.getString(index);
     }
+
+
 
 }
 
