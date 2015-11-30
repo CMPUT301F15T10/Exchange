@@ -337,7 +337,8 @@ public class AddBookController implements Observable{
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    compressedImages.add(stream.toString());
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
                     this.addToImageList(stream.toByteArray());
                     bmpAdapter.notifyDataSetChanged();
@@ -387,9 +388,9 @@ public class AddBookController implements Observable{
 
     public void finishAdd(){
         String json = inventory.toJson(); //Write the existing inventory data to Json
-        dataIO.saveInFile("book.sav", json);
+        dataIO.saveInFile("inventory.sav", json);
 
-        Intent added = new Intent().putExtra("Inventory", "book.sav"); //Send it back to the inventory activity
+        Intent added = new Intent().putExtra("Inventory", "inventory.sav"); //Send it back to the inventory activity
         activity.setResult(activity.RESULT_OK, added);
 
         activity.finish();
