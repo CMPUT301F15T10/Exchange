@@ -23,18 +23,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import cmput301exchange.exchange.Activities.TradeManagerActivity;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Controllers.BooksTradeController;
-import cmput301exchange.exchange.Controllers.TradeController;
 import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Interfaces.TradeMaker;
 import cmput301exchange.exchange.Inventory;
-import cmput301exchange.exchange.Item;
-import cmput301exchange.exchange.Others.CharSequenceWrapper;
 import cmput301exchange.exchange.R;
-import cmput301exchange.exchange.Trade;
-import cmput301exchange.exchange.TradeManager;
 
 /**
  * A simple {@link Fragment} subclass.
