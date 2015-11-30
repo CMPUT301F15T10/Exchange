@@ -211,7 +211,7 @@ public class InventoryActivity extends AppCompatActivity {
             inventory = user.getMyInventory();
             state=1;// inventory of user
         }
-        Log.e("Position Array: ", tradeItemsSelectedPos.toString());
+//        Log.e("Position Array: ", tradeItemsSelectedPos.toString());
     }
 
     public void initViewSpinner(){
