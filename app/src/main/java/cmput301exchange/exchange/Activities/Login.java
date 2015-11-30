@@ -26,7 +26,10 @@ import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.TradeManager;
 import cmput301exchange.exchange.User;
-
+/*
+login page, request a user name to process
+after login, it creat a globle user for further use
+ */
 public class Login extends AppCompatActivity implements Observer{
     private LoginController controller = new LoginController();
     public EditText username;
