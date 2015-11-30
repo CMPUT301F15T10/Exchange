@@ -61,14 +61,18 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
         initBooksTradeController();
     }
 
+    public void getInventory(){
+        Inventory inventory=myActivity.assignBooks();
+        if (inventory!=null){
+            myBooksTradeController.addFromInventory(inventory);
+            Log.e("got inventory ","ItemTradeFragment");
+        }
+    }
+
     public void initBooksTradeController(){
         myBooksTradeController=myActivity.getBookTradeController();
         inventoryType = myBooksTradeController.getInventoryType();
 
-        Inventory inventory=myActivity.assignBooks();
-        if (inventory!=null){
-            myBooksTradeController.addFromInventory(inventory);
-        }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,13 +93,23 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
         menu.findItem(R.id.View_Friend_Inventory).setVisible(false);
         menu.findItem(R.id.View_My_Items).setVisible(false);
 
-        Log.e("came to create menu","initMenu");
+        Log.e("came to create menu", "initMenu");
         if (inventoryType==1){
-            menu.findItem(R.id.View_My_Inventory).setVisible(true);
-            menu.findItem(R.id.View_Friend_Items).setVisible(true);
+            if (myBooksTradeController.getStatus()==1) {
+                menu.findItem(R.id.View_My_Inventory).setVisible(true);
+                menu.findItem(R.id.View_Friend_Items).setVisible(true);
+            } else{
+                menu.findItem(R.id.View_Friend_Inventory).setVisible(true);
+                menu.findItem(R.id.View_My_Items).setVisible(true);
+            }
         } else if(inventoryType==2){
-            menu.findItem(R.id.View_Friend_Inventory).setVisible(true);
-            menu.findItem(R.id.View_My_Items).setVisible(true);
+            if (myBooksTradeController.getStatus()==1) {
+                menu.findItem(R.id.View_Friend_Inventory).setVisible(true);
+                menu.findItem(R.id.View_My_Items).setVisible(true);
+            } else {
+                menu.findItem(R.id.View_My_Inventory).setVisible(true);
+                menu.findItem(R.id.View_Friend_Items).setVisible(true);
+            }
         }
     }
 
@@ -215,16 +229,26 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
     public void updateAdapters(){
         if (inventoryType == 1) {
-            myItems=myBooksTradeController.getMyBookList();
+            if (myBooksTradeController.getStatus()==1)
+                myItems=myBooksTradeController.getMyBookList();
+            else
+                myItems=myBooksTradeController.getFriendBookList();
+            Log.e("Items size: ", String.valueOf(myItems.size()));
             myItemAdapter.clear();
             myItemAdapter.addAll(myItems);
-            myItemAdapter.notifyDataSetChanged();
+//            myItemAdapter.notifyDataSetChanged();
+            ItemsView.setAdapter(myItemAdapter);
+//            myItemAdapter.getItem(0);
         }
         else if (inventoryType == 2){
-            friendItems=myBooksTradeController.getFriendBookList();
+            if (myBooksTradeController.getStatus()==1)
+                friendItems=myBooksTradeController.getFriendBookList();
+            else
+                friendItems=myBooksTradeController.getMyBookList();
             friendItemAdapter.clear();
             friendItemAdapter.addAll(friendItems);
-            friendItemAdapter.notifyDataSetChanged();
+//            friendItemAdapter.notifyDataSetChanged();
+            ItemsView.setAdapter(friendItemAdapter);
         }
     }
 
@@ -239,15 +263,22 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
                 return true;
 
             case R.id.View_Friend_Items:
-                inventoryType=2;
+                if (myBooksTradeController.getStatus()==1)
+                    inventoryType=2;
+                else
+                    inventoryType=1;
                 switchBookList();
                 return true;
 
             case R.id.View_Friend_Inventory:
+                switchToInventory();
                 return true;
 
             case R.id.View_My_Items:
-                inventoryType=1;
+                if (myBooksTradeController.getStatus()==1)
+                    inventoryType=1;
+                else
+                    inventoryType=2;
                 switchBookList();
                 return true;
         }
@@ -256,10 +287,15 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
     public void switchToInventory(){
         if (inventoryType==1){
-            myActivity.selectItems(inventoryType, myBooksTradeController.getTradeUserInventory(), myBooksTradeController.getTradeItemPosition());
+            if (myBooksTradeController.getStatus()==1)
+                myActivity.selectItems(1, myBooksTradeController.getTradeUserInventory(), myBooksTradeController.getTradeItemPosition());
+            else
+                myActivity.selectItems(2, myBooksTradeController.getTradePartnerInventory(), myBooksTradeController.getTradeItemPosition());
         } else if (inventoryType==2){
-            myActivity.selectItems(inventoryType, myBooksTradeController.getTradePartnerInventory(), myBooksTradeController.getTradeItemPosition());
-        }
+            if (myBooksTradeController.getStatus()==1)
+                myActivity.selectItems(2, myBooksTradeController.getTradePartnerInventory(), myBooksTradeController.getTradeItemPosition());
+        }   else
+                myActivity.selectItems(1, myBooksTradeController.getTradeUserInventory(), myBooksTradeController.getTradeItemPosition());
     }
 
     public void switchBookList(){
@@ -276,6 +312,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 
     public void onResume(){
         super.onResume();
+        getInventory();
         updateAdapters();
     }
 
