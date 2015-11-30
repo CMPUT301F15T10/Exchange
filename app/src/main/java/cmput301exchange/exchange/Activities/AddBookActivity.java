@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import cmput301exchange.exchange.Activities.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
@@ -57,6 +58,8 @@ public class AddBookActivity extends ActionBarActivity {
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
     private int currentBitmapPos;
+
+    public String photoLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +211,7 @@ public class AddBookActivity extends ActionBarActivity {
 
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
+                        // TODO: 11/29/15 -------------------------------------------------------------------------------------------------
 
                     }
                 }
@@ -221,6 +225,7 @@ public class AddBookActivity extends ActionBarActivity {
 
                    if (more_options[item].equals("View Bigger Photo")) {
                        // send image to another activity where the full image can be expanded
+                       // TODO: 11/29/15 -------------------------------------------------------------------------------------------------
 
                    } else if (more_options[item].equals("Take Photo")) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -229,11 +234,16 @@ public class AddBookActivity extends ActionBarActivity {
                         startActivityForResult(intent, 1);
 
                     } else if (more_options[item].equals("Choose from Gallery")) {
-
+                       // TODO: 11/29/15 -------------------------------------------------------------------------------------------------
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
 
                     } else if (more_options[item].equals("Save Photo")) {
+
+                       Bitmap pictureBitmap = imageList.get(currentBitmapPos);
+
+                       photoLocation = saveToSDCard(pictureBitmap);
+/*
                        String path = Environment.getExternalStorageDirectory().toString();
                        String item_title = name.getText().toString();
                        File newFolder = new File(path + "/Exchange/" + item_title);
@@ -252,7 +262,13 @@ public class AddBookActivity extends ActionBarActivity {
 
                        }
 
-                   } else if (more_options[item].equals("Delete Photo")) {
+                       Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                       Uri contentUri = Uri.fromFile(file);
+                       mediaScanIntent.setData(contentUri);
+                       AddBookActivity.this.sendBroadcast(mediaScanIntent);
+                       */
+
+                 } else if (more_options[item].equals("Delete Photo")) {
                        imageList.remove(currentBitmapPos);
                        compressedImages.remove(currentBitmapPos);
                        if (imageList.size() == 0){
@@ -274,6 +290,35 @@ public class AddBookActivity extends ActionBarActivity {
 
     }
 
+    // credit to stackoverflow user 'RajaReddy PolamReddy'
+    // http://stackoverflow.com/questions/7887078/android-saving-file-to-external-storage
+    public String saveToSDCard(Bitmap bitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images");
+        myDir.mkdirs();
+        Random generator = new Random();
+
+        int n = 10000;
+        n = generator.nextInt(n);
+
+        String fname = "Image-"+ n +".jpg";
+        File file = new File (myDir, fname);
+
+        if (file.exists ())
+                file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return fname;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

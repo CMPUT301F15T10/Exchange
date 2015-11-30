@@ -12,14 +12,12 @@ import cmput301exchange.exchange.Controllers.EditBookController;
 import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
 import cmput301exchange.exchange.Fragments.EditBookFragment;
 import cmput301exchange.exchange.Book;
-import cmput301exchange.exchange.Fragments.EditPhotoFragment;
 import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.R;
 
 public class EditBookActivity extends AppCompatActivity {
     private EditBookFragment BookEdit;
     private EditBookCommentFragment CommentEdit;
-    private EditPhotoFragment PhotoEdit; // Its fragment type will be replaced by Photo's fragment class.;
     public FragmentManager fm;
     private FragmentTransaction fm_T;
     private Integer fragmentLayoutID=R.id.fragmentR;
@@ -51,7 +49,6 @@ public class EditBookActivity extends AppCompatActivity {
         fm_T=fm.beginTransaction();
         BookEdit = new EditBookFragment();
         CommentEdit = new EditBookCommentFragment();
-        PhotoEdit = new EditPhotoFragment();
         // Put here code for initializing photo view/edit fragment
     }
 
@@ -65,10 +62,11 @@ public class EditBookActivity extends AppCompatActivity {
             fm_T.replace(fragmentLayoutID.intValue(),CommentEdit,editCommentTag);
             currentFragment=CommentEdit;
         }
-        if (flag==3){
+     /* if (flag==3){
             fm_T.replace(fragmentLayoutID.intValue(),PhotoEdit,viewPhotoTag);
             currentFragment= (BackButtonListener) PhotoEdit;
         }
+        */
 //        fm_T.addToBackStack(null);
         fm_T.commitAllowingStateLoss();// Alternative is commit
 //        fm_T.commit();
@@ -117,7 +115,6 @@ public class EditBookActivity extends AppCompatActivity {
         return CommentEdit;
     }
 
-    public EditPhotoFragment getEditPhotoFragment() {return PhotoEdit;}
 
 //    protected void onSaveInstanceState(Bundle outState) {
 //        // TODO Auto-generated method stub
