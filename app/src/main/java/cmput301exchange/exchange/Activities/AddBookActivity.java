@@ -38,7 +38,6 @@ import cmput301exchange.exchange.Serializers.DataIO;
 
 public class AddBookActivity extends ActionBarActivity {
 
-    private AddBookController controller;
 
     private EditText name, author, quality, quantity, comments;
     private ImageButton image;
@@ -56,224 +55,19 @@ public class AddBookActivity extends ActionBarActivity {
 
     private DataIO dataIO = new DataIO(this, AddBookActivity.class);
 
+    private AddBookController controller;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
 
-        Gson gson= new Gson();
-
-        Bundle extras = getIntent().getExtras();
-
-        String json1 = extras.getString("Inventory");
-        String json2 = extras.getString("Book");
-
-        photoList = (Spinner) findViewById(R.id.photoListView);
-        bmpAdapter = new PhotoAdapter(this, imageList);
-        photoList.setAdapter(bmpAdapter);
-
-        inventory = gson.fromJson(json1, Inventory.class);
-
-        image = (ImageButton) findViewById(R.id.imageButton);
-        name = (EditText) findViewById(R.id.editName);
-        author = (EditText) findViewById(R.id.editAuthor);
-        quality = (EditText) findViewById(R.id.editQuality);
-        quantity = (EditText) findViewById(R.id.editQuantity);
-        comments = (EditText) findViewById(R.id.editComment);
-
-        Spinner spinner = (Spinner) findViewById(R.id.categories_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.categories, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-        if (json2 != null) {
-            cloneBook = gson.fromJson(json2, Book.class);
-            name.setText(cloneBook.getName());
-            author.setText(cloneBook.getAuthor());
-            quality.setText(String.valueOf(cloneBook.getQuality()));
-            quantity.setText(String.valueOf(cloneBook.getQuantity()));
-            comments.setText(cloneBook.getComment());
-            CheckBox is_Sharable= (CheckBox) findViewById(R.id.shareable_checkBox);
-            if (cloneBook.isShareable()) {
-                is_Sharable.setChecked(Boolean.TRUE);
-            }
-            spinner.setSelection(adapter.getPosition(cloneBook.getCategory()));
-        }
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //on selecting a spinner item
-                category = parent.getItemAtPosition(position).toString();
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        photoList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //on selecting a spinner item
-                currentBitmapPos = position;
-                image.setImageBitmap(imageList.get(position));
-
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
+        controller = new AddBookController(this, this);
+        controller.Setup();
     }
 
     public void add(View view){
-
-        Book book = new Book();
-
-        // set quality and quantity to 0 if nothing entered
-        if (quality.getText().toString().isEmpty()) {
-            quality.setText("0");
-        }
-        if (quantity.getText().toString().isEmpty()) {
-            quantity.setText("0");
-        }
-
-        String bookName = name.getText().toString(); //Fetch the book title from the document.
-        String bookAuthor = author.getText().toString(); //Fetch the Author from the document
-        String bookComments = comments.getText().toString();
-        Integer bookQuantity = Integer.parseInt(quantity.getText().toString());
-        Integer bookQuality = Integer.parseInt(quality.getText().toString());
-
-
-        final CheckBox checkBox = (CheckBox) findViewById(R.id.shareable_checkBox);
-        if (checkBox.isChecked()) {
-            book.setShareable(Boolean.TRUE);
-        }
-        else {
-            book.setShareable(Boolean.FALSE);
-        }
-
-        book.updateTitle(bookName);
-        book.updateAuthor(bookAuthor);
-        book.updateQuantity(bookQuantity);
-        book.updateQuality(bookQuality);
-        book.updateCategory(category);
-        book.updateComment(bookComments);
-
-        book.setPhotos(compressedImages);
-        
-        inventory.add(book);
-        this.finishAdd();
-    }
-
-    private void selectImage() {
-
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery"};
-        final CharSequence[] more_options = { "View Bigger Photo", "Take Photo", "Choose from Gallery", "Save Photo", "Delete Photo"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(AddBookActivity.this);
-
-        builder.setTitle("Photo Options");
-
-        if (null == image.getDrawable()) {
-            builder.setItems(options, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-
-                    if (options[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                        startActivityForResult(intent, 1);
-                    } else if (options[item].equals("Choose from Gallery")) {
-
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, 2);
-
-                    }
-                }
-
-            });
-        }
-        else {
-            builder.setItems(more_options, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int item) {
-
-                   if (more_options[item].equals("View Bigger Photo")) {
-                       String photo = getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
-                       dataIO.saveInFile("detailed_photo.sav", photo);
-
-                       Intent intent = new Intent(AddBookActivity.this, DetailedPhoto.class);
-                       startActivityForResult(intent, 0);
-
-                   } else if (more_options[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                        startActivityForResult(intent, 1);
-
-                    } else if (more_options[item].equals("Choose from Gallery")) {
-
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, 2);
-
-                    } else if (more_options[item].equals("Save Photo")) {
-                       String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-                       String item_title = name.getText().toString();
-                       File newFolder = new File(path + "/Exchange/" + item_title);
-                       newFolder.mkdir();
-                       File file = new File(path + "/Exchange/" + item_title, item_title + String.valueOf(currentBitmapPos) + ".jpg"); // the File to save to
-                       MediaStore.Images.Media.insertImage(getContentResolver(), imageList.get(currentBitmapPos), file.getName(), file.getName());
-
-                   } else if (more_options[item].equals("Delete Photo")) {
-                       imageList.remove(currentBitmapPos);
-                       compressedImages.remove(currentBitmapPos);
-                       if (imageList.size() == 0){
-                           image.setImageDrawable(null);
-                       }
-                       else {
-                           image.setImageBitmap(imageList.get(0));
-                       }
-                       bmpAdapter.notifyDataSetChanged();
-                    }
-
-                }
-
-            });
-
-        }
-
-        builder.show();
-
-    }
-
-    private String getStringFromBitmap(Bitmap bitmapPicture) {
-     /*
-     * This functions converts Bitmap picture to a string which can be
-     * JSONified.
-     * */
-        final int COMPRESSION_QUALITY = 100;
-        String encodedImage;
-        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
-                byteArrayBitmapStream);
-        byte[] b = byteArrayBitmapStream.toByteArray();
-        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return encodedImage;
+        controller.add(view);
     }
 
 
@@ -320,7 +114,7 @@ public class AddBookActivity extends ActionBarActivity {
                     byte[] byteArray = stream.toByteArray();
                     compressedImages.add(byteArray);
 
-                    addToImageList(byteArray);
+                    controller.addToImageList(byteArray);
                     bmpAdapter.notifyDataSetChanged();
 
                     stream.flush();
@@ -361,21 +155,7 @@ public class AddBookActivity extends ActionBarActivity {
         }
     }
 
-    private void addToImageList(byte[] array){
-        Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
-        imageList.add(bm);
-    }
 
-    public void finishAdd(){
-        String json = inventory.toJson(); //Write the existing inventory data to Json
-        dataIO.saveInFile("book.sav", json);
-
-        Intent added = new Intent().putExtra("Inventory", "book.sav"); //Send it back to the inventory activity
-        setResult(RESULT_OK, added);
-
-        this.finish();
-
-    }
 
     @Override
     public void onStop(){
@@ -395,7 +175,7 @@ public class AddBookActivity extends ActionBarActivity {
     public void onBackPressed(){
         //This method is called when the back button is pressed, regardless of what data is entered.
         //It basically just stops the data from being entered into the inventory, and quits activity
-        this.finishAdd();
+        controller.finishAdd();
     }
 
     @Override
