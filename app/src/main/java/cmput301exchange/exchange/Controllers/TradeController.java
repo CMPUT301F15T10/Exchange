@@ -64,6 +64,7 @@ public class TradeController {
         }
         myTradeManager.pushChanges(myTrade);
         return true;
+        //push the offer to server as the user wish
     }
 
     public void deleteTrade() {

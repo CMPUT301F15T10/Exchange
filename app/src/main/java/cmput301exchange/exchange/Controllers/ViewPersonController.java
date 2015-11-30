@@ -134,6 +134,7 @@ public class ViewPersonController implements Observer{
     public void prepareOptionsMenu(Menu menu){
         menu.removeGroup(MENU_Group);
         if((state==1) && (selectedPerson!=null)) {
+            //different display set of friend list and person list
             menu.add(MENU_Group, MENU_View_Inventory, Menu.NONE, "View Inventory");
             menu.add(MENU_Group, MENU_View_Profile, Menu.NONE, "View Profile");
             menu.add(MENU_Group, MENU_View_RemoveFriend, Menu.NONE, "Remove "+selectedPerson.toString());

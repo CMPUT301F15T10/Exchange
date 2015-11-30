@@ -342,7 +342,7 @@ public class EditBookController implements Observable{
             builder.setItems(more_options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-
+                    //same as it in add book controller
                     if (more_options[item].equals("View Bigger Photo")) {
                         PhotoController photoController = new PhotoController();
                         String photo = photoController.getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
