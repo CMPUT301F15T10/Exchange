@@ -43,7 +43,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
     public ModelEnvironment globalEnv;
     private ListView lv;
-    private ArrayList<Person> friendList;
+    private ArrayList<Person> friendList= new ArrayList<>();
     private ArrayList<Person> personList= new ArrayList<>();
     private PersonList allPerson = new PersonList();
     private ArrayAdapter<Person> friendListAdapter, personListAdapter;
@@ -153,7 +153,6 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         globalEnv = new ModelEnvironment(this, null);
 //        user=elasticSearch.getUser();
         user = globalEnv.getOwner();
-        friendList = user.getMyFriendList(this).getPersonList();
 
 //        allPerson = globalEnv.getPersonList();
 //        personList = allPerson.getPersonList();
@@ -379,17 +378,26 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update() {
-        personList = elasticSearch.getPersonList().getPersonList();
+
+        PersonList list = elasticSearch.getPersonList();
+//        list.removePerson(user);
+        personList=list.getPersonList();
+        globalEnv.setPersonList(list);
 //        for (int i=0;i<personList.size();++i){
 //            if (personList.get(i).getID()==user.getID()){
 //                personList.remove(i);
 //            }
 //        }
-        personList.remove(user.getID());
+//        personList.remove(user.getID());
         Log.e("update_viewperson: ",String.valueOf(personList.size()));
         personListAdapter.clear();
         personListAdapter.addAll(personList);
         personListAdapter.notifyDataSetChanged();
+
+        friendList = user.getMyFriendList(this).getPersonList();
+        friendListAdapter.clear();
+        friendListAdapter.addAll(friendList);
+        friendListAdapter.notifyDataSetChanged();
     }
 
 
