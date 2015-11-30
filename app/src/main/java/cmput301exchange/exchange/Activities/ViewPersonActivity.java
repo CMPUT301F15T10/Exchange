@@ -203,7 +203,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
     public void downloadServer(){
         user=elasticSearch.getUser();
-    }
+    }//get user from server
     public void updateOnline(){
         // This function should use elastic search to update any changes to user object
         elasticSearch.sendToServer(globalEnv);
@@ -233,16 +233,23 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        /*
+        state is the flag to tell if the spinner is displaying friends or all user
+        1 is for friend
+        2 is for all people in database
+         */
         menu.removeGroup(MENU_Group);
         if((state==1) && (selectedPerson!=null)) {
             menu.add(MENU_Group, MENU_View_Inventory, Menu.NONE, "View Inventory");
             menu.add(MENU_Group, MENU_View_Profile, Menu.NONE, "View Profile");
             menu.add(MENU_Group, MENU_View_RemoveFriend, Menu.NONE, "Remove "+selectedPerson.toString());
             menu.add(MENU_Group, MENU_Make_Trade, Menu.NONE, "Offer a Trade");
+            //if friends are displayed, user should be able to view their inventory, profile, remove them or make a trade with them.
         }
         if((state==2) && (selectedPerson!=null)) {
             menu.add(MENU_Group, MENU_Make_Friendship, Menu.NONE, "Make Friendship!");
             menu.add(MENU_Group, MENU_View_Profile, Menu.NONE, "View Profile");
+            //for a non-friend person, user should be able to add them as a friend or view their profile
         }
 
         menu.add(MENU_Group, MENU_Settings, Menu.NONE, "Settings");
@@ -270,10 +277,11 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         }
 
         if (id == MENU_View_Inventory) {
+            //load inventory from server
             Gson gson = new Gson();
             String json = gson.toJson(selectedPerson.getMyInventory());
-
             Intent intent = new Intent(this, InventoryActivity.class);
+            //jump to inventory activity
             intent.putExtra("Friend_Inventory",json);
             intent.putExtra("Inventory_State",2);
             startActivity(intent);
@@ -283,7 +291,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         if (id == MENU_View_Profile){
             Gson gson = new Gson();
             String json = gson.toJson(selectedPerson);
-
+//jump to viewperson activity
             Intent intent = new Intent(this, ProfileDetailsActivity.class).putExtra("Person",json);
             startActivity(intent);
             return true;
@@ -379,7 +387,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         lv.clearChoices();
     }
 
-    //TODO
+
     public void initPersonList(Integer integer){
         String page = integer.toString();
         elasticSearch.addObserver(this);
@@ -421,102 +429,3 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
 
 
-//
-//package cmput301exchange.exchange.Activities;
-//
-//        import android.content.Intent;
-//        import android.support.v7.app.AppCompatActivity;
-//        import android.os.Bundle;
-//        import android.support.v7.widget.SearchView;
-//        import android.view.Menu;
-//        import android.view.MenuItem;
-//        import android.view.View;
-//        import android.widget.AbsListView;
-//        import android.widget.AdapterView;
-//        import android.widget.ArrayAdapter;
-//        import android.widget.ListView;
-////import android.widget.SearchView;
-//        import android.widget.Spinner;
-//        import android.widget.Toast;
-//
-//        import com.google.gson.Gson;
-//
-//        import java.util.ArrayList;
-//        import java.util.List;
-//
-//        import cmput301exchange.exchange.Controllers.ViewPersonController;
-//        import cmput301exchange.exchange.Interfaces.Observer;
-//        import cmput301exchange.exchange.ModelEnvironment;
-//        import cmput301exchange.exchange.PersonList;
-//        import cmput301exchange.exchange.Person;
-//        import cmput301exchange.exchange.R;
-//        import cmput301exchange.exchange.Serializers.ElasticSearch;
-//        import cmput301exchange.exchange.Serializers.SearchHit;
-//        import cmput301exchange.exchange.User;
-//
-//public class ViewPersonActivity extends AppCompatActivity {
-//    private ViewPersonController controller;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_view_person);
-//        controller = new ViewPersonController(this, this);
-//        controller.init();
-//        controller.initPersonList(10);
-//    }
-//
-//    @Override
-//    public void onPause(){
-//        controller.saveUser();
-//        controller.updateOnline();
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onResume(){
-//        controller.loadUser();
-////        downloadServer();
-//        super.onResume();
-//    }
-//
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        controller.prepareOptionsMenu(menu);
-//        return super.onPrepareOptionsMenu(menu);
-//    }
-//
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        controller.createOptionsMenu(menu);
-//        controller.initSearchView();
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        controller.optionsItemSelected(item);
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    @Override
-//    public void onBackPressed(){
-//        this.finish();
-//    }
-//
-//    @Override
-//    public void finish(){
-//        if (controller.getState() == 2) {
-//            controller.sendBackTradePartner();
-//        }else{
-//            setResult(RESULT_OK, new Intent());
-//
-//        }
-//        super.finish();
-//    }
-//
-//
-//}
