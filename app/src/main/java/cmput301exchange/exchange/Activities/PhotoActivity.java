@@ -79,7 +79,7 @@ public class PhotoActivity extends AppCompatActivity {
        // String json = extras.getString("Inventory");
 
         photo = new Photo();
-        
+
         bmScaler = new BitmapScaler();
         savePhoto = new SavePhoto();
         photo.setPhotos(compressedImages);
@@ -96,6 +96,7 @@ public class PhotoActivity extends AppCompatActivity {
         acceptButton = (Button)findViewById(R.id.acceptButton);
         imageButton = (ImageButton)findViewById(R.id.imageButton);
       //  inventory = gson.fromJson(json, Inventory.class);
+        acceptButton.setVisibility(View.GONE); // not visible initially
 
       //  imageButton = (ImageButton) findViewById(R.id.imageBu);
         imageButton.setImageResource(R.drawable.testphoto);
