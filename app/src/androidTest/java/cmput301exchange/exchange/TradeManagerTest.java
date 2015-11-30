@@ -122,7 +122,7 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
         // offer a trade
         testOfferTrade();
         Trade tmptrade = new Trade();
-        tmptrade = tradeManager0.searchTrade(trade0.getTradeId());
+       // tmptrade = tradeManager0.searchTrade(trade0.getTradeId());
         Book book02 = new Book();
         book02.updateTitle("No Name");
         ArrayList<Book> clist = new ArrayList<>();
