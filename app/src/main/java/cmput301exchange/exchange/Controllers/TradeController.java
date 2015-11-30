@@ -31,6 +31,7 @@ public class TradeController {
         } else {
             myTrade = trade;
         }
+        this.user=user;
 
     }
 
@@ -140,6 +141,7 @@ public class TradeController {
             return;
         } else {
             myTrade.setTradePartner(partner,false);
+            Log.e("Got to Trade Controller",String.valueOf(myTrade.hasTradePartner()));
         }
     }
 

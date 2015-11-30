@@ -1,5 +1,7 @@
 package cmput301exchange.exchange;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -132,8 +134,14 @@ public class Trade {
         return tradeUser;
     }
 
-    public boolean hasTradePartner(){
-        return hasPartner;
+    public boolean hasTradePartner()
+    {
+        if (PartnerID==null){
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     public void setTradeUser(Person tradeUser) {
@@ -152,6 +160,7 @@ public class Trade {
     }
 
     public void setTradePartner(Person tradePartner, Boolean isCounterTrade) {
+        Log.e("Trade Partner is selected","-----");
         if (isCounterTrade==true){
             this.tradePartner=null;
             this.hasPartner=false;

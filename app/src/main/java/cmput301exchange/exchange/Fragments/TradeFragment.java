@@ -58,7 +58,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         super.onCreate(savedInstanceState);
         spinnerItems= new ArrayList<>();
         initTradeController();
-        initTradePartner();
+//        initTradePartner();
     }
 
     public void initTradeController(){
@@ -68,7 +68,8 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     void initTradePartner(){
-        if(myTradeController.hasTradePartner()){
+//        myTradeController.getTradePartner().getID();
+        if(myTradeController.getTradePartner()!=null){
 //            myTradeController.setTradePartner(myActivity.getTradePartner());
             traderName=myTradeController.getTradePartner().getName();
             Log.e("found trade Partner","tradeName");
@@ -255,7 +256,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public void onResume(){
         super.onResume();
 //        initTradeController();
-//        initTradePartner();
+        initTradePartner();
         updateTraderSpinnerItem();
         traderSelection.setSelection(0);
         updateTextView();

@@ -74,6 +74,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         myBookTradeController= new BooksTradeController(myTradeController.getTrade(),1,this,user);
     }
     public void initTradeController(){
+        Log.e("Trade Controller created!","");
         myTradeController=new TradeController(this,null,myTradeManager,user);
     }
     public TradeController getTradeController() {
@@ -108,6 +109,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         processIntent();
         initFragments();
         if (callTradeFragment==true) {
+            Log.e("Make Trade","__");
             makeTrade();
         } else{
             switchFragment(1); // Initiating trade manager fragment
@@ -143,14 +145,14 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     }
 
     public void onPause(){
-        saveTradeManager();
+//        saveTradeManager();
 //        updateOnline()
-        Log.e("current list size: ",String.valueOf(myTradeManager.getListCurrentTrade().size()));
+        Log.e("current list size: ", String.valueOf(myTradeManager.getListCurrentTrade().size()));
         super.onPause();
     }
 
     public void onResume(){
-        loadTradeManager();
+//        loadTradeManager();
 //        downloadServer();
         myTradeController.setTradeManager(myTradeManager);
         super.onResume();
@@ -240,12 +242,15 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         initBookTradeController();
 //        myTradeManager.getListCurrentTrade().
         Log.e("current list size: ", String.valueOf(myTradeManager.getListCurrentTrade().size()));
+//        switchFragment(1);
         switchFragment(2);
     }
 
     public void displayTrade(Trade trade){
 //        myTrade=null;
-        myTradeController.setTrade(trade);
+        if (myTradeController.getTrade().getTradeId()!=trade.getTradeId()) {
+            myTradeController.setTrade(trade);
+        }
         int tradeDisplayFlag=myTradeController.getControllerStatus()+2;
 
         initBookTradeController();
@@ -310,7 +315,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
     @Override
     public void finish(){
-        saveTradeManager();
+//        saveTradeManager();
         super.finish();
     }
 
@@ -319,6 +324,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         if (requestCode == SEARCH_PEOPLE) {
             personIntent=data;
             myTradeController.setTradePartner(retrieveTradePartner());
+//            displayTrade(myTradeController.getTrade());
             switchFragment(2); //switch to trade fragment
         }
         if (requestCode == INVENTORY) {
