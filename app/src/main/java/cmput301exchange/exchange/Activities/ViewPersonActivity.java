@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,6 +58,8 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     private PersonList testlist;
     private Intent intent = new Intent();
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -64,7 +67,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_view_person);
 //        init();
         elasticSearch = new ElasticSearch(this);
-
+        progressDialog = ProgressDialog.show(this,"Loading Other Users","Just a Moment",true);
 //        friendList=user.getMyFriendList().getPersonList();
         initPersonList(0);
 
@@ -140,6 +143,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
             }
         });
         init();
+
     }
 
 
@@ -160,6 +164,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         personListAdapter.clear();
         personListAdapter.addAll(personList);
         personListAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -397,7 +402,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 //            }
 //        }
 //        personList.remove(user.getID());
-        Log.e("update_viewperson: ",String.valueOf(personList.size()));
+        Log.e("update_viewperson: ", String.valueOf(personList.size()));
         personListAdapter.clear();
         personListAdapter.addAll(personList);
         personListAdapter.notifyDataSetChanged();
@@ -406,6 +411,9 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         friendListAdapter.clear();
         friendListAdapter.addAll(friendList);
         friendListAdapter.notifyDataSetChanged();
+        this.progressDialog.dismiss();
+
+
     }
 
 
