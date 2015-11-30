@@ -150,10 +150,10 @@ public class InventoryActivity extends AppCompatActivity {
 
                 if (!(selectedBooks.contains((Book)lv.getItemAtPosition(position)))) {
                     selectedBooks.add((Book) lv.getItemAtPosition(position));
-                    Toast.makeText(getBaseContext(), selectedBooks.toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), selectedBooks.toString(), Toast.LENGTH_LONG).show();
                 } else {
                     selectedBooks.remove((Book) lv.getItemAtPosition(position));
-                    Toast.makeText(getBaseContext(), "None selected", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), "None selected", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -332,7 +332,7 @@ public class InventoryActivity extends AppCompatActivity {
                     menu.findItem(R.id.action_view).setVisible(true);
                     menu.findItem(R.id.action_edit).setVisible(true);
                     menu.findItem(R.id.action_remove_single).setVisible(true);
-                    menu.findItem(R.id.action_clone).setVisible(true); // temporairly for testing purposes
+                    menu.findItem(R.id.action_clone).setVisible(true);
 
                 } else if(selectedBooks.size()>1) {
                     menu.findItem(R.id.action_remove_single).setVisible(false);
