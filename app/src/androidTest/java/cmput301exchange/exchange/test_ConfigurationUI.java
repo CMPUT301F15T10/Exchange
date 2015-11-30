@@ -5,8 +5,6 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import cmput301exchange.exchange.Controllers.ConfigurationController;
-
 /**
  * Created by touqir on 05/11/15.
  */

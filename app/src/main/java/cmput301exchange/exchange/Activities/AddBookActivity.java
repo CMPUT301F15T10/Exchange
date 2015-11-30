@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import cmput301exchange.exchange.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.PhotoController;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
@@ -211,7 +212,8 @@ public class AddBookActivity extends ActionBarActivity {
                 public void onClick(DialogInterface dialog, int item) {
 
                    if (more_options[item].equals("View Bigger Photo")) {
-                       String photo = getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
+                       PhotoController photoController = new PhotoController();
+                       String photo = photoController.getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
                        dataIO.saveInFile("detailed_photo.sav", photo);
 
                        Intent intent = new Intent(AddBookActivity.this, DetailedPhoto.class);
@@ -258,56 +260,25 @@ public class AddBookActivity extends ActionBarActivity {
 
     }
 
-    private String getStringFromBitmap(Bitmap bitmapPicture) {
-     /*
-     * This functions converts Bitmap picture to a string which can be
-     * JSONified.
-     * */
-        final int COMPRESSION_QUALITY = 100;
-        String encodedImage;
-        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
-                byteArrayBitmapStream);
-        byte[] b = byteArrayBitmapStream.toByteArray();
-        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-        return encodedImage;
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-
             if (requestCode == 1) {
-                //h=0;
                 File f = new File(Environment.getExternalStorageDirectory().toString());
-
                 for (File temp : f.listFiles()) {
-
                     if (temp.getName().equals("temp.jpg")) {
-
                         f = temp;
-                        File photo = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
-
                         break;
-
                     }
-
                 }
-
                 try {
-
                     Bitmap bitmap;
-
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
-
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
                     Bitmap resized = Bitmap.createScaledBitmap(bitmap, (int)(bitmap.getWidth()*0.2), (int)(bitmap.getHeight()*0.2), true);
-
 
                     image.setImageBitmap(bitmap);
 
@@ -326,9 +297,7 @@ public class AddBookActivity extends ActionBarActivity {
                     f.delete();
 
                 } catch (Exception e) {
-
                     e.printStackTrace();
-
                 }
 
             } else if (requestCode == 2) {
