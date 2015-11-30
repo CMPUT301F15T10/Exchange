@@ -113,7 +113,6 @@ public class AddBookController implements Observable{
         this.photoList = (Spinner) activity.findViewById(R.id.photoListView);
         this.bmpAdapter = new PhotoAdapter(activity, imageList);
         this.photoList.setAdapter(bmpAdapter);
-        this.photoList = (Spinner) activity.findViewById(R.id.photoListView);
         this.name = (EditText) activity.findViewById(R.id.editName);
         this.author = (EditText) activity.findViewById(R.id.editAuthor);
         this.quality = (EditText) activity.findViewById(R.id.editQuality);
