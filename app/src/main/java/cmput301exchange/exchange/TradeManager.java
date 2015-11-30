@@ -184,6 +184,7 @@ public class TradeManager {
     //TODO
     public void loadPersons(Trade trade, Context activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
+        globalEnv.getOwner().getID();
         trade.setTradeUser(globalEnv.getOwner());
         if (trade.hasTradePartner()==true) {
             trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()),false);
