@@ -31,11 +31,14 @@ import java.util.ArrayList;
 
 import cmput301exchange.exchange.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
+import cmput301exchange.exchange.Controllers.AddBookController;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 
 public class AddBookActivity extends ActionBarActivity {
+
+    private AddBookController controller;
 
     private EditText name, author, quality, quantity, comments;
     private ImageButton image;
