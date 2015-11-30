@@ -346,7 +346,9 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     public void makeFriend(){
         user.addFriend(selectedPerson);
 //        saveUser();
+        globalEnv.saveInstance(this);
         friendList=user.getMyFriendList(this).getPersonList();
+
         friendListAdapter.clear();
         friendListAdapter.addAll(friendList);
         friendListAdapter.notifyDataSetChanged();
@@ -356,6 +358,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
     public void removeFriend(){
         user.removeFriend(selectedPerson);
+        globalEnv.saveInstance(this);
 //        saveUser();
 //            selectedPerson=null;
 //            lv.clearChoices();
