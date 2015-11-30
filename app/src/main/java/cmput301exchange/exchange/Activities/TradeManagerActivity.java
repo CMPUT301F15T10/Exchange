@@ -248,9 +248,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 
     public void displayTrade(Trade trade){
 //        myTrade=null;
-        if (myTradeController.getTrade().getTradeId()!=trade.getTradeId()) {
-            myTradeController.setTrade(trade);
-        }
+        myTradeController.setTrade(trade);
         int tradeDisplayFlag=myTradeController.getControllerStatus()+2;
 
         initBookTradeController();
@@ -355,7 +353,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
             return null;
         }
         if (inventoryIntent.hasExtra("Trade_Items")) {
-            String json = personIntent.getExtras().getString("Trade_Items");
+            String json = inventoryIntent.getExtras().getString("Trade_Items");
             fromInventory=true;
             return gson.fromJson(json, Inventory.class);
         }
@@ -377,13 +375,13 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         }
 
         if (type==1) {
-            Intent intent = new Intent(this, Inventory.class);
+            Intent intent = new Intent(this, InventoryActivity.class);
             intent.putExtra("From_TradeManagerActivity","");
             intent.putExtra("User_Inventory",json);
             intent.putExtra("Selected_Books_Position",position_array);
             startActivityForResult(intent, INVENTORY);
         } else if (type==2){
-            Intent intent = new Intent(this, Inventory.class);
+            Intent intent = new Intent(this, InventoryActivity.class);
             intent.putExtra("From_TradeManagerActivity","");
             intent.putExtra("Friend_Inventory",json);
             intent.putExtra("Selected_Books_Position",position_array);

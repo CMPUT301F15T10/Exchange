@@ -2,6 +2,7 @@ package cmput301exchange.exchange.Controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -28,13 +29,23 @@ public class BooksTradeController {
     Context activity;
     Person lastTradePartner=null;
     User user;
+    int status;
 
     public BooksTradeController(Trade trade, Integer type, Context activity, User user){
         myTrade=trade;
         this.type=type;
         this.activity=activity;
         this.user=user;
+        if (user.getID().equals(myTrade.getUserID())){
+            status=1;
+        } else {
+            status=0;
+        }
         initQuantityDictionary();
+    }
+
+    public int getStatus(){
+        return status;
     }
 
     public void initQuantityDictionary(){
@@ -190,15 +201,19 @@ public class BooksTradeController {
         boolean foundBook=false;
         if (type==1){
             for (Book inventoryBook:inventory.getInventoryList()){
+                Log.e("Book name: ",inventoryBook.getName());
                 for (Book tradeBook:myTrade.getListBookUser()){
                     if (inventoryBook.getID().longValue()==tradeBook.getID().longValue()){
                         foundBook=true;
+                        Log.e("yes ","matched");
                         break;
                     }
                 }
                 if (foundBook==false){
                     myTrade.getListBookUser().add(inventoryBook);
+                    Log.e("I added the book!","");
                 }
+                foundBook=false;
             }
         } else if (type == 2){
             for (Book inventoryBook:inventory.getInventoryList()){
@@ -211,6 +226,7 @@ public class BooksTradeController {
                 if (foundBook==false){
                     myTrade.getListBookPartner().add(inventoryBook);
                 }
+                foundBook=false;
             }
         }
     }
