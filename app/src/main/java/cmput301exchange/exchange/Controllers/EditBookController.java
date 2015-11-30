@@ -272,7 +272,7 @@ public class EditBookController implements Observable{
     public void add(View view){
 
         Book book = new Book();
-
+        //button behaviour
         // set quality and quantity to 0 if nothing entered
         if (quality.getText().toString().isEmpty()) {
             quality.setText("0");
@@ -310,7 +310,7 @@ public class EditBookController implements Observable{
     }
 
     public void selectImage() {
-
+        //same logic in add book controller
         final CharSequence[] options = { "Take Photo", "Choose from Gallery"};
         final CharSequence[] more_options = { "View Bigger Photo", "Take Photo", "Choose from Gallery", "Save Photo", "Delete Photo"};
 
@@ -429,7 +429,8 @@ public class EditBookController implements Observable{
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    compressedImages.add(stream.toString());
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
                     this.addToImageList(stream.toString());
                     bmpAdapter.notifyDataSetChanged();

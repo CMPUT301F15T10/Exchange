@@ -30,5 +30,11 @@ public class PhotoController {
         return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
     }
 
+    public String getStringFromByte(byte[] b) {
+     /*
+     * This functions converts byte array to a string.
+     * */
+        return Base64.encodeToString(b, Base64.DEFAULT);
+    }
 
 }

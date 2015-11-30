@@ -42,7 +42,7 @@ public class BooksTradeController {
         } else {
             status=0;
             this.type=2;
-        }
+        }//type 1 is for user inventory, 2 is for friend inventory
         initQuantityDictionary();
     }
 
@@ -69,7 +69,7 @@ public class BooksTradeController {
         }
     }
 
-    public Integer getTradeBookQuantity(Long ID){
+    public Integer getTradeBookQuantity(Long ID){//conditionally get the quantity of user/tradepartner's book quantity
         if (type==1){
             for (Book book:myTrade.getListBookUser()){
                 if (book.getID().longValue()==ID.longValue()){
@@ -86,12 +86,12 @@ public class BooksTradeController {
         return null;
     }
 
-    public boolean hasTradePartner(){
+    public boolean hasTradePartner(){//when talking about user, there is always an trade partner
         if (status==1){
             return myTrade.hasTradePartner();
         }
         else {
-            if (myTrade.getTradeUser()!=null){
+            if (myTrade.getTradeUser()!=null){//as for others, if they have tarde with the user, they, too, have a trade partner
                 return true;
             }
         }
@@ -129,6 +129,7 @@ public class BooksTradeController {
         }
 
         if (lastTradePartner.getID()!=myTrade.getTradePartner().getID() || myTrade.getTradePartner().getMyInventory().isUpdated()) {
+            //something change, may due to partner shift or stock updated, the trade may be invalid, need to be check
             quantityDictionaryFriend = new HashMap<Long, Integer>();
             for (Book book : myTrade.getTradePartner().getMyInventory().getInventoryList()) {
                 quantityDictionaryFriend.put(book.getID(), book.getQuantity());

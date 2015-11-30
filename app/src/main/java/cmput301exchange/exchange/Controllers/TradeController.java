@@ -18,7 +18,7 @@ import cmput301exchange.exchange.User;
 public class TradeController {
     private Trade myTrade;
     private TradeManager myTradeManager;
-    private int[] status = new int[]{0, 2, 3, 3, 0, 1, 4, 3};
+    private int[] status = new int[]{0, 2, 3, 3, 0, 1, 4, 3};//magic on the fisrt sight, but make sense since it will be reset later
     private User user;
     private Context context;
 //    private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();

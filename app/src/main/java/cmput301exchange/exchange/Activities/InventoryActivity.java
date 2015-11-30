@@ -291,8 +291,8 @@ public class InventoryActivity extends AppCompatActivity {
                 fromAddBook=true;
 //                String json=data.getExtras().getString("Inventory");
                 DataIO dataIO = new DataIO(this, InventoryActivity.class);
-                String json = dataIO.loadFromFile("book.sav");
-                File file = new File(getFilesDir(), "book.sav");
+                String json = dataIO.loadFromFile("inventory.sav");
+                File file = new File(getFilesDir(), "inventory.sav");
                 file.delete();
                 inventory=gson.fromJson(json,Inventory.class);
                 updateBookList(inventory);

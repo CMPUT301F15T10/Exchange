@@ -15,7 +15,6 @@ public class LoginController implements Observer{
 
     @Override
     public void update() {
-
+        //nothing fancy here, all the work has been done in activity
     }
-
 }

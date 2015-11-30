@@ -229,11 +229,18 @@ public class AddBookController implements Observable{
             builder.setItems(options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
+                    /*
+                    click on photo field, a dialog with two options pops up
+                    following are the behaviours of two different options
+                    take photo calls device camera and take a picture
+                    choose from gallery leads to gallery of device allows us to
+                    choose a picture from it
+                     */
                     Intent intent;
                     switch(options[item].toString()){
                         case "Take Photo":
                         intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");//take a pic called temp.jpg
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                         activity.startActivityForResult(intent, 1);
                         break;
@@ -250,7 +257,8 @@ public class AddBookController implements Observable{
             builder.setItems(more_options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-
+                    //same as options, more_options offers various methods to deal with photo
+                    //code structure is same as switch
                     if (more_options[item].equals("View Bigger Photo")) {
                         PhotoController photoController = new PhotoController();
                         String photo = photoController.getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
@@ -304,7 +312,7 @@ public class AddBookController implements Observable{
 
         if (resultCode == activity.RESULT_OK) {
 
-            if (requestCode == 1) {
+            if (requestCode == 1) {//means took photo via camera
                 //h=0;
                 File f = new File(Environment.getExternalStorageDirectory().toString());
 
@@ -319,10 +327,10 @@ public class AddBookController implements Observable{
 
                     }
 
-                }
+                }//find the file named 'temp.jpg'
 
                 try {
-
+                    //try upload the photo
                     Bitmap bitmap;
 
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
@@ -337,7 +345,8 @@ public class AddBookController implements Observable{
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    compressedImages.add(stream.toString());
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
                     this.addToImageList(stream.toByteArray());
                     bmpAdapter.notifyDataSetChanged();
@@ -346,7 +355,7 @@ public class AddBookController implements Observable{
                     stream.close();
 
                     f.delete();
-
+                    //delete the temp photo after uploaded
                 } catch (Exception e) {
 
                     e.printStackTrace();
@@ -354,7 +363,7 @@ public class AddBookController implements Observable{
                 }
 
             } else if (requestCode == 2) {
-
+                //this is the case that choose photo from gallery
 
                 Uri selectedImage = data.getData();
 
@@ -387,9 +396,9 @@ public class AddBookController implements Observable{
 
     public void finishAdd(){
         String json = inventory.toJson(); //Write the existing inventory data to Json
-        dataIO.saveInFile("book.sav", json);
+        dataIO.saveInFile("inventory.sav", json);
 
-        Intent added = new Intent().putExtra("Inventory", "book.sav"); //Send it back to the inventory activity
+        Intent added = new Intent().putExtra("Inventory", "inventory.sav"); //Send it back to the inventory activity
         activity.setResult(activity.RESULT_OK, added);
 
         activity.finish();
