@@ -63,9 +63,9 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_view_person);
 //        init();
         elasticSearch = new ElasticSearch(this);
-        init();
+
 //        friendList=user.getMyFriendList().getPersonList();
-        initPersonList(10);
+        initPersonList(0);
 
         lv = (ListView) findViewById(R.id.listView2);
 
@@ -120,24 +120,25 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
                 Toast.makeText(parent.getContext(), "Selected: " + cat, Toast.LENGTH_LONG).show();
                 //show the result for the sort
 
-                switch (cat){
+                switch (cat) {
                     case "Friends":
-                        state=1;
+                        state = 1;
                         lv.clearChoices();
                         lv.setAdapter(friendListAdapter);
                         break;
                     case "All People":
-                        state=2;
+                        state = 2;
                         lv.clearChoices();
                         lv.setAdapter(personListAdapter);
                         break;
                 }
             }
+
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
             }
         });
-
+        init();
     }
 
 
@@ -151,16 +152,16 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
         }
         globalEnv = new ModelEnvironment(this, null);
-//        user=elasticSearch.getUser();
+        user=elasticSearch.getUser();
         user = globalEnv.getOwner();
 
-//        allPerson = globalEnv.getPersonList();
-//        personList = allPerson.getPersonList();
+        allPerson = globalEnv.getPersonList();
+        personList = allPerson.getPersonList();
 
 
-//        personListAdapter.clear();
-//        personListAdapter.addAll(personList);
-//        personListAdapter.notifyDataSetChanged();
+        personListAdapter.clear();
+        personListAdapter.addAll(personList);
+        personListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -378,7 +379,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update() {
-
+        Log.i("UPDATE CALLED", "From VIEW PERSON");
         PersonList list = elasticSearch.getPersonList();
 //        list.removePerson(user);
         personList=list.getPersonList();

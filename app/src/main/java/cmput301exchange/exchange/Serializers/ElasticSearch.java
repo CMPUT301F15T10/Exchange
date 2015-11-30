@@ -191,7 +191,7 @@ public class ElasticSearch implements Observable {
     public void SearchByPage (String query, String page){
 
         HttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/_search?+id=" + query+"&size=30&from="+ page );
+        HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/_search?+id=" + query+"&size=10&from="+ page );
         HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams,Timeout);
         HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
