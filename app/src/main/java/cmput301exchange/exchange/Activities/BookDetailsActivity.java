@@ -19,7 +19,9 @@ import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 
 public class BookDetailsActivity extends ActionBarActivity {
-
+    // this is a class of show details of a book
+    //it use gson to get the data about a specific book
+    //and change edit text of the view shown on the screen
     private Book book;
     private AlertDialog.Builder builder;
     @Override

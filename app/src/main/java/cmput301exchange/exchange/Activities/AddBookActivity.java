@@ -37,7 +37,9 @@ import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 
 public class AddBookActivity extends ActionBarActivity {
-
+    //This is a class of the add book activity,
+    // it contains the class called addBookController to control the model Book
+    //as a MVC model
 
     private EditText name, author, quality, quantity, comments;
     private ImageButton image;
