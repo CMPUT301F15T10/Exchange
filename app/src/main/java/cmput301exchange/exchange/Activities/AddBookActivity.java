@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,6 +58,8 @@ public class AddBookActivity extends ActionBarActivity {
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
     private int currentBitmapPos;
+
+    private DataIO dataIO = new DataIO(this, AddBookActivity.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +219,11 @@ public class AddBookActivity extends ActionBarActivity {
                 public void onClick(DialogInterface dialog, int item) {
 
                    if (more_options[item].equals("View Bigger Photo")) {
-                       // send image to another activity where the full image can be expanded
+                       String photo = getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
+                       dataIO.saveInFile("detailed_photo.sav", photo);
+
+                       Intent intent = new Intent(AddBookActivity.this, DetailedPhoto.class);
+                       startActivityForResult(intent, 0);
 
                    } else if (more_options[item].equals("Take Photo")) {
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -257,6 +264,21 @@ public class AddBookActivity extends ActionBarActivity {
 
         builder.show();
 
+    }
+
+    private String getStringFromBitmap(Bitmap bitmapPicture) {
+     /*
+     * This functions converts Bitmap picture to a string which can be
+     * JSONified.
+     * */
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage;
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmapPicture.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encodedImage;
     }
 
 
@@ -351,7 +373,6 @@ public class AddBookActivity extends ActionBarActivity {
 
     public void finishAdd(){
         String json = inventory.toJson(); //Write the existing inventory data to Json
-        DataIO dataIO = new DataIO(this, AddBookActivity.class);
         dataIO.saveInFile("book.sav", json);
 
         Intent added = new Intent().putExtra("Inventory", "book.sav"); //Send it back to the inventory activity

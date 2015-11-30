@@ -7,9 +7,10 @@
 
     <!-- Network State Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
+
     <!-- - Access to camera Permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <!-- - write to SD card permission -->
@@ -22,8 +23,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/AppTheme"
-        android:textColor="#111">
+        android:textColor="#111"
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".Activities.HomeActivity"
             android:label="@string/title_activity_home" >
@@ -42,7 +43,7 @@
         </activity>
         <activity
             android:name=".Activities.InventoryActivity"
-            android:label="@string/title_activity_inventory">
+            android:label="@string/title_activity_inventory" >
         </activity>
         <activity
             android:name=".Activities.ViewPersonActivity"
@@ -72,10 +73,9 @@
             android:name=".Activities.PhotoActivity"
             android:label="Edit Photo" >
         </activity>
-
         <activity
             android:name=".Activities.ProfileDetailsActivity"
-            android:label="Detailed Profile">
+            android:label="Detailed Profile" >
         </activity>
         <activity
             android:name=".Activities.Login"
@@ -105,6 +105,10 @@
         <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".Activities.DetailedPhoto"
+            android:label="@string/title_activity_detailed_photo" >
         </activity>
     </application>
 
