@@ -22,7 +22,8 @@ import cmput301exchange.exchange.Serializers.DataIO;
 
 public class DetailedPhoto extends ActionBarActivity {
     Bitmap detailedPhoto;
-
+    // this is  a class called detailed photo, it has been called after user click
+    // on the photo of profile,Then it use the IO manager to download the detail photo and show it on the screen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

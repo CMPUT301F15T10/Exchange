@@ -20,8 +20,7 @@
 // */
 //public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
 //
-//    private EditBookFragment editBook;
-//    private EditBookCommentFragment editComment;
+//    private EditBookController controller;
 //    private EditBookActivity activity;
 //    private Book myBook, myBook2;
 //
