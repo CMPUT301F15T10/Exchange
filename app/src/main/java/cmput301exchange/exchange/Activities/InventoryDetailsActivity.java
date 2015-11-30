@@ -14,7 +14,9 @@ import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 
 public class InventoryDetailsActivity extends ActionBarActivity {
-
+    // this is a class of show details of a inventory
+    //it use gson to get the data about a specific inventory
+    //and change edit text of the view shown on the screen
     private TextView totalBooks,sharedBooks,nonSharedBooks;
     private Integer totalBooks_No, sharedBooks_No, nonSharedBooks_No;
     @Override

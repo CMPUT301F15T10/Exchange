@@ -38,6 +38,8 @@ import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 
 public class EditBookActivity extends ActionBarActivity {
+    //This is a class edit book activity,
+    //it contains the class edit book controller
 
 
     private EditText name, author, quality, quantity, comments;
