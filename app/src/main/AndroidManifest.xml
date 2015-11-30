@@ -66,14 +66,6 @@
             android:label="@string/title_activity_trade" >
         </activity>
         <activity
-            android:name=".Activities.ConfigurationActivity"
-            android:label="@string/title_activity_configuration" >
-        </activity>
-        <activity
-            android:name=".Activities.PhotoActivity"
-            android:label="Edit Photo" >
-        </activity>
-        <activity
             android:name=".Activities.ProfileDetailsActivity"
             android:label="Detailed Profile" >
         </activity>

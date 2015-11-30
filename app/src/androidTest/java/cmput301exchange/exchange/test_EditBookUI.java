@@ -3,24 +3,17 @@ package cmput301exchange.exchange;
 import android.app.Activity;
 import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
 
-import cmput301exchange.exchange.Activities.ConfigurationActivity;
 import cmput301exchange.exchange.Activities.EditBookActivity;
-import cmput301exchange.exchange.Book;
-import cmput301exchange.exchange.Controllers.ConfigurationController;
 import cmput301exchange.exchange.Controllers.EditBookController;
 import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
 import cmput301exchange.exchange.Fragments.EditBookFragment;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
-import cmput301exchange.exchange.Others.ObjectSaver;
-import cmput301exchange.exchange.R;
 
 /**
  * Created by touqir on 05/11/15.
