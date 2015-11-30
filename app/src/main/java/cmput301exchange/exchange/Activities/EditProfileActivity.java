@@ -1,34 +1,22 @@
 package cmput301exchange.exchange.Activities;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-
-import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.ModelEnvironment;
-import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
-import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.User;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     ModelEnvironment GlobalENV;
-//    protected DataIO io;
-
-    protected EditText name, phone, email, location;
     ModelEnvironment globalEnv;
 
+//    protected DataIO io;
+    protected EditText name, phone, email, location;
     protected User user;
 
     @Override
@@ -68,6 +56,7 @@ public class EditProfileActivity extends AppCompatActivity {
         globalEnv= new ModelEnvironment(this,null);
         user=globalEnv.getOwner();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

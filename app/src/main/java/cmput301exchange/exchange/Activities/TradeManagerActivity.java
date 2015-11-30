@@ -30,7 +30,7 @@ import cmput301exchange.exchange.TradeManager;
 import cmput301exchange.exchange.User;
 
 public class TradeManagerActivity extends AppCompatActivity implements TradeMaker {
-    public FragmentManager fm;
+
     private FragmentTransaction fm_T;
     private TradeFragment myTradeFragment;
     private TradeListFragment myTradeListFragment;
@@ -43,12 +43,15 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private BackButtonListener currentFragment;
     private Integer tradeListFlag=null;
     private ModelEnvironment globalEnv=null;
-    public static String tradeManagerTag="Trade_Manager_TAG",tradeTag="Trade_TAG",tradeItemsTag="Trade_Items_TAG",tradeListTag="Trade_List_TAG";
     private final int INVENTORY=1, EDIT_PROFILE=2, CONFIGURATION=3, SEARCH_PEOPLE=4;
     private Intent personIntent, inventoryIntent;
     private TradeController myTradeController;
     private User user;
     private boolean fromInventory=false;
+
+    public static String tradeManagerTag="Trade_Manager_TAG",tradeTag="Trade_TAG",
+                         tradeItemsTag="Trade_Items_TAG",tradeListTag="Trade_List_TAG";
+    public FragmentManager fm;
 
     public BooksTradeController getBookTradeController() {
         return myBookTradeController;

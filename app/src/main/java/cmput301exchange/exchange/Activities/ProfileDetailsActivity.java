@@ -1,20 +1,14 @@
 package cmput301exchange.exchange.Activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
-
-import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
-import cmput301exchange.exchange.Serializers.DataIO;
 
 public class ProfileDetailsActivity extends AppCompatActivity {
 

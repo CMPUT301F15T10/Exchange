@@ -51,29 +51,30 @@ public class InventoryActivity extends AppCompatActivity {
     private static final int MENU_View_Item= Menu.FIRST + 5;
     private static final int MENU_Group=1; //menu group of 0 is taken by the SearchView item
     private static final int MENU_Add_Trade_Item=Menu.FIRST + 6;
-
-    private ListView lv;
-    public ModelEnvironment globalEnv;
-    protected ArrayAdapter<Book> arrayAdapterBook;
-    protected ArrayList<Book> bookList = new ArrayList<Book>();
-    protected Person person1;
     private Integer state=null; //state=1 means inventory of user and state=2 means inventory of a friend.
+    private Integer bookListState=0;
     private Spinner viewSpinner=null;
     private String category="None";
     private ArrayList<Book> selectedBooks=new ArrayList<>();
     private Inventory inventory;
-    private Integer bookListState=0;
     private SearchView mySearchView=null;
     private User user;
     private Intent intent;
     private ElasticSearch elasticSearch;
     private boolean fromAddBook=false;
-    private ArrayList<Integer> tradeItemsSelectedPos=null;
     private boolean fromTradeUI=false;
-
+    private ArrayList<Integer> tradeItemsSelectedPos=null;
+    private ListView lv;
     private DrawerLayout leftDrawer;
     private ListView leftNavList;
     private String[] NavTitles;
+
+    public ModelEnvironment globalEnv;
+
+    protected ArrayAdapter<Book> arrayAdapterBook;
+    protected ArrayList<Book> bookList = new ArrayList<Book>();
+    protected Person person1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

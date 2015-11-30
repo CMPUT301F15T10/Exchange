@@ -19,6 +19,11 @@ import java.lang.reflect.Type;
 
 import cmput301exchange.exchange.Photo;
 
+
+/** not sure if this activity is needed anymore.
+ * feel free to delete if its not
+ */
+
 /**
  * Code inspired by Joshua Campbell
  * https://github.com/joshua2ua/lonelyTwitter/blob/f15tuesday/app/src/main/java/ca/ualberta/cs/lonelytwitter/LonelyTwitterActivity.java
@@ -29,6 +34,13 @@ public class SavePhoto {
     protected static final String PHOTO = "photo.sav";
 
     public SavePhoto() { }
+
+
+    /**
+     * saves photo using gson
+     * @param context
+     * @param account
+     */
 /*
     public void saveInFile(Context context,Account account) {
         try {

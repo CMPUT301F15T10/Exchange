@@ -18,9 +18,10 @@ import cmput301exchange.exchange.R;
 public class SendEmailActivity extends Activity {
 
     public String sendTo, subject, message;
+    public TextView text;
+
     Button sendButton;
     EditText comment;
-    public TextView text;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

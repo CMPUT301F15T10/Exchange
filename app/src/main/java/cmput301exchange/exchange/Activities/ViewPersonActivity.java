@@ -42,6 +42,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     private static final int MENU_Group=1; //menu group of 0 is taken by the SearchView item
 
     public ModelEnvironment globalEnv;
+    
     private ListView lv;
     private ArrayList<Person> friendList;
     private ArrayList<Person> personList= new ArrayList<>();
@@ -51,7 +52,6 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     private User user;
     private Integer state=0; // 1 for user inventory, 2 for friend inventory
     private SearchView mySearchView=null;
-
     private ElasticSearch elasticSearch;
     private List<SearchHit<Person>> SearchList;
     private PersonList testlist;

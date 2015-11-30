@@ -1,12 +1,10 @@
 package cmput301exchange.exchange.Activities;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import com.google.gson.Gson;
 import cmput301exchange.exchange.Controllers.EditBookController;
 import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
@@ -20,15 +18,16 @@ public class EditBookActivity extends AppCompatActivity {
     private EditBookFragment BookEdit;
     private EditBookCommentFragment CommentEdit;
     private EditPhotoFragment PhotoEdit; // Its fragment type will be replaced by Photo's fragment class.;
-    public FragmentManager fm;
     private FragmentTransaction fm_T;
     private Integer fragmentLayoutID=R.id.fragmentR;
     private Book myBook;
     private EditBookController myController;
-    public static String editBookTag="EDIT_BOOK_TAG",editCommentTag="EDIT_Comment_TAG",viewPhotoTag="VIEW_BOOK_TAG";
     private BackButtonListener currentFragment;
     private boolean isBackPressed=false;
     private String originalBook_String=null;
+
+    public FragmentManager fm;
+    public static String editBookTag="EDIT_BOOK_TAG",editCommentTag="EDIT_Comment_TAG",viewPhotoTag="VIEW_BOOK_TAG";
 
 
     @Override
@@ -54,7 +53,10 @@ public class EditBookActivity extends AppCompatActivity {
         PhotoEdit = new EditPhotoFragment();
         // Put here code for initializing photo view/edit fragment
     }
-
+    /**
+     * This method if for if the user attaches a photo of the book.
+     * @param flag - integer representing which fragment to switch to
+     */
     public void switchFragment(int flag){
         fm_T=fm.beginTransaction();
         if (flag==1){
@@ -117,7 +119,7 @@ public class EditBookActivity extends AppCompatActivity {
         return CommentEdit;
     }
 
-    public EditPhotoFragment getEditPhotoFragment() {return PhotoEdit;}
+    //public EditPhotoFragment getEditPhotoFragment() {return PhotoEdit;}
 
 //    protected void onSaveInstanceState(Bundle outState) {
 //        // TODO Auto-generated method stub

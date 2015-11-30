@@ -22,6 +22,7 @@ public class BookDetailsActivity extends ActionBarActivity {
 
     private Book book;
     private AlertDialog.Builder builder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,9 @@ public class BookDetailsActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Methods displays the book information to textviews for user
+     */
     public void initTextView(){
         TextView name= (TextView) findViewById(R.id.bookName);
         name.setText(book.getName());

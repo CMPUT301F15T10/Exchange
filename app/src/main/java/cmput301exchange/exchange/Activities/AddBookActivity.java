@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -16,18 +15,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
-
 import com.google.gson.Gson;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -49,14 +43,13 @@ public class AddBookActivity extends ActionBarActivity {
     private String category;
     private Inventory inventory;
     private Book cloneBook;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
     private Spinner photoList;
-
     private ArrayList<byte[]> compressedImages = new ArrayList<>();
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
     private int currentBitmapPos;
+
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +117,8 @@ public class AddBookActivity extends ActionBarActivity {
                 //on selecting a spinner item
                 currentBitmapPos = position;
                 image.setImageBitmap(imageList.get(position));
-
             }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
 
 
@@ -145,6 +134,12 @@ public class AddBookActivity extends ActionBarActivity {
         });
     }
 
+    /**
+     * This method will add a new book
+     *
+     * @param current view
+     * @return Bitmap book image at index locationn
+     */
     public void add(View view){
 
         Book book = new Book();
@@ -157,14 +152,14 @@ public class AddBookActivity extends ActionBarActivity {
             quantity.setText("0");
         }
 
-        String bookName = name.getText().toString(); //Fetch the book title from the document.
-        String bookAuthor = author.getText().toString(); //Fetch the Author from the document
-        String bookComments = comments.getText().toString();
+        String bookName = name.getText().toString();          // Fetch the book title from the document.
+        String bookAuthor = author.getText().toString();      // Fetch the Author from the document
+        String bookComments = comments.getText().toString();  // Fetch the Comments from the document
         Integer bookQuantity = Integer.parseInt(quantity.getText().toString());
         Integer bookQuality = Integer.parseInt(quality.getText().toString());
 
-
         final CheckBox checkBox = (CheckBox) findViewById(R.id.shareable_checkBox);
+        // if user chose to have book as shareable
         if (checkBox.isChecked()) {
             book.setShareable(Boolean.TRUE);
         }
@@ -172,6 +167,7 @@ public class AddBookActivity extends ActionBarActivity {
             book.setShareable(Boolean.FALSE);
         }
 
+        // update book information
         book.updateTitle(bookName);
         book.updateAuthor(bookAuthor);
         book.updateQuantity(bookQuantity);
@@ -185,6 +181,10 @@ public class AddBookActivity extends ActionBarActivity {
         this.finishAdd();
     }
 
+    /**
+     * This method if for if the user attaches a photo of the book.
+     * @param current view
+     */
     private void selectImage() {
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery"};
@@ -294,22 +294,12 @@ public class AddBookActivity extends ActionBarActivity {
                         File photo = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
 
                         break;
-
                     }
-
-                }
-
-                try {
+                } try {
 
                     Bitmap bitmap;
-
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
-
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-
-                            bitmapOptions);
-
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bitmapOptions);
 
                     image.setImageBitmap(bitmap);
 
@@ -330,41 +320,38 @@ public class AddBookActivity extends ActionBarActivity {
                 } catch (Exception e) {
 
                     e.printStackTrace();
-
                 }
 
             } else if (requestCode == 2) {
 
-
                 Uri selectedImage = data.getData();
-
                 String[] filePath = {MediaStore.Images.Media.DATA};
-
                 Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-
                 c.moveToFirst();
 
                 int columnIndex = c.getColumnIndex(filePath[0]);
 
                 String picturePath = c.getString(columnIndex);
-
                 c.close();
 
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-
                 Log.w("path image from gallery", picturePath + "");
-
                 image.setImageBitmap(thumbnail);
             }
-
         }
     }
-
+    /**
+     * This method adds the imaget to the photo list
+     * @param array of bytes containing image
+     */
     private void addToImageList(byte[] array){
         Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
         imageList.add(bm);
     }
 
+    /**
+     * Completes adding
+     */
     public void finishAdd(){
         String json = inventory.toJson(); //Write the existing inventory data to Json
         DataIO dataIO = new DataIO(this, AddBookActivity.class);

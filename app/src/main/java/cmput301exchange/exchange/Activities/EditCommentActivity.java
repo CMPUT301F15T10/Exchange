@@ -43,7 +43,9 @@ public class EditCommentActivity extends AppCompatActivity implements Observer {
         return true;
     }
 
-
+    /**
+     * This method updates the comments for the book
+     */
     public void update(){
         if (comment==null) {
             comment = new CharSequenceWrapper(myBook.getComment());

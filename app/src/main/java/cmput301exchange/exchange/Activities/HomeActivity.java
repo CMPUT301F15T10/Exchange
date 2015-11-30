@@ -1,12 +1,8 @@
 package cmput301exchange.exchange.Activities;
 
-import android.app.Notification;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,14 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 import com.google.gson.Gson;
-import org.w3c.dom.Text;
-import java.util.ArrayList;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.Mocks.MockPersonList;
@@ -38,9 +29,10 @@ public class  HomeActivity extends AppCompatActivity {
     Gson gson = new Gson();
     Intent intent;
     ElasticSearch elasticSearch = new ElasticSearch(this);
-    protected User user;
-    private final int INVENTORY = 1, EDIT_PROFILE = 2, CONFIGURATION = 3, SEARCH_PEOPLE = 4;
 
+    protected User user;
+
+    private final int INVENTORY = 1, EDIT_PROFILE = 2, CONFIGURATION = 3, SEARCH_PEOPLE = 4;
     private DrawerLayout leftDrawer;
     private ListView leftNavList;
     private String[] NavTitles;
@@ -68,10 +60,7 @@ public class  HomeActivity extends AppCompatActivity {
 
         NavTitles = getResources().getStringArray(R.array.NavigationArray);
         leftDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         leftNavList = (ListView) findViewById(R.id.nav_drawer);
-
-
         leftNavList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, NavTitles));
 
         leftNavList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,8 +80,6 @@ public class  HomeActivity extends AppCompatActivity {
             }
         });
 
-
-
         TextView message = (TextView) findViewById(R.id.home_message);
         String string = "Hello " + GlobalENV.getOwner().getName() + "!\n" + message.getText().toString();
         message.setText(string);
@@ -106,8 +93,10 @@ public class  HomeActivity extends AppCompatActivity {
 //        elasticSearch.sendToServer(GlobalENV);
     }
 
-
-
+    /**
+     * This method creates an intent for inventory and changes to its activity (InventoryActivity)
+     * @param view
+     */
     public void inventory(View view) {
         Gson gson = new Gson();
         String json = gson.toJson(user.getMyInventory());
@@ -117,11 +106,19 @@ public class  HomeActivity extends AppCompatActivity {
         startActivityForResult(intent, INVENTORY);
     }
 
+    /**
+     * Switches to the TradeManagerActivity
+     * @param view
+     */
     public void tradeManager(View view) {
         Intent intent = new Intent(this, TradeManagerActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Switches to ViewPersonActivity
+     * @param view
+     */
     public void searchPeople(View view) {
         Gson gson = new Gson();
         String json = gson.toJson(user);
@@ -144,6 +141,9 @@ public class  HomeActivity extends AppCompatActivity {
 //        }
 //    }
 
+    /**
+     * uses the global environment to get users
+     */
     public void getUser() {
         if (intent.hasExtra("User")) {
             String json = intent.getExtras().getString("User");
@@ -164,7 +164,6 @@ public class  HomeActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
 
         int id = item.getItemId();
 
@@ -190,8 +189,13 @@ public class  HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method is used when a launched activity exits
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 
         if (requestCode == INVENTORY) {
 //            data.setClass(this, HomeActivity.class);
@@ -231,6 +235,9 @@ public class  HomeActivity extends AppCompatActivity {
 //        }
     }
 
+    /**
+     * Initializes the inventory
+     */
     public void initInventory() {
         Book EternalNight = new Book();
         EternalNight.setShareable(true);

@@ -63,11 +63,13 @@ public class ConfigurationActivity extends AppCompatActivity {
         return myConfigurationController;
     }
 
+    /**
+     * Used to confirm the automatic download of pictures
+     */
     public void confirm_Handler(){
-        if (chkAutomaticPicDownloads.isChecked()==true){
+        if (chkAutomaticPicDownloads.isChecked()){
             myConfigurationController.enableAutoPicDownloads();
-        }
-        else {
+        } else {
             myConfigurationController.disableAutoPicDownloads();
         }
         finish();
