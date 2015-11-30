@@ -182,12 +182,12 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 //        String json= gson.toJson(user);
 //        intent.putExtra("User",json);
 //        setResult(RESULT_OK, intent);
-        Intent fromIntent =getIntent();
-        if (fromIntent.hasExtra("From_TradeManagerActivity")){
-            Gson gson = new Gson();
-            String json = gson.toJson(selectedPerson);
-            this.intent.putExtra("Trade_Partner",json);
-        }
+//        Intent fromIntent =getIntent();
+//        if (fromIntent.hasExtra("From_TradeManagerActivity")){
+//            Gson gson = new Gson();
+//            String json = gson.toJson(selectedPerson);
+//            this.intent.putExtra("Trade_Partner",json);
+//        }
 
 //        saveUser();
 //        updateOnline();
