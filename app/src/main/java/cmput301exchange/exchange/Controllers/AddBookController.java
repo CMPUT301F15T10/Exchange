@@ -229,17 +229,18 @@ public class AddBookController implements Observable{
             builder.setItems(options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-
-                    if (options[item].equals("Take Photo")) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Intent intent;
+                    switch(options[item].toString()){
+                        case "Take Photo":
+                        intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                         activity.startActivityForResult(intent, 1);
-                    } else if (options[item].equals("Choose from Gallery")) {
-
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        break;
+                        case "Choose from Gallery":
+                        intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         activity.startActivityForResult(intent, 2);
-
+                        break;
                     }
                 }
 
