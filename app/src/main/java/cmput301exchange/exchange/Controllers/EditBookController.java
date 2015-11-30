@@ -429,7 +429,8 @@ public class EditBookController implements Observable{
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    compressedImages.add(stream.toString());
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
                     this.addToImageList(stream.toString());
                     bmpAdapter.notifyDataSetChanged();
