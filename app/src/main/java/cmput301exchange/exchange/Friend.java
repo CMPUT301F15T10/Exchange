@@ -1,6 +1,5 @@
 package cmput301exchange.exchange;
 
-import java.util.ArrayList;
 /**
  *
  * Serves as an abstraction to allow ease of differentiation between User and Friend.

@@ -1,11 +1,8 @@
 package cmput301exchange.exchange.Controllers;
 
-import android.graphics.Bitmap;
-import android.util.Log;
+
 
 import java.io.File;
-
-import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Photo;
 
 /**
@@ -13,6 +10,9 @@ import cmput301exchange.exchange.Photo;
  */
 public class EditPhotoController {
 
+    /** not sure if this activity is needed anymore.
+     * feel free to delete if its not
+     */
     private Photo myPhoto;
 
     public EditPhotoController(Photo photo) {

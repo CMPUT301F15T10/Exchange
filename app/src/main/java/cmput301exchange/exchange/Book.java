@@ -1,14 +1,11 @@
 package cmput301exchange.exchange;
 
-import android.graphics.Picture;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Random;
-
 import cmput301exchange.exchange.Interfaces.Serializable;
 import cmput301exchange.exchange.Interfaces.Shareable;
+
 /**
 
  * Book is the object that makes up the inventory class
@@ -179,7 +176,7 @@ public class Book implements Shareable, Comparable<Book>, Serializable {
     }
 
     /**
-     * Updates the Quantity. Accepts and int.
+     * Updates the Quantity. Accepts an int.
      *
      * @param updateint Quantity that you want to append to the book
      */

@@ -26,6 +26,9 @@ import cmput301exchange.exchange.R;
  * Created by kstember on 11/29/15.
  */
 public class EditPhotoFragment extends Fragment {
+    /** not sure if this is needed anymore.
+     * feel free to delete if its not
+     */
     private PhotoActivity myActivity;
     private View myView;
     private EditPhotoController myEditPhotoController;

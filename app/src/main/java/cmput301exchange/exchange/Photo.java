@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public class Photo {
 
+    /** not sure if this is needed anymore.
+     * feel free to delete if its not
+     */
     private ArrayList<byte[]> photo = new ArrayList<>();     // list of bytes to store pics in
     private boolean downloadYesNo = true;                    // download photo by default
     private final int MAX_SIZE = 65536;                      // max size of photo in bytes

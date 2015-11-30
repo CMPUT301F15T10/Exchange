@@ -45,10 +45,6 @@ public class ViewPersonController implements Observer{
     private ElasticSearch elasticSearch;
     private ModelEnvironment globalEnv;
 
-    public User getUser() {
-        return user;
-    }
-
     private User user;
     private Person selectedPerson;
     private Activity activity;
@@ -61,9 +57,9 @@ public class ViewPersonController implements Observer{
     private Spinner spinner;
     private SearchView mySearchView;
 
-
-
-
+    public User getUser() {
+        return user;
+    }
 
     public ViewPersonController(Context context, Activity activity){
         this.activity = activity;
