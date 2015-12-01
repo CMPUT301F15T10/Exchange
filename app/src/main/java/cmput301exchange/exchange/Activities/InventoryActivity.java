@@ -521,7 +521,7 @@ public class InventoryActivity extends AppCompatActivity {
     //TODO
     public void onPause(){
         saveUser();
-//        updateOnline();
+//
         super.onPause();
     }
 
@@ -549,7 +549,7 @@ public class InventoryActivity extends AppCompatActivity {
 
 ///////////////////////////////////////////////
 //        user.setInventory(inventory);
-//        saveUser();
+        saveUser();
         updateOnline();
         setResult(RESULT_OK, new Intent());
         super.finish();
