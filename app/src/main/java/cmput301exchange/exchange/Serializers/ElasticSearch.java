@@ -499,7 +499,7 @@ public class ElasticSearch implements Observable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //activity.runOnUiThread(doFinishAdd);
+            activity.runOnUiThread(FinishThread);
         }
 
     }
