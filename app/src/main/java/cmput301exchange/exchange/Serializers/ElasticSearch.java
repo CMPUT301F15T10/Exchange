@@ -491,7 +491,7 @@ public class ElasticSearch implements Observable {
 
         @Override
         public void run() {
-            sendPhotoToServer(this.photo);
+            sendPhotos(this.photo);
 
             try {
                 Thread.sleep(500);
