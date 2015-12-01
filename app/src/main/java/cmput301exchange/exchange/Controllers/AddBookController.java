@@ -34,6 +34,7 @@ import cmput301exchange.exchange.Activities.AddBookActivity;
 import cmput301exchange.exchange.Activities.DetailedPhoto;
 import cmput301exchange.exchange.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
+
 import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Inventory;
@@ -41,12 +42,13 @@ import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Photos;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
 
 /**
  * Created by Charles on 11/27/2015.
  */
-public class AddBookController implements Observable{
-    ArrayList<Observer> observerList = new ArrayList<>();
+public class AddBookController implements Observer {
+
     private Context context;
     private Activity activity;
 
@@ -74,10 +76,13 @@ public class AddBookController implements Observable{
 
     private DataIO dataIO;
 
+    private ElasticSearch elasticSearch;
+
     public AddBookController(Context context, Activity activity){
         this.context = context;
         this.activity = activity;
         dataIO = new DataIO(context, ModelEnvironment.class);
+        elasticSearch = new ElasticSearch(activity);
     }
 
     public void Setup(){
@@ -214,10 +219,9 @@ public class AddBookController implements Observable{
         photos.initID();
         photos.setCompressedPhotos(compressedImages);
         book.setPhotoID(photos.getId());
-        
 
         inventory.add(book);
-        this.finishAdd();
+        elasticSearch.sendPhotoToServer(photos);
     }
 
     public void selectImage() {
@@ -432,28 +436,9 @@ public class AddBookController implements Observable{
     }
 
 
-    // Below are the Observer Methods
     @Override
-    public void addObserver(Observer observer) {
-        observerList.add(observer);
+    public void update() {
+        photos = elasticSearch.getPhotos();
+        this.finishAdd();
     }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observerList.remove(observer);
-    }
-
-    @Override
-    public void notifyObserver(Observer observer) {
-        observer.update();
-    }
-
-    @Override
-    public void notifyAllObserver() {
-        for(Observer i : observerList){
-            i.update();
-        }
-    }
-
-
 }
