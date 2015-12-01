@@ -86,12 +86,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -174,9 +176,13 @@ public class EditBookController implements Observable{
         File file2 = new File(context.getFilesDir(), "book.sav");
         file2.delete();
 
-//  download only if preference is checked
-//        compressedImages = editBook.getPhotos();
-//        createBitmapArray(compressedImages);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if(prefs.getBoolean("checkbox_preference", true)){
+        //  download only if preference is checked
+        //        compressedImages = editBook.getPhotos();
+        //        createBitmapArray(compressedImages);
+        }
 
         name.setText(editBook.getName());
         author.setText(editBook.getAuthor());
