@@ -158,6 +158,10 @@ public class EditBookController implements Observer{
     private DataIO dataIO;
     private ProgressDialog progressDialog;
 
+    public ElasticSearch getElasticSearch() {
+        return elasticSearch;
+    }
+
     public EditBookController(Context context, Activity activity){
         this.context = context;
         this.activity = activity;
