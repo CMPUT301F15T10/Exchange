@@ -432,6 +432,8 @@ public class AddBookController implements Observer {
         Intent added = new Intent().putExtra("Inventory", "inventory.sav"); //Send it back to the inventory activity
         activity.setResult(activity.RESULT_OK, added);
 
+        elasticSearch.addObserver(this);
+
         elasticSearch.sendPhotoToServer(photos);
         activity.finish();
 
