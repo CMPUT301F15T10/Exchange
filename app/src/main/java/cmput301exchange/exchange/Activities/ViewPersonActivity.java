@@ -414,7 +414,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
         personListAdapter.clear();
         personListAdapter.addAll(personList);
         personListAdapter.notifyDataSetChanged();
-
+        globalEnv.saveInstance(this);
         friendList = user.getMyFriendList(this).getPersonList();
         friendListAdapter.clear();
         friendListAdapter.addAll(friendList);
