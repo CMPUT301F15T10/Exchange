@@ -3,9 +3,11 @@ package cmput301exchange.exchange.Activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +21,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -56,8 +59,12 @@ public class BookDetailsActivity extends ActionBarActivity {
         Gson gson= new Gson();
         book=gson.fromJson(bookString, Book.class);
 
-//        compressedImages = book.getPhotos(); checkpreferences
-        createBitmapArray(compressedImages);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(prefs.getBoolean("checkbox_preference", true)){
+            // do elastic search vooodooo
+            // compressedImages = book.getPhotos();
+            createBitmapArray(compressedImages);
+        }
 
         initTextView();
 

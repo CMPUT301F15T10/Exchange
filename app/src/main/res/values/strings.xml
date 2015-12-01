@@ -89,4 +89,5 @@
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
     <string name="title_activity_detailed_photo">Detailed Photo</string>
+    <string name="download_photos">Download Photos</string>
 </resources>
