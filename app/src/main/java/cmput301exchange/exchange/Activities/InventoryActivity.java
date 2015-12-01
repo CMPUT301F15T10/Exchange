@@ -324,7 +324,8 @@ public class InventoryActivity extends AppCompatActivity {
         menu.findItem(R.id.action_remove_single).setVisible(false);
         menu.findItem(R.id.action_remove_multi).setVisible(false);
         menu.findItem(R.id.action_clone).setVisible(false);
-        menu.findItem((R.id.action_trade_Item)).setVisible(false);
+        menu.findItem(R.id.action_trade_Item).setVisible(false);
+        menu.findItem(R.id.action_add).setVisible(false);
 
         if(state==1) {
             if (selectedBooks!=null) {
@@ -339,6 +340,7 @@ public class InventoryActivity extends AppCompatActivity {
                     menu.findItem(R.id.action_remove_multi).setVisible(true);
                 }
             }
+            menu.findItem(R.id.action_add).setVisible(true);
         }
 
         if((state==2) && (selectedBooks!=null)) {
@@ -481,9 +483,11 @@ public class InventoryActivity extends AppCompatActivity {
     }
 
     public void saveUser(){
-        user.setInventory(inventory);
-        globalEnv.setOwner(user);
-        globalEnv.saveInstance(this);
+        if (state==1) {
+            user.setInventory(inventory);
+            globalEnv.setOwner(user);
+            globalEnv.saveInstance(this);
+        }
     }
 
     public void downloadServer(){
@@ -537,9 +541,12 @@ public class InventoryActivity extends AppCompatActivity {
 //        Intent inventory = new Intent();
 //        inventory.putExtra("Inventory", json);
 //        setResult(RESULT_OK, inventory);
-        user.setInventory(inventory);
-        saveUser();
-        updateOnline();
+
+
+///////////////////////////////////////////////
+//        user.setInventory(inventory);
+//        saveUser();
+//        updateOnline();
         setResult(RESULT_OK, new Intent());
         super.finish();
     }

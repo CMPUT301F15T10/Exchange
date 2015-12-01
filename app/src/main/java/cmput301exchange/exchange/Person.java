@@ -1,5 +1,6 @@
 package cmput301exchange.exchange;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Picture;
 
@@ -96,7 +97,7 @@ public class Person {
         return email;
     }
 
-    public PersonList getMyFriendList(Context context){
+    public PersonList getMyFriendList(Activity context){
         PersonManager pm= new PersonManager(context);
         return pm.extractPersonList(myFriendList);
     }
