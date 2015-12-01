@@ -44,6 +44,7 @@ public class TradeFragment4 extends Fragment implements BackButtonListener {
     private ArrayList<ListItemRunnable> spinnerItems;
     private Spinner traderSelection;
     private String traderName=null;
+    private int state; // state=1 refers that you can return item, state=2 refers that you can set it to complete
 //    private TradeManager myTradeManager;
 //    private Person tradePartner=null;
 
@@ -56,13 +57,13 @@ public class TradeFragment4 extends Fragment implements BackButtonListener {
         super.onCreate(savedInstanceState);
         spinnerItems= new ArrayList<>();
         initTradeController();
-        initTradePartner();
+//        initTradePartner();
     }
 
     public void initTradeController(){
 //        myTradeManager=myActivity.getTradeManager();
         myTradeController= myActivity.getTradeController();
-
+        state=myTradeController.getTransactionedState();
     }
 
     void initTradePartner(){
@@ -92,12 +93,30 @@ public class TradeFragment4 extends Fragment implements BackButtonListener {
         setComplete= (Button) myView.findViewById(R.id.Trade4_setComplete);
         back= (Button) myView.findViewById(R.id.Trade4_back);
         tradeItems= (Button) myView.findViewById(R.id.Trade4_viewItems);
-        
-        setComplete.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setComplete_Handler();
-            }
-        });
+
+        if (state==1) {
+            setComplete.setText("Revert Trade");
+            setComplete.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    returnItems();
+                }
+            });
+        } else if (state==2){
+            setComplete.setText("Set as Complete");
+            setComplete.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    setToComplete();
+                }
+            });
+        } else if (state==3){
+            setComplete.setText("Delete trade");
+            setComplete.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    deleteTrade();
+                }
+            });
+        }
+
         back.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 back_Handler();
@@ -111,8 +130,18 @@ public class TradeFragment4 extends Fragment implements BackButtonListener {
 
     }
 
-    public void setComplete_Handler(){
+    public void deleteTrade(){
+        myTradeController.deleteDeclinedTrade();
+        exit();
+    }
+
+    public void setToComplete(){
         myTradeController.setCompleteTrade();
+        exit();
+    }
+
+    public void returnItems(){
+        myTradeController.returnItems();
         exit();
     }
 
@@ -158,7 +187,7 @@ public class TradeFragment4 extends Fragment implements BackButtonListener {
     public void onResume(){
         super.onResume();
 //        initTradeController();
-//        initTradePartner();
+        initTradePartner();
         updateTextView();
     }
 
@@ -170,7 +199,8 @@ public class TradeFragment4 extends Fragment implements BackButtonListener {
 
     public void exit(){
         myActivity.setTradeController(myTradeController);
-        myActivity.switchFragment(1); //switches back to tradeManager.
+//        myActivity.switchFragment(1); //switches back to tradeManager.
+        myActivity.displayTransactionedTrades();
     }
 
     @Override

@@ -96,6 +96,26 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
         menu.findItem(R.id.View_My_Items).setVisible(false);
 
         Log.e("came to create menu", "initMenu");
+
+        if (myBooksTradeController.getAccess()==0){
+            if (inventoryType==1){
+                menu.findItem(R.id.View_Friend_Items).setVisible(true);
+            } else if (inventoryType==2){
+                menu.findItem(R.id.View_My_Items).setVisible(true);
+            }
+
+        } else if(myBooksTradeController.getAccess()==1) {
+
+            if (inventoryType == 1) {
+                menu.findItem(R.id.View_My_Inventory).setVisible(true);
+                if (myBooksTradeController.hasTradePartner())
+                    menu.findItem(R.id.View_Friend_Items).setVisible(true);
+            } else if (inventoryType == 2) {
+                if (myBooksTradeController.hasTradePartner())
+                    menu.findItem(R.id.View_Friend_Inventory).setVisible(true);
+                menu.findItem(R.id.View_My_Items).setVisible(true);
+            }
+        }
 //        if (inventoryType==1){
 //            if (myBooksTradeController.getStatus()==1) {
 //                menu.findItem(R.id.View_My_Inventory).setVisible(true);
@@ -113,15 +133,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
 //                menu.findItem(R.id.View_Friend_Items).setVisible(true);
 //            }
 //        }
-        if (inventoryType==1){
-            menu.findItem(R.id.View_My_Inventory).setVisible(true);
-            if (myBooksTradeController.hasTradePartner())
-                menu.findItem(R.id.View_Friend_Items).setVisible(true);
-        } else if (inventoryType==2){
-            if (myBooksTradeController.hasTradePartner())
-                menu.findItem(R.id.View_Friend_Inventory).setVisible(true);
-            menu.findItem(R.id.View_My_Items).setVisible(true);
-        }
+
     }
 
     @Override
@@ -190,7 +202,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
         String amount=" / "+ originalQuantity.toString();
         totalItemsView.setText(amount);
         selectedQuantityView.setText(myBooksTradeController.getTradeBookQuantity(selectedBook.getID()).toString());
-        selectedQuantityView.setFilters((new InputFilter[]{ new InputFilterMinMax(0,originalQuantity.intValue())}));
+        selectedQuantityView.setFilters((new InputFilter[]{new InputFilterMinMax(0, originalQuantity.intValue())}));
     }
 
     public void initListView() {
@@ -343,7 +355,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void exit(){
-        myActivity.switchFragment(2);
+        myActivity.returnToPreviousFragment();
     }
     @Override
     public void onBackPress() {

@@ -65,13 +65,14 @@ public class TradeController {
         if (myTradeManager.sendTradeOffer(myTrade) == false) {
             return false;
         }
-        myTradeManager.pushChanges(myTrade);
+//        myTradeManager.pushChanges(myTrade);
         return true;
     }
 
     public void deleteTrade() {
         // This method deletes trades that have not been functional and were under construction
         myTradeManager.deleteUnInitiatedTrade(myTrade);
+//        myTradeManager.pushChanges(null);
     }
 
     public void setTime() {
@@ -82,7 +83,7 @@ public class TradeController {
 
     public void deleteCompleteTrade() {
         myTradeManager.deleteCompleteTrade(myTrade);
-        myTradeManager.pushChanges(null); // Only its user side's trademanager that has changed
+//        myTradeManager.pushChanges(null); // Only its user side's trademanager that has changed
     }
 
     public boolean hasTradePartner() {
@@ -116,12 +117,11 @@ public class TradeController {
 
     public void setCompleteTrade() {
         myTradeManager.setTradeComplete(myTrade);
-        myTradeManager.pushChanges(null); // The partner object's tradeManager wont be pushed as only its the user side's trademanager that is changing
+//        myTradeManager.pushChanges(null); // The partner object's tradeManager wont be pushed as only its the user side's trademanager that is changing
     }
 
     public boolean acceptTrade() {
         if(myTradeManager.acceptTradeRequest(myTrade)==true){
-            myTradeManager.pushChanges(myTrade);
             return true;
         } else {
             return false;
@@ -157,7 +157,10 @@ public class TradeController {
 
     public void declineTrade() {
         myTradeManager.declineTradeRequest(myTrade);
-        myTradeManager.pushChanges(myTrade);
+    }
+
+    public void deleteDeclinedTrade(){
+        myTradeManager.deleteDeclinedTrade(myTrade);
     }
 
     public Person getTradePartner() {
@@ -171,6 +174,20 @@ public class TradeController {
         return null;
     }
 
+    public void returnItems(){
+        myTradeManager.returnTradeItems(myTrade);
+    }
+
+    public Integer getTransactionedState(){
+        if (myTrade.getTradeStatus()==2){
+            return 1; // Accepted but not returned the items
+        } else if (myTrade.getTradeStatus()==7){
+            return 2; // Items returned, but waiting to be denoted as complete.
+        } else if (myTrade.getTradeStatus()==3){
+            return 3;
+        }
+        return null;
+    }
 
     public void setTrade(Trade trade){
         if (trade.isLoaded()==false){

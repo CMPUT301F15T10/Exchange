@@ -60,6 +60,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
     private Person retrievedTradePartner=null;
     private boolean bookRequested=false;
     private int currentFragmentID;
+    private ArrayList<Integer> FragmentIDHistory= new ArrayList<>();
 
     public BooksTradeController getBookTradeController() {
         return myBookTradeController;
@@ -161,6 +162,11 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         super.onResume();
     }
 
+    public void returnToPreviousFragment(){
+        int index=FragmentIDHistory.size()-2;
+        switchFragment(FragmentIDHistory.get(index));
+    }
+
     //TODO
     public void initFragments(){
         fm=getFragmentManager();
@@ -215,6 +221,7 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
 //        fm_T.addToBackStack(null);
 //        fm_T.commit();
         currentFragmentID=flag;
+        FragmentIDHistory.add(flag);
         fm_T.commitAllowingStateLoss();
         fm.executePendingTransactions();
     }
@@ -250,13 +257,14 @@ public class TradeManagerActivity extends AppCompatActivity implements TradeMake
         switchFragment(2);
     }
 
+
     public void displayTrade(Trade trade){
 //        myTrade=null;
         myTradeController.setTrade(trade);
         int tradeDisplayFlag=myTradeController.getControllerStatus()+2;
 
         initBookTradeController();
-        Log.e(String.valueOf(tradeDisplayFlag),"Value______");
+        Log.e(String.valueOf(tradeDisplayFlag), "Value______");
         switchFragment(tradeDisplayFlag);
     }
 

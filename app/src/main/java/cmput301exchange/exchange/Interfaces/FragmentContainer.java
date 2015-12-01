@@ -7,4 +7,5 @@ public interface FragmentContainer {
     void switchFragment(int flag);
     void closeFragment(int fragmentID);
     void onBackPressed();
+    void returnToPreviousFragment();
 }

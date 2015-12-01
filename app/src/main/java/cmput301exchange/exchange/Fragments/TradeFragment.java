@@ -139,7 +139,9 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     public void delete_Handler(){
         myTradeController.deleteTrade();
         //May add a dialog box if necessary
-        exit();
+//        exit();
+        myActivity.setTradeController(myTradeController);
+        myActivity.switchFragment(1); // switches to trade manager.
     }
 
     public void showNoPartnerDialogue(){

@@ -112,6 +112,16 @@ public class TradeManager {
         return null;
     }
 
+    public void deleteDeclinedTrade(Trade trade){
+        int i=0;
+        for (Trade trade1:listTransactionedTrade){
+            if (trade1.getTradeId().equals(trade.getTradeId())){
+                listTransactionedTrade.remove(i);
+            }
+            i=i+1;
+        }
+    }
+
     public ArrayList<Trade> getTradeListByDate(int choice){
         ArrayList<Trade> tradeList= new ArrayList<>();
         Trade latestTrade= new Trade();
@@ -232,6 +242,7 @@ public class TradeManager {
      * constructs a new trade, and asks the user to edit the trade
      * @param trade1 The trade that you want to counter
      */
+    // TODO push trade user. already inside.
     public void counterTrade(Trade trade1, Person partner) {
 
         int index=0;
@@ -244,19 +255,34 @@ public class TradeManager {
             index=index+1;
         }
         listCurrentTrade.add(trade1);
-        trade1.setTradeUser(trade1.getTradePartner());
         ArrayList<Book> partnerBooks;
         if (partner.getID().equals(trade1.getTradeUser().getID())){
             partnerBooks=trade1.getListBookUser();
         } else{
             partnerBooks= new ArrayList<>();
+            counterTradeHelper(trade1.getTradeUser(),trade1);
         }
+        pushChanges(trade1,1);
+        trade1.setTradeUser(trade1.getTradePartner());
         trade1.setListBookUser(trade1.getListBookPartner());
         trade1.setListBookPartner(partnerBooks);
         trade1.setTradePartner(partner, true);
     }
 
 
+    public void counterTradeHelper(Person originalTrader, Trade t){
+        int i=0;
+        Trade trade1=t.clone();
+        trade1.setTradeStatus(3); //declined!
+        originalTrader.getTradeManager().getListTransactionedTrade().add(trade1);
+        for (Trade trade:originalTrader.getTradeManager().getListCurrentTrade()){
+            if (trade1.getTradeId().equals(trade.getTradeId())){
+                originalTrader.getTradeManager().getListCurrentTrade().remove(i);
+                break;
+            }
+            i=i+1;
+        }
+    }
     /**
      * Getter for Past Trade List
      */
@@ -274,13 +300,25 @@ public class TradeManager {
     }
 
     /*
-    This method is for completing the trade
+    This method is for returning items
      */
+    // TODO pushes both partners as inventories will change. is there
     public boolean returnTradeItems(Trade trade){
         if (revertTransaction(trade)==false){
             return false;
         } else {
-            setTradeComplete(trade);
+//            setTradeComplete(trade);
+            for (Trade t1:trade.getTradeUser().getTradeManager().getListTransactionedTrade()){
+                if (t1.getTradeId().equals(trade.getTradeId())){
+                    t1.setTradeStatus(7);
+                }
+            }
+            for (Trade t1:trade.getTradePartner().getTradeManager().getListTransactionedTrade()){
+                if (t1.getTradeId().equals(trade.getTradeId())){
+                    t1.setTradeStatus(7);
+                }
+            }
+            pushChanges(trade,3);
             return true;
         }
     }
@@ -424,8 +462,6 @@ public class TradeManager {
      * @param trade1 the trade you wish to cancel
      */
     public void deleteUnInitiatedTrade(Trade trade1) {
-    // choice = 1 meaning trade only composed or getting composed and not offered.
-    // choice = 2 meaning we delete
 
         int index=0;
         for (Trade trade:listCurrentTrade){
@@ -526,6 +562,7 @@ public class TradeManager {
         listTradeRequest.add(trade);
     }
 
+    // TODO push trade user. It pushes from within. is there.
     public void declineTradeRequest(Trade trade1){
         int index=0;
         trade1.setTradeStatus(3); //declined
@@ -533,29 +570,35 @@ public class TradeManager {
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
                 listTradeRequest.remove(index);
                 trade.getTradeUser().getTradeManager().tradeGotDeclined(trade1);
-                lightenTrade(trade1);
+//                lightenTrade(trade1);
+                pushChanges(trade1,1);// push the user. pushchanges lighten the trade
                 listTransactionedTrade.add(trade1);
                 break;
             }
             index = index + 1;
         }
     }
+
 
     public void tradeGotDeclined(Trade trade1){
         trade1.setTradeStatus(3); //declined
         int index=0;
         for (Trade trade:listCurrentTrade){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+                Trade toSave=listCurrentTrade.get(index);
                 listCurrentTrade.remove(index);
-                lightenTrade(trade1);
-                listTransactionedTrade.add(trade1);
+                toSave.setTradeStatus(3);
+                lightenTrade(toSave);
+                listTransactionedTrade.add(toSave);
                 break;
             }
             index = index + 1;
         }
     }
     
-
+/*
+ //TODO This method should also push both the traders. Because both the inventories will be changed. is there
+ */
     public boolean acceptTradeRequest(Trade trade1){
         boolean success=performTransaction(trade1);
         if (success==false){
@@ -563,16 +606,18 @@ public class TradeManager {
         }
         int index=0;
         for (Trade trade:listTradeRequest){
-            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+            if (trade.getTradeId().equals(trade1.getTradeId())) {
                 listTradeRequest.remove(index);
+                trade.getTradePartner().getTradeManager().getListTradeRequest().remove(index);
                 trade.getTradeUser().getTradeManager().tradeGotAccepted(trade1);
-                lightenTrade(trade1);
                 trade1.setTradeStatus(2); //Accepted
                 listTransactionedTrade.add(trade1);
+                trade.getTradePartner().getTradeManager().getListTradeRequest().add(trade1);
                 break;
             }
             index = index + 1;
         }
+        pushChanges(trade1,3);
         return true;
     }
 
@@ -580,11 +625,12 @@ public class TradeManager {
     public void tradeGotAccepted(Trade trade1){
         int index=0;
         for (Trade trade:listCurrentTrade){
-            if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
+            if (trade.getTradeId().equals(trade1.getTradeId().longValue())) {
+                Trade toSave=listCurrentTrade.get(index);
                 listCurrentTrade.remove(index);
-                lightenTrade(trade1);
-                trade1.setTradeStatus(2); //Accepted
-                listTransactionedTrade.add(trade);
+                toSave.setTradeStatus(2); //Accepted
+                lightenTrade(toSave);
+                listTransactionedTrade.add(toSave);
                 break;
             }
             index = index + 1;
@@ -592,9 +638,11 @@ public class TradeManager {
     }
 
     //TODO
-    public void pushChanges(Trade trade1){
+    // type=1, meaning traderUser needs to be pushed, type=2 meaning partner needs to be pushed
+    public void pushChanges(Trade trade1, int type){
 
     }
+
 
     public void setTradeComplete(Trade trade1){
         int i=0;
@@ -611,6 +659,7 @@ public class TradeManager {
     }
 
 
+    //TODO push only the partner.. Already there
     public boolean sendTradeOffer(Trade trade){
 //        lightenTrade(trade);
         if (trade.hasTradePartner()==false){
@@ -619,6 +668,7 @@ public class TradeManager {
 
         trade.setTradeStatus(1);
         trade.getTradePartner().getTradeManager().processTradeRequest(trade);
+        pushChanges(trade,2); // will push only the partner
         return true;
     }
 

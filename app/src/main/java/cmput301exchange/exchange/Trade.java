@@ -28,6 +28,7 @@ public class Trade {
 
     private ArrayList<Book> listBookUser; // list of books the user wants to trade
     private ArrayList<Book> listBookPartner; // list of books the partner wants to trade
+    private ArrayList<Integer> stateHistory;
 
     private Long tradeId; // generate a trade id, PRIMARY KEY
     private Long UserID=null,PartnerID=null;
@@ -55,6 +56,7 @@ public class Trade {
 
         Random rand = new Random(System.nanoTime());
         this.tradeId = rand.nextLong();
+        stateHistory= new ArrayList<>();
     }
     /**
      * Constructor of the trade
@@ -221,10 +223,21 @@ public class Trade {
     }
 
     public void setTradeStatus(Integer tradeStatus) {
+        stateHistory.add(tradeStatus.intValue());
         this.tradeStatus = tradeStatus;
     }
 
-
+    /*
+    returns the state starting from the last. So, position=1 would return the latest state, position=2 would return
+    the previous state(if there is any);
+     */
+    public Integer getStateHistory(int position){
+        int finalPosition=stateHistory.size()-position;
+        if (finalPosition<0){
+            return null;
+        }
+        return stateHistory.get(finalPosition);
+    }
     // tradeId
     public Long getTradeId() {
         return tradeId;
@@ -258,6 +271,14 @@ public class Trade {
         return "Owner: "+partnerName+". Burrower: "+userName + "\n"+ "Created: "+creationDate;
     }
 
+    public ArrayList<Integer> getStateHistory() {
+        return stateHistory;
+    }
+
+    public void setStateHistory(ArrayList<Integer> stateHistory) {
+        this.stateHistory = stateHistory;
+    }
+
     public void setTradeId(Long tradeId) {
         this.tradeId = tradeId;
     }
@@ -283,6 +304,7 @@ public class Trade {
         cloned.setTradeId(this.tradeId.longValue());
         cloned.setCreationDate(creationDate);
         cloned.setTimeStamp(timeStamp);
+        cloned.setStateHistory(stateHistory);
         return cloned;
     }
 }

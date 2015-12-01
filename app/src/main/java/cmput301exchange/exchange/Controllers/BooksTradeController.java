@@ -30,6 +30,7 @@ public class BooksTradeController {
     Person lastTradePartner=null;
     User user;
     int status;
+    int access; // 1 meaning inventories can be accessed and items can be changed
 
     public BooksTradeController(Trade trade, Integer type, Context activity, User user){
         myTrade=trade;
@@ -44,6 +45,18 @@ public class BooksTradeController {
             this.type=2;
         }//type 1 is for user inventory, 2 is for friend inventory
         initQuantityDictionary();
+        initAccess();
+    }
+
+    public void initAccess(){
+        if (myTrade.getTradeStatus()==0 || myTrade.getTradeStatus()==4)
+            access=1;
+        else
+            access=0;
+        }
+
+    public int getAccess(){
+        return access;
     }
 
     public int getStatus(){

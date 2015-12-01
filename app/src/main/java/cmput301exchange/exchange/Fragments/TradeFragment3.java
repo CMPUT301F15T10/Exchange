@@ -55,7 +55,7 @@ public class TradeFragment3 extends Fragment implements BackButtonListener {
         super.onCreate(savedInstanceState);
         spinnerItems= new ArrayList<>();
         initTradeController();
-        initTradePartner();
+//        initTradePartner();
     }
 
     public void initTradeController(){
@@ -146,7 +146,7 @@ public class TradeFragment3 extends Fragment implements BackButtonListener {
     public void onResume(){
         super.onResume();
 //        initTradeController();
-//        initTradePartner();
+        initTradePartner();
         updateTextView();
     }
 
@@ -158,7 +158,7 @@ public class TradeFragment3 extends Fragment implements BackButtonListener {
 
     public void exit(){
         myActivity.setTradeController(myTradeController);
-        myActivity.switchFragment(1); //switches back to tradeManager.
+        myActivity.displayCurrentTrades(); //switches back to tradeManager.
     }
 
     @Override

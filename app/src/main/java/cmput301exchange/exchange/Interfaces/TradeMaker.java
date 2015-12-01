@@ -28,4 +28,6 @@ public interface TradeMaker extends FragmentContainer {
     BooksTradeController getBookTradeController();
     public void displayTransactionedTrades();
     void displayTradeRequests();
+    void displayCurrentTrades();
+    void displayCompleteTrades();
 }
