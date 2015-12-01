@@ -167,6 +167,7 @@ public class EditBookController implements Observer{
         this.activity = activity;
         dataIO = new DataIO(context, ModelEnvironment.class);
         elasticSearch = new ElasticSearch(activity);
+        elasticSearch.addObserver(this);
     }
 
     public void Setup(){

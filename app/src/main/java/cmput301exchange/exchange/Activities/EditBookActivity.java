@@ -131,6 +131,7 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
 
     @Override
     public void update() {
+        controller.update();
 
     }
 }

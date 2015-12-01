@@ -282,6 +282,7 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
             String json = gson.toJson(selectedPerson.getMyInventory());
             Intent intent = new Intent(this, InventoryActivity.class);
             //jump to inventory activity
+            intent.putExtra("From_ViewPersonActivity",1);
             intent.putExtra("Friend_Inventory",json);
             intent.putExtra("Inventory_State",2);
             startActivity(intent);
