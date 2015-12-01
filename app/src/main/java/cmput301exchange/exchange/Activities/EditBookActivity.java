@@ -34,11 +34,12 @@ import cmput301exchange.exchange.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Controllers.AddBookController;
 import cmput301exchange.exchange.Controllers.EditBookController;
+import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 
-public class EditBookActivity extends ActionBarActivity {
+public class EditBookActivity extends ActionBarActivity implements Observer {
 
 
     private EditText name, author, quality, quantity, comments;
@@ -105,7 +106,7 @@ public class EditBookActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_item, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_book, menu);
         return true;
     }
 
@@ -118,12 +119,19 @@ public class EditBookActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_download) {
+        if (id == R.id.action_download){
+            controller.getElasticSearch().addObserver(this);
             controller.downloadPhotos();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void update() {
+
     }
 }
 
