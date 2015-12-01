@@ -38,6 +38,7 @@ import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Photos;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 
@@ -65,6 +66,7 @@ public class AddBookController implements Observable{
     private CheckBox checkBox;
 
     private int currentBitmapPos;
+    private Photos photos = new Photos();
     private ArrayList<String> compressedImages = new ArrayList<>();
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
@@ -209,7 +211,9 @@ public class AddBookController implements Observable{
         book.updateCategory(category);
         book.updateComment(bookComments);
 
-        book.setPhotos(compressedImages);
+        photos.initID();
+        photos.setCompressedPhotos(compressedImages);
+        book.setPhotoID(photos.getId());
 
         inventory.add(book);
         this.finishAdd();
@@ -425,9 +429,6 @@ public class AddBookController implements Observable{
         activity.finish();
 
     }
-
-
-
 
 
     // Below are the Observer Methods

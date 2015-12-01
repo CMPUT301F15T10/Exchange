@@ -56,7 +56,7 @@ public class BookDetailsActivity extends ActionBarActivity {
         Gson gson= new Gson();
         book=gson.fromJson(bookString, Book.class);
 
-        compressedImages = book.getPhotos();
+//        compressedImages = book.getPhotos(); checkpreferences
         createBitmapArray(compressedImages);
 
         initTextView();
