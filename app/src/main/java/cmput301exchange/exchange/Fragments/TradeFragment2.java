@@ -269,7 +269,8 @@ public class TradeFragment2 extends Fragment implements BackButtonListener {
         }
 
         TradeTypeView.setText(TradeType);
-        tradeID.setText("Trade ID "+tradeID.toString());
+//        tradeID.setText("Trade ID "+tradeID.toString());
+        tradeID.setText("Trade");
         tradeIDView.setText(tradeID);
     }
 
