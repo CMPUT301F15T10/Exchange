@@ -69,8 +69,8 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
         controller.Setup();
     }
 
-    public void add(View view){
-        controller.add(view);
+    public void done(View view){
+        controller.done(view);
     }
 
 
