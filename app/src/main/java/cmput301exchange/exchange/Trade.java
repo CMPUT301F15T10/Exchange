@@ -164,8 +164,10 @@ public class Trade {
 
     public void setTradeUser(Person tradeUser) {
         this.tradeUser = tradeUser;
-        this.UserID = tradeUser.getID();
-        this.userName= tradeUser.getName();
+        if (tradeUser!=null) {
+            this.UserID = tradeUser.getID();
+            this.userName = tradeUser.getName();
+        }
     }
 
     public void removePersons(){
@@ -279,14 +281,25 @@ public class Trade {
         this.stateHistory = stateHistory;
     }
 
+    public void setUserID(Long userID) {
+        UserID = userID;
+    }
+
     public void setTradeId(Long tradeId) {
         this.tradeId = tradeId;
+    }
+
+    public void setPartnerID(Long partnerID) {
+        PartnerID = partnerID;
     }
 
     public Trade clone(){
         Trade cloned=new Trade();
         cloned.setTradeUser(tradeUser);
-        cloned.setTradePartner(tradePartner,false);
+        cloned.setUserID(UserID);
+
+        cloned.setTradePartner(tradePartner, false);
+        cloned.setPartnerID(PartnerID);
 
         ArrayList<Book> userBooks=new ArrayList<>();
         for (Book book:listBookUser){

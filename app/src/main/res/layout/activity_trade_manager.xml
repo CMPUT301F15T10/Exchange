@@ -41,7 +41,7 @@
         android:id="@+id/TM_displayTrade"
         android:layout_below="@+id/TM_checkRequest"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="35dp"
         android:textSize="18dp"
         android:onClick="ondisplayTrade" />
 
@@ -50,8 +50,8 @@
         android:layout_height="60dp"
         android:text="Ongoing Trades"
         android:id="@+id/TM_currentTrade"
-        android:layout_marginTop="250dp"
-        android:layout_marginLeft="120dp"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="0dp"
         android:layout_centerHorizontal="true"
         android:textSize="18dp"
         android:onClick="onCurrentTrade" />
@@ -61,7 +61,7 @@
         android:layout_height="60dp"
         android:text="Completed Trades"
         android:id="@+id/TM_pastTrade"
-        android:layout_marginTop="325dp"
+        android:layout_marginTop="295dp"
         android:layout_alignStart="@+id/TM_currentTrade"
         android:layout_centerHorizontal="true"
         android:textSize="18dp"
@@ -82,9 +82,19 @@
         android:id="@+id/TM_unInitiated"
         android:layout_alignParentBottom="false"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="360dp"
         android:layout_centerHorizontal="true"
         android:textSize="17dp" />
+
+    <Button
+        android:layout_width="220dp"
+        android:layout_height="55dp"
+        android:text="Push Changes Online"
+        android:id="@+id/TM_pushOnline"
+        android:layout_centerHorizontal="true"
+        android:textSize="17dp"
+        android:layout_marginBottom="0dp"
+        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

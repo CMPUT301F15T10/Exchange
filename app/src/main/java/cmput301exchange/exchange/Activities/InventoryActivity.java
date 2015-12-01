@@ -503,9 +503,11 @@ public class InventoryActivity extends AppCompatActivity {
             // DO nothing(No need to reload from local storage!)
             fromAddBook=false;
         } else {
-            globalEnv.loadInstance(this);
-            user = globalEnv.getOwner();
-            updateBookList(user.getMyInventory());
+            if (state==1) {
+                globalEnv.loadInstance(this);
+                user = globalEnv.getOwner();
+                updateBookList(user.getMyInventory());
+            }
         }
     }
 
@@ -518,7 +520,7 @@ public class InventoryActivity extends AppCompatActivity {
     //TODO
     public void onPause(){
         saveUser();
-        updateOnline();
+//        updateOnline();
         super.onPause();
     }
 
@@ -530,6 +532,7 @@ public class InventoryActivity extends AppCompatActivity {
         String json= gson.toJson(inventory);
         intent.putExtra("Trade_Items", json);
         setResult(RESULT_OK, intent);
+        updateOnline();
         super.finish();
     }
 
@@ -546,7 +549,7 @@ public class InventoryActivity extends AppCompatActivity {
 ///////////////////////////////////////////////
 //        user.setInventory(inventory);
 //        saveUser();
-//        updateOnline();
+        updateOnline();
         setResult(RESULT_OK, new Intent());
         super.finish();
     }

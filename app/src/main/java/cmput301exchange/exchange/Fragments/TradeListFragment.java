@@ -129,7 +129,7 @@ public class TradeListFragment extends Fragment implements BackButtonListener {
     }
 
     public void showTrade(Trade trade){
-        myActivity.displayTrade(trade);
+        myActivity.displayTrade(trade.clone());
     }
 
     @Override

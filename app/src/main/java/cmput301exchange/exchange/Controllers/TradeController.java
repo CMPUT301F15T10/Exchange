@@ -1,5 +1,6 @@
 package cmput301exchange.exchange.Controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -20,10 +21,11 @@ public class TradeController {
     private TradeManager myTradeManager;
     private int[] status = new int[]{0, 2, 3, 3, 0, 1, 4, 3};//magic on the fisrt sight, but make sense since it will be reset later
     private User user;
-    private Context context;
+    private Activity context;
+    ModelEnvironment globalEnv;
 //    private ArrayList<Book> userBookList=new ArrayList<>(), partnerBookList=new ArrayList<>();
 
-    public TradeController(Context context, Trade trade, TradeManager tradeManager, User user) {
+    public TradeController(Activity context, Trade trade, TradeManager tradeManager, User user) {
         this.context = context;
         myTradeManager = tradeManager;
         if (trade == null) {
@@ -32,7 +34,7 @@ public class TradeController {
             myTrade = trade;
         }
         this.user = user;
-
+        globalEnv=new ModelEnvironment(context,null);
     }
 
 //    public void setStatus(int status){
@@ -62,10 +64,13 @@ public class TradeController {
         if (myTrade==null){
             throw new RuntimeException("Trade is null");
         }
-        if (myTradeManager.sendTradeOffer(myTrade) == false) {
+        if (myTradeManager.sendTradeOffer(myTrade,context) == false) {
             return false;
         }
 //        myTradeManager.pushChanges(myTrade);
+        Log.e("starting from tradeCOntroller","save");
+        saveTradeManager();
+        Log.e("starting from tradeCOntroller","save done");
         return true;
         //push the offer to server as the user wish
     }
@@ -73,6 +78,7 @@ public class TradeController {
     public void deleteTrade() {
         // This method deletes trades that have not been functional and were under construction
         myTradeManager.deleteUnInitiatedTrade(myTrade);
+        saveTradeManager();
 //        myTradeManager.pushChanges(null);
     }
 
@@ -84,11 +90,18 @@ public class TradeController {
 
     public void deleteCompleteTrade() {
         myTradeManager.deleteCompleteTrade(myTrade);
+        saveTradeManager();
 //        myTradeManager.pushChanges(null); // Only its user side's trademanager that has changed
     }
 
     public boolean hasTradePartner() {
         return myTrade.hasTradePartner();
+    }
+
+    public void saveTradeManager(){
+        globalEnv.loadInstance(context);
+        globalEnv.getOwner().setTradeManager(myTradeManager);
+        globalEnv.saveInstance(context);
     }
 
     public String getTradeType() {
@@ -118,11 +131,13 @@ public class TradeController {
 
     public void setCompleteTrade() {
         myTradeManager.setTradeComplete(myTrade);
+        saveTradeManager();
 //        myTradeManager.pushChanges(null); // The partner object's tradeManager wont be pushed as only its the user side's trademanager that is changing
     }
 
     public boolean acceptTrade() {
-        if(myTradeManager.acceptTradeRequest(myTrade)==true){
+        if(myTradeManager.acceptTradeRequest(myTrade, context)==true){
+            saveTradeManager();
             return true;
         } else {
             return false;
@@ -141,7 +156,8 @@ public class TradeController {
     public void setTradePartner(Person partner) {
         if (myTrade.getTradeStatus().intValue() == 5) {
             // In case of trade offer request being made to user
-            myTradeManager.counterTrade(myTrade,partner);
+            myTradeManager.counterTrade(myTrade,partner,context);
+            saveTradeManager();
             return;
         }
 
@@ -152,16 +168,19 @@ public class TradeController {
             return;
         } else {
             myTrade.setTradePartner(partner, false);
+            saveTradeManager();
             Log.e("Got to Trade Controller", String.valueOf(myTrade.hasTradePartner()));
         }
     }
 
     public void declineTrade() {
-        myTradeManager.declineTradeRequest(myTrade);
+        myTradeManager.declineTradeRequest(myTrade,context);
+        saveTradeManager();
     }
 
     public void deleteDeclinedTrade(){
         myTradeManager.deleteDeclinedTrade(myTrade);
+        saveTradeManager();
     }
 
     public Person getTradePartner() {
@@ -176,7 +195,8 @@ public class TradeController {
     }
 
     public void returnItems(){
-        myTradeManager.returnTradeItems(myTrade);
+        myTradeManager.returnTradeItems(myTrade,context);
+        saveTradeManager();
     }
 
     public Integer getTransactionedState(){
@@ -206,5 +226,6 @@ public class TradeController {
 
         myTradeManager.addUnInitiatedTrade(myTrade);
         myTrade=null;
+        saveTradeManager();
     }
 }

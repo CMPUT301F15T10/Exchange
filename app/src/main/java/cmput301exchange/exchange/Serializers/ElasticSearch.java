@@ -149,6 +149,7 @@ public class ElasticSearch implements Observable {
 
 
         } catch (Exception e) {
+//            throw new RuntimeException("Not possible to upload");
             e.printStackTrace();
         }
 
@@ -195,6 +196,7 @@ public class ElasticSearch implements Observable {
 
 
         }catch (ConnectTimeoutException e1){
+            Log.i("FetchUser", e1.toString());
             return new User("null");
         }catch (ClientProtocolException e2) {
             Log.i("FetchUser", e2.toString());
@@ -279,6 +281,7 @@ public class ElasticSearch implements Observable {
         return fetchedphotos.get_source();
     }
 
+    // TODO changed Person to User
     public void SearchByPage (String query, String page){
 
         HttpClient httpClient = new DefaultHttpClient();

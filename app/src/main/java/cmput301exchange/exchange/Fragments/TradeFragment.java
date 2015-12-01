@@ -123,7 +123,9 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void onSave_Handler(){
-        exit();
+        myActivity.setTradeController(myTradeController);
+        myTradeController.saveTradeUnInitiated();
+        myActivity.switchFragment(1); //switches back to tradeManager.
     }
     
     public void sendOffer_Handler(){
@@ -133,7 +135,9 @@ public class TradeFragment extends Fragment implements BackButtonListener {
         }
 
         //May add a dialog box if necessary
-        exit();
+        myActivity.setTradeController(myTradeController);
+        myTradeController.saveTradeUnInitiated();
+        myActivity.switchFragment(1);
     }
     
     public void delete_Handler(){
@@ -272,7 +276,7 @@ public class TradeFragment extends Fragment implements BackButtonListener {
 
     public void exit(){
         myActivity.setTradeController(myTradeController);
-        myTradeController.saveTradeUnInitiated();
+//        myTradeController.saveTradeUnInitiated();
         myActivity.switchFragment(1); //switches back to tradeManager.
     }
 

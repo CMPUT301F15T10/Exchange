@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.Controllers.LoginController;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Person;
+import cmput301exchange.exchange.PersonManager;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
@@ -60,15 +62,14 @@ public class Login extends AppCompatActivity implements Observer{
             globalENV = new ModelEnvironment(this).loadInstance(this);
             this.launchHome();
         }catch(Exception e){
-
         }
-
     }
 
     public void CreateUser(){
         userString = username.getText().toString();
         globalENV = new ModelEnvironment(this,userString);
-        globalENV.getOwner().setTradeManager(new TradeManager());
+//        globalENV.getOwner().setTradeManager(new TradeManager());
+
     }
 
 
@@ -108,14 +109,20 @@ public class Login extends AppCompatActivity implements Observer{
         return super.onOptionsItemSelected(item);
     }
     public void launchHome(){
-
+//        Log.e("Before launch", "");
+        globalENV.saveInstance(this);
+        PersonManager pm= new PersonManager(this);
+//        Log.e("got before updatePersonList","");
+        pm.updatePersonList();
+//        Log.e("got after updatePersonList", "");
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
-        globalENV.saveInstance(this);
+
         this.finish();
     }
 
     public void Notified(){
+        Log.e("Before launch","notified");
         globalENV = new ModelEnvironment(this); // shouldnt be null //TODO
         globalENV.setOwner(elasticSearch.getUser());
         globalENV.saveInstance(this); //saving

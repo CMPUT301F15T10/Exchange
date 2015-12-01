@@ -1,6 +1,10 @@
 package cmput301exchange.exchange;
 
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -37,6 +41,8 @@ public class TradeManager {
     private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCompleteTrade= new ArrayList<>();
     private ArrayList<Trade> listTradeRequest = new ArrayList<>();
+
+//    private Activity activity;
     
     private ArrayList<ArrayList<Book>> temporaryInsufficientBookList= new ArrayList<>();
 
@@ -194,10 +200,15 @@ public class TradeManager {
     //TODO
     public void loadPersons(Trade trade, Context activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
-        globalEnv.getOwner().getID();
-        trade.setTradeUser(globalEnv.getOwner());
-        if (trade.hasTradePartner()==true) {
-            trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()),false);
+
+        if (trade.getUserID().equals(globalEnv.getOwner().getID())){
+            trade.setTradeUser(globalEnv.getOwner());
+            if (trade.hasTradePartner()==true) {
+                trade.setTradePartner(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()),false);
+            }
+        } else if (trade.getPartnerID().equals(globalEnv.getOwner().getID())){
+            trade.setTradePartner(globalEnv.getOwner(), false);
+            trade.setTradeUser(globalEnv.getPersonList().getPersonByID(trade.getPartnerID()));
         }
     }
 
@@ -243,7 +254,7 @@ public class TradeManager {
      * @param trade1 The trade that you want to counter
      */
     // TODO push trade user. already inside.
-    public void counterTrade(Trade trade1, Person partner) {
+    public void counterTrade(Trade trade1, Person partner, Activity activity) {
 
         int index=0;
         trade1.setTradeStatus(4);
@@ -262,7 +273,7 @@ public class TradeManager {
             partnerBooks= new ArrayList<>();
             counterTradeHelper(trade1.getTradeUser(),trade1);
         }
-        pushChanges(trade1,1);
+        pushChanges(trade1,1,activity);
         trade1.setTradeUser(trade1.getTradePartner());
         trade1.setListBookUser(trade1.getListBookPartner());
         trade1.setListBookPartner(partnerBooks);
@@ -303,7 +314,7 @@ public class TradeManager {
     This method is for returning items
      */
     // TODO pushes both partners as inventories will change. is there
-    public boolean returnTradeItems(Trade trade){
+    public boolean returnTradeItems(Trade trade, Activity activity){
         if (revertTransaction(trade)==false){
             return false;
         } else {
@@ -318,7 +329,7 @@ public class TradeManager {
                     t1.setTradeStatus(7);
                 }
             }
-            pushChanges(trade,3);
+            pushChanges(trade,3, activity);
             return true;
         }
     }
@@ -556,14 +567,19 @@ public class TradeManager {
 
     public void processTradeRequest(Trade trade){
 //        lightenTrade(trade);
+        Gson gson= new Gson();
+        Log.e("push 1", String.valueOf(gson.toJson(trade.getTradePartner()).length()));
         Trade trade1=trade.clone();
+        Log.e("push 2", String.valueOf(gson.toJson(trade1.getTradePartner()).length()));
         trade1.setTradeStatus(5); //trade request
+        Log.e("new push", "");
         lightenTrade(trade1);
-        listTradeRequest.add(trade);
+        Log.e("push 3,",String.valueOf(gson.toJson(trade1.getTradePartner()).length()));
+        listTradeRequest.add(trade1);
     }
 
     // TODO push trade user. It pushes from within. is there.
-    public void declineTradeRequest(Trade trade1){
+    public void declineTradeRequest(Trade trade1, Activity activity){
         int index=0;
         trade1.setTradeStatus(3); //declined
         for (Trade trade:listTradeRequest){
@@ -571,7 +587,7 @@ public class TradeManager {
                 listTradeRequest.remove(index);
                 trade.getTradeUser().getTradeManager().tradeGotDeclined(trade1);
 //                lightenTrade(trade1);
-                pushChanges(trade1,1);// push the user. pushchanges lighten the trade
+                pushChanges(trade1, 1, activity);// push the user. pushchanges lighten the trade
                 listTransactionedTrade.add(trade1);
                 break;
             }
@@ -599,7 +615,7 @@ public class TradeManager {
 /*
  //TODO This method should also push both the traders. Because both the inventories will be changed. is there
  */
-    public boolean acceptTradeRequest(Trade trade1){
+    public boolean acceptTradeRequest(Trade trade1, Activity activity){
         boolean success=performTransaction(trade1);
         if (success==false){
             return false;
@@ -608,16 +624,17 @@ public class TradeManager {
         for (Trade trade:listTradeRequest){
             if (trade.getTradeId().equals(trade1.getTradeId())) {
                 listTradeRequest.remove(index);
-                trade.getTradePartner().getTradeManager().getListTradeRequest().remove(index);
-                trade.getTradeUser().getTradeManager().tradeGotAccepted(trade1);
+                trade1.getTradePartner().getTradeManager().getListTradeRequest().remove(index);
+                trade1.getTradeUser().getTradeManager().tradeGotAccepted(trade1);
                 trade1.setTradeStatus(2); //Accepted
-                listTransactionedTrade.add(trade1);
-                trade.getTradePartner().getTradeManager().getListTradeRequest().add(trade1);
+                Trade trade2=trade1.clone();
+                lightenTrade(trade2);
+                listTransactionedTrade.add(trade2);
                 break;
             }
             index = index + 1;
         }
-        pushChanges(trade1,3);
+        pushChanges(trade1, 3, activity);
         return true;
     }
 
@@ -638,10 +655,73 @@ public class TradeManager {
     }
 
     //TODO
-    // type=1, meaning traderUser needs to be pushed, type=2 meaning partner needs to be pushed
-    public void pushChanges(Trade trade1, int type){
+    // type=1, meaning traderUser needs to be pushed, type=2 meaning partner needs to be pushed, 3 for both
+    public void pushChanges(Trade trade1, int type,Activity activity){
+        ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
+        PersonManager pm = new PersonManager(activity);
+        switch(type){
+            case 1:
+                if (trade1.getTradeUser().getID().equals(globalEnv.getOwner().getID())) {
+                    globalEnv.loadInstance(activity);
+                    globalEnv.setOwner(trade1.getTradeUser().toUser());
+                    globalEnv.saveInstance(activity);
+                }
+                else {
+                    pm.saveIntoPersonList(trade1.getTradeUser());
+                }
+                break;
+
+            case 2:
+                if (trade1.hasTradePartner()){
+                    if (trade1.getTradePartner().getID().equals(globalEnv.getOwner().getID())){
+                        globalEnv.loadInstance(activity);
+                        globalEnv.setOwner(trade1.getTradePartner().toUser());
+                        globalEnv.saveInstance(activity);
+                    } else {
+                        Log.e("starting for saving","==");
+                        pm.saveIntoPersonList(trade1.getTradePartner());
+                        Log.e("Saving done","--");
+                    }
+                }
+                break;
+
+            case 3:
+                if (trade1.getTradeUser().getID().equals(globalEnv.getOwner().getID())) {
+                    globalEnv.loadInstance(activity);
+                    globalEnv.setOwner(trade1.getTradeUser().toUser());
+                    globalEnv.saveInstance(activity);
+                }
+                else {
+                    pm.saveIntoPersonList(trade1.getTradeUser());
+                }
+
+                if (trade1.hasTradePartner()){
+                    if (trade1.getTradePartner().getID().equals(globalEnv.getOwner().getID())){
+                        globalEnv.loadInstance(activity);
+                        globalEnv.setOwner(trade1.getTradePartner().toUser());
+                        globalEnv.saveInstance(activity);
+                    } else {
+                        pm.saveIntoPersonList(trade1.getTradePartner());
+                    }
+                }
+
+                break;
+        }
+//        lightenTrade(trade1);
+    }
+
+    public void pushChangesOnline(){
+
 
     }
+
+//    public void setActivity(Activity activity){
+//        this.activity=activity;
+////    }
+
+//    public void setActivityNull(){
+//        this.activity=null;
+//    }
 
 
     public void setTradeComplete(Trade trade1){
@@ -660,15 +740,18 @@ public class TradeManager {
 
 
     //TODO push only the partner.. Already there
-    public boolean sendTradeOffer(Trade trade){
+    public boolean sendTradeOffer(Trade trade, Activity activity){
 //        lightenTrade(trade);
         if (trade.hasTradePartner()==false){
             return false;
         }
 
         trade.setTradeStatus(1);
+        Gson gson = new Gson();
         trade.getTradePartner().getTradeManager().processTradeRequest(trade);
-        pushChanges(trade,2); // will push only the partner
+        Log.e("After push changes", String.valueOf(gson.toJson(trade).length()));
+        pushChanges(trade, 2, activity); // will push only the partner
+
         return true;
     }
 

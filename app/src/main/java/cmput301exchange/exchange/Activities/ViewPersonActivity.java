@@ -429,4 +429,3 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
 }
 
 
-

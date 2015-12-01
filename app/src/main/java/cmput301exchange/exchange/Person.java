@@ -16,15 +16,15 @@ import java.util.Random;
 public class Person {
 
     private String name;
-    private String location;
+    private String location="";
     private Long ID;
     private Picture myPicture;
-    private String phoneNumber;
-    private String userName;
+    private String phoneNumber="";
+    private String userName="";
     protected Inventory myInventory;
-    private String email;
+    private String email="";
     protected ArrayList<Long> myFriendList= new ArrayList<>();
-    private long TradeCount;
+    private long TradeCount=0;
     protected boolean isUser=false;
     private TradeManager tradeManager;
 
@@ -36,7 +36,7 @@ public class Person {
         TimeStamp = System.currentTimeMillis()/1000L; //Sets the timestamp to the current unix time.
     }
 
-    private long TimeStamp;
+    protected long TimeStamp;
 
     public Person(String username) {
         this.userName = username;
@@ -146,8 +146,29 @@ public class Person {
         this.tradeManager=tradeManager;
     }
 
+    public void setFriendListID(ArrayList<Long> list){
+        myFriendList=list;
+    }
     public TradeManager getTradeManager(){
         return this.tradeManager;
+    }
+
+    public void setID(Long ID){
+        this.ID=ID;
+    }
+
+    public User toUser(){
+        User cloned=new User(this.userName);
+        cloned.setTradeManager(tradeManager);
+        cloned.setFriendListID(myFriendList);
+        cloned.setID(this.ID);
+        cloned.TimeStamp=this.TimeStamp;
+        cloned.setPhoneNumber(phoneNumber);
+        cloned.setEmail(email);
+        cloned.setLocation(location);
+        cloned.setTradeCount(TradeCount);
+        cloned.isUser=true;
+        return cloned;
     }
 
 }

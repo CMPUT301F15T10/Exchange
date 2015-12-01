@@ -119,11 +119,11 @@ public class TradeFragment3 extends Fragment implements BackButtonListener {
         TradeTypeView= (TextView) myView.findViewById(R.id.Trade3_type);
         tradeIDView= (TextView) myView.findViewById(R.id.Trade3_ID);
         tradePartnerView=(TextView) myView.findViewById(R.id.Trade3_Partner);
-        tradePartnerView.setText(traderName);
 //        updateTextView();
     }
 
     public void updateTextView(){
+        tradePartnerView.setText(traderName);
         if (TradeType==null) {
             TradeType = new CharSequenceWrapper(myTradeController.getTradeType());
         }

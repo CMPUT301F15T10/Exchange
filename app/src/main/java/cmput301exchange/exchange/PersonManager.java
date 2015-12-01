@@ -3,6 +3,7 @@ package cmput301exchange.exchange;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.AvoidXfermode;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -34,21 +35,57 @@ public class PersonManager implements Observer {
         return extractedPersons;
     }
 
-    public void updatePersonList(Activity activity){
+    public boolean saveIntoPersonList(Person person1){
+        Gson gson= new Gson();
+//        Log.e("size of person1 PM",String.valueOf(gson.toJson(person1).length()));
+        globalEnv.loadInstance(activity);
+        PersonList pl=globalEnv.getPersonList();
+        Log.e("5 ","PM");
+        Log.e(String.valueOf(pl.getPersonList().size())," PM");
+        boolean success=false;
+        int i=0;
+        for (Person person:pl.getPersonList()){
+            if (person.getID().equals(person1.getID())){
+//                pl.getPersonList().add(i,person1);
+                success=true;
+                break;
+//                success=true;
+            }
+            i=i+1;
+        }
+        Log.e("1 ","PM");
+        if (success==true){
+            Log.e("2 ","PM");
+            pl.setPerson(i, person1);
+            Log.e("3 ", "PM");
+        }
+        globalEnv.saveInstance(activity);
+        Log.e("4 ", "PM");
+        return success;
+    }
+
+    public void updatePersonList(){
         ES=new ElasticSearch(activity);
         ES.addObserver(this);
         ES.fetchAllUsersFromServer("*", defaultPage.toString());
     }
-//    public void initPersonList(Integer integer){
-//        String page = integer.toString();
-//        ES.addObserver(this);
-//        ES.fetchAllUsersFromServer("*", page);
-//    }
 
     @Override
     public void update() {
         PersonList list=ES.getPersonList();
         globalEnv.setPersonList(list);
         globalEnv.saveInstance(this.activity);
+    }
+
+    public void pushOnline(){
+        ES=new ElasticSearch(activity);
+        globalEnv.loadInstance(activity);
+        PersonList pl=globalEnv.getPersonList();
+        for (Person person: pl.getPersonList()){
+            ModelEnvironment env= new ModelEnvironment(activity);
+            env.setOwner(person.toUser());
+            ES.sendToServer(env);
+        }
+        ES.sendToServer(globalEnv);
     }
 }

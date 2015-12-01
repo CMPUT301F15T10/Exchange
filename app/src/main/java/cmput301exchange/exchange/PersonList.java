@@ -12,7 +12,7 @@ import java.util.Collections;
 public class PersonList {
 
     private ArrayList<Person> personList;
-    private ArrayList<Long> personIDList;
+//    private ArrayList<Long> personIDList;
     /**
      * Returns a List of Friends.
      */
@@ -23,12 +23,12 @@ public class PersonList {
 
     public PersonList() {
         personList= new ArrayList<>();
-        personIDList = new ArrayList<>();
+//        personIDList = new ArrayList<>();
     }
 
-    public ArrayList<Long> getPersonIDList(){
-        return personIDList;
-    }
+//    public ArrayList<Long> getPersonIDList(){
+//        return personIDList;
+//    }
     /**
      * Searches the personList for a string
      * @param query the string that you wish to search for.
@@ -57,7 +57,7 @@ public class PersonList {
         if (personList.contains(aperson)) {
             //Do nothing as we dont want to add duplicates.
         } else {
-            personIDList.add(aperson.getID());
+//            personIDList.add(aperson.getID());
             personList.add(aperson);
         }
     }
@@ -74,9 +74,9 @@ public class PersonList {
             return;
         }
         for(int i = 0;i<n;i++){
-            if(personList.get(i).getID()==aperson.getID()){
+            if(personList.get(i).getID().longValue()==aperson.getID().longValue()){
                 personList.remove(i);
-                personIDList.remove(i);
+//                personIDList.remove(i);
                 break;
             }
         }
@@ -84,11 +84,15 @@ public class PersonList {
 
     public Person getPersonByID(long ID){
         for (Person person:personList){
-            if (person.getID()==ID){
+            if (person.getID().longValue()==ID){
                 return person;
             }
         }
         return null;
+    }
+
+    public void setPerson(int index,Person person){
+        personList.set(index,person);
     }
 
 }

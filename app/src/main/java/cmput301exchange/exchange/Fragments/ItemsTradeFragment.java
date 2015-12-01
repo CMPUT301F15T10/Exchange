@@ -355,7 +355,7 @@ public class ItemsTradeFragment extends Fragment implements BackButtonListener {
     }
 
     public void exit(){
-        myActivity.returnToPreviousFragment();
+        myActivity.displayTrade(myActivity.getTradeController().getTrade());
     }
     @Override
     public void onBackPress() {

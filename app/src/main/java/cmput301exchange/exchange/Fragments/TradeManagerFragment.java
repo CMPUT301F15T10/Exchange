@@ -14,6 +14,7 @@ import cmput301exchange.exchange.Activities.TradeManagerActivity;
 import cmput301exchange.exchange.Controllers.TradeManagerController;
 import cmput301exchange.exchange.Interfaces.BackButtonListener;
 import cmput301exchange.exchange.Others.CharSequenceWrapper;
+import cmput301exchange.exchange.PersonManager;
 import cmput301exchange.exchange.R;
 
 /**
@@ -23,7 +24,7 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
 
     private TradeManagerActivity myActivity;
     private View myView;
-    private Button displayTrade,viewCurrentTrade,viewPastTrade,checkTradeRequest,unInitiatedTrade;
+    private Button displayTrade,viewCurrentTrade,viewPastTrade,checkTradeRequest,unInitiatedTrade,pushOnline;
     private TextView tradeRequestsView;
     private CharSequenceWrapper tradeRequests_no=null;
     private TradeManagerController myTradeManagerController;
@@ -55,6 +56,7 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
         viewPastTrade= (Button) myView.findViewById(R.id.TM_pastTrade);
         checkTradeRequest= (Button) myView.findViewById(R.id.TM_checkRequest);
         unInitiatedTrade= (Button) myView.findViewById(R.id.TM_unInitiated);
+        pushOnline=(Button) myView.findViewById(R.id.TM_pushOnline);
 
         displayTrade.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -85,6 +87,17 @@ public class TradeManagerFragment extends Fragment implements BackButtonListener
                 unInitiated_Handler();
             }
         });
+
+        pushOnline.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                pushOnline_Handler();
+            }
+        });
+    }
+
+    public void pushOnline_Handler(){
+        PersonManager pm = new PersonManager(myActivity);
+        pm.pushOnline();
     }
 
     public void unInitiated_Handler(){

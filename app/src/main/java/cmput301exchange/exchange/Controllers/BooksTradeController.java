@@ -99,12 +99,12 @@ public class BooksTradeController {
         return null;
     }
 
-    public boolean hasTradePartner(){//when talking about user, there is always an trade partner
+    public boolean hasTradePartner(){//when talking about user, there is always a trade partner
         if (status==1){
             return myTrade.hasTradePartner();
         }
         else {
-            if (myTrade.getTradeUser()!=null){//as for others, if they have tarde with the user, they, too, have a trade partner
+            if (myTrade.getTradeUser()!=null){//as for others, if they have trade with the user, they, too, have a trade partner
                 return true;
             }
         }
@@ -246,6 +246,7 @@ public class BooksTradeController {
             }
         }
     }
+
 
     public void addFromInventory(Inventory inventory){
         boolean foundBook=false;
