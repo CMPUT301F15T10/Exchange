@@ -20,7 +20,9 @@ import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
-
+/*
+activity for display detailed person profile
+ */
 public class ProfileDetailsActivity extends AppCompatActivity{
 
 //    public ModelEnvironment GlobalENV = new ModelEnvironment();

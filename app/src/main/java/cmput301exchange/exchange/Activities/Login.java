@@ -26,7 +26,10 @@ import cmput301exchange.exchange.Serializers.DataIO;
 import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.TradeManager;
 import cmput301exchange.exchange.User;
-
+/*
+login page, request a user name to process
+after login, it creat a globle user for further use
+ */
 public class Login extends AppCompatActivity implements Observer{
     private LoginController controller = new LoginController();
     public EditText username;
@@ -38,7 +41,6 @@ public class Login extends AppCompatActivity implements Observer{
 
     @Override
     public void update() {
-        progressDialog.dismiss();
         if (elasticSearch.getUserExists()){
             Notified();
             Log.e("User exists","");
@@ -106,6 +108,7 @@ public class Login extends AppCompatActivity implements Observer{
         return super.onOptionsItemSelected(item);
     }
     public void launchHome(){
+
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         globalENV.saveInstance(this);
@@ -116,5 +119,6 @@ public class Login extends AppCompatActivity implements Observer{
         globalENV = new ModelEnvironment(this); // shouldnt be null //TODO
         globalENV.setOwner(elasticSearch.getUser());
         globalENV.saveInstance(this); //saving
+        progressDialog.dismiss();
     }
 }

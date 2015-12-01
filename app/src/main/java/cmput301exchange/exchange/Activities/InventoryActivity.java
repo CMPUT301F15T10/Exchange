@@ -75,6 +75,8 @@ public class InventoryActivity extends AppCompatActivity {
     private ListView leftNavList;
     private String[] NavTitles;
 
+    private DataIO dataIO = new DataIO(this, InventoryActivity.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,10 +150,10 @@ public class InventoryActivity extends AppCompatActivity {
 
                 if (!(selectedBooks.contains((Book)lv.getItemAtPosition(position)))) {
                     selectedBooks.add((Book) lv.getItemAtPosition(position));
-                    Toast.makeText(getBaseContext(), selectedBooks.toString(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), selectedBooks.toString(), Toast.LENGTH_LONG).show();
                 } else {
                     selectedBooks.remove((Book) lv.getItemAtPosition(position));
-                    Toast.makeText(getBaseContext(), "None selected", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getBaseContext(), "None selected", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -164,7 +166,7 @@ public class InventoryActivity extends AppCompatActivity {
         user = globalEnv.getOwner();
         processIntents();
     }
-    
+
     public void checkItems(){
         if (tradeItemsSelectedPos!=null) {
             for (Double position : tradeItemsSelectedPos) {
@@ -178,7 +180,7 @@ public class InventoryActivity extends AppCompatActivity {
         }
 
     }
-    
+
     public void processIntents(){
         if (intent.hasExtra("From_ViewPersonActivity")) {
             String inventory_json = intent.getStringExtra("Friend_Inventory");
@@ -291,8 +293,8 @@ public class InventoryActivity extends AppCompatActivity {
                 fromAddBook=true;
 //                String json=data.getExtras().getString("Inventory");
                 DataIO dataIO = new DataIO(this, InventoryActivity.class);
-                String json = dataIO.loadFromFile("book.sav");
-                File file = new File(getFilesDir(), "book.sav");
+                String json = dataIO.loadFromFile("inventory.sav");
+                File file = new File(getFilesDir(), "inventory.sav");
                 file.delete();
                 inventory=gson.fromJson(json,Inventory.class);
                 updateBookList(inventory);
@@ -330,7 +332,7 @@ public class InventoryActivity extends AppCompatActivity {
                     menu.findItem(R.id.action_view).setVisible(true);
                     menu.findItem(R.id.action_edit).setVisible(true);
                     menu.findItem(R.id.action_remove_single).setVisible(true);
-                    menu.findItem(R.id.action_clone).setVisible(true); // temporairly for testing purposes
+                    menu.findItem(R.id.action_clone).setVisible(true);
 
                 } else if(selectedBooks.size()>1) {
                     menu.findItem(R.id.action_remove_single).setVisible(false);
@@ -390,7 +392,6 @@ public class InventoryActivity extends AppCompatActivity {
             case R.id.action_edit:
                 json1 = gson.toJson(inventory);
                 json2 = gson.toJson(selectedBooks.get(0));
-                DataIO dataIO = new DataIO(this, InventoryActivity.class);
                 dataIO.saveInFile("inventory.sav", json1);
                 dataIO.saveInFile("book.sav", json2);
 
@@ -421,7 +422,8 @@ public class InventoryActivity extends AppCompatActivity {
 
             case R.id.action_view:
                 json = gson.toJson(selectedBooks.get(0));
-                intent = new Intent(this, BookDetailsActivity.class).putExtra("Book", json);
+                dataIO.saveInFile("book.sav", json);
+                intent = new Intent(this, BookDetailsActivity.class);
                 startActivity(intent);
 
                 return true;

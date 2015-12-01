@@ -83,15 +83,18 @@ package cmput301exchange.exchange.Controllers;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -116,13 +119,15 @@ import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Photos;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
 
 /**
  * Created by Charles on 11/27/2015.
  */
-public class EditBookController implements Observable{
+public class EditBookController implements Observer{
     ArrayList<Observer> observerList = new ArrayList<>();
     private Context context;
     private Activity activity;
@@ -147,13 +152,21 @@ public class EditBookController implements Observable{
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
     private ArrayAdapter<CharSequence> adapter;
+    private Photos photos;
 
+    private ElasticSearch elasticSearch;
     private DataIO dataIO;
+    private ProgressDialog progressDialog;
+
+    public ElasticSearch getElasticSearch() {
+        return elasticSearch;
+    }
 
     public EditBookController(Context context, Activity activity){
         this.context = context;
         this.activity = activity;
         dataIO = new DataIO(context, ModelEnvironment.class);
+        elasticSearch = new ElasticSearch(activity);
     }
 
     public void Setup(){
@@ -174,8 +187,8 @@ public class EditBookController implements Observable{
         File file2 = new File(context.getFilesDir(), "book.sav");
         file2.delete();
 
-        compressedImages = editBook.getPhotos();
-        createBitmapArray(compressedImages);
+        getPhotos();
+
         name.setText(editBook.getName());
         author.setText(editBook.getAuthor());
         quality.setText(String.valueOf(editBook.getQuality()));
@@ -196,9 +209,22 @@ public class EditBookController implements Observable{
 
     }
 
+    private void getPhotos(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        if(prefs.getBoolean("checkbox_preference", true)){
+            progressDialog = ProgressDialog.show(activity,"Loading Photos", "Just a moment...", true);
+            elasticSearch.fetchPhotoFromServer(editBook.getPhotoID());
+        }
+    }
+
+    public void downloadPhotos(){
+        progressDialog = ProgressDialog.show(activity,"Loading Photos", "Just a moment...", true);
+        elasticSearch.fetchPhotoFromServer(editBook.getPhotoID());
+    }
+
     public void createBitmapArray(ArrayList<String> compressedImages){
         for (String i: compressedImages){
-            addToImageList(i);
+            addToImageList(i.getBytes());
         }
     }
 
@@ -303,7 +329,7 @@ public class EditBookController implements Observable{
         book.updateCategory(category);
         book.updateComment(bookComments);
 
-        book.setPhotos(compressedImages);
+//        book.setPhotos(compressedImages); TODO fix this
 
         inventory.add(book);
         this.finishAdd();
@@ -342,7 +368,7 @@ public class EditBookController implements Observable{
             builder.setItems(more_options, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int item) {
-
+                    //same as it in add book controller
                     if (more_options[item].equals("View Bigger Photo")) {
                         PhotoController photoController = new PhotoController();
                         String photo = photoController.getStringFromBitmap(imageList.get(currentBitmapPos)); //Write the existing inventory data to Json
@@ -429,9 +455,10 @@ public class EditBookController implements Observable{
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    compressedImages.add(stream.toString());
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
-                    this.addToImageList(stream.toString());
+                    this.addToImageList(stream.toByteArray());
                     bmpAdapter.notifyDataSetChanged();
 
                     stream.flush();
@@ -467,15 +494,35 @@ public class EditBookController implements Observable{
                 Log.w("path image from gallery", picturePath + "");
 
                 image.setImageBitmap(thumbnail);
+
+                try {
+
+                    Bitmap resized = Bitmap.createScaledBitmap(thumbnail, (int) (thumbnail.getWidth() * 0.2), (int) (thumbnail.getHeight() * 0.2), true);
+                    // new stuff hope it doesn't break
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
+
+                    this.addToImageList(stream.toByteArray());
+                    bmpAdapter.notifyDataSetChanged();
+
+                    stream.flush();
+                    stream.close();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                }
             }
 
         }
     }
 
 
-    public void addToImageList(String photo){
-        PhotoController photoController = new PhotoController();
-        Bitmap bm = photoController.getBitmapFromString(photo); //use android built-in functions
+    public void addToImageList(byte[] array){
+        Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
         imageList.add(bm);
     }
 
@@ -490,31 +537,19 @@ public class EditBookController implements Observable{
 
     }
 
-
-
-
-
-    // Below are the Observer Methods
     @Override
-    public void addObserver(Observer observer) {
-        observerList.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observerList.remove(observer);
-    }
-
-    @Override
-    public void notifyObserver(Observer observer) {
-        observer.update();
-    }
-
-    @Override
-    public void notifyAllObserver() {
-        for(Observer i : observerList){
-            i.update();
+    public void update() {
+        photos = elasticSearch.getPhotos();
+        progressDialog.dismiss();
+        compressedImages = photos.getCompressedPhotos();
+        createBitmapArray(compressedImages);
+        if (imageList.size() == 0){
+            image.setImageDrawable(null);
         }
+        else {
+            image.setImageBitmap(imageList.get(0));
+        }
+        bmpAdapter.notifyDataSetChanged();
     }
 
 

@@ -47,7 +47,12 @@ import cmput301exchange.exchange.Serializers.ElasticSearch;
 import cmput301exchange.exchange.Serializers.deepClone;
 import cmput301exchange.exchange.TradeManager;
 import cmput301exchange.exchange.User;
-
+/*
+    home activity contains 3 buttons and each leads a specific function
+    and more options in menu bar.
+       it comes up after login page, therefore it runs under the globle environment
+       with a specific user
+ */
 public class  HomeActivity extends AppCompatActivity {
     ModelEnvironment GlobalENV = null;
     Gson gson = new Gson();

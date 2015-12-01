@@ -5,10 +5,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
+import junit.framework.Assert;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -33,6 +37,7 @@ import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.ModelEnvironment;
 import cmput301exchange.exchange.Person;
 import cmput301exchange.exchange.PersonList;
+import cmput301exchange.exchange.Photos;
 import cmput301exchange.exchange.User;
 
 
@@ -51,6 +56,7 @@ public class ElasticSearch implements Observable {
     ConnectivityManager connectivityManager;
     private boolean userExists;
     private PersonList personList = new PersonList();
+    private Photos photos;
 
     public ElasticSearch() {
 
@@ -61,9 +67,12 @@ public class ElasticSearch implements Observable {
     }
 
     public PersonList getPersonList() {
-        return personList;
+        return this.personList;
 
 
+    }
+    public Photos getPhotos(){
+        return this.photos;
     }
 
     @Override
@@ -144,6 +153,32 @@ public class ElasticSearch implements Observable {
         }
 
     }
+    public void sendPhotos(Photos photos) {
+        HttpClient httpClient = new DefaultHttpClient();
+        //photos.setTimeStamp();
+        try {
+            HttpPost addRequest = new HttpPost("http://cmput301.softwareprocess.es:8080/cmput301f15t10/photos/" + photos.getId());
+
+            HttpParams httpParams = new BasicHttpParams(); //Set the Parameters
+            HttpConnectionParams.setConnectionTimeout(httpParams,Timeout); // For Timeout
+            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket); //For Socket Timeout
+            addRequest.setParams(httpParams);
+
+            StringEntity stringEntity = new StringEntity(gson.toJson(photos));
+            addRequest.setEntity(stringEntity);
+            addRequest.setHeader("Accept", "application/json");
+
+            HttpResponse response = httpClient.execute(addRequest);
+            String status = response.getStatusLine().toString();
+
+            Log.i("ElasticGLOBALENV", status);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public User fetchUser(String username) {
         SearchHit<User> fetchedUser = null;
@@ -158,6 +193,7 @@ public class ElasticSearch implements Observable {
 
             response = httpClient.execute(httpGet);
 
+
         }catch (ConnectTimeoutException e1){
             return new User("null");
         }catch (ClientProtocolException e2) {
@@ -170,8 +206,12 @@ public class ElasticSearch implements Observable {
         }.getType();
 
         try {
-            fetchedUser = gson.fromJson(
-                    new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+            if (response != null) {
+                fetchedUser = gson.fromJson(
+                        new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+            }else{
+                return new User(username);
+            }
 
 
         } catch (JsonIOException e) {
@@ -181,11 +221,62 @@ public class ElasticSearch implements Observable {
         } catch (IllegalStateException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Toast toast = Toast.makeText(activity, "You are Logged in Offline...",Toast.LENGTH_LONG);
+            toast.show();
+            return new User(username);
         }
 
         userExists = fetchedUser.isFound();
         return fetchedUser.get_source();
+    }
+    public Photos fetchPhotos(Long id) {
+        SearchHit<Photos> fetchedphotos = null;
+        HttpResponse response = null;
+        try{
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpParams httpParams = httpClient.getParams().setIntParameter("CONNECTION_MANAGER_TIMEOUT",3000);
+            HttpConnectionParams.setConnectionTimeout(httpParams, Timeout);
+            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
+
+            HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/photos/" + id);
+
+            response = httpClient.execute(httpGet);
+
+
+        }catch (ConnectTimeoutException e1){
+            return new Photos();
+        }catch (ClientProtocolException e2) {
+            Log.i("FetchUser", e2.toString());
+        }catch(IOException e3){
+            Log.i("FetchUser",e3.toString());
+        }
+
+        Type ElasticSearchResultType = new TypeToken<SearchHit<Photos>>() {
+        }.getType();
+
+        try {
+            if (response != null) {
+                fetchedphotos = gson.fromJson(
+                        new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+            }else{
+                return new Photos();
+            }
+
+
+        } catch (JsonIOException e) {
+            throw new RuntimeException(e);
+        } catch (JsonSyntaxException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalStateException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            Toast toast = Toast.makeText(activity, "You are Logged in Offline...",Toast.LENGTH_LONG);
+            toast.show();
+            return new Photos();
+        }
+
+//        userExists = fetchedUser.isFound();
+        return fetchedphotos.get_source();
     }
 
     public void SearchByPage (String query, String page){
@@ -205,7 +296,7 @@ public class ElasticSearch implements Observable {
         } catch (ClientProtocolException e1) {
             throw new RuntimeException(e1);
         } catch (IOException e2) {
-            throw new RuntimeException(e2);
+            return;
         }
 
         Type ElasticSearchResultType = new TypeToken<SearchResponse<Person>>() {
@@ -255,6 +346,18 @@ public class ElasticSearch implements Observable {
             return;
         }
     }
+    public void sendPhotoToServer(Photos photo) {
+        Context context = activity.getApplicationContext();
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
+
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
+            Thread thread = new addPhotoThread(photo);
+            thread.start();
+        } else {
+            return;
+        }
+    }
 
 
     public void fetchUserFromServer(String username) {
@@ -263,6 +366,21 @@ public class ElasticSearch implements Observable {
         NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
         if (netinfo != null && netinfo.isConnectedOrConnecting()) {
             Thread thread = new getThread(username);
+
+            thread.start();
+
+
+        } else {
+            return;
+        }
+
+    }
+    public void fetchPhotoFromServer(Long ID) {
+        Context context = activity.getApplicationContext();
+        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = connectivityManager.getActiveNetworkInfo();
+        if (netinfo != null && netinfo.isConnectedOrConnecting()) {
+            Thread thread = new getPhotoThread(ID);
 
             thread.start();
 
@@ -363,6 +481,51 @@ public class ElasticSearch implements Observable {
         }
 
     }
+    class addPhotoThread extends Thread {
+        private Photos photo;
+
+        public addPhotoThread(Photos photo) {
+            this.photo = photo;
+
+        }
+
+        @Override
+        public void run() {
+            sendPhotos(this.photo);
+
+            try {
+                Thread.sleep(500);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            activity.runOnUiThread(FinishThread);
+        }
+
+    }
+    class getPhotoThread extends Thread {
+        private Long ID;
+
+        public getPhotoThread(Long ID) {
+            this.ID = ID;
+
+        }
+
+        @Override
+        public void run() {
+            photos = fetchPhotos(ID);
+
+            try {
+                Thread.sleep(500);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            activity.runOnUiThread(FinishThread);
+        }
+
+    }
+
 
 
 }

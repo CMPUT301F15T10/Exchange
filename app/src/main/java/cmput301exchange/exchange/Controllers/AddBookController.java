@@ -34,18 +34,21 @@ import cmput301exchange.exchange.Activities.AddBookActivity;
 import cmput301exchange.exchange.Activities.DetailedPhoto;
 import cmput301exchange.exchange.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
+
 import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Photos;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
 
 /**
  * Created by Charles on 11/27/2015.
  */
-public class AddBookController implements Observable{
-    ArrayList<Observer> observerList = new ArrayList<>();
+public class AddBookController implements Observer {
+
     private Context context;
     private Activity activity;
 
@@ -65,6 +68,7 @@ public class AddBookController implements Observable{
     private CheckBox checkBox;
 
     private int currentBitmapPos;
+    private Photos photos = new Photos();
     private ArrayList<String> compressedImages = new ArrayList<>();
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
@@ -72,10 +76,13 @@ public class AddBookController implements Observable{
 
     private DataIO dataIO;
 
+    private ElasticSearch elasticSearch;
+
     public AddBookController(Context context, Activity activity){
         this.context = context;
         this.activity = activity;
         dataIO = new DataIO(context, ModelEnvironment.class);
+        elasticSearch = new ElasticSearch(activity);
     }
 
     public void Setup(){
@@ -113,7 +120,6 @@ public class AddBookController implements Observable{
         this.photoList = (Spinner) activity.findViewById(R.id.photoListView);
         this.bmpAdapter = new PhotoAdapter(activity, imageList);
         this.photoList.setAdapter(bmpAdapter);
-        this.photoList = (Spinner) activity.findViewById(R.id.photoListView);
         this.name = (EditText) activity.findViewById(R.id.editName);
         this.author = (EditText) activity.findViewById(R.id.editAuthor);
         this.quality = (EditText) activity.findViewById(R.id.editQuality);
@@ -210,9 +216,12 @@ public class AddBookController implements Observable{
         book.updateCategory(category);
         book.updateComment(bookComments);
 
-        book.setPhotos(compressedImages);
+        photos.initID();
+        photos.setCompressedPhotos(compressedImages);
+        book.setPhotoID(photos.getId());
 
         inventory.add(book);
+//        elasticSearch.sendPhotoToServer(photos);
         this.finishAdd();
     }
 
@@ -344,8 +353,9 @@ public class AddBookController implements Observable{
 
                     // new stuff hope it doesn't break
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    resized.compress(Bitmap.CompressFormat.JPEG, 30, stream);
-                    compressedImages.add(stream.toString());
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
 
                     this.addToImageList(stream.toByteArray());
                     bmpAdapter.notifyDataSetChanged();
@@ -383,53 +393,54 @@ public class AddBookController implements Observable{
                 Log.w("path image from gallery", picturePath + "");
 
                 image.setImageBitmap(thumbnail);
+
+                try {
+
+                    Bitmap resized = Bitmap.createScaledBitmap(thumbnail, (int) (thumbnail.getWidth() * 0.2), (int) (thumbnail.getHeight() * 0.2), true);
+                    // new stuff hope it doesn't break
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    resized.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                    PhotoController photoController = new PhotoController();
+                    compressedImages.add(photoController.getStringFromByte(stream.toByteArray()));
+
+                    this.addToImageList(stream.toByteArray());
+                    bmpAdapter.notifyDataSetChanged();
+
+                    stream.flush();
+                    stream.close();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+
+                }
+
             }
 
         }
     }
 
-    public void addToImageList(byte[] array){
+    public void addToImageList(byte[] array) {
         Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
         imageList.add(bm);
     }
 
     public void finishAdd(){
         String json = inventory.toJson(); //Write the existing inventory data to Json
-        dataIO.saveInFile("book.sav", json);
+        dataIO.saveInFile("inventory.sav", json);
 
-        Intent added = new Intent().putExtra("Inventory", "book.sav"); //Send it back to the inventory activity
+        Intent added = new Intent().putExtra("Inventory", "inventory.sav"); //Send it back to the inventory activity
         activity.setResult(activity.RESULT_OK, added);
 
+        elasticSearch.addObserver(this);
+
+        elasticSearch.sendPhotoToServer(photos);
         activity.finish();
 
     }
 
-
-
-
-
-    // Below are the Observer Methods
     @Override
-    public void addObserver(Observer observer) {
-        observerList.add(observer);
+    public void update() {
+
     }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observerList.remove(observer);
-    }
-
-    @Override
-    public void notifyObserver(Observer observer) {
-        observer.update();
-    }
-
-    @Override
-    public void notifyAllObserver() {
-        for(Observer i : observerList){
-            i.update();
-        }
-    }
-
-
 }
