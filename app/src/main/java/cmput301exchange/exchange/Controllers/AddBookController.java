@@ -415,7 +415,7 @@ public class AddBookController implements Observable{
         }
     }
 
-    public void addToImageList(byte[] array){
+    public void addToImageList(byte[] array) {
         Bitmap bm = BitmapFactory.decodeByteArray(array, 0, array.length); //use android built-in functions
         imageList.add(bm);
     }
