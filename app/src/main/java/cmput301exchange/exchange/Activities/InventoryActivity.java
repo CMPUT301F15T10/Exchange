@@ -303,15 +303,16 @@ public class InventoryActivity extends AppCompatActivity {
             }
         }
 
-        else if (requestCode == MENU_Edit_Item && data != null) {
+        else if (requestCode == MENU_Edit_Item) {
             if (data.hasExtra("Book")){
-                String json=data.getExtras().getString("Book");
-                Book book=gson.fromJson(json, Book.class);
-                int index=inventory.getInventoryList().indexOf(selectedBooks.get(0));
-                selectedBooks.clear();
-                lv.clearChoices();
-                inventory.getInventoryList().set(index, book);
+                DataIO dataIO = new DataIO(this, InventoryActivity.class);
+                String json = dataIO.loadFromFile("book.sav");
+                File file = new File(getFilesDir(), "book.sav");
+                file.delete();
+                inventory=gson.fromJson(json,Inventory.class);
                 updateBookList(inventory);
+                lv.clearChoices();
+                selectedBooks.clear();
             }
         }
     }
@@ -398,7 +399,7 @@ public class InventoryActivity extends AppCompatActivity {
                 dataIO.saveInFile("book.sav", json2);
 
                 intent = new Intent(this, EditBookActivity.class);
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, MENU_Edit_Item);
 
                 return true;
 

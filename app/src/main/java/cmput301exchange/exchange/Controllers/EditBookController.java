@@ -296,9 +296,10 @@ public class EditBookController implements Observer{
 
 
 
-    public void add(View view){
+    public void done(View view){
 
-        Book book = new Book();
+        inventory.removeItem(editBook);
+
         //button behaviour
         // set quality and quantity to 0 if nothing entered
         if (quality.getText().toString().isEmpty()) {
@@ -314,25 +315,23 @@ public class EditBookController implements Observer{
         Integer bookQuantity = Integer.parseInt(quantity.getText().toString());
         Integer bookQuality = Integer.parseInt(quality.getText().toString());
 
-
-        //checkBox = (CheckBox) view.findViewById(R.id.shareable_checkBox);
         if (checkBox.isChecked()) {
-            book.setShareable(Boolean.TRUE);
+            editBook.setShareable(Boolean.TRUE);
         }
         else {
-            book.setShareable(Boolean.FALSE);
+            editBook.setShareable(Boolean.FALSE);
         }
 
-        book.updateTitle(bookName);
-        book.updateAuthor(bookAuthor);
-        book.updateQuantity(bookQuantity);
-        book.updateQuality(bookQuality);
-        book.updateCategory(category);
-        book.updateComment(bookComments);
+        editBook.updateTitle(bookName);
+        editBook.updateAuthor(bookAuthor);
+        editBook.updateQuantity(bookQuantity);
+        editBook.updateQuality(bookQuality);
+        editBook.updateCategory(category);
+        editBook.updateComment(bookComments);
 
 //        book.setPhotos(compressedImages); TODO fix this
 
-        inventory.add(book);
+        inventory.add(editBook);
         this.finishAdd();
     }
 
@@ -531,7 +530,7 @@ public class EditBookController implements Observer{
         String json = inventory.toJson(); //Write the existing inventory data to Json
         dataIO.saveInFile("book.sav", json);
 
-        Intent added = new Intent().putExtra("Inventory", "book.sav"); //Send it back to the inventory activity
+        Intent added = new Intent().putExtra("Book", "book.sav"); //Send it back to the inventory activity
         activity.setResult(activity.RESULT_OK, added);
 
         activity.finish();
