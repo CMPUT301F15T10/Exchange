@@ -198,6 +198,55 @@ public class ElasticSearch implements Observable {
         userExists = fetchedUser.isFound();
         return fetchedUser.get_source();
     }
+//    public Photos fetchPhotos(Long id) {
+//        SearchHit<User> fetchedUser = null;
+//        HttpResponse response = null;
+//        try{
+//            HttpClient httpClient = new DefaultHttpClient();
+//            HttpParams httpParams = httpClient.getParams().setIntParameter("CONNECTION_MANAGER_TIMEOUT",3000);
+//            HttpConnectionParams.setConnectionTimeout(httpParams, Timeout);
+//            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
+//
+//            HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/photo/" + id);
+//
+//            response = httpClient.execute(httpGet);
+//
+//
+//        }catch (ConnectTimeoutException e1){
+//            return new User("null");
+//        }catch (ClientProtocolException e2) {
+//            Log.i("FetchUser", e2.toString());
+//        }catch(IOException e3){
+//            Log.i("FetchUser",e3.toString());
+//        }
+//
+//        Type ElasticSearchResultType = new TypeToken<SearchHit<User>>() {
+//        }.getType();
+//
+//        try {
+//            if (response != null) {
+//                fetchedUser = gson.fromJson(
+//                        new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+//            }else{
+//                return
+//            }
+//
+//
+//        } catch (JsonIOException e) {
+//            throw new RuntimeException(e);
+//        } catch (JsonSyntaxException e) {
+//            throw new RuntimeException(e);
+//        } catch (IllegalStateException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            Toast toast = Toast.makeText(activity, "You are Logged in Offline...",Toast.LENGTH_LONG);
+//            toast.show();
+//            return new User(username);
+//        }
+//
+//        userExists = fetchedUser.isFound();
+//        return fetchedUser.get_source();
+//    }
 
     public void SearchByPage (String query, String page){
 
