@@ -83,6 +83,7 @@ package cmput301exchange.exchange.Controllers;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -118,13 +119,15 @@ import cmput301exchange.exchange.Interfaces.Observable;
 import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Inventory;
 import cmput301exchange.exchange.ModelEnvironment;
+import cmput301exchange.exchange.Photos;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
 
 /**
  * Created by Charles on 11/27/2015.
  */
-public class EditBookController implements Observable{
+public class EditBookController implements Observer{
     ArrayList<Observer> observerList = new ArrayList<>();
     private Context context;
     private Activity activity;
@@ -149,13 +152,17 @@ public class EditBookController implements Observable{
     private ArrayList<Bitmap> imageList = new ArrayList<>();
     private ArrayAdapter<Bitmap> bmpAdapter;
     private ArrayAdapter<CharSequence> adapter;
+    private Photos photos;
 
+    private ElasticSearch elasticSearch;
     private DataIO dataIO;
+    private ProgressDialog progressDialog;
 
     public EditBookController(Context context, Activity activity){
         this.context = context;
         this.activity = activity;
         dataIO = new DataIO(context, ModelEnvironment.class);
+        elasticSearch = new ElasticSearch(activity);
     }
 
     public void Setup(){
@@ -176,13 +183,7 @@ public class EditBookController implements Observable{
         File file2 = new File(context.getFilesDir(), "book.sav");
         file2.delete();
 
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        if(prefs.getBoolean("checkbox_preference", true)){
-        //  download only if preference is checked
-        //        compressedImages = editBook.getPhotos();
-        //        createBitmapArray(compressedImages);
-        }
+        getPhotos();
 
         name.setText(editBook.getName());
         author.setText(editBook.getAuthor());
@@ -202,6 +203,19 @@ public class EditBookController implements Observable{
         }
         bmpAdapter.notifyDataSetChanged();
 
+    }
+
+    private void getPhotos(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        if(prefs.getBoolean("checkbox_preference", true)){
+            progressDialog = ProgressDialog.show(activity,"Loading Photos", "Just a moment...", true);
+            elasticSearch.fetchPhotoFromServer(editBook.getPhotoID());
+        }
+    }
+
+    public void downloadPhotos(){
+        progressDialog = ProgressDialog.show(activity,"Loading Photos", "Just a moment...", true);
+        elasticSearch.fetchPhotoFromServer(editBook.getPhotoID());
     }
 
     public void createBitmapArray(ArrayList<String> compressedImages){
@@ -519,31 +533,19 @@ public class EditBookController implements Observable{
 
     }
 
-
-
-
-
-    // Below are the Observer Methods
     @Override
-    public void addObserver(Observer observer) {
-        observerList.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-        observerList.remove(observer);
-    }
-
-    @Override
-    public void notifyObserver(Observer observer) {
-        observer.update();
-    }
-
-    @Override
-    public void notifyAllObserver() {
-        for(Observer i : observerList){
-            i.update();
+    public void update() {
+        photos = elasticSearch.getPhotos();
+        progressDialog.dismiss();
+        compressedImages = photos.getCompressedPhotos();
+        createBitmapArray(compressedImages);
+        if (imageList.size() == 0){
+            image.setImageDrawable(null);
         }
+        else {
+            image.setImageBitmap(imageList.get(0));
+        }
+        bmpAdapter.notifyDataSetChanged();
     }
 
 

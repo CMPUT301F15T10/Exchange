@@ -54,6 +54,7 @@ public class BookDetailsActivity extends ActionBarActivity implements Observer {
     private ElasticSearch elasticSearch;
     private Photos photos;
     private ProgressDialog progressDialog;
+    private ArrayAdapter<Bitmap> bmpAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,9 @@ public class BookDetailsActivity extends ActionBarActivity implements Observer {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_download) {
+            progressDialog = ProgressDialog.show(this,"Loading Photos", "Just a moment...", true);
+            elasticSearch.fetchPhotoFromServer(book.getPhotoID());
             return true;
         }
 
@@ -106,7 +109,7 @@ public class BookDetailsActivity extends ActionBarActivity implements Observer {
 
     public void initTextView(){
         photoList = (Spinner) findViewById(R.id.photoListView);
-        ArrayAdapter<Bitmap> bmpAdapter = new PhotoAdapter(this, imageList);
+        bmpAdapter = new PhotoAdapter(this, imageList);
         photoList.setAdapter(bmpAdapter);
 
         image = (ImageButton) findViewById(R.id.imageButton);
@@ -225,5 +228,12 @@ public class BookDetailsActivity extends ActionBarActivity implements Observer {
         progressDialog.dismiss();
         compressedImages = photos.getCompressedPhotos();
         createBitmapArray(compressedImages);
+        if (imageList.size() == 0){
+            image.setImageDrawable(null);
+        }
+        else {
+            image.setImageBitmap(imageList.get(0));
+        }
+        bmpAdapter.notifyDataSetChanged();
     }
 }

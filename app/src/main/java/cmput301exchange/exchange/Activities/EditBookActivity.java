@@ -1,6 +1,7 @@
 package cmput301exchange.exchange.Activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -117,7 +118,8 @@ public class EditBookActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_download) {
+            controller.downloadPhotos();
             return true;
         }
 
