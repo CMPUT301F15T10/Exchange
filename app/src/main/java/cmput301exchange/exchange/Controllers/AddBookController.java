@@ -221,7 +221,8 @@ public class AddBookController implements Observer {
         book.setPhotoID(photos.getId());
 
         inventory.add(book);
-        elasticSearch.sendPhotoToServer(photos);
+//        elasticSearch.sendPhotoToServer(photos);
+        this.finishAdd();
     }
 
     public void selectImage() {
@@ -431,6 +432,7 @@ public class AddBookController implements Observer {
         Intent added = new Intent().putExtra("Inventory", "inventory.sav"); //Send it back to the inventory activity
         activity.setResult(activity.RESULT_OK, added);
 
+        elasticSearch.sendPhotoToServer(photos);
         activity.finish();
 
     }
@@ -438,7 +440,6 @@ public class AddBookController implements Observer {
 
     @Override
     public void update() {
-        photos = elasticSearch.getPhotos();
-        this.finishAdd();
+
     }
 }
