@@ -238,7 +238,7 @@ public class ElasticSearch implements Observable {
             HttpConnectionParams.setConnectionTimeout(httpParams, Timeout);
             HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
 
-            HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/photo/" + id);
+            HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/photos/" + id);
 
             response = httpClient.execute(httpGet);
 
