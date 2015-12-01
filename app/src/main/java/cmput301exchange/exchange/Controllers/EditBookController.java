@@ -174,8 +174,10 @@ public class EditBookController implements Observable{
         File file2 = new File(context.getFilesDir(), "book.sav");
         file2.delete();
 
-        compressedImages = editBook.getPhotos();
-        createBitmapArray(compressedImages);
+//  download only if preference is checked
+//        compressedImages = editBook.getPhotos();
+//        createBitmapArray(compressedImages);
+
         name.setText(editBook.getName());
         author.setText(editBook.getAuthor());
         quality.setText(String.valueOf(editBook.getQuality()));
@@ -303,7 +305,7 @@ public class EditBookController implements Observable{
         book.updateCategory(category);
         book.updateComment(bookComments);
 
-        book.setPhotos(compressedImages);
+//        book.setPhotos(compressedImages); TODO fix this
 
         inventory.add(book);
         this.finishAdd();
