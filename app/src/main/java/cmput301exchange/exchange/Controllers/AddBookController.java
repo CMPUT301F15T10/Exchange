@@ -439,7 +439,6 @@ public class AddBookController implements Observer {
 
     }
 
-
     @Override
     public void update() {
 

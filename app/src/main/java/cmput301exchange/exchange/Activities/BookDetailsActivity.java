@@ -1,6 +1,7 @@
 package cmput301exchange.exchange.Activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,11 +32,14 @@ import java.util.ArrayList;
 import cmput301exchange.exchange.Adapters.PhotoAdapter;
 import cmput301exchange.exchange.Book;
 import cmput301exchange.exchange.Controllers.PhotoController;
+import cmput301exchange.exchange.Interfaces.Observer;
 import cmput301exchange.exchange.Inventory;
+import cmput301exchange.exchange.Photos;
 import cmput301exchange.exchange.R;
 import cmput301exchange.exchange.Serializers.DataIO;
+import cmput301exchange.exchange.Serializers.ElasticSearch;
 
-public class BookDetailsActivity extends ActionBarActivity {
+public class BookDetailsActivity extends ActionBarActivity implements Observer {
     // this is a class of show details of a book
     //it use gson to get the data about a specific book
     //and change edit text of the view shown on the screen
@@ -47,11 +51,17 @@ public class BookDetailsActivity extends ActionBarActivity {
     private ImageButton image;
     private Spinner photoList;
     private int currentBitmapPos = 0;
+    private ElasticSearch elasticSearch;
+    private Photos photos;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
+
+        elasticSearch = new ElasticSearch(this);
+        elasticSearch.addObserver(this);
 
         String bookString = dataIO.loadFromFile("book.sav");
         File file = new File(getFilesDir(), "book.sav");
@@ -59,37 +69,17 @@ public class BookDetailsActivity extends ActionBarActivity {
         Gson gson= new Gson();
         book=gson.fromJson(bookString, Book.class);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs.getBoolean("checkbox_preference", true)){
-            // do elastic search vooodooo
-            // compressedImages = book.getPhotos();
-            createBitmapArray(compressedImages);
-        }
-
+        getPhotos();
         initTextView();
 
-        photoList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //on selecting a spinner item
-                currentBitmapPos = position;
-                image.setImageBitmap(imageList.get(position));
+    }
 
-            }
-
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectImage();
-            }
-        });
-
-
+    private void getPhotos(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if(prefs.getBoolean("checkbox_preference", true)){
+            progressDialog = ProgressDialog.show(this,"Loading Photos", "Just a moment...", true);
+            elasticSearch.fetchPhotoFromServer(book.getPhotoID());
+        }
     }
 
     @Override
@@ -151,6 +141,27 @@ public class BookDetailsActivity extends ActionBarActivity {
             image.setImageBitmap(imageList.get(0));
         }
         bmpAdapter.notifyDataSetChanged();
+
+        photoList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //on selecting a spinner item
+                currentBitmapPos = position;
+                image.setImageBitmap(imageList.get(position));
+
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
     }
 
     public void createBitmapArray(ArrayList<String> compressedImages){
@@ -206,5 +217,13 @@ public class BookDetailsActivity extends ActionBarActivity {
         Intent goBack = new Intent();
         setResult(RESULT_OK, goBack);
         this.finish();
+    }
+
+    @Override
+    public void update() {
+        this.photos = elasticSearch.getPhotos();
+        progressDialog.dismiss();
+        compressedImages = photos.getCompressedPhotos();
+        createBitmapArray(compressedImages);
     }
 }
