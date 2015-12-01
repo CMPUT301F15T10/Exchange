@@ -214,6 +214,7 @@ public class AddBookController implements Observable{
         photos.initID();
         photos.setCompressedPhotos(compressedImages);
         book.setPhotoID(photos.getId());
+        
 
         inventory.add(book);
         this.finishAdd();
