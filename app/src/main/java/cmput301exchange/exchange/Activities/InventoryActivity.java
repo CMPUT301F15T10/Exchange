@@ -309,10 +309,12 @@ public class InventoryActivity extends AppCompatActivity {
                 String json = dataIO.loadFromFile("book.sav");
                 File file = new File(getFilesDir(), "book.sav");
                 file.delete();
-                inventory=gson.fromJson(json,Inventory.class);
-                updateBookList(inventory);
-                lv.clearChoices();
+                Book book = gson.fromJson(json,Book.class);
+                int index=inventory.getInventoryList().indexOf(selectedBooks.get(0));
                 selectedBooks.clear();
+                lv.clearChoices();
+                inventory.getInventoryList().set(index, book);
+                updateBookList(inventory);
             }
         }
     }
@@ -393,10 +395,8 @@ public class InventoryActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_edit:
-                json1 = gson.toJson(inventory);
-                json2 = gson.toJson(selectedBooks.get(0));
-                dataIO.saveInFile("inventory.sav", json1);
-                dataIO.saveInFile("book.sav", json2);
+                json = gson.toJson(selectedBooks.get(0));
+                dataIO.saveInFile("book.sav", json);
 
                 intent = new Intent(this, EditBookActivity.class);
                 startActivityForResult(intent, MENU_Edit_Item);

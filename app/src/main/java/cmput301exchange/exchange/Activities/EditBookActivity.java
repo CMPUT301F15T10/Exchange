@@ -66,6 +66,7 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
         setContentView(R.layout.activity_edit_book);
 
         controller = new EditBookController(this, this);
+        controller.getElasticSearch().addObserver(this);
         controller.Setup();
     }
 

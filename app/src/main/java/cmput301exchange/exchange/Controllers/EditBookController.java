@@ -133,7 +133,6 @@ public class EditBookController implements Observer{
     private Activity activity;
 
     private String category;
-    private Inventory inventory;
     private Book editBook;
 
 
@@ -178,15 +177,10 @@ public class EditBookController implements Observer{
         setupPhotoOnClick();
         Gson gson= new Gson();
 
-        String inventoryString = dataIO.loadFromFile("inventory.sav");
-        inventory = gson.fromJson(inventoryString, Inventory.class);
-        File file1 = new File(context.getFilesDir(), "inventory.sav");
-        file1.delete();
-
         String bookString = dataIO.loadFromFile("book.sav");
         editBook = gson.fromJson(bookString, Book.class);
-        File file2 = new File(context.getFilesDir(), "book.sav");
-        file2.delete();
+        File file = new File(context.getFilesDir(), "book.sav");
+        file.delete();
 
         getPhotos();
 
@@ -298,8 +292,6 @@ public class EditBookController implements Observer{
 
     public void done(View view){
 
-        inventory.removeItem(editBook);
-
         //button behaviour
         // set quality and quantity to 0 if nothing entered
         if (quality.getText().toString().isEmpty()) {
@@ -329,9 +321,8 @@ public class EditBookController implements Observer{
         editBook.updateCategory(category);
         editBook.updateComment(bookComments);
 
-//        book.setPhotos(compressedImages); TODO fix this
+//        editBook.setPhotos(compressedImages); TODO fix this
 
-        inventory.add(editBook);
         this.finishAdd();
     }
 
@@ -527,7 +518,7 @@ public class EditBookController implements Observer{
     }
 
     public void finishAdd(){
-        String json = inventory.toJson(); //Write the existing inventory data to Json
+        String json = editBook.toJson();
         dataIO.saveInFile("book.sav", json);
 
         Intent added = new Intent().putExtra("Book", "book.sav"); //Send it back to the inventory activity
