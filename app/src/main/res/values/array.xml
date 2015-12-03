@@ -6,28 +6,28 @@
     </string-array>
     <string-array name="categories_selection">
         <item>None</item>
-        <item>Category1</item>
-        <item>Category2</item>
-        <item>Category3</item>
-        <item>Category4</item>
-        <item>Category5</item>
-        <item>Category6</item>
-        <item>Category7</item>
-        <item>Category8</item>
-        <item>Category9</item>
-        <item>Category10</item>
+        <item>Horror</item>
+        <item>Romance</item>
+        <item>Fiction</item>
+        <item>Non-Fiction</item>
+        <item>IT/Tech</item>
+        <item>Reference</item>
+        <item>Textbook</item>
+        <item>Literature</item>
+        <item>Sci-Fi</item>
+        <item>Comedy</item>
     </string-array>
     <string-array name="categories">
-        <item>Category1</item>
-        <item>Category2</item>
-        <item>Category3</item>
-        <item>Category4</item>
-        <item>Category5</item>
-        <item>Category6</item>
-        <item>Category7</item>
-        <item>Category8</item>
-        <item>Category9</item>
-        <item>Category10</item>
+        <item>Horror</item>
+        <item>Romance</item>
+        <item>Fiction</item>
+        <item>Non-Fiction</item>
+        <item>It/Tech</item>
+        <item>Reference</item>
+        <item>Textbook</item>
+        <item>Literature</item>
+        <item>Sci-Fi</item>
+        <item>Comedy</item>
     </string-array>
     <string-array name="inventory_view_user">
         <item>All Items</item>
