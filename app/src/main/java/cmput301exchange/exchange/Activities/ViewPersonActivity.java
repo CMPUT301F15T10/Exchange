@@ -392,7 +392,6 @@ public class ViewPersonActivity extends AppCompatActivity implements Observer {
     public void initPersonList(Integer integer){
         String page = integer.toString();
         elasticSearch.addObserver(this);
-
         elasticSearch.fetchAllUsersFromServer("*", page);
 
 

@@ -25,6 +25,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -145,6 +146,11 @@ public class ElasticSearch implements Observable {
             HttpResponse response = httpClient.execute(addRequest);
             String status = response.getStatusLine().toString();
 
+            response.getEntity().consumeContent();
+
+            httpClient.getConnectionManager().closeExpiredConnections();
+            httpClient.getConnectionManager().shutdown();
+
             Log.i("ElasticGLOBALENV", status);
 
 
@@ -161,8 +167,8 @@ public class ElasticSearch implements Observable {
             HttpPost addRequest = new HttpPost("http://cmput301.softwareprocess.es:8080/cmput301f15t10/photos/" + photos.getId());
 
             HttpParams httpParams = new BasicHttpParams(); //Set the Parameters
-            HttpConnectionParams.setConnectionTimeout(httpParams,Timeout); // For Timeout
-            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket); //For Socket Timeout
+            HttpConnectionParams.setConnectionTimeout(httpParams, Timeout); // For Timeout
+            HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket); //For Socket Timeout
             addRequest.setParams(httpParams);
 
             StringEntity stringEntity = new StringEntity(gson.toJson(photos));
@@ -171,6 +177,11 @@ public class ElasticSearch implements Observable {
 
             HttpResponse response = httpClient.execute(addRequest);
             String status = response.getStatusLine().toString();
+
+            response.getEntity().consumeContent();
+
+            httpClient.getConnectionManager().closeExpiredConnections();
+            httpClient.getConnectionManager().shutdown();
 
             Log.i("ElasticGLOBALENV", status);
 
@@ -184,15 +195,20 @@ public class ElasticSearch implements Observable {
     public User fetchUser(String username) {
         SearchHit<User> fetchedUser = null;
         HttpResponse response = null;
+        HttpClient httpClient;
+        HttpGet httpGet;
         try{
-            HttpClient httpClient = new DefaultHttpClient();
+            httpClient = new DefaultHttpClient();
             HttpParams httpParams = httpClient.getParams().setIntParameter("CONNECTION_MANAGER_TIMEOUT",3000);
             HttpConnectionParams.setConnectionTimeout(httpParams, Timeout);
-            HttpConnectionParams.setSoTimeout(httpParams,timeoutSocket);
+            HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket);
 
-            HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
+            httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/Users/" + username);
 
             response = httpClient.execute(httpGet);
+
+            httpClient.getConnectionManager().closeExpiredConnections();
+            httpClient.getConnectionManager().shutdown();
 
 
         }catch (ConnectTimeoutException e1){
@@ -209,8 +225,11 @@ public class ElasticSearch implements Observable {
 
         try {
             if (response != null) {
-                fetchedUser = gson.fromJson(
-                        new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+                InputStreamReader streamReader = new InputStreamReader(response.getEntity().getContent());
+                fetchedUser = gson.fromJson(streamReader, ElasticSearchResultType);
+                streamReader.close();
+                response.getEntity().consumeContent();
+
             }else{
                 return new User(username);
             }
@@ -228,6 +247,7 @@ public class ElasticSearch implements Observable {
             return new User(username);
         }
 
+
         userExists = fetchedUser.isFound();
         return fetchedUser.get_source();
     }
@@ -243,6 +263,8 @@ public class ElasticSearch implements Observable {
             HttpGet httpGet = new HttpGet("http://cmput301.softwareprocess.es:8080/cmput301f15t10/photos/" + id);
 
             response = httpClient.execute(httpGet);
+            httpClient.getConnectionManager().closeExpiredConnections();
+            httpClient.getConnectionManager().shutdown();
 
 
         }catch (ConnectTimeoutException e1){
@@ -258,8 +280,10 @@ public class ElasticSearch implements Observable {
 
         try {
             if (response != null) {
-                fetchedphotos = gson.fromJson(
-                        new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+                InputStreamReader streamReader = new InputStreamReader(response.getEntity().getContent());
+                fetchedphotos = gson.fromJson(streamReader, ElasticSearchResultType);
+                streamReader.close();
+                response.getEntity().consumeContent();
             }else{
                 return new Photos();
             }
@@ -278,6 +302,7 @@ public class ElasticSearch implements Observable {
         }
 
 //        userExists = fetchedUser.isFound();
+
         return fetchedphotos.get_source();
     }
 
@@ -302,6 +327,9 @@ public class ElasticSearch implements Observable {
             return;
         }
 
+        httpClient.getConnectionManager().closeExpiredConnections();
+        httpClient.getConnectionManager().shutdown();
+
         Type ElasticSearchResultType = new TypeToken<SearchResponse<Person>>() {
         }.getType();
 
@@ -310,6 +338,7 @@ public class ElasticSearch implements Observable {
         try {
             fetchedUsers = gson.fromJson(
                     new InputStreamReader(response.getEntity().getContent()), ElasticSearchResultType);
+
 
         } catch (JsonIOException e) {
             throw new RuntimeException(e);
