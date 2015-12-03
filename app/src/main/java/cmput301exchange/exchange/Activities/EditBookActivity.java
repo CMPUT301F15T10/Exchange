@@ -66,12 +66,11 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
         setContentView(R.layout.activity_edit_book);
 
         controller = new EditBookController(this, this);
-        controller.getElasticSearch().addObserver(this);
         controller.Setup();
     }
 
     public void done(View view){
-        controller.done(view);
+        controller.add(view);
     }
 
 
@@ -81,21 +80,6 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
         controller.ActivityResult(requestCode,resultCode,data);
     }
 
-
-
-    @Override
-    public void onStop(){
-        //We want this function to be called whenever the activity is killed to prevent losing data
-        //I pulled the gson writing from the add function, and generalized it.
-
-        Gson gson= new Gson(); //Create a new Gson Instance
-        String json=gson.toJson(inventory); //Write the existing inventory data to Json
-
-        Intent added = new Intent().putExtra("Inventory",json); //Send it back to the inventory activity
-        setResult(RESULT_OK, added);
-
-        super.onStop(); //Required for the onStop Function to work
-    }
 
     @Override
     public void onBackPressed(){
@@ -132,8 +116,6 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
 
     @Override
     public void update() {
-        controller.update();
 
     }
 }
-

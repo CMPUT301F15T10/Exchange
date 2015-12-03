@@ -1,83 +1,3 @@
-//package cmput301exchange.exchange.Controllers;
-//
-//import android.util.Log;
-//
-//import cmput301exchange.exchange.Book;
-//
-///**
-// * Created by touqir on 29/10/15.
-// */
-//public class EditBookController {
-//    private Book myBook;
-//
-//    public EditBookController(Book book) {
-//        myBook=book;
-//    }
-//
-//    public void updateComment(String comment){
-//        myBook.updateComment(comment);
-//    }
-//
-//    public String getComment(){
-//        return myBook.getComment();
-//    }
-//    public String getName(){
-//        return myBook.getName();
-//    }
-//    public String getType(){
-//        return myBook.getItemType();
-//    }
-//    public String getQuality(){
-//        Integer quality=myBook.getQuality();
-//        return quality.toString();
-//    }
-//    public String getQuantity(){
-//        Integer quantity=myBook.getQuantity();
-//        return quantity.toString();
-//    }
-//    public String getCategory(){
-//        return myBook.getCategory();
-//    }
-//
-//    public void updateName(String name){
-//        myBook.updateTitle(name);
-//    }
-//    public void updateType(String type){
-//        myBook.setItemType(type);
-//    }
-//    public void updateQuantity(String Quantity){
-//        Log.e("here",Quantity);
-//        Double Quantity_D=Double.parseDouble(Quantity);
-//        myBook.updateQuantity(Quantity_D.intValue());
-//    }
-//    public void updateQuality(String Quality){
-//        Double Quality_D=Double.parseDouble(Quality);
-//        myBook.updateQuality(Quality_D.intValue());
-//    }
-//
-//    public void setBook(Book book){
-//        myBook=book;
-//    }
-//
-//    public Book getBook(){
-//        return myBook;
-//    }
-//
-//    //TODO
-//    public void save(){
-//        //Will include functionality for saving mybook to storage.
-//    }
-//
-//    //TODO
-//    public void reloadData(){
-//        //Will implement loading the same book from model.
-//    }
-//
-//    public void updateCategory(String category){
-//        myBook.updateCategory(category);
-//    }
-//}
-
 package cmput301exchange.exchange.Controllers;
 
 
@@ -176,6 +96,7 @@ public class EditBookController implements Observer{
         setupSpinnerOnClick();
         setupPhotoOnClick();
         Gson gson= new Gson();
+
 
         String bookString = dataIO.loadFromFile("book.sav");
         editBook = gson.fromJson(bookString, Book.class);
@@ -290,8 +211,9 @@ public class EditBookController implements Observer{
 
 
 
-    public void done(View view){
+    public void add(View view){
 
+        Book book = new Book();
         //button behaviour
         // set quality and quantity to 0 if nothing entered
         if (quality.getText().toString().isEmpty()) {
@@ -307,21 +229,23 @@ public class EditBookController implements Observer{
         Integer bookQuantity = Integer.parseInt(quantity.getText().toString());
         Integer bookQuality = Integer.parseInt(quality.getText().toString());
 
+
+        //checkBox = (CheckBox) view.findViewById(R.id.shareable_checkBox);
         if (checkBox.isChecked()) {
-            editBook.setShareable(Boolean.TRUE);
+            book.setShareable(Boolean.TRUE);
         }
         else {
-            editBook.setShareable(Boolean.FALSE);
+            book.setShareable(Boolean.FALSE);
         }
 
-        editBook.updateTitle(bookName);
-        editBook.updateAuthor(bookAuthor);
-        editBook.updateQuantity(bookQuantity);
-        editBook.updateQuality(bookQuality);
-        editBook.updateCategory(category);
-        editBook.updateComment(bookComments);
+        book.updateTitle(bookName);
+        book.updateAuthor(bookAuthor);
+        book.updateQuantity(bookQuantity);
+        book.updateQuality(bookQuality);
+        book.updateCategory(category);
+        book.updateComment(bookComments);
 
-//        editBook.setPhotos(compressedImages); TODO fix this
+//        book.setPhotos(compressedImages); TODO fix this
 
         this.finishAdd();
     }
@@ -545,4 +469,3 @@ public class EditBookController implements Observer{
 
 
 }
-
