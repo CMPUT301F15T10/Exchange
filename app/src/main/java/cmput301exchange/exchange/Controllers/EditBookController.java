@@ -53,6 +53,7 @@ public class EditBookController implements Observer{
     private Activity activity;
 
     private String category;
+    private Inventory inventory;
     private Book editBook;
 
 
@@ -77,16 +78,11 @@ public class EditBookController implements Observer{
     private DataIO dataIO;
     private ProgressDialog progressDialog;
 
-    public ElasticSearch getElasticSearch() {
-        return elasticSearch;
-    }
-
     public EditBookController(Context context, Activity activity){
         this.context = context;
         this.activity = activity;
         dataIO = new DataIO(context, ModelEnvironment.class);
         elasticSearch = new ElasticSearch(activity);
-        elasticSearch.addObserver(this);
     }
 
     public void Setup(){
@@ -97,11 +93,12 @@ public class EditBookController implements Observer{
         setupPhotoOnClick();
         Gson gson= new Gson();
 
-
         String bookString = dataIO.loadFromFile("book.sav");
         editBook = gson.fromJson(bookString, Book.class);
         File file = new File(context.getFilesDir(), "book.sav");
         file.delete();
+
+        elasticSearch.addObserver(this);
 
         getPhotos();
 
@@ -140,7 +137,9 @@ public class EditBookController implements Observer{
 
     public void createBitmapArray(ArrayList<String> compressedImages){
         for (String i: compressedImages){
-            addToImageList(i.getBytes());
+            PhotoController photoController = new PhotoController();
+            Bitmap bm = photoController.getBitmapFromString(i);
+            imageList.add(bm);
         }
     }
 
@@ -211,9 +210,8 @@ public class EditBookController implements Observer{
 
 
 
-    public void add(View view){
+    public void done(View view){
 
-        Book book = new Book();
         //button behaviour
         // set quality and quantity to 0 if nothing entered
         if (quality.getText().toString().isEmpty()) {
@@ -232,20 +230,18 @@ public class EditBookController implements Observer{
 
         //checkBox = (CheckBox) view.findViewById(R.id.shareable_checkBox);
         if (checkBox.isChecked()) {
-            book.setShareable(Boolean.TRUE);
+            editBook.setShareable(Boolean.TRUE);
         }
         else {
-            book.setShareable(Boolean.FALSE);
+            editBook.setShareable(Boolean.FALSE);
         }
 
-        book.updateTitle(bookName);
-        book.updateAuthor(bookAuthor);
-        book.updateQuantity(bookQuantity);
-        book.updateQuality(bookQuality);
-        book.updateCategory(category);
-        book.updateComment(bookComments);
-
-//        book.setPhotos(compressedImages); TODO fix this
+        editBook.updateTitle(bookName);
+        editBook.updateAuthor(bookAuthor);
+        editBook.updateQuantity(bookQuantity);
+        editBook.updateQuality(bookQuality);
+        editBook.updateCategory(category);
+        editBook.updateComment(bookComments);
 
         this.finishAdd();
     }
@@ -469,3 +465,5 @@ public class EditBookController implements Observer{
 
 
 }
+
+

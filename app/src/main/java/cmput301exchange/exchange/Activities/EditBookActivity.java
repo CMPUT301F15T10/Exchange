@@ -70,7 +70,7 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
     }
 
     public void done(View view){
-        controller.add(view);
+        controller.done(view);
     }
 
 
@@ -79,7 +79,6 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
         super.onActivityResult(requestCode, resultCode, data);
         controller.ActivityResult(requestCode,resultCode,data);
     }
-
 
     @Override
     public void onBackPressed(){
@@ -105,7 +104,6 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_download){
-            controller.getElasticSearch().addObserver(this);
             controller.downloadPhotos();
             return true;
         }
@@ -119,3 +117,5 @@ public class EditBookActivity extends ActionBarActivity implements Observer {
 
     }
 }
+
+
