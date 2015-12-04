@@ -303,13 +303,13 @@ public class InventoryActivity extends AppCompatActivity {
             }
         }
 
-        else if (requestCode == MENU_Edit_Item) {
+        else if (requestCode == MENU_Edit_Item && data != null) {
             if (data.hasExtra("Book")){
                 DataIO dataIO = new DataIO(this, InventoryActivity.class);
                 String json = dataIO.loadFromFile("book.sav");
+                Book book = gson.fromJson(json, Book.class);
                 File file = new File(getFilesDir(), "book.sav");
                 file.delete();
-                Book book = gson.fromJson(json,Book.class);
                 int index=inventory.getInventoryList().indexOf(selectedBooks.get(0));
                 selectedBooks.clear();
                 lv.clearChoices();
