@@ -149,7 +149,6 @@ public class ElasticSearch implements Observable {
             response.getEntity().consumeContent();
 
             httpClient.getConnectionManager().closeExpiredConnections();
-            httpClient.getConnectionManager().shutdown();
 
             Log.i("ElasticGLOBALENV", status);
 
@@ -181,7 +180,6 @@ public class ElasticSearch implements Observable {
             response.getEntity().consumeContent();
 
             httpClient.getConnectionManager().closeExpiredConnections();
-            httpClient.getConnectionManager().shutdown();
 
             Log.i("ElasticGLOBALENV", status);
 
@@ -208,7 +206,6 @@ public class ElasticSearch implements Observable {
             response = httpClient.execute(httpGet);
 
             httpClient.getConnectionManager().closeExpiredConnections();
-            httpClient.getConnectionManager().shutdown();
 
 
         }catch (ConnectTimeoutException e1){
@@ -264,7 +261,6 @@ public class ElasticSearch implements Observable {
 
             response = httpClient.execute(httpGet);
             httpClient.getConnectionManager().closeExpiredConnections();
-            httpClient.getConnectionManager().shutdown();
 
 
         }catch (ConnectTimeoutException e1){
@@ -328,7 +324,6 @@ public class ElasticSearch implements Observable {
         }
 
         httpClient.getConnectionManager().closeExpiredConnections();
-        httpClient.getConnectionManager().shutdown();
 
         Type ElasticSearchResultType = new TypeToken<SearchResponse<Person>>() {
         }.getType();
