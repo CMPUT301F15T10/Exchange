@@ -58,6 +58,13 @@ public class Trade {
         this.tradeId = rand.nextLong();
         stateHistory= new ArrayList<>();
     }
+
+    public Trade(Person tradeUser, Person tradePartner) {
+        Random rand = new Random(System.nanoTime());
+        this.tradeId = rand.nextLong();
+        this.tradeUser = tradeUser;
+        this.tradePartner = tradePartner;
+    }
     /**
      * Constructor of the trade
      * @param tradeUser the user that initates the trade
@@ -181,16 +188,8 @@ public class Trade {
     }
 
     public void setTradePartner(Person tradePartner, Boolean isCounterTrade) {
-        Log.e("Trade Partner is selected","-----");
-//        if (isCounterTrade==true){
-//            this.tradePartner=;
-//            this.hasPartner=false;
-//            this.PartnerID=null;
-//            return;
-//        }
-
+        Log.e("Trade Partner selected","-----");
         this.tradePartner = tradePartner;
-
         if (tradePartner != null){
             this.partnerName=tradePartner.getName();
             this.PartnerID = tradePartner.getID();
@@ -262,7 +261,6 @@ public class Trade {
     public void setListBookPartner(ArrayList<Book> listBookPartner) {
         this.listBookPartner = listBookPartner;
     }
-
 
     //TODO
     public String toString(){

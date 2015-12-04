@@ -13,12 +13,10 @@ import cmput301exchange.exchange.Interfaces.Serializable;
  * Allows storing books and attributing them to users.
  */
 
-
 public class Inventory implements Serializable{
 
     protected User inventoryOwner;
     protected ArrayList<Book> inventoryList = new ArrayList<>();
-
 
     private boolean shareable;
     public void setShareable(boolean bool){shareable = bool;}

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import cmput301exchange.exchange.Serializers.deepClone;
 
-
 /*
 NOTES:
 - add a list (listTradeRequest) that stores all trades that were offered to the user
@@ -37,8 +36,8 @@ public class TradeManager {
     private ArrayList<String> listCurrentTadeBorrower;
     */
 
-    private ArrayList<Trade> listTransactionedTrade = new ArrayList<>(); // to read/load from file
-    private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
+    private ArrayList<Trade> listTransactionedTrade = new ArrayList<>();
+    private ArrayList<Trade> listCurrentTrade = new ArrayList<>();
     private ArrayList<Trade> listCompleteTrade= new ArrayList<>();
     private ArrayList<Trade> listTradeRequest = new ArrayList<>();
 
@@ -79,7 +78,6 @@ public class TradeManager {
      */
 
     public Trade load(Long ID, int choice, Context activity){
-
         switch(choice){
             case 1:
                 for (Trade trade:listTransactionedTrade){
@@ -200,7 +198,6 @@ public class TradeManager {
     //TODO
     public void loadPersons(Trade trade, Context activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
-
         if (trade.getUserID().equals(globalEnv.getOwner().getID())){
             trade.setTradeUser(globalEnv.getOwner());
             if (trade.hasTradePartner()==true) {
@@ -212,21 +209,13 @@ public class TradeManager {
         }
     }
 
-
-    /*
-
-    this method removes the person objects
-     */
     public void lightenTrade(Trade trade){
         trade.removePersons();
     }
 
-
-
     public void addUnInitiatedTrade(Trade trade) {
-
         // add the trade to the listCurrentTrade
-        lightenTrade(trade);
+        //lightenTrade(trade);
         for (Trade trade1: listCurrentTrade){
             if (trade.getTradeId().equals(trade1.getTradeId())){
                 return;
@@ -561,19 +550,20 @@ public class TradeManager {
         return listTradeRequest;
     }
 
+    // TODO adds one more attributes People
     public Integer getTradeRequest_no() {
         return listTradeRequest.size();
     }
 
     public void processTradeRequest(Trade trade){
-//        lightenTrade(trade);
+        //lightenTrade(trade);
         Gson gson= new Gson();
         Log.e("push 1", String.valueOf(gson.toJson(trade.getTradePartner()).length()));
         Trade trade1=trade.clone();
         Log.e("push 2", String.valueOf(gson.toJson(trade1.getTradePartner()).length()));
         trade1.setTradeStatus(5); //trade request
         Log.e("new push", "");
-        lightenTrade(trade1);
+        //lightenTrade(trade1);
         Log.e("push 3,",String.valueOf(gson.toJson(trade1.getTradePartner()).length()));
         listTradeRequest.add(trade1);
     }
@@ -586,7 +576,7 @@ public class TradeManager {
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()) {
                 listTradeRequest.remove(index);
                 trade.getTradeUser().getTradeManager().tradeGotDeclined(trade1);
-//                lightenTrade(trade1);
+                //lightenTrade(trade1);
                 pushChanges(trade1, 1, activity);// push the user. pushchanges lighten the trade
                 listTransactionedTrade.add(trade1);
                 break;
@@ -604,7 +594,7 @@ public class TradeManager {
                 Trade toSave=listCurrentTrade.get(index);
                 listCurrentTrade.remove(index);
                 toSave.setTradeStatus(3);
-                lightenTrade(toSave);
+                //lightenTrade(toSave);
                 listTransactionedTrade.add(toSave);
                 break;
             }
@@ -628,7 +618,7 @@ public class TradeManager {
                 trade1.getTradeUser().getTradeManager().tradeGotAccepted(trade1);
                 trade1.setTradeStatus(2); //Accepted
                 Trade trade2=trade1.clone();
-                lightenTrade(trade2);
+                //lightenTrade(trade2);
                 listTransactionedTrade.add(trade2);
                 break;
             }
@@ -646,7 +636,7 @@ public class TradeManager {
                 Trade toSave=listCurrentTrade.get(index);
                 listCurrentTrade.remove(index);
                 toSave.setTradeStatus(2); //Accepted
-                lightenTrade(toSave);
+                //lightenTrade(toSave);
                 listTransactionedTrade.add(toSave);
                 break;
             }
@@ -707,7 +697,7 @@ public class TradeManager {
 
                 break;
         }
-//        lightenTrade(trade1);
+        //lightenTrade(trade1);
     }
 
     public void pushChangesOnline(){
@@ -727,7 +717,7 @@ public class TradeManager {
     public void setTradeComplete(Trade trade1){
         int i=0;
         trade1.setTradeStatus(6); // for complete
-        lightenTrade(trade1);
+        //lightenTrade(trade1);
         listCompleteTrade.add(trade1);
         for (Trade trade: listTransactionedTrade){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()){
@@ -735,28 +725,19 @@ public class TradeManager {
             }
             i=i+1;
         }
-
     }
-
 
     //TODO push only the partner.. Already there
     public boolean sendTradeOffer(Trade trade, Activity activity){
-//        lightenTrade(trade);
+        //lightenTrade(trade);
         if (trade.hasTradePartner()==false){
             return false;
         }
-
         trade.setTradeStatus(1);
         Gson gson = new Gson();
         trade.getTradePartner().getTradeManager().processTradeRequest(trade);
         Log.e("After push changes", String.valueOf(gson.toJson(trade).length()));
         pushChanges(trade, 2, activity); // will push only the partner
-
         return true;
-    }
-
-    public Integer sendEmail(Trade trade, String comments) {
-        // TODO: send email
-        return 0;
     }
 }
