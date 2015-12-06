@@ -129,11 +129,12 @@ public class TradeFragment extends Fragment implements BackButtonListener {
     }
     
     public void sendOffer_Handler(){
-        if (myTradeController.sendTradeOffer()==false){
-            showNoPartnerDialogue();
-            return;
-        }
-
+//        // -------------------COMMENTED--------------------
+//        if (myTradeController.sendTradeOffer()==false){
+//            showNoPartnerDialogue();
+//            return;
+//        }
+//        // -------------------COMMENTED--------------------
         //May add a dialog box if necessary
         myActivity.setTradeController(myTradeController);
         myTradeController.saveTradeUnInitiated();

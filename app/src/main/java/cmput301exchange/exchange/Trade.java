@@ -53,10 +53,10 @@ public class Trade {
     // call this constructor
     // creates an empty trade
     public Trade() {
-
         Random rand = new Random(System.nanoTime());
         this.tradeId = rand.nextLong();
         stateHistory= new ArrayList<>();
+        this.hasPartner = true;
     }
 
     public Trade(Person tradeUser, Person tradePartner) {
@@ -64,6 +64,7 @@ public class Trade {
         this.tradeId = rand.nextLong();
         this.tradeUser = tradeUser;
         this.tradePartner = tradePartner;
+        this.hasPartner = true;
     }
     /**
      * Constructor of the trade
