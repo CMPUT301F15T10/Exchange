@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import cmput301exchange.exchange.R;
+import cmput301exchange.exchange.Trade;
 
 
 // http://www.mkyong.com/android/how-to-send-email-in-android
@@ -22,13 +23,12 @@ public class SendEmailActivity extends Activity {
     EditText comment;
     public TextView text;
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sendemail);
 
-        // test
-        message = "YOLO";
+        message = "Trade Owner -> A\n Trade Partner -> B \n";
+        //getTradeDetails(trade);
         text = (TextView) findViewById(R.id.messageText);
         text.setMovementMethod(new ScrollingMovementMethod());
         text.setText(message);
@@ -44,8 +44,19 @@ public class SendEmailActivity extends Activity {
         });
     }
 
+    public void getTradeDetails(Trade trade) {
+        if (trade == null) {
+            message = "No Trade Loaded";
+        }
+        String message = "";
+        message = message + "Trade Owner -> " + trade.getTradeUser().toString() + "\n";
+        message = message + "Trade Partner -> " + trade.getTradePartner().toString() + "\n";
+        message = message + "Trade id -> " + trade.getTradeId().toString() + "\n";
+    }
+
     private void sendEmail() {
-        message = message + "\n\n" + comment.getText().toString();
+        //message = message + "\n\n" + comment.getText().toString();
+        message = text.getText().toString() + "\n\n" + comment.getText().toString();
         Intent email = new Intent(Intent.ACTION_SEND);
         email.putExtra(Intent.EXTRA_EMAIL, sendTo);
         email.putExtra(Intent.EXTRA_SUBJECT, subject);

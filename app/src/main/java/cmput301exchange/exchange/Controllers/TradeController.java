@@ -156,7 +156,7 @@ public class TradeController {
     public void setTradePartner(Person partner) {
         if (myTrade.getTradeStatus().intValue() == 5) {
             // In case of trade offer request being made to user
-            myTradeManager.counterTrade(myTrade,partner,context);
+            myTradeManager.counterTrade(myTrade,partner);
             saveTradeManager();
             return;
         }

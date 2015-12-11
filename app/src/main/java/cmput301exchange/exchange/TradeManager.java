@@ -226,7 +226,7 @@ public class TradeManager {
     public void addUnInitiatedTrade(Trade trade) {
 
         // add the trade to the listCurrentTrade
-        lightenTrade(trade);
+        //lightenTrade(trade);
         for (Trade trade1: listCurrentTrade){
             if (trade.getTradeId().equals(trade1.getTradeId())){
                 return;
@@ -254,7 +254,7 @@ public class TradeManager {
      * @param trade1 The trade that you want to counter
      */
     // TODO push trade user. already inside.
-    public void counterTrade(Trade trade1, Person partner, Activity activity) {
+    public void counterTrade(Trade trade1, Person partner) {
 
         int index=0;
         trade1.setTradeStatus(4);
@@ -273,7 +273,7 @@ public class TradeManager {
             partnerBooks= new ArrayList<>();
             counterTradeHelper(trade1.getTradeUser(),trade1);
         }
-        pushChanges(trade1,1,activity);
+        //pushChanges(trade1,1,activity);
         trade1.setTradeUser(trade1.getTradePartner());
         trade1.setListBookUser(trade1.getListBookPartner());
         trade1.setListBookPartner(partnerBooks);
@@ -573,7 +573,7 @@ public class TradeManager {
         Log.e("push 2", String.valueOf(gson.toJson(trade1.getTradePartner()).length()));
         trade1.setTradeStatus(5); //trade request
         Log.e("new push", "");
-        lightenTrade(trade1);
+        //lightenTrade(trade1);
         Log.e("push 3,",String.valueOf(gson.toJson(trade1.getTradePartner()).length()));
         listTradeRequest.add(trade1);
     }
@@ -604,7 +604,7 @@ public class TradeManager {
                 Trade toSave=listCurrentTrade.get(index);
                 listCurrentTrade.remove(index);
                 toSave.setTradeStatus(3);
-                lightenTrade(toSave);
+                //lightenTrade(toSave);
                 listTransactionedTrade.add(toSave);
                 break;
             }
@@ -628,7 +628,7 @@ public class TradeManager {
                 trade1.getTradeUser().getTradeManager().tradeGotAccepted(trade1);
                 trade1.setTradeStatus(2); //Accepted
                 Trade trade2=trade1.clone();
-                lightenTrade(trade2);
+                //lightenTrade(trade2);
                 listTransactionedTrade.add(trade2);
                 break;
             }
@@ -646,7 +646,7 @@ public class TradeManager {
                 Trade toSave=listCurrentTrade.get(index);
                 listCurrentTrade.remove(index);
                 toSave.setTradeStatus(2); //Accepted
-                lightenTrade(toSave);
+                //lightenTrade(toSave);
                 listTransactionedTrade.add(toSave);
                 break;
             }
@@ -727,7 +727,7 @@ public class TradeManager {
     public void setTradeComplete(Trade trade1){
         int i=0;
         trade1.setTradeStatus(6); // for complete
-        lightenTrade(trade1);
+        //lightenTrade(trade1);
         listCompleteTrade.add(trade1);
         for (Trade trade: listTransactionedTrade){
             if (trade.getTradeId().longValue()==trade1.getTradeId().longValue()){

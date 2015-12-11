@@ -225,7 +225,7 @@ public class Trade {
     }
 
     public void setTradeStatus(Integer tradeStatus) {
-        stateHistory.add(tradeStatus.intValue());
+//        stateHistory.add(tradeStatus.intValue());
         this.tradeStatus = tradeStatus;
     }
 

@@ -101,19 +101,18 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
      * As an owner, upon declining a trade I can offer a counter trade initialized with the items of the declined trade.
      */
 
-    // TODO Needs Person object in counterTrade() but it has already set to null
-
-//    public void testCounterTrade() {
-//        // setup
-//        testSetup();
-//        // offer a trade
-//        testOfferTrade();
-//        // decline trade and offering a counter trade
-//        tradeManager0.counterTrade(trade0);
-//        // now the tradeStatus should be 3: counter trade
-//        int testTradeStatus = tradeManager0.getListCurrentTrade().get(0).getTradeStatus();
-//        assertEquals(testTradeStatus, 4);
-//    }
+    public void testCounterTrade() {
+        // setup
+        testSetup();
+        // offer a trade
+        testOfferTrade();
+        // decline trade and offering a counter trade
+        // now the trade owner is person1 and the partner is person0
+        tradeManager0.counterTrade(trade0, person0);
+        // now the tradeStatus should be 4: counter trade
+        int testTradeStatus = tradeManager0.getListCurrentTrade().get(0).getTradeStatus();
+        assertEquals(testTradeStatus, 4);
+    }
 
 
     /*
@@ -155,19 +154,20 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
         assertEquals(tmpsize, 0);
     }
 
+
     /*
      * US04.07.01
      * As an owner, if I accept a trade both parties will be emailed all trade and item information
      * relevant to the trade, as well owner comments for how to continue on with the trade.
      */
     // Sending emails can be done by starting a new activity
+    // See SendEmailUiTest
 
 
     /*
      * US04.08.01
      * As an owner or borrower, I can browse all past and current trades involving me.
      */
-    // TODO Needs Person object in browseCurrentTrade() but it has already set to null
     public void testBrowseTrade0() {
         // setup
         testSetup();
@@ -255,5 +255,4 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
         tradeManager0.tradeGotAccepted(trade0);
         assertSame(tmp, tradeManager0.getListTransactionedTrade().get(0).getTradeId());
     }
-
 }
