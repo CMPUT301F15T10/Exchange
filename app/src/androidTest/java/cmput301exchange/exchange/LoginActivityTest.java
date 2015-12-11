@@ -13,12 +13,12 @@ import cmput301exchange.exchange.Activities.Login;
 /**
  * Created by hzhu6 on 11/17/15.
  */
-public class test_Login_page extends ActivityInstrumentationTestCase2 {
+public class LoginActivityTest extends ActivityInstrumentationTestCase2 {
     private Activity activity;
     private Button login_button;
     private EditText login_text;
 
-    public test_Login_page() {
+    public LoginActivityTest() {
         super(cmput301exchange.exchange.Activities.Login.class);
     }
 

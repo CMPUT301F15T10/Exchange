@@ -83,5 +83,10 @@ public class InventoryTest extends ApplicationTestCase<Application>{
 
 
     }
+    public void testClone(){
+        Book book = new Book();
+
+    }
+
 
 }

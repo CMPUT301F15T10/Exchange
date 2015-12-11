@@ -15,7 +15,7 @@ import cmput301exchange.exchange.Activities.InventoryActivity;
 /**
  * Created by hzhu6 on 11/17/15.
  */
-public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
+public class AddItemUiTest extends ActivityInstrumentationTestCase2 {
     private Activity activity;
     private EditText editname;
     private EditText editauthor;
@@ -25,7 +25,7 @@ public class test_add_item_ui extends ActivityInstrumentationTestCase2 {
     private Button   add_button;
     private Inventory inventory = new Inventory();
 
-    public test_add_item_ui() {
+    public AddItemUiTest() {
         super(cmput301exchange.exchange.Activities.AddBookActivity.class);
     }
 

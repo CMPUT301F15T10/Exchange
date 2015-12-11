@@ -17,7 +17,7 @@ import cmput301exchange.exchange.TradeManager;
 /**
  * Created by touqir on 06/11/15.
  */
-public class test_TradeActivity extends ActivityInstrumentationTestCase2 {
+public class TradeActivityUiTest extends ActivityInstrumentationTestCase2 {
     private TradeManagerActivity activity;
     private TradeFragment tradeFragment;
     private TradeManagerFragment tradeManagerFragment;
@@ -25,7 +25,7 @@ public class test_TradeActivity extends ActivityInstrumentationTestCase2 {
     private ItemsTradeFragment itemsTradeFragment;
     private TradeManager myTradeManager;
 
-    public test_TradeActivity(){
+    public TradeActivityUiTest(){
         super(cmput301exchange.exchange.Activities.TradeManagerActivity.class);
     }
 

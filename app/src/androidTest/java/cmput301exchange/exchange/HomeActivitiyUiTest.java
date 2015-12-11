@@ -14,13 +14,13 @@ import cmput301exchange.exchange.Activities.ViewPersonActivity;
 /**
  * Created by hzhu6 on 11/21/15.
  */
-public class test_homeactivity extends ActivityInstrumentationTestCase2 {
+public class HomeActivitiyUiTest extends ActivityInstrumentationTestCase2 {
     private Activity activity;
     private Button inventory_button;
     private Button trade_button;
     private Button browse_button;
 
-    public test_homeactivity() {
+    public HomeActivitiyUiTest() {
         super(cmput301exchange.exchange.Activities.HomeActivity.class);
     }
 
