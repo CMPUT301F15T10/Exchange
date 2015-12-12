@@ -1,43 +1,46 @@
-//package cmput301exchange.exchange;
-//
-//import android.app.Activity;
-//import android.content.Intent;
-//import android.test.ActivityInstrumentationTestCase2;
-//import android.widget.Button;
-//import android.widget.EditText;
-//import android.widget.Spinner;
-//
-//import com.google.gson.Gson;
-//
-//import cmput301exchange.exchange.Activities.EditBookActivity;
-//import cmput301exchange.exchange.Controllers.EditBookController;
-//import cmput301exchange.exchange.Fragments.EditBookCommentFragment;
-//import cmput301exchange.exchange.Fragments.EditBookFragment;
-//import cmput301exchange.exchange.Others.CharSequenceWrapper;
-//
-///**
-// * Created by touqir on 05/11/15.
-// */
-//public class test_EditBookUI extends ActivityInstrumentationTestCase2 {
-//
-//    private EditBookController controller;
-//    private EditBookActivity activity;
-//    private Book myBook, myBook2;
-//
-//    public test_EditBookUI(){
-//        super(cmput301exchange.exchange.Activities.EditBookActivity.class);
-//    }
-//
-//    // Tests whether the activity starts or not.
+package cmput301exchange.exchange;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import com.google.gson.Gson;
+
+import cmput301exchange.exchange.Activities.EditBookActivity;
+import cmput301exchange.exchange.Controllers.EditBookController;
+import cmput301exchange.exchange.Others.CharSequenceWrapper;
+
+/**
+ * Created by touqir on 05/11/15.
+ */
+public class EditBookUiTest extends ActivityInstrumentationTestCase2 {
+
+    private EditBookController controller;
+    private EditBookActivity activity;
+    private Context context;
+    private Book myBook, myBook2;
+    /*
+     * US01.04.01
+     * As an owner, I want to edit and modify inventory items.
+     */
+    public EditBookUiTest(){
+        super(cmput301exchange.exchange.Activities.EditBookActivity.class);
+    }
+
+
+
+    // Tests whether the activity starts or not.
 //    public void testStart() {
 //        Activity activity = getActivity();
-//        assertNotNull(activity);
+//        //assertNotNull(activity);
 //    }
-//
-//    @Override
-//    protected void setUp() throws Exception {
-//        initBook();
-//        super.setUp();
+
+//    protected void set() {
+//        //initBook();
 //        Gson gson = new Gson();
 //        String json = gson.toJson(myBook);
 //
@@ -46,16 +49,17 @@
 //        setActivityIntent(intent); //Spoof the Intent
 //
 //        activity= (EditBookActivity)getActivity();
-//        assertNotNull(activity.fm.findFragmentByTag(EditBookActivity.editBookTag)); // By default EditBookFragment should be started
-//        editBook=activity.getEditBookFragment();
-//        editComment=activity.getEditCommentFragment();
-//        initBook2();
+////        assertNotNull(activity.fm.findFragmentByTag(EditBookActivity.editBookTag)); // By default EditBookFragment should be started
+////        editBook=activity.getEditBookFragment();
+////        editComment=activity.getEditCommentFragment();
+//        //initBook2();
 //        getInstrumentation().waitForIdleSync();
 //    }
 //
 //    public void initBook(){
 //        myBook= new Book();
-//        EditBookController controller=new EditBookController(myBook);
+//        EditBookController controller=new EditBookController(context, activity);
+//
 //        controller.updateName("Pearl");
 //        controller.updateType("Book");
 //        controller.updateQuality("2");
@@ -165,6 +169,6 @@
 //        });
 //
 //    }
-//
-//
-//}
+
+
+}
