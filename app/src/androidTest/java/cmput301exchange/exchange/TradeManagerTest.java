@@ -161,7 +161,7 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
      * relevant to the trade, as well owner comments for how to continue on with the trade.
      */
     // Sending emails can be done by starting a new activity
-    // See SendEmailUiTest
+    // See SendEmailUiTest for this use case
 
 
     /*
@@ -190,7 +190,7 @@ public class TradeManagerTest extends ActivityInstrumentationTestCase2 {
      */
 
     public void testBrowseTrade1() {
-//        // Note that this is similar as the above user case while this one is more advanced
+        // Note that this is similar as the above user case while this one is more advanced
         // setup
         testSetup();
         // offer a trade
