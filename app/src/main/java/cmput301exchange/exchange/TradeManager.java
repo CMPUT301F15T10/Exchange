@@ -10,74 +10,75 @@ import java.util.ArrayList;
 
 import cmput301exchange.exchange.Serializers.deepClone;
 
-
-/*
-NOTES:
-- add a list (listTradeRequest) that stores all trades that were offered to the user
-  - for now it goes through all the trades that involve the user as tradePartner
-  - updates listTradeRequest everytime when getListTradeRequest and getListTradeRequest_no are called
-
-- add two functions: getListTradeRequest and getListTradeRequest_no where
-  - getListTradeRequest_no returns the size of listTradeRequest
- */
-
-// TODO send email
 /**
-
  * Instantiate this to deal with trades.
  * @Author Touqir, Yishuo
  * @version 0.0.1
  */
 public class TradeManager {
 
-    /*
-    private ArrayList<String> listTransactionedTradeOwner;
-    private ArrayList<String> listCurrentTradeOwner;
-    private ArrayList<String> listTransactionedTradeBorrower;
-    private ArrayList<String> listCurrentTadeBorrower;
-    */
-
     private ArrayList<Trade> listTransactionedTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCurrentTrade = new ArrayList<>(); // to read/load from file
     private ArrayList<Trade> listCompleteTrade= new ArrayList<>();
     private ArrayList<Trade> listTradeRequest = new ArrayList<>();
-
-//    private Activity activity;
-    
     private ArrayList<ArrayList<Book>> temporaryInsufficientBookList= new ArrayList<>();
-
     private String filePastTrade;
     private String fileCurrentTrade;
     private String message;
-
     private ArrayList<Trade> listTrade;
 
+    /**
+     * Getter for listCompleteTrade
+     * @param
+     */
     public ArrayList<Trade> getListCompleteTrade() {
         return listCompleteTrade;
     }
 
+    /**
+     * Setter for lsitCompleteTrade
+     * @param listCompleteTrade the list of complete trades you wish to save
+     */
     public void setListCompleteTrade(ArrayList<Trade> listCompleteTrade) {
         this.listCompleteTrade = listCompleteTrade;
     }
 
+    /**
+     * Setter for listTransactionedTrade
+     * @param list the list you wish to save
+     */
     public void setListTransactionedTrade(ArrayList<Trade> list){
 
         listTransactionedTrade=list;
     }
 
+    /**
+     * Setter for listCurrentTrade
+     * @param list the lsit you wish to save
+     */
     public void setListCurrentTrade(ArrayList<Trade> list){
         listCurrentTrade=list;
     }
 
+    /**
+     * Setter for listTradeRequest
+     * @param list the list you wish to save
+     */
     public void setListTradeRequest(ArrayList<Trade> list){
         listTradeRequest=list;
     }
 
-    /**
-     * Adds a completed trade to the PastTrade List.
-     * @param "Trade" trade
-     */
 
+    /**
+     * Load a trade from various list of trades by choice
+     * @param ID the trade id you wish to load
+     * @param choice 1: load from lsitTransactionedTrade
+     *                 2: load from listCurrentTrade
+     *                 3: load from listTradeRequest
+     *                 4: load from listCompleteTrade
+     * @param activity current activity
+     * @return trade object
+     */
     public Trade load(Long ID, int choice, Context activity){
 
         switch(choice){
@@ -118,6 +119,10 @@ public class TradeManager {
         return null;
     }
 
+    /**
+     * Remove trade from listTranactionedTrade
+     * @param trade trade you wish to remove
+     */
     public void deleteDeclinedTrade(Trade trade){
         int i=0;
         for (Trade trade1:listTransactionedTrade){
@@ -128,6 +133,13 @@ public class TradeManager {
         }
     }
 
+    /**
+     * Returns a list of trades within given time
+     * @param choice 1: load from listTransactionedTrade
+     *                 2: load from listCurrentTrade
+     *                 3: load from listTradeRequest
+     * @return a list of trades
+     */
     public ArrayList<Trade> getTradeListByDate(int choice){
         ArrayList<Trade> tradeList= new ArrayList<>();
         Trade latestTrade= new Trade();
@@ -186,6 +198,10 @@ public class TradeManager {
         return null;
     }
 
+    /**
+     * Remove a trade from listCompleteTrade
+     * @param trade1 the trade you wish to remove
+     */
     public void deleteCompleteTrade(Trade trade1){
         int i=0;
         for (Trade trade:listCompleteTrade){
@@ -197,7 +213,11 @@ public class TradeManager {
         }
     }
 
-    //TODO
+    /**
+     * Loads the person that login to the app and sets the tradePartner to false
+     * @param trade the trade you wish to change
+     * @param activity current activity
+     */
     public void loadPersons(Trade trade, Context activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
 
@@ -212,19 +232,19 @@ public class TradeManager {
         }
     }
 
-
-    /*
-
-    this method removes the person objects
+    /**
+     * Removes the person objects from a trade
+     * @param trade the trade you wish to remove two person objects from
      */
     public void lightenTrade(Trade trade){
         trade.removePersons();
     }
 
-
-
+    /**
+     * Adds one trade to listCurrentTrade
+     * @param trade the trade you wish to add to listCurrentTrade
+     */
     public void addUnInitiatedTrade(Trade trade) {
-
         // add the trade to the listCurrentTrade
         //lightenTrade(trade);
         for (Trade trade1: listCurrentTrade){
@@ -235,9 +255,8 @@ public class TradeManager {
         listCurrentTrade.add(trade);
     }
 
-    // creates an empty trade and user can user setters to add more details about the trade
     /**
-     * Creates and empty trade and user can use setters to add more details about the trade
+     * Creates an empty trade and user can use setters to add more details about the trade
      * @param
      */
     public Trade createTrade() {
@@ -246,14 +265,11 @@ public class TradeManager {
         return trade;
     }
 
-
-
     /**
      * Swaps the role of the owner and borrower, edits the trade
      * constructs a new trade, and asks the user to edit the trade
      * @param trade1 The trade that you want to counter
      */
-    // TODO push trade user. already inside.
     public void counterTrade(Trade trade1, Person partner) {
 
         int index=0;
@@ -280,7 +296,11 @@ public class TradeManager {
         trade1.setTradePartner(partner, true);
     }
 
-
+    /**
+     * Put one trade from one person's listTransactionedTrade to listCurrentTrade
+     * @param originalTrader person you wish to make change to
+     * @param t trade that needed to be changed
+     */
     public void counterTradeHelper(Person originalTrader, Trade t){
         int i=0;
         Trade trade1=t.clone();
@@ -294,8 +314,10 @@ public class TradeManager {
             i=i+1;
         }
     }
+
     /**
-     * Getter for Past Trade List
+     * Getter for listTranactionedTrade
+     * @return
      */
     public ArrayList<Trade> getListTransactionedTrade() {
 
@@ -303,17 +325,20 @@ public class TradeManager {
     }
 
     /**
-     * Getter for current trade list
+     * Getter for listCurrentTrade
+     * @return
      */
     public ArrayList<Trade> getListCurrentTrade() {
 
         return listCurrentTrade;
     }
 
-    /*
-    This method is for returning items
+    /**
+     * Return items
+     * @param trade the trade you wish to make changes to
+     * @param activity current activity
+     * @return
      */
-    // TODO pushes both partners as inventories will change. is there
     public boolean returnTradeItems(Trade trade, Activity activity){
         if (revertTransaction(trade)==false){
             return false;
@@ -334,6 +359,14 @@ public class TradeManager {
         }
     }
 
+    /**
+     * Checks and see if there is any insufficient books from either owner or borrower.
+     * @param trade1 the trade you wish to check
+     * @param choice 1: checks the borrower
+     *                 2: checks the owner
+     * @return ture if there is any insufficient books from either owner or borrower.
+     *          false if there is no insufficient books from both owner and borrower
+     */
     public boolean findInsufficientBooks(Trade trade1, int choice){
         //choice 1 is for performTransaction, choice 2 is for revertTransaction
         temporaryInsufficientBookList= new ArrayList<>();
@@ -401,8 +434,13 @@ public class TradeManager {
         return insufficientPartnerBook || insufficientUserBook;
     }
 
+    /**
+     * Accepts the trade and swap each users' books
+     * @param trade1 the trade you wish to make change to
+     * @return false if there is any insufficient books
+     *          true otherwise
+     */
     public boolean performTransaction(Trade trade1){
-
         if (findInsufficientBooks(trade1,1)){ // choice is 1
             return false;
         } else {
@@ -435,6 +473,12 @@ public class TradeManager {
         }
     }
 
+    /**
+     * Similar to performTransaction(), but it checks partner's list books
+     * @param trade1 trade you wish make changes to
+     * @return false if there is any insufficient books
+     *          true otherwise
+     */
     public boolean revertTransaction(Trade trade1){
 
         if (findInsufficientBooks(trade1,2)){
@@ -468,6 +512,7 @@ public class TradeManager {
         }
 
     }
+
     /**
      * Deletes an ongoing trade
      * @param trade1 the trade you wish to cancel
@@ -484,8 +529,6 @@ public class TradeManager {
         }
 
     }
-
-    public void setMessage(String message) { this.message = message; }
 
     /**
      * Returns a list of all of your past trades
@@ -556,15 +599,26 @@ public class TradeManager {
         return tempPastTrade;
     }
 
-
+    /**
+     * Getter for the listTradeRequest
+     * @return list of trade requests that have sent to user
+     */
     public ArrayList<Trade> getListTradeRequest() {
         return listTradeRequest;
     }
 
+    /**
+     * Returns the size of listTradeRequest
+     * @return size of listTradeRequest
+     */
     public Integer getTradeRequest_no() {
         return listTradeRequest.size();
     }
 
+    /**
+     * Adds one trade to listTradeRequest
+     * @param trade the trade you wish to add to listTradeRequest
+     */
     public void processTradeRequest(Trade trade){
 //        lightenTrade(trade);
         Gson gson= new Gson();
@@ -578,7 +632,11 @@ public class TradeManager {
         listTradeRequest.add(trade1);
     }
 
-    // TODO push trade user. It pushes from within. is there.
+    /**
+     * Decline a trade
+     * @param trade1 trade you wish to decline
+     * @param activity current activity
+     */
     public void declineTradeRequest(Trade trade1, Activity activity){
         int index=0;
         trade1.setTradeStatus(3); //declined
@@ -595,7 +653,10 @@ public class TradeManager {
         }
     }
 
-
+    /**
+     * Removes a trade from listCurrentTrade and adds it to listTransactionedTrade
+     * @param trade1 trade you wish to remove
+     */
     public void tradeGotDeclined(Trade trade1){
         trade1.setTradeStatus(3); //declined
         int index=0;
@@ -611,10 +672,13 @@ public class TradeManager {
             index = index + 1;
         }
     }
-    
-/*
- //TODO This method should also push both the traders. Because both the inventories will be changed. is there
- */
+
+    /**
+     * Accepts the trade
+     * @param trade1 trade you wish to accept
+     * @param activity current activity
+     * @return returns true if one trade got accepted successfully. Otherwise false
+     */
     public boolean acceptTradeRequest(Trade trade1, Activity activity){
         boolean success=performTransaction(trade1);
         if (success==false){
@@ -638,7 +702,10 @@ public class TradeManager {
         return true;
     }
 
-
+    /**
+     * Accept one trade, remove it from listCurrentTrade and add it to listTransactionedTrade
+     * @param trade1 trade you wish to accept
+     */
     public void tradeGotAccepted(Trade trade1){
         int index=0;
         for (Trade trade:listCurrentTrade){
@@ -654,8 +721,15 @@ public class TradeManager {
         }
     }
 
-    //TODO
-    // type=1, meaning traderUser needs to be pushed, type=2 meaning partner needs to be pushed, 3 for both
+    /**
+     * Push changes to the server
+     * @param trade1 trade you wish to push
+     * @param type choose where to save trade
+     *             1: save to User
+     *             2: save to Partner
+     *             3: save to both User and Partner
+     * @param activity currnet activity
+     */
     public void pushChanges(Trade trade1, int type,Activity activity){
         ModelEnvironment globalEnv=new ModelEnvironment(activity,null);
         PersonManager pm = new PersonManager(activity);
@@ -710,20 +784,10 @@ public class TradeManager {
 //        lightenTrade(trade1);
     }
 
-    public void pushChangesOnline(){
-
-
-    }
-
-//    public void setActivity(Activity activity){
-//        this.activity=activity;
-////    }
-
-//    public void setActivityNull(){
-//        this.activity=null;
-//    }
-
-
+    /**
+     * Sets the trade to Complete
+     * @param trade1 trade you wish to change
+     */
     public void setTradeComplete(Trade trade1){
         int i=0;
         trade1.setTradeStatus(6); // for complete
@@ -735,11 +799,14 @@ public class TradeManager {
             }
             i=i+1;
         }
-
     }
 
-
-    //TODO push only the partner.. Already there
+    /**
+     * Send trade offer to the other person
+     * @param trade trade you wish to send
+     * @param activity current activity
+     * @return
+     */
     public boolean sendTradeOffer(Trade trade, Activity activity){
 //        lightenTrade(trade);
         if (trade.hasTradePartner()==false){
@@ -753,10 +820,5 @@ public class TradeManager {
         pushChanges(trade, 2, activity); // will push only the partner
 
         return true;
-    }
-
-    public Integer sendEmail(Trade trade, String comments) {
-        // TODO: send email
-        return 0;
     }
 }
